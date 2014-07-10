@@ -46,6 +46,8 @@
    (< n 0) (prob44-helper-negative n coll))) ;n is negative
 
 ;; DrRacket Excercise 2 - exception in exceptions/DrRacket-Exercise2-ClassCast.ser
+    ; possible hint: are you sure conj is the function you should be using?
+    ; possible tag :conj
 (defn exercise2 [str1 str2]
  (conj str1 str2))
 
@@ -53,4 +55,43 @@
 (defn exercise3 [a-string index]
   (str (subs a-string 0 index) "_" (subs a-string index (+ 2 (count a-string)))))
 
-;(expect "hello_world" (exercise3 "helloworld" 5))
+;; 4clojure Problem 15 - exception in exceptions/4clojure-prob15-ClassCast.ser
+    ; possible hint: make sure you're using prefix notation
+(defn prob15 [num]
+  (2 * num))
+
+;; 4clojure Problem 16 - exception in exceptions/4clojure-prob16-Arity.ser
+    ; possible tag :cons
+    ; possible hint: are you sure cons is the function you should be using?
+(defn prob16 [a-string]
+  (cons "Hello, " a-string "!"))
+
+;; 4clojure Problem 17 - exception in exceptions/4clojure-prob17-NullPointer.ser
+    ; possible hint: make sure you have a base (termination) case
+(defn prob17 [coll-of-nums]
+  (loop [coll coll-of-nums
+         result '()]
+    (recur (rest coll)
+           (conj result (+ 5 (first coll))))))
+
+;; 4clojure Problem 18 - exception in exceptions/4clojure-prob18-AssertionError.ser
+    ; possible hint: make sure that you have a base (termination) case
+(defn prob18 [coll-of-nums]
+  (if (< (first coll-of-nums) 5)
+    (list (first coll-of-nums)))
+  (prob18 (rest coll-of-nums)))
+
+;; 4clojure Problem 64 - exception in exceptions/4clojure-prob64-NullPointer.ser
+    ; possible hint: make sure you have a base (termination) case
+(defn prob64 [coll-of-nums]
+  (loop [coll coll-of-nums
+         result 0]
+    (recur (rest coll)
+           (+ result (first coll)))))
+
+;; 4clojure Problem 57 -
+
+;(defn prob57 [num]
+;  (do
+;    (conj [] num)
+;    (prob57 (dec num))))

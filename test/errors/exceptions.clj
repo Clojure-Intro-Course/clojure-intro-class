@@ -202,7 +202,7 @@
 
 (expect :assertion-error-with-argument (:key (first-match AssertionError "Assert failed: (check-if-sequable? \"filter\" argument2)")))
 
-(expect "" (:hints (prettify-exception (run-and-catch-corefns-exc '(filter odd? 5)))))
+;(expect "" (:hints (prettify-exception (run-and-catch-corefns-exc '(filter odd? 5)))))
 
 ;##################################
 ;## 5. More real-life exceptions ##

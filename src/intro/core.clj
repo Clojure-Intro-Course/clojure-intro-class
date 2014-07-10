@@ -557,11 +557,6 @@
    '((count)
      (count [] [] []))))
 
-(defn HHMI-showing []
-  (test-all-and-continue
-   '((+ 2 "apple")
-     )))
-
 (defn -main [& args]
   (try
     ;(HHMI-showing)
@@ -630,7 +625,12 @@
     ;(do (eval '(prob44 2 [1 2 3 4 5])))
     ;(exercise2 "hello " "world")
     ;(exercise3 "helloworld" 5)
-    (+ 2 "apple")
+    ;(prob15 5)
+    ;(prob16 "Dave")
+    ;(prob17 '(1 2 3))
+    ;(prob18 '(3 4 5 6 7))
+    ;(prob64 [1 2 3 4 5])
+    ;(prob57 5)
     ;(assoc {1 2} 3)
     ;(filter odd? 5)
     ;(test-cond)
