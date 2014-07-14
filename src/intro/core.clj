@@ -559,7 +559,6 @@
 
 (defn -main [& args]
   (try
-    ;(HHMI-showing)
     ;(test-our-examples)
     ;(try-counts)
     ;(basic-seesaw-frame)
@@ -641,6 +640,12 @@
     ;(assoc {1 2} 3)
     ;(filter odd? 5)
     ;(test-cond)
+    ;(+ 2 "apple")
+    ;(inc 2.5)
+    ;(rand "bananqa")
+    ;(prob25 [1 2 1])
+    ;(< 4 (number-with-a-print))
+    (< 4 (string-with-a-print))
     ;(def classcast-exc (import-from-file (str path "classcast1.ser")))
     ;(throw classcast-exc)
     (catch Throwable e (display-error (prettify-exception e)))))

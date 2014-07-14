@@ -153,3 +153,20 @@
   (do
     (+ (first coll) (rest coll))
     (prob24 (rest rest coll))))
+
+(defn prob25 [coll]
+  (let [length (count coll)
+        new-coll []]
+    (for [index (range 1 (+ length 1))]
+      (if (odd? (nth coll index))
+        (conj new-coll (nth coll index))))))
+
+(defn number-with-a-print []
+  (do
+    (println "BE MY FRIEND!!")
+    5))
+
+(defn string-with-a-print []
+  (do
+    (println "I'M COOL!!")
+    "REFRIGERATOR"))
