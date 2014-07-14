@@ -163,6 +163,96 @@
    {:pre [(check-if-numbers? ">=" args 1)]}
    (apply clojure.core/>= args))
 
+;;    (+)
+;;    (+ x)
+;;    (+ x y)
+;;    (+ x y & more)
+;; Returns the sum of nums. (+) returns 0. Does not auto-promote longs, will
+;; throw on overflow.
+(defn + [& args]
+  {:pre [(check-if-numbers? "+" args 1)]}
+  (apply clojure.core/+ args))
+
+;;    (- x)
+;;    (- x y)
+;;    (- x y & more)
+;; If no ys are supplied, returns the negation of x, else subtracts
+;; the ys from x and returns the result.
+(defn - [argument1 & args]
+  {:pre [(check-if-number? "-" argument1)
+         (check-if-numbers? "-" args 2)]}
+  (apply clojure.core/- argument1 args))
+
+;;    (*)
+;;    (* x)
+;;    (* x y)
+;;    (* x y & more)
+;; Returns the product of nums. (*) returns 1.
+(defn * [& args]
+  {:pre [(check-if-numbers? "*" args 1)]}
+  (apply clojure.core/* args))
+
+;;    (/ x)
+;;    (/ x y)
+;;    (/ x y & more)
+;; If no denominators are supplied, returns 1/numerator,
+;; else returns numerator divided by all of the denominators.
+(defn / [argument1 & args]
+  {:pre [(check-if-number? "/" argument1)
+         (check-if-numbers? "/" args 2)]}
+  (apply clojure.core// argument1 args))
+
+;;    (quot num div)
+;; quot[ient] of dividing numerator by denominator.
+(defn quot [argument1 argument2]
+  {:pre [(check-if-number? "quot" argument1)
+         (check-if-number? "quot" argument2)]}
+  (clojure.core/quot argument1 argument2))
+
+;;    (rem num div)
+;; remainder of dividing numerator by denominator.
+(defn rem [argument1 argument2]
+  {:pre [(check-if-number? "rem" argument1)
+         (check-if-number? "rem" argument2)]}
+  (clojure.core/rem argument1 argument2))
+
+;;    (mod num div)
+;; Modulus of num and div. Truncates toward negative infinity.
+(defn mod [argument1 argument2]
+  {:pre [(check-if-number? "mod" argument1)
+         (check-if-number? "mod" argument2)]}
+  (clojure.core/mod argument1 argument2))
+
+;;    (inc x)
+;; Returns a number one greater than num.
+(defn inc [x]
+  {:pre [(check-if-number? "inc" x 1)]}
+  (clojure.core/inc x))
+
+;;    (dec x)
+;; Returns a number one less than num.
+(defn dec [x]
+  {:pre [(check-if-number? "dec" x 1)]}
+  (clojure.core/dec x))
+
+;;    (max x)
+;;    (max x y)
+;;    (max x y & more)
+;; Returns the greatest of the nums.
+(defn max [argument1 & args]
+  {:pre [(check-if-number? "max" argument1)
+         (check-if-numbers? "max" args 2)]}
+  (apply clojure.core/max argument1 args))
+
+;;    (min x)
+;;    (min x y)
+;;    (min x y & more)
+;; Returns the least of the nums.
+(defn min [argument1 & args]
+  {:pre [(check-if-number? "min" argument1)
+         (check-if-numbers? "min" args 2)]}
+  (apply clojure.core/min argument1 args))
+
 ;;;;; Functions for type-independent sequence handling ;;;;;;
 
 (defn add-first [argument1 argument2]

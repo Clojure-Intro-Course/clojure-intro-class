@@ -14,7 +14,7 @@
           '(into {} [#{:x :m} #{:q :b}]))))
 
 ;; testing for :class-cast-exception
-(expect "Attempted to use a keyword, but a number was expected."
+(expect "in function + second argument :two must be a number but is a keyword"
         (get-all-text
          (run-and-catch-dictionaries
           '(+ 1 :two))))
@@ -98,7 +98,7 @@
         (get-all-text (run-and-catch-dictionaries '(throw (new NullPointerException "some message")))))
 
 ;; testing for :null-pointer-non-existing-object-not-provided
-(expect "An attempt to access a non-existing object. \n(NullPointerException)"
+(expect "in function + first argument nil must be a number but is nil"
         (get-all-text (run-and-catch-dictionaries '(+ nil 2))))
 
 ;###################################################

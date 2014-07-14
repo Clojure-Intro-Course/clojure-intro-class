@@ -162,6 +162,64 @@
 (expect true (>= 100 100))
 (expect true (>= 10 10 5 4 4 4 4 4 4 2))
 
+;; testing for +
+(expect 0 (+))
+(expect 9 (+ 9))
+(expect -10 (+ -10))
+(expect 82 (+ 39 41 2))
+
+;; testing for -
+(expect Exception (-))
+(expect -10 (- 10))
+(expect 10 (- -10))
+(expect 30 (- 39 5 4))
+
+;; testing for *
+(expect 1 (*))
+(expect 10 (* 10))
+(expect -10 (* -10))
+(expect 60 (* 3 5 4))
+
+;; testing for /
+(expect Exception (/))
+(expect 1/10 (/ 10))
+(expect 4 (/ 12 3))
+(expect 2 (/ 24 3 4))
+
+;; testing for quot
+(expect 3 (quot 10 3))
+(expect -1.0 (quot -5.9 3))
+
+;; testing for rem
+(expect 1 (rem 10 9))
+(expect 0 (rem 2 2))
+
+;; testing for mod
+(expect 0 (mod 10 5))
+(expect 4 (mod 10 6))
+
+;; testing for inc
+(expect 2 (inc 1))
+(expect 2.0 (inc 1.0))
+(expect 3/2 (inc 1/2))
+
+;; testing for dec
+(expect 1 (dec 2))
+(expect 1.0 (dec 2.0))
+(expect 1/2 (dec 3/2))
+
+;; testing for max
+(expect Exception (max))
+(expect 10 (max 10))
+(expect 10 (max 10 5))
+(expect 30 (max 0 30 15))
+
+;; testing for min
+(expect Exception (min))
+(expect 10 (min 10))
+(expect 5 (min 10 5))
+(expect 0 (min 30 0 15))
+
 ;; testing for add-first
 (expect '(0 1 2)
         (add-first '(1 2) 0))
@@ -256,9 +314,9 @@
          (run-and-catch-corefns '(into #{} :not-a-collection))))
 
 ;; testing for the third precondition of into
-;(expect "in function into second argument [[1 2] [3]] must be either a hashmap, or a collection of vectors or hashmaps of length 2, but is a vector"
-;        (get-all-text
-;         (run-and-catch-corefns '(into {} [[1 2] [3]]))))
+(expect "This is a test."
+        (get-all-text
+         (run-and-catch-corefns '(into {} [[1 2] [3]]))))
 
 ;~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -342,51 +400,131 @@
 
 ;~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-;; testing for the precondition of < breaks on first arg
+;; testing if the precondition of < works on first arg
 (expect "in function < first argument :not-a-number must be a number but is a keyword"
         (get-all-text
          (run-and-catch-corefns '(< :not-a-number 31))))
 
-;; testing for the precondition of < breaks on second arg
+;; testing if the precondition of < works on second arg
 (expect "in function < second argument :not-a-number must be a number but is a keyword"
         (get-all-text
          (run-and-catch-corefns '(< 4 :not-a-number))))
 
 ;~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-;; testing for the precondition of > breaks on first arg
+;; testing if the precondition of > works on first arg
 (expect "in function > first argument :not-a-number must be a number but is a keyword"
         (get-all-text
          (run-and-catch-corefns '(> :not-a-number 31))))
 
-;; testing for the precondition of > breaks on second arg
+;; testing if the precondition of > works on second arg
 (expect "in function > second argument :not-a-number must be a number but is a keyword"
         (get-all-text
          (run-and-catch-corefns '(> 4 :not-a-number))))
 
 ;~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-;; testing for the precondition of >= breaks on first arg
+;; testing if the precondition of >= works on first arg
 (expect "in function >= first argument :not-a-number must be a number but is a keyword"
         (get-all-text
          (run-and-catch-corefns '(>= :not-a-number 31))))
 
-;; testing for the precondition of >= breaks on second arg
+;; testing if the precondition of >= works on second arg
 (expect "in function >= second argument :not-a-number must be a number but is a keyword"
         (get-all-text
          (run-and-catch-corefns '(>= 4 :not-a-number))))
 
 ;~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-;; testing for the precondition of <= breaks on first arg
+;; testing if the precondition of <= works on first arg
 (expect "in function <= first argument :not-a-number must be a number but is a keyword"
         (get-all-text
          (run-and-catch-corefns '(<= :not-a-number 31))))
 
-;; testing for the precondition of <= breaks on second arg
+;; testing if the precondition of <= works on second arg
 (expect "in function <= second argument :not-a-number must be a number but is a keyword"
         (get-all-text
          (run-and-catch-corefns '(<= 4 :not-a-number))))
+
+;~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+;; testing if the precondition of + works
+(expect "in function + first argument :not-a-number must be a number but is a keyword"
+        (get-all-text (run-and-catch-corefns '(+ :not-a-number 5))))
+(expect "in function + fourth argument :not-a-number must be a number but is a keyword"
+        (get-all-text (run-and-catch-corefns '(+ 8 9 1 :not-a-number 5))))
+
+;~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+;; testing if the precondition of - works
+(expect "in function - first argument :not-a-number must be a number but is a keyword"
+        (get-all-text (run-and-catch-corefns '(- :not-a-number 5))))
+(expect "in function - fourth argument :not-a-number must be a number but is a keyword"
+        (get-all-text (run-and-catch-corefns '(- 20 9 1 :not-a-number 5))))
+
+;~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+;; testing if the precondition of * works
+(expect "in function * first argument :not-a-number must be a number but is a keyword"
+        (get-all-text (run-and-catch-corefns '(* :not-a-number 5))))
+(expect "in function * fourth argument :not-a-number must be a number but is a keyword"
+        (get-all-text (run-and-catch-corefns '(* 20 9 1 :not-a-number 5))))
+
+;~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+;; testing if the precondition of / works
+(expect "in function / first argument :not-a-number must be a number but is a keyword"
+        (get-all-text (run-and-catch-corefns '(/ :not-a-number 5))))
+(expect "in function / third argument :not-a-number must be a number but is a keyword"
+        (get-all-text (run-and-catch-corefns '(/ 12 3 :not-a-number))))
+
+;~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+;; testing if the precondition of quot works
+(expect "in function quot first argument :not-a-number must be a number but is a keyword"
+        (get-all-text (run-and-catch-corefns '(quot :not-a-number 5))))
+(expect "in function quot second argument :not-a-number must be a number but is a keyword"
+        (get-all-text (run-and-catch-corefns '(quot 12 :not-a-number))))
+
+;~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+;; testing if the precondition of rem works
+(expect "in function rem first argument :not-a-number must be a number but is a keyword"
+        (get-all-text (run-and-catch-corefns '(rem :not-a-number 5))))
+(expect "in function rem second argument :not-a-number must be a number but is a keyword"
+        (get-all-text (run-and-catch-corefns '(rem 12 :not-a-number))))
+
+;~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+;; testing if the precondition of mod works
+(expect "in function mod first argument :not-a-number must be a number but is a keyword"
+        (get-all-text (run-and-catch-corefns '(mod :not-a-number 5))))
+(expect "in function mod second argument :not-a-number must be a number but is a keyword"
+        (get-all-text (run-and-catch-corefns '(mod 12 :not-a-number))))
+
+;~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+;; testing if the precondition of inc works
+(expect "in function inc first argument :not-a-number must be a number but is a keyword"
+        (get-all-text (run-and-catch-corefns '(inc :not-a-number))))
+
+;~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+;; testing if the precondition of dec works
+(expect "in function dec first argument :not-a-number must be a number but is a keyword"
+        (get-all-text (run-and-catch-corefns '(dec :not-a-number))))
+
+;~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+;; testing if the precondition of max works
+(expect "in function max first argument :not-a-number must be a number but is a keyword"
+        (get-all-text (run-and-catch-corefns '(max :not-a-number))))
+
+;~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+;; testing if the precondition of min works
+(expect "in function min first argument :not-a-number must be a number but is a keyword"
+        (get-all-text (run-and-catch-corefns '(min :not-a-number))))
 
 ;~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
