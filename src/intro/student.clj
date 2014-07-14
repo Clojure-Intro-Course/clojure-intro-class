@@ -154,12 +154,28 @@
     (+ (first coll) (rest coll))
     (prob24 (rest rest coll))))
 
+;; Work in progress
+;; 4clojure Problem 25 - exception in exceptions/
 (defn prob25 [coll]
-  (let [length (count coll)
-        new-coll []]
-    (for [index (range 1 (+ length 1))]
-      (if (odd? (nth coll index))
-        (conj new-coll (nth coll index))))))
+  (loop [coll coll
+         length (inc (count coll))
+         new-coll []
+         index (range 1 length)]
+    (if (empty? coll)
+      new-coll
+      (do
+        (if (odd? (nth coll index))
+          (conj new-coll (nth coll index)))
+        (recur (rest coll) (count coll))))))
+   ; (for [index (range 1 length)
+   ;       :when (odd? (nth coll index))]
+   ;   (conj new-coll (nth coll index)))))
+
+  ;(let [length (+ 1 (count coll))
+  ;      new-coll []]
+  ;  (for [index (range 1 (+ length 1))]
+  ;    (if (odd? (nth coll (+ 1 index)))
+  ;      (conj new-coll (nth coll (+ 1 index)))))))
 
 (defn number-with-a-print []
   (do
