@@ -138,7 +138,7 @@
 (defn prob21 [coll n]
   (drop (first coll) (take n)))
 
-;; Something Emma made, trying to add numbers - exception in exceptions/add-five-IllegalArgException
+;; Something Emma made, trying to add numbers - exception in exceptions/add-five-IllegalArgException.ser
     ; ERROR: Don't know how to create a sequence from a number
     ; possible hint: cons is supposed to be used for collections
 (defn add-five [n]
@@ -152,30 +152,27 @@
     (+ (first coll) (rest coll))
     (prob24 (rest rest coll))))
 
-;; Work in progress
-;; 4clojure Problem 25 - exception in exceptions/
-(comment
-(defn prob25 [coll]
-  (loop [coll coll
-         length (inc (count coll))
-         new-coll []
-         index (range 1 length)]
-    (if (empty? coll)
+;; 4clojure Problem 23 - exception in exceptions/4clojure-prob23-IndexOutOfBounds.ser
+    ; ERROR: An index in a sequence is out of bounds or invalid
+    ; possible hint:
+(defn prob23 [coll]
+  (loop [old-coll coll
+         new-coll []]
+    (if (empty? old-coll)
       new-coll
-      (do
-        (if (odd? (nth coll index))
-          (conj new-coll (nth coll index)))
-        (recur (rest coll) (count coll))))))
-   ; (for [index (range 1 length)
-   ;       :when (odd? (nth coll index))]
-   ;   (conj new-coll (nth coll index)))))
+      (recur (rest old-coll) (cons (nth old-coll (count old-coll)) new-coll)))))
 
-  ;(let [length (+ 1 (count coll))
-  ;      new-coll []]
-  ;  (for [index (range 1 (+ length 1))]
-  ;    (if (odd? (nth coll (+ 1 index)))
-  ;      (conj new-coll (nth coll (+ 1 index)))))))
-)
+;; BREAK THIS TOMORROW!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+(defn prob27 [thing]
+  (loop [thing thing
+         reverse-thing (reverse thing)]
+    (if (empty? thing)
+      true
+      (if (= (first thing)
+             (first reverse-thing))
+        (recur (rest thing) (rest reverse-thing))
+        false))))
+
 (defn number-with-a-print []
   (do
     (println "BE MY FRIEND!!")

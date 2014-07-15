@@ -4,8 +4,7 @@
             [errors.prettify_exception :refer :all]
             [errors.messageobj :refer :all]
             [errors.stacktrace_functions :refer :all]
-            [corefns.collection_fns :refer :all]
-            )
+            [corefns.collection_fns :refer :all])
   (:import [java.io.FileInputStream]
            [java.io.ObjectInputStream]
            [java.io.FileOutputStream]
@@ -27,7 +26,8 @@
     "4clojure-prob57-ArityException.ser"
     "4clojure-prob64-NullPointer.ser"
     "add-five-IllegalArgException.ser"
-    "DrRacket-Exercise2-ClassCast.ser"})
+    "DrRacket-Exercise2-ClassCast.ser"
+    "4clojure-prob23-IndexOutOfBounds.ser"})
 
 
 ;;; INDEX ;;;
@@ -288,9 +288,10 @@
              "top of filtered trace:   " (into {} (filter important-part? (:top-of-filtered-stacktrace comparison))) "\n")
     true))
 
+;; Uncomment the third line here if you want to see a comparison of stacktrace tops.
 (defn print-all-comparisons [comparisons]
   (do
-    (doall (map print-comparison comparisons))
+    ;;(doall (map print-comparison comparisons))
     true))
 
 ;; to actually print the result in the terminal, uncomment the line in print-all-comparisons
