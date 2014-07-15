@@ -1,7 +1,8 @@
 (ns intro.core
   (:use [errors.prettify_exception]
         [seesaw.core])
-  (:require [corefns.corefns :refer :all]
+  (:require [expectations :refer :all]
+            [corefns.corefns :refer :all]
             [errors.exceptions :refer :all]
             [strings.strings :refer :all]
             [errors.errorgui :refer :all]
@@ -643,7 +644,8 @@
     ;(+ 2 "apple")
     ;(inc 2.5)
     ;(rand "bananqa")
-    (prob25 [1 2 1])
+    ;(prob25 [1 2 1])
+    ;(expect 4 (conj 2 2))
     ;(< 4 (number-with-a-print))
     ;(< 4 (string-with-a-print))
     ;(def classcast-exc (import-from-file (str path "classcast1.ser")))

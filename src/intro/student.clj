@@ -156,6 +156,7 @@
 
 ;; Work in progress
 ;; 4clojure Problem 25 - exception in exceptions/
+(comment
 (defn prob25 [coll]
   (loop [coll coll
          length (inc (count coll))
@@ -176,7 +177,7 @@
   ;  (for [index (range 1 (+ length 1))]
   ;    (if (odd? (nth coll (+ 1 index)))
   ;      (conj new-coll (nth coll (+ 1 index)))))))
-
+)
 (defn number-with-a-print []
   (do
     (println "BE MY FRIEND!!")
