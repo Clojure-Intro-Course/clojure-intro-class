@@ -3,7 +3,9 @@
             [clj-stacktrace.core :as stacktrace]
             [errors.prettify_exception :refer :all]
             [errors.messageobj :refer :all]
-            [errors.stacktrace_functions :refer :all])
+            [errors.stacktrace_functions :refer :all]
+            [corefns.collection_fns :refer :all]
+            )
   (:import [java.io.FileInputStream]
            [java.io.ObjectInputStream]
            [java.io.FileOutputStream]
@@ -116,8 +118,7 @@
   attempting to catch any exceptions it may throw. Returns the exeception or nil."
   [code]
   (in-ns 'intro.core)
-  (try
-           (eval code)
+  (try (eval code)
            (catch Throwable e e)))
 
 (defn run-and-catch-dictionaries [code]
@@ -275,74 +276,23 @@
      :top-of-stacktrace top-of-stacktrace
      :top-of-filtered-stacktrace top-of-filtered-stacktrace}))
 
+(defn important-part? [pair]
+  (any? true? (map #(= (first pair) %)
+                   [:method :class :java :fn :ns :clojure])))
+
 (defn print-comparison [comparison]
   (do
-    (println (:filename comparison) "\n"
-             (:tops-match comparison) "\n"
-             (:top-of-stacktrace comparison) "\n"
-             (:top-of-filtered-stacktrace comparison) "\n")
+    (println "filename: "(:filename comparison) "\n"
+             "top elements match?: "(:tops-match comparison) "\n"
+             "top of unfiltered trace: " (into {} (filter important-part? (:top-of-stacktrace comparison))) "\n"
+             "top of filtered trace:   " (into {} (filter important-part? (:top-of-filtered-stacktrace comparison))) "\n")
     true))
+
 (defn print-all-comparisons [comparisons]
   (do
     (doall (map print-comparison comparisons))
     true))
 
-(expect '({:filename "4clojure-prob57-ArityException.ser"
-           :tops-match false
-           :top-of-stacktrace {:method "throwArity", :class "clojure.lang.AFn", :java true, :file "AFn.java", :line 429}
-           :top-of-filtered-stacktrace {:anon-fn false, :fn "prob57", :ns "intro.student", :clojure true, :file "student.clj", :line 107}}
-          {:filename "DrRacket-Exercise2-ClassCast.ser"
-           :tops-match true
-           :top-of-stacktrace {:anon-fn false, :fn "conj", :ns "clojure.core", :clojure true, :file "core.clj", :line 83}
-           :top-of-filtered-stacktrace {:anon-fn false, :fn "conj", :ns "clojure.core", :clojure true, :file "core.clj", :line 83}}
-          {:filename "4clojure-prob21-ArityException.ser"
-           :tops-match false
-           :top-of-stacktrace {:method "throwArity", :class "clojure.lang.AFn", :java true, :file "AFn.java", :line 429}
-           :top-of-filtered-stacktrace {:anon-fn false, :fn "prob21", :ns "intro.student", :clojure true, :file "student.clj", :line 138}}
-          {:filename "4clojure-prob18-AssertionError.ser"
-           :tops-match true
-           :top-of-stacktrace {:anon-fn false, :fn "<", :ns "corefns.corefns", :clojure true, :file "corefns.clj", :line 135}
-           :top-of-filtered-stacktrace {:anon-fn false, :fn "<", :ns "corefns.corefns", :clojure true, :file "corefns.clj", :line 135}}
-          {:filename "add-five-IllegalArgException.ser"
-           :tops-match false
-           :top-of-stacktrace {:method "seqFrom", :class "clojure.lang.RT", :java true, :file "RT.java", :line 505}
-           :top-of-filtered-stacktrace {:anon-fn false, :fn "cons", :ns "clojure.core", :clojure true, :file "core.clj", :line 29}}
-          {:filename "4clojure-prob15-ClassCast.ser"
-           :tops-match true
-           :top-of-stacktrace {:anon-fn false, :fn "prob15", :ns "intro.student", :clojure true, :file "student.clj", :line 58}
-           :top-of-filtered-stacktrace {:anon-fn false, :fn "prob15", :ns "intro.student", :clojure true, :file "student.clj", :line 58}}
-          {:filename "4clojure-prob20-AssertionError.ser"
-           :tops-match true
-           :top-of-stacktrace {:anon-fn false, :fn "nth", :ns "corefns.corefns", :clojure true, :file "corefns.clj", :line 95}
-           :top-of-filtered-stacktrace {:anon-fn false, :fn "nth", :ns "corefns.corefns", :clojure true, :file "corefns.clj", :line 95}}
-          {:filename "4clojure-prob64-NullPointer.ser"
-           :tops-match false
-           :top-of-stacktrace {:method "ops", :class "clojure.lang.Numbers", :java true, :file "Numbers.java", :line 961}
-           :top-of-filtered-stacktrace {:anon-fn false, :fn "prob64", :ns "intro.student", :clojure true, :file "student.clj", :line 89}}
-          {:filename "4clojure-prob24-ClassCast.ser"
-           :tops-match false
-           :top-of-stacktrace {:method "add", :class "clojure.lang.Numbers", :java true, :file "Numbers.java", :line 126}
-           :top-of-filtered-stacktrace {:anon-fn false, :fn "prob24", :ns "intro.student", :clojure true, :file "student.clj", :line 153}}
-          {:filename "4clojure-prob156-AssertionError.ser"
-           :tops-match true
-           :top-of-stacktrace {:anon-fn false, :fn "map", :ns "corefns.corefns", :clojure true, :file "corefns.clj", :line 34}
-           :top-of-filtered-stacktrace {:anon-fn false, :fn "map", :ns "corefns.corefns", :clojure true, :file "corefns.clj", :line 34}}
-          {:filename "4clojure-prob17-NullPointer.ser"
-           :tops-match false
-           :top-of-stacktrace {:method "ops", :class "clojure.lang.Numbers", :java true, :file "Numbers.java", :line 961}
-           :top-of-filtered-stacktrace {:anon-fn false, :fn "prob17", :ns "intro.student", :clojure true, :file "student.clj", :line 74}}
-          {:filename "4clojure-prob16-Arity.ser"
-           :tops-match false
-           :top-of-stacktrace {:method "throwArity", :class "clojure.lang.AFn", :java true, :file "AFn.java", :line 429}
-           :top-of-filtered-stacktrace {:anon-fn false, :fn "prob16", :ns "intro.student", :clojure true, :file "student.clj", :line 63}}
-          {:filename "4clojure-prob134-AssertionError.ser"
-           :tops-match true
-           :top-of-stacktrace {:anon-fn false, :fn "filter", :ns "corefns.corefns", :clojure true, :file "corefns.clj", :line 108}
-           :top-of-filtered-stacktrace {:anon-fn false, :fn "filter", :ns "corefns.corefns", :clojure true, :file "corefns.clj", :line 108}})
-        (map compare-top-elems-of-stacktraces saved-exceptions))
-
-
+;; to actually print the result in the terminal, uncomment the line in print-all-comparisons
 (expect true
         (print-all-comparisons (map compare-top-elems-of-stacktraces saved-exceptions)))
-
-

@@ -1,6 +1,7 @@
 (ns errors.stacktrace_functions
   (:require [expectations :refer :all]
-            [corefns.corefns :refer :all]))
+            [corefns.corefns :refer :all]
+            [corefns.collection_fns :refer :all]))
 
 ;; a helper function to test for either nil or false
 (defn not-true? [x] (not (true? x)))

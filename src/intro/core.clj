@@ -6,7 +6,8 @@
             [errors.exceptions :refer :all]
             [strings.strings :refer :all]
             [errors.errorgui :refer :all]
-            [intro.student :refer :all]))
+            [intro.student :refer :all]
+            [corefns.collection_fns :refer :all]))
 
 (refer 'corefns.corefns)
 

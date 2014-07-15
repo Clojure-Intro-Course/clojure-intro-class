@@ -1,9 +1,7 @@
 (ns intro.student
-	;(:use [corefns.corefns]
-   ;     [seesaw.core])
   (:require [expectations :refer :all]
-            [corefns.corefns :refer :all]))
-            ;[strings.strings :refer :all]))
+            [corefns.corefns :refer :all]
+            [corefns.collection_fns :refer :all]))
 
 ;##################################
 ;### Testing compilation errors ###

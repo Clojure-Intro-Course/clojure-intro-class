@@ -3,7 +3,8 @@
             [corefns.corefns :refer :all]
             [strings.strings :refer :all]
             [errors.messageobj :refer :all]
-            [errors.exceptions :refer :all]))
+            [errors.exceptions :refer :all]
+            [corefns.collection_fns :refer :all]))
 
 ;############################################
 ;### Testing the functionality of corefns ###
