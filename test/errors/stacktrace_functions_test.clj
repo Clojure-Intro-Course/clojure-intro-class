@@ -64,7 +64,7 @@
    {:method "eval", :class "clojure.lang.Compiler", :java true, :file "Compiler.java", :line 6619}
    {:method "eval", :class "clojure.lang.Compiler", :java true, :file "Compiler.java", :line 6582}
    {:anon-fn false, :fn "eval", :ns "clojure.core", :clojure true, :file "core.clj", :line 2852}
-   {:anon-fn false, :fn "run-and-catch", :ns "experimental.core-test", :clojure true, :file "core_test.clj", :line 38}
+   {:anon-fn false, :fn "run-and-catch-raw", :ns "experimental.core-test", :clojure true, :file "core_test.clj", :line 38}
    {:method "applyToHelper", :class "clojure.lang.AFn", :java true, :file "AFn.java", :line 161}
    {:method "applyTo", :class "clojure.lang.AFn", :java true, :file "AFn.java", :line 151}
    {:method "eval", :class "clojure.lang.Compiler$InvokeExpr", :java true, :file "Compiler.java", :line 3458}
@@ -123,7 +123,7 @@
 (def filtered-stack2
   [{:anon-fn false, :fn "eval9481", :ns "experimental.core-test", :clojure true, :file "core_test.clj", :line 57}
    {:anon-fn false, :fn "eval", :ns "clojure.core", :clojure true, :file "core.clj", :line 2852}
-   {:anon-fn false, :fn "run-and-catch", :ns "experimental.core-test", :clojure true, :file "core_test.clj", :line 38}
+   {:anon-fn false, :fn "run-and-catch-raw", :ns "experimental.core-test", :clojure true, :file "core_test.clj", :line 38}
    {:anon-fn false, :fn "apply", :ns "clojure.core", :clojure true, :file "core.clj", :line 619}
    {:anon-fn false, :fn "apply", :ns "clojure.core", :clojure true, :file "core.clj", :line 619}])
 

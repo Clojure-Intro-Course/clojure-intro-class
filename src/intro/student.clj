@@ -51,7 +51,8 @@
 (defn exercise2 [str1 str2]
  (conj str1 str2))
 
-;; DrRacket Exercise 3
+;; DrRacket Exercise 3 - exception in exception/DrRacket-Exercise3-IndexOutOfBounds.ser
+   ; ERROR: String index out of range: 12
 (defn exercise3 [a-string index]
   (str (subs a-string 0 index) "_" (subs a-string index (+ 2 (count a-string)))))
 
@@ -209,6 +210,4 @@
 
 ;; Break this more...
 (defn prob32 [coll]
-  (for [x coll
-        :let [y [x x]]]
-    y))
+  )

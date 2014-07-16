@@ -30,7 +30,8 @@
     "4clojure-prob23-IndexOutOfBounds.ser"
     "4clojure-prob27-ArityException.ser"
     "DrRacket-Exercise9-ArityException.ser"
-    "4clojure-prob38-ArityException.ser"})
+    "4clojure-prob38-ArityException.ser"
+    "DrRacket-Exercise3-IndexOutOfBounds.ser"})
 
 
 ;;; INDEX ;;;
@@ -110,19 +111,48 @@
 
 ; 2.1 functions
 
-(defn run-and-catch
-  "A function that takes quoted code and runs it, attempting to catch any exceptions it may throw. Returns the exeception or nil."
-  [code] (try
-           (eval code)
-           (catch Throwable e e)))
+;; run-and-catch-raw
+;; this function will run and catch a piece of quoted code, and will
+;; return the entire exception, not prettified`
 
-(defn run-and-catch-corefns-exc
-  "A function that takes quoted code and runs in the corefns namespace,
-  attempting to catch any exceptions it may throw. Returns the exeception or nil."
-  [code]
-  (in-ns 'intro.core)
-  (try (eval code)
-           (catch Throwable e e)))
+;; when giving a name-space, pass in a quoted namespace
+(defn run-and-catch-raw
+  "A function that takes quoted code and runs it, attempting to catch any
+  exceptions it may throw. Returns the exeception or nil. If a namespace is
+  given, it runs the code in that namespace."
+  ([code]
+   (try
+     (eval code)
+     (catch Throwable e e)))
+  ([name-space code]
+   (in-ns name-space)
+   (try
+     (eval code)
+     (catch Throwable e e))))
+
+
+
+
+
+
+
+
+
+
+
+;(defn run-and-catch
+;  "A function that takes quoted code and runs it, attempting to catch any ;exceptions it may throw. Returns the exeception or nil."
+;  [code] (try
+;           (eval code)
+;           (catch Throwable e e)));;;
+
+;(defn run-and-catch-corefns-exc
+;  "A function that takes quoted code and runs in the corefns namespace,
+;  attempting to catch any exceptions it may throw. Returns the exeception or nil."
+;  [code]
+;  (in-ns 'intro.core)
+;  (try (eval code)
+;           (catch Throwable e e)))
 
 (defn run-and-catch-dictionaries [code]
   "A function that takes quoted code and runs it, attempting to catch any
@@ -152,20 +182,27 @@
    (try (eval code)
            (catch Throwable e (prettify-exception-no-stacktrace e))))
 
+(defn run-and-catch-student [code]
+  "A function that takes quoted code and runs it, attempting to catch any
+  exceptions it may throw. Returns the exeception or nil."
+  (in-ns 'intro.student)
+   (try (eval code)
+           (catch Throwable e (prettify-exception-no-stacktrace e))))
+
 (defn exception->string
   "Converts exceptions to strings, returning a string or the original e if it is not an exception"
-  [e] (if (instance? Exception e)
+  [e] (if (instance? Throwable e)
                                 (.getMessage e)
                                 e))
 
 ; 2.2 tests
 
 (expect "java.lang.Long cannot be cast to clojure.lang.IFn"
-        (exception->string (run-and-catch '(1 3))))
+        (exception->string (run-and-catch-raw '(1 3))))
 
 ;; Hmmm??? - there's no exception here, is there?
 (expect 3
-        (exception->string (run-and-catch '(+ 1 2))))
+        (exception->string (run-and-catch-raw '(+ 1 2))))
 
 ;##############################
 ;## 3. Comparing Stacktraces ##
@@ -208,7 +245,7 @@
 
 ; 3.2 tests
 
-(def ex1 (run-and-catch '(+ 2 "pie")))
+(def ex1 (run-and-catch-raw '(+ 2 "pie")))
 
 (expect "eval" (first (get-fns-in-stacktrace (stacktrace/parse-exception ex1))))
 
@@ -221,14 +258,14 @@
 
 ;; because this is now an assertion error, no hint is actually written yet
 ;(expect #"The error happens when a function's argument is not of the type for which the function is defined."
-;	(:hints (prettify-exception (run-and-catch '(+ 2 "string")))))
+;	(:hints (prettify-exception (run-and-catch-raw '(+ 2 "string")))))
 
 (expect #"Make sure you have the correct number of arguments"
-         (:hints (prettify-exception (run-and-catch '(assoc {1 2} 3)))))
+         (:hints (prettify-exception (run-and-catch-raw '(assoc {1 2} 3)))))
 
 (expect :assertion-error-with-argument (:key (first-match AssertionError "Assert failed: (check-if-sequable? \"filter\" argument2)")))
 
-;(expect "" (:hints (prettify-exception (run-and-catch-corefns-exc '(filter odd? 5)))))
+;(expect "" (:hints (prettify-exception (run-and-catch-raw 'intro.core '(filter odd? 5)))))
 
 ;##################################
 ;## 5. More real-life exceptions ##

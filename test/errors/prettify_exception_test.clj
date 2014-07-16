@@ -25,9 +25,9 @@
 ;### 2. Prebuilt Exceptions ####
 ;###############################
 
-(def function-call-on-value (run-and-catch '(4 + "pie")))
+(def function-call-on-value (run-and-catch-raw '(4 + "pie")))
 
-(def class-cast-exception (run-and-catch '(+ 4 "pie")))
+(def class-cast-exception (run-and-catch-raw '(+ 4 "pie")))
 
 ;##################################
 ;### 3. errors.messageobj tests ###
