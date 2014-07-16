@@ -111,14 +111,9 @@
 
 ; 2.1 functions
 
-;; run-and-catch-raw
-;; this function will run and catch a piece of quoted code, and will
-;; return the entire exception, not prettified`
-
-;; when giving a name-space, pass in a quoted namespace
 (defn run-and-catch-raw
   "A function that takes quoted code and runs it, attempting to catch any
-  exceptions it may throw. Returns the exeception or nil. If a namespace is
+  exceptions it may throw. Returns the exeception or nil. If a quoted namespace is
   given, it runs the code in that namespace."
   ([code]
    (try
@@ -130,70 +125,31 @@
      (eval code)
      (catch Throwable e e))))
 
-
-
-
-
-
-
-
-
-
-
-;(defn run-and-catch
-;  "A function that takes quoted code and runs it, attempting to catch any ;exceptions it may throw. Returns the exeception or nil."
-;  [code] (try
-;           (eval code)
-;           (catch Throwable e e)));;;
-
-;(defn run-and-catch-corefns-exc
-;  "A function that takes quoted code and runs in the corefns namespace,
-;  attempting to catch any exceptions it may throw. Returns the exeception or nil."
-;  [code]
-;  (in-ns 'intro.core)
-;  (try (eval code)
-;           (catch Throwable e e)))
-
-(defn run-and-catch-dictionaries [code]
+(defn run-and-catch-pretty-no-stacktrace
   "A function that takes quoted code and runs it, attempting to catch any
-  exceptions it may throw. Returns the exeception or nil."
-  (in-ns 'intro.core)
-   (try (eval code)
-           (catch Throwable e (prettify-exception-no-stacktrace e))))
+   exceptions it may throw. Returns the prettified exception without a stacktrace.      If a quoted namespace is given, it runs the code in that namespace."
+  ([code]
+   (prettify-exception-no-stacktrace (run-and-catch-raw code)))
+  ([name-space code]
+   (prettify-exception-no-stacktrace (run-and-catch-raw name-space code))))
 
-(defn run-and-catch-student-code-examples [code]
-  "A function that takes quoted code and runs it, attempting to catch any
-  exceptions it may throw. Returns the exeception or nil."
-  (in-ns 'errors.student_code_examples)
-   (try (eval code)
-           (catch Throwable e (prettify-exception-no-stacktrace e))))
+;; run-and-catch-pretty-with-stacktrace
+;; this function will run and catch a piece of quoted code, and will return
+;; a prettified exception with a stacktrace.
 
-(defn run-and-catch-strings [code]
+;; when giving a namespace, pass in a quoted namespace
+(defn run-and-catch-pretty-with-stacktrace
   "A function that takes quoted code and runs it, attempting to catch any
-  exceptions it may throw. Returns the exeception or nil."
-  (in-ns 'strings.strings)
-   (try (eval code)
-           (catch Throwable e (prettify-exception-no-stacktrace e))))
-
-(defn run-and-catch-corefns [code]
-  "A function that takes quoted code and runs it, attempting to catch any
-  exceptions it may throw. Returns the exeception or nil."
-  (in-ns 'intro.core)
-   (try (eval code)
-           (catch Throwable e (prettify-exception-no-stacktrace e))))
-
-(defn run-and-catch-student [code]
-  "A function that takes quoted code and runs it, attempting to catch any
-  exceptions it may throw. Returns the exeception or nil."
-  (in-ns 'intro.student)
-   (try (eval code)
-           (catch Throwable e (prettify-exception-no-stacktrace e))))
+  exceptions it may throw. Returns the prettified exception with a stacktrace. If a   quoted namespace is given, it runs the code in that namespace."
+  ([code]
+   (prettify-exception (run-and-catch-raw code)))
+  ([name-space code]
+   (prettify-exception (run-and-catch-raw name-space code))))
 
 (defn exception->string
-  "Converts exceptions to strings, returning a string or the original e if it is not an exception"
-  [e] (if (instance? Throwable e)
-                                (.getMessage e)
-                                e))
+  "Converts exceptions to strings, returning a string or the original e if it
+  is not an exception"
+  [e] (if (instance? Throwable e) (.getMessage e) e))
 
 ; 2.2 tests
 

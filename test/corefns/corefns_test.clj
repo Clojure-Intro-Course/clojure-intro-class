@@ -281,288 +281,341 @@
 ;; testing for the first precondition of map
 (expect "in function map first argument :not-a-function must be a function but is a keyword"
         (get-all-text
-         (run-and-catch-corefns '(doall (map :not-a-function [1 2 3])))))
+         (run-and-catch-pretty-no-stacktrace 'intro.core
+                                             '(doall (map :not-a-function [1 2 3])))))
 
 ;; testing for the second precondition of map
 (expect "in function map second argument :not-a-collection must be a sequence but is a keyword"
         (get-all-text
-         (run-and-catch-corefns '(doall (map + :not-a-collection)))))
+         (run-and-catch-pretty-no-stacktrace 'intro.core
+                                             '(doall (map + :not-a-collection)))))
 
 ;~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 ;; testing for the precondition of count
 (expect "in function count first argument :not-a-collection must be a sequence but is a keyword"
         (get-all-text
-         (run-and-catch-corefns '(count :not-a-collection))))
+         (run-and-catch-pretty-no-stacktrace 'intro.core
+                                             '(count :not-a-collection))))
 
 ;~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 ;; testing for the precondition of conj
 (expect "in function conj first argument :not-a-collection must be a sequence but is a keyword"
         (get-all-text
-         (run-and-catch-corefns '(conj :not-a-collection))))
+         (run-and-catch-pretty-no-stacktrace 'intro.core
+                                             '(conj :not-a-collection))))
 
 ;~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 ;; testing for the first precondition of into
 (expect "in function into first argument :not-a-collection must be a sequence but is a keyword"
         (get-all-text
-         (run-and-catch-corefns '(into :not-a-collection [1 2 3]))))
+         (run-and-catch-pretty-no-stacktrace 'intro.core
+                                             '(into :not-a-collection [1 2 3]))))
 
 ;; testing for the second precondition of into
 (expect "in function into second argument :not-a-collection must be a sequence but is a keyword"
         (get-all-text
-         (run-and-catch-corefns '(into #{} :not-a-collection))))
+         (run-and-catch-pretty-no-stacktrace 'intro.core
+                                             '(into #{} :not-a-collection))))
 
 ;; testing for the third precondition of into
 (expect "This is a test."
         (get-all-text
-         (run-and-catch-corefns '(into {} [[1 2] [3]]))))
+         (run-and-catch-pretty-no-stacktrace 'intro.core
+                                             '(into {} [[1 2] [3]]))))
 
 ;~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 ;; testing for the first precondition of reduce
 (expect "in function reduce first argument :not-a-function must be a function but is a keyword"
         (get-all-text
-         (run-and-catch-corefns '(reduce :not-a-function [1 2 3]))))
+         (run-and-catch-pretty-no-stacktrace 'intro.core
+                                             '(reduce :not-a-function [1 2 3]))))
 
 ;; testing for the second precondition of reduce
 (expect "in function reduce second argument :not-a-collection must be a sequence but is a keyword"
         (get-all-text
-         (run-and-catch-corefns '(reduce + :not-a-collection))))
+         (run-and-catch-pretty-no-stacktrace 'intro.core
+                                             '(reduce + :not-a-collection))))
 
 ;; testing for the third precondition of reduce
 (expect "in function reduce third argument :not-a-collection must be a sequence but is a keyword"
         (get-all-text
-         (run-and-catch-corefns '(reduce + 2 :not-a-collection))))
+         (run-and-catch-pretty-no-stacktrace 'intro.core
+                                             '(reduce + 2 :not-a-collection))))
 
 ;~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 ;; testing for the first precondition of nth, with two args
 (expect "in function nth first argument :not-a-collection must be a sequence but is a keyword"
         (get-all-text
-         (run-and-catch-corefns '(nth :not-a-collection 10))))
+         (run-and-catch-pretty-no-stacktrace 'intro.core
+                                             '(nth :not-a-collection 10))))
 
 ;; testing for the second precondition of nth, with two args
 (expect "in function nth second argument :not-a-number must be a number but is a keyword"
         (get-all-text
-         (run-and-catch-corefns '(nth [0 1 2 3 4] :not-a-number))))
+         (run-and-catch-pretty-no-stacktrace 'intro.core
+                                             '(nth [0 1 2 3 4] :not-a-number))))
 
 ;; testing for the second precondition of nth, with three args
 (expect "in function nth first argument :not-a-collection must be a sequence but is a keyword"
         (get-all-text
-         (run-and-catch-corefns '(nth :not-a-collection 8 "nothing found"))))
+         (run-and-catch-pretty-no-stacktrace 'intro.core
+                                             '(nth :not-a-collection 8 "nothing found"))))
 
 ;; testing for the second precondition of nth, with three args
 (expect "in function nth second argument :not-a-number must be a number but is a keyword"
         (get-all-text
-         (run-and-catch-corefns '(nth [0 1 2 3 4] :not-a-number ""))))
+         (run-and-catch-pretty-no-stacktrace 'intro.core
+                                             '(nth [0 1 2 3 4] :not-a-number ""))))
 
 ;~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 ;; testing for the first precondition of filter
 (expect "in function filter first argument :not-a-function must be a function but is a keyword"
         (get-all-text
-         (run-and-catch-corefns '(filter :not-a-function [1 2 3]))))
+         (run-and-catch-pretty-no-stacktrace 'intro.core
+                                             '(filter :not-a-function [1 2 3]))))
 
 ;; testing for the second precondition of filter
 (expect "in function filter second argument :not-a-collection must be a sequence but is a keyword"
         (get-all-text
-         (run-and-catch-corefns '(filter odd? :not-a-collection))))
+         (run-and-catch-pretty-no-stacktrace 'intro.core
+                                             '(filter odd? :not-a-collection))))
 
 ;~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 ;; testing for the first precondition of mapcat
 (expect "in function mapcat first argument :not-a-function must be a function but is a keyword"
         (get-all-text
-         (run-and-catch-corefns '(mapcat :not-a-function [1 2 3] [8 9 10]))))
+         (run-and-catch-pretty-no-stacktrace 'intro.core
+                                             '(mapcat :not-a-function [1 2 3] [8 9 10]))))
 
 ;; testing for the second precondition of mapcat
 (expect "in function mapcat second argument :not-a-collection must be a sequence but is a keyword"
         (get-all-text
-         (run-and-catch-corefns '(mapcat reverse :not-a-collection [8 9 10]))))
+         (run-and-catch-pretty-no-stacktrace 'intro.core
+                                             '(mapcat reverse :not-a-collection [8 9 10]))))
 
 ;; testing for the second precondition of mapcat with multiple collections
 (expect "in function mapcat third argument :not-a-collection must be a sequence but is a keyword"
         (get-all-text
-         (run-and-catch-corefns '(mapcat reverse [1 2 3] :not-a-collection))))
+         (run-and-catch-pretty-no-stacktrace 'intro.core
+                                             '(mapcat reverse [1 2 3] :not-a-collection))))
 
 ;~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 ;; testing for the precondition of concat with one arg
 (expect "in function concat first argument :not-a-collection must be a sequence but is a keyword"
         (get-all-text
-         (run-and-catch-corefns '(concat :not-a-collection))))
+         (run-and-catch-pretty-no-stacktrace 'intro.core
+                                             '(concat :not-a-collection))))
 
 ;; testing for the precondition of concat with multiple args
 (expect "in function concat fourth argument :not-a-collection must be a sequence but is a keyword"
         (get-all-text
-         (run-and-catch-corefns '(concat [1 2] [3 4] [18 22] :not-a-collection))))
+         (run-and-catch-pretty-no-stacktrace 'intro.core
+                                             '(concat [1 2] [3 4] [18 22] :not-a-collection))))
 
 ;~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 ;; testing if the precondition of < works on first arg
 (expect "in function < first argument :not-a-number must be a number but is a keyword"
         (get-all-text
-         (run-and-catch-corefns '(< :not-a-number 31))))
+         (run-and-catch-pretty-no-stacktrace 'intro.core
+                                             '(< :not-a-number 31))))
 
 ;; testing if the precondition of < works on second arg
 (expect "in function < second argument :not-a-number must be a number but is a keyword"
         (get-all-text
-         (run-and-catch-corefns '(< 4 :not-a-number))))
+         (run-and-catch-pretty-no-stacktrace 'intro.core
+                                             '(< 4 :not-a-number))))
 
 ;~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 ;; testing if the precondition of > works on first arg
 (expect "in function > first argument :not-a-number must be a number but is a keyword"
         (get-all-text
-         (run-and-catch-corefns '(> :not-a-number 31))))
+         (run-and-catch-pretty-no-stacktrace 'intro.core
+                                             '(> :not-a-number 31))))
 
 ;; testing if the precondition of > works on second arg
 (expect "in function > second argument :not-a-number must be a number but is a keyword"
         (get-all-text
-         (run-and-catch-corefns '(> 4 :not-a-number))))
+         (run-and-catch-pretty-no-stacktrace 'intro.core
+                                             '(> 4 :not-a-number))))
 
 ;~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 ;; testing if the precondition of >= works on first arg
 (expect "in function >= first argument :not-a-number must be a number but is a keyword"
         (get-all-text
-         (run-and-catch-corefns '(>= :not-a-number 31))))
+         (run-and-catch-pretty-no-stacktrace 'intro.core
+                                             '(>= :not-a-number 31))))
 
 ;; testing if the precondition of >= works on second arg
 (expect "in function >= second argument :not-a-number must be a number but is a keyword"
         (get-all-text
-         (run-and-catch-corefns '(>= 4 :not-a-number))))
+         (run-and-catch-pretty-no-stacktrace 'intro.core
+                                             '(>= 4 :not-a-number))))
 
 ;~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 ;; testing if the precondition of <= works on first arg
 (expect "in function <= first argument :not-a-number must be a number but is a keyword"
         (get-all-text
-         (run-and-catch-corefns '(<= :not-a-number 31))))
+         (run-and-catch-pretty-no-stacktrace 'intro.core
+                                             '(<= :not-a-number 31))))
 
 ;; testing if the precondition of <= works on second arg
 (expect "in function <= second argument :not-a-number must be a number but is a keyword"
         (get-all-text
-         (run-and-catch-corefns '(<= 4 :not-a-number))))
+         (run-and-catch-pretty-no-stacktrace 'intro.core
+                                             '(<= 4 :not-a-number))))
 
 ;~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 ;; testing if the precondition of + works
 (expect "in function + first argument :not-a-number must be a number but is a keyword"
-        (get-all-text (run-and-catch-corefns '(+ :not-a-number 5))))
+        (get-all-text (run-and-catch-pretty-no-stacktrace 'intro.core
+                                                          '(+ :not-a-number 5))))
 (expect "in function + fourth argument :not-a-number must be a number but is a keyword"
-        (get-all-text (run-and-catch-corefns '(+ 8 9 1 :not-a-number 5))))
+        (get-all-text (run-and-catch-pretty-no-stacktrace 'intro.core
+                                                          '(+ 8 9 1 :not-a-number 5))))
 
 ;~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 ;; testing if the precondition of - works
 (expect "in function - first argument :not-a-number must be a number but is a keyword"
-        (get-all-text (run-and-catch-corefns '(- :not-a-number 5))))
+        (get-all-text (run-and-catch-pretty-no-stacktrace 'intro.core
+                                                          '(- :not-a-number 5))))
 (expect "in function - fourth argument :not-a-number must be a number but is a keyword"
-        (get-all-text (run-and-catch-corefns '(- 20 9 1 :not-a-number 5))))
+        (get-all-text (run-and-catch-pretty-no-stacktrace 'intro.core
+                                                          '(- 20 9 1 :not-a-number 5))))
 
 ;~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 ;; testing if the precondition of * works
 (expect "in function * first argument :not-a-number must be a number but is a keyword"
-        (get-all-text (run-and-catch-corefns '(* :not-a-number 5))))
+        (get-all-text (run-and-catch-pretty-no-stacktrace 'intro.core
+                                                          '(* :not-a-number 5))))
 (expect "in function * fourth argument :not-a-number must be a number but is a keyword"
-        (get-all-text (run-and-catch-corefns '(* 20 9 1 :not-a-number 5))))
+        (get-all-text (run-and-catch-pretty-no-stacktrace 'intro.core
+                                                          '(* 20 9 1 :not-a-number 5))))
 
 ;~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 ;; testing if the precondition of / works
 (expect "in function / first argument :not-a-number must be a number but is a keyword"
-        (get-all-text (run-and-catch-corefns '(/ :not-a-number 5))))
+        (get-all-text (run-and-catch-pretty-no-stacktrace 'intro.core
+                                                          '(/ :not-a-number 5))))
 (expect "in function / third argument :not-a-number must be a number but is a keyword"
-        (get-all-text (run-and-catch-corefns '(/ 12 3 :not-a-number))))
+        (get-all-text (run-and-catch-pretty-no-stacktrace 'intro.core
+                                                          '(/ 12 3 :not-a-number))))
 
 ;~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 ;; testing if the precondition of quot works
 (expect "in function quot first argument :not-a-number must be a number but is a keyword"
-        (get-all-text (run-and-catch-corefns '(quot :not-a-number 5))))
+        (get-all-text (run-and-catch-pretty-no-stacktrace 'intro.core
+                                                          '(quot :not-a-number 5))))
 (expect "in function quot second argument :not-a-number must be a number but is a keyword"
-        (get-all-text (run-and-catch-corefns '(quot 12 :not-a-number))))
+        (get-all-text (run-and-catch-pretty-no-stacktrace 'intro.core
+                                                          '(quot 12 :not-a-number))))
 
 ;~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 ;; testing if the precondition of rem works
 (expect "in function rem first argument :not-a-number must be a number but is a keyword"
-        (get-all-text (run-and-catch-corefns '(rem :not-a-number 5))))
+        (get-all-text (run-and-catch-pretty-no-stacktrace 'intro.core
+                                                          '(rem :not-a-number 5))))
 (expect "in function rem second argument :not-a-number must be a number but is a keyword"
-        (get-all-text (run-and-catch-corefns '(rem 12 :not-a-number))))
+        (get-all-text (run-and-catch-pretty-no-stacktrace 'intro.core
+                                                          '(rem 12 :not-a-number))))
 
 ;~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 ;; testing if the precondition of mod works
 (expect "in function mod first argument :not-a-number must be a number but is a keyword"
-        (get-all-text (run-and-catch-corefns '(mod :not-a-number 5))))
+        (get-all-text (run-and-catch-pretty-no-stacktrace 'intro.core
+                                                          '(mod :not-a-number 5))))
 (expect "in function mod second argument :not-a-number must be a number but is a keyword"
-        (get-all-text (run-and-catch-corefns '(mod 12 :not-a-number))))
+        (get-all-text (run-and-catch-pretty-no-stacktrace 'intro.core
+                                                          '(mod 12 :not-a-number))))
 
 ;~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 ;; testing if the precondition of inc works
 (expect "in function inc first argument :not-a-number must be a number but is a keyword"
-        (get-all-text (run-and-catch-corefns '(inc :not-a-number))))
+        (get-all-text (run-and-catch-pretty-no-stacktrace 'intro.core
+                                                          '(inc :not-a-number))))
 
 ;~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 ;; testing if the precondition of dec works
 (expect "in function dec first argument :not-a-number must be a number but is a keyword"
-        (get-all-text (run-and-catch-corefns '(dec :not-a-number))))
+        (get-all-text (run-and-catch-pretty-no-stacktrace
+                       'intro.core '(dec :not-a-number))))
 
 ;~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 ;; testing if the precondition of max works
 (expect "in function max first argument :not-a-number must be a number but is a keyword"
-        (get-all-text (run-and-catch-corefns '(max :not-a-number))))
+        (get-all-text (run-and-catch-pretty-no-stacktrace 'intro.core
+                                                          '(max :not-a-number))))
 
 ;~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 ;; testing if the precondition of min works
 (expect "in function min first argument :not-a-number must be a number but is a keyword"
-        (get-all-text (run-and-catch-corefns '(min :not-a-number))))
+        (get-all-text (run-and-catch-pretty-no-stacktrace 'intro.core
+                                                          '(min :not-a-number))))
 
 ;~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 ;; testing for the precondition of add-first
 (expect "in function add-first first argument :not-a-collection must be a sequence but is a keyword"
         (get-all-text
-         (run-and-catch-corefns '(add-first :not-a-collection [1 2 3]))))
+         (run-and-catch-pretty-no-stacktrace 'intro.core
+                                             '(add-first :not-a-collection [1 2 3]))))
 
 ;~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 ;; testing for the precondition of add-last
 (expect "in function add-last first argument :not-a-collection must be a sequence but is a keyword"
         (get-all-text
-         (run-and-catch-corefns '(add-last :not-a-collection [1 2 3]))))
+         (run-and-catch-pretty-no-stacktrace 'intro.core
+                                             '(add-last :not-a-collection [1 2 3]))))
 
 ;~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 ;; testing for contains-value?
 (expect "in function contains-value? first argument :not-a-collection must be a sequence but is a keyword"
         (get-all-text
-         (run-and-catch-corefns '(contains-value? :not-a-collection 2))))
+         (run-and-catch-pretty-no-stacktrace 'intro.core
+                                             '(contains-value? :not-a-collection 2))))
 
 ;~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 ;; testing for contains-key?    (println "matched: "matched)
 (expect "in function contains-key? first argument :not-a-collection must be a sequence but is a keyword"
         (get-all-text
-         (run-and-catch-corefns '(contains-key? :not-a-collection 2))))
+         (run-and-catch-pretty-no-stacktrace 'intro.core
+                                             '(contains-key? :not-a-collection 2))))
 
 ;~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 ;; testing for any?
 (expect "in function any? first argument :not-a-predicate must be a function but is a keyword"
         (get-all-text
-         (run-and-catch-corefns '(any? :not-a-predicate [1 2 3]))))
+         (run-and-catch-pretty-no-stacktrace 'intro.core
+                                             '(any? :not-a-predicate [1 2 3]))))
 
 ;; testing for any?
 (expect "in function any? second argument :not-a-collection must be a sequence but is a keyword"
         (get-all-text
-         (run-and-catch-corefns '(any? odd? :not-a-collection))))
+         (run-and-catch-pretty-no-stacktrace 'intro.core
+                                             '(any? odd? :not-a-collection))))

@@ -38,7 +38,7 @@
 
 ;; regular expressions for namespaces to be ignored. Any namespace equal to
 ;; or contaning these regexps would be ignored
-(def ignored-namespaces ["clojure.main" "clojure.lang" "java" "clojure.tools" "user" "autoexpect.runner"])
+(def ignored-namespaces ["clojure.main" "clojure.lang" "java" "clojure.tools" "user" "autoexpect.runner" "expectations"])
 
 (defn- replace-dots [strings]
   (map #(clojure.string/replace % #"\." "\\\\.") strings))
@@ -133,7 +133,7 @@
         entry (first-match e-class message)
         msg-info-obj (msg-from-matched-entry entry message)
         hint-message (hints-for-matched-entry entry)]
-    ;; create an exception object and pass it to display-error
+    ;; create an exception object
     {:exception-class e-class
      :msg-info-obj msg-info-obj
      :stacktrace stacktrace
