@@ -154,7 +154,7 @@
 
 ;; 4clojure Problem 23 - exception in exceptions/4clojure-prob23-IndexOutOfBounds.ser
     ; ERROR: An index in a sequence is out of bounds or invalid
-    ; possible hint:
+    ; possible hint: make sure that the sequence you're using has the desired index
 (defn prob23 [coll]
   (loop [old-coll coll
          new-coll []]
@@ -162,14 +162,18 @@
       new-coll
       (recur (rest old-coll) (cons (nth old-coll (count old-coll)) new-coll)))))
 
-;; BREAK THIS TOMORROW!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+;; 4clojure Problem 27 - exception in exceptions/4clojure-prob27-ArityException.ser
+    ; ERROR: Wrong number of arguments (0) passed to a function equal-to?
+    ; possible hint: make sure that you're passing the correct amount of parameters
+(defn equal-to? [thing1 thing2]
+  (= (first thing1) (first thing2)))
+
 (defn prob27 [thing]
   (loop [thing thing
          reverse-thing (reverse thing)]
     (if (empty? thing)
       true
-      (if (= (first thing)
-             (first reverse-thing))
+      (if (equal-to?)
         (recur (rest thing) (rest reverse-thing))
         false))))
 
@@ -182,3 +186,29 @@
   (do
     (println "I'M COOL!!")
     "REFRIGERATOR"))
+
+;; Dr Racket exercise 0 - exception in exceptions/DrRacket-Exercise9-ArityException.ser
+    ; ERROR: Wrong number of arguments (1) passed to a function fn--6065
+    ; possible hint: make sure you're arguments to your functions are correct
+(defn exercise9 []
+  (let [b1 true
+        b2 false]
+    (or (#(false?) b1)
+        (#(true?) b2))))
+
+;; 4clojure Problem 38 - exception in exceptions/4clojure-prob38-ArityException.ser
+    ; ERROR: Wrong number of arguments (4) passed to a function prob38
+    ; possible hint: if you want a function to take an unlimited number of arguments, use an & in the
+    ; parameter vector like this: [& args]
+(defn prob38 [args]
+  (if (= 1 (count args))
+    args
+    (prob38 (if (> (first args) (second args))
+              (prob38 (cons (first args) (rest (rest args))))
+              (prob38 (rest args))))))
+
+;; Break this more...
+(defn prob32 [coll]
+  (for [x coll
+        :let [y [x x]]]
+    y))

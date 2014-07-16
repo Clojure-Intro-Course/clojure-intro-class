@@ -27,7 +27,10 @@
     "4clojure-prob64-NullPointer.ser"
     "add-five-IllegalArgException.ser"
     "DrRacket-Exercise2-ClassCast.ser"
-    "4clojure-prob23-IndexOutOfBounds.ser"})
+    "4clojure-prob23-IndexOutOfBounds.ser"
+    "4clojure-prob27-ArityException.ser"
+    "DrRacket-Exercise9-ArityException.ser"
+    "4clojure-prob38-ArityException.ser"})
 
 
 ;;; INDEX ;;;
@@ -291,7 +294,7 @@
 ;; Uncomment the third line here if you want to see a comparison of stacktrace tops.
 (defn print-all-comparisons [comparisons]
   (do
-    ;;(doall (map print-comparison comparisons))
+    ;(doall (map print-comparison comparisons))
     true))
 
 ;; to actually print the result in the terminal, uncomment the line in print-all-comparisons
