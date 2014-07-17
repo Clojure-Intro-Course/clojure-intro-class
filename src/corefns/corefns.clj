@@ -19,6 +19,8 @@
 ;; 10. Add a function name to the error message - Done
 ;; inf. why didn't I think of this earlier?
 
+;; CONS - look at documentation
+
 ;; Including the standard Clojure documentation to make sure that asserts
 ;; and cases are consistent with the standard Clojure.
 

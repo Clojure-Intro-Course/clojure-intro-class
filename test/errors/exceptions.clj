@@ -22,7 +22,7 @@
     "4clojure-prob18-AssertionError.ser"
     "4clojure-prob20-AssertionError.ser"
     "4clojure-prob21-ArityException.ser"
-    "4clojure-prob24-ClassCast.ser"
+    "4clojure-prob24-pre-plus-rewrite-ClassCast.ser"
     "4clojure-prob57-ArityException.ser"
     "4clojure-prob64-NullPointer.ser"
     "add-five-IllegalArgException.ser"
@@ -32,7 +32,6 @@
     "DrRacket-Exercise9-ArityException.ser"
     "4clojure-prob38-ArityException.ser"
     "DrRacket-Exercise3-IndexOutOfBounds.ser"})
-
 
 ;;; INDEX ;;;
 
@@ -48,6 +47,9 @@
 ;4. Testing for hints
 ;5. More Real-Life Exceptions
 ;6. Comparing top elements of stacktraces
+;|-6.1 functions
+;|-6.2 prints
+;|-6.3 tests
 
 ;################################
 ;## 1. Writing/Reading to file ##
@@ -127,20 +129,18 @@
 
 (defn run-and-catch-pretty-no-stacktrace
   "A function that takes quoted code and runs it, attempting to catch any
-   exceptions it may throw. Returns the prettified exception without a stacktrace.      If a quoted namespace is given, it runs the code in that namespace."
+   exceptions it may throw. Returns the prettified exception without a stacktrace. If a quoted
+  namespace is given, it runs the code in that namespace."
   ([code]
    (prettify-exception-no-stacktrace (run-and-catch-raw code)))
   ([name-space code]
    (prettify-exception-no-stacktrace (run-and-catch-raw name-space code))))
 
-;; run-and-catch-pretty-with-stacktrace
-;; this function will run and catch a piece of quoted code, and will return
-;; a prettified exception with a stacktrace.
-
 ;; when giving a namespace, pass in a quoted namespace
 (defn run-and-catch-pretty-with-stacktrace
   "A function that takes quoted code and runs it, attempting to catch any
-  exceptions it may throw. Returns the prettified exception with a stacktrace. If a   quoted namespace is given, it runs the code in that namespace."
+  exceptions it may throw. Returns the prettified exception with a stacktrace. If a quoted namespace is given,
+  it runs the code in that namespace."
   ([code]
    (prettify-exception (run-and-catch-raw code)))
   ([name-space code]
@@ -175,7 +175,8 @@
    (map a-keyword (:trace-elems trace))))
 
 (defn- get-keyword-but-not-x-in-stacktrace
-  "Don't actually use this - wrap it in a helper function. Gets all the values of a keyword mentioned in a parsed stacktrace, except those that the predicate returns true for"
+  "Don't actually use this - wrap it in a helper function. Gets all the values of a keyword mentioned in a
+  parsed stacktrace, except those that the predicate returns true for"
   [a-keyword pred trace]
   (filter
    (fn [ele]
@@ -194,7 +195,8 @@
 
 
 (defn get-eval-nums
-  "Gets all evaulation numbers - a random number (confirm?) that is attached to all evals in the stacktrace. Used to confirm that two stacktraces came from the same exception."
+  "Gets all evaulation numbers - a random number (confirm?) that is attached to all evals in the stacktrace. Used
+  to confirm that two stacktraces came from the same exception."
   [trace]
   (map (fn [ele] ele)
        (get-keyword-in-stacktrace :fn trace)))
@@ -262,34 +264,106 @@
 ;## 6. Comparing top elements of stacktraces ##
 ;##############################################
 
-;; filename should be in the form of a string
-(defn compare-top-elems-of-stacktraces [filename]
-  (let [prettified-exception (prettify-exception (read-objects-local filename))
-        top-of-stacktrace (first (:stacktrace prettified-exception))
-        top-of-filtered-stacktrace (first (:filtered-stacktrace prettified-exception))]
-    {:filename filename
-     :tops-match (= top-of-stacktrace top-of-filtered-stacktrace)
-     :top-of-stacktrace top-of-stacktrace
-     :top-of-filtered-stacktrace top-of-filtered-stacktrace}))
+;#####################
+;### 6.1 functions ###
+;#####################
 
-(defn important-part? [pair]
-  (any? true? (map #(= (first pair) %)
-                   [:method :class :java :fn :ns :clojure])))
+(defn important-part?
+  "Takes a vector of a key-value pair and then returns true if the key matches any key in the vector of keys"
+  [pair]
+  (any? true? (map #(= (first pair) %) [:method :class :java :fn :ns :clojure])))
 
-(defn print-comparison [comparison]
+(defn get-important-in-stacktrace
+  "Takes a stacktrace (a vector of hashmaps), and then only keeps what returns true from important-part?"
+  [stacktrace]
+  (vec (map #(into {} (filter important-part? %)) stacktrace)))
+
+(defn make-trace-comparison
+  "Takes an exception and a piece of quoted code or a string filename, makes an exception, and then returns a hashmap consisting
+  of the filename/quoted code, a boolean stating whether the top elements of both the filtered and unfiltered stacktraces match,
+  and then the unfiltered stacktrace up until the first match of the top element of the filtered stacktrace to the unfiltered,
+  excluding unimportant parts, and finally the top element of the filtered, excluding unimportant parts."
+  [exception source]
+  (let [prettified-exception (prettify-exception exception)
+        stacktrace (:stacktrace prettified-exception)
+        top-of-filtered-stacktrace (first (:filtered-stacktrace prettified-exception))
+        beginning-of-stacktrace (take (inc (.indexOf stacktrace top-of-filtered-stacktrace)) stacktrace)]
+    {:source source
+     :top-elements-match? (= (first beginning-of-stacktrace) top-of-filtered-stacktrace)
+     :beginning-of-unfiltered-trace (get-important-in-stacktrace beginning-of-stacktrace)
+     :top-element-of-filtered-trace (into {} (filter important-part? top-of-filtered-stacktrace))}))
+
+(defn format-and-print-comparison
+  "Takes a result of make-trace-comparison and will print everything out prettily in the terminal, with new lines and tabs"
+  [trace-comparison]
   (do
-    (println "filename: "(:filename comparison) "\n"
-             "top elements match?: "(:tops-match comparison) "\n"
-             "top of unfiltered trace: " (into {} (filter important-part? (:top-of-stacktrace comparison))) "\n"
-             "top of filtered trace:   " (into {} (filter important-part? (:top-of-filtered-stacktrace comparison))) "\n")
+    (println "source: "(:source trace-comparison) "\n"
+             "top elements match?: "(:top-elements-match? trace-comparison) "\n"
+             "beginning of unfiltered trace:" (interpose "\n \t \t \t \t" (:beginning-of-unfiltered-trace trace-comparison)) "\n"
+             "top element of filtered trace: " (:top-element-of-filtered-trace trace-comparison) "\n")
     true))
 
-;; Uncomment the third line here if you want to see a comparison of stacktrace tops.
-(defn print-all-comparisons [comparisons]
+(defn format-and-print-comparisons
+  "Takes in a list of hashmaps (results of make-trace-comparison), and calls a function to print everything and returns true.
+  Uncomment the third line here if you want to see a trace-comparison of stacktrace tops."
+  [trace-comparisons]
   (do
-    ;(doall (map print-comparison comparisons))
+    ;(doall (map format-and-print-comparison trace-comparisons))
     true))
 
-;; to actually print the result in the terminal, uncomment the line in print-all-comparisons
-(expect true
-        (print-all-comparisons (map compare-top-elems-of-stacktraces saved-exceptions)))
+(defn make-and-print-comparisons
+  "Takes in a collection of exceptions and a collection of either strings or quoted code, and then generates a trace-comparison
+  for them, and then prints them nicely in the terminal."
+  [coll-of-exceptions coll-of-sources]
+  (format-and-print-comparisons (map make-trace-comparison coll-of-exceptions coll-of-sources)))
+
+(defn compare-traces-of-quoted-code
+  "Takes a namespace, and an unlimited number of pieces of quoted code, and then turns the quoted code into an exceptions,
+  and then calls make-and-print-comparisons to print trace-comparisons."
+  [name-space & quoted-code]
+  (make-and-print-comparisons (map #(run-and-catch-raw name-space %) quoted-code) quoted-code))
+
+(defn compare-traces-of-saved-exceptions
+  "Takes an unlimited number of filenames, and then calls make-and-print-comparisons on the saved exceptions to print the trace-comparisons."
+  [& filename]
+  (make-and-print-comparisons (map read-objects-local filename) filename))
+
+;##################
+;### 6.2 prints ###
+;##################
+
+;; to actually print the result in the terminal, uncomment the line in format-and-print-comparisons
+
+;; saved-exceptions is actually at the top of this file
+
+(expect true (apply compare-traces-of-saved-exceptions saved-exceptions))
+
+(expect true (compare-traces-of-quoted-code 'intro.core
+                                            '(+ 2 "string")
+                                            '(cons 1 2)
+                                            '(inc "apple")))
+
+(expect true (compare-traces-of-quoted-code 'intro.core
+                                            '(cons 16 79)))
+
+(expect true (compare-traces-of-saved-exceptions "4clojure-prob156-AssertionError.ser"))
+
+;#################
+;### 6.3 tests ###
+;#################
+
+;; testing for make-trace-comparison
+(expect {:source '(cons 16 79)
+         :top-elements-match? false
+         :beginning-of-unfiltered-trace '({:method "seqFrom", :class "clojure.lang.RT", :java true}
+                                          {:method "seq", :class "clojure.lang.RT", :java true}
+                                          {:method "cons", :class "clojure.lang.RT", :java true}
+                                          {:fn "cons", :ns "clojure.core", :clojure true})
+         :top-element-of-filtered-trace {:fn "cons", :ns "clojure.core", :clojure true}}
+        (make-trace-comparison (run-and-catch-raw 'intro.core '(cons 16 79)) '(cons 16 79)))
+
+(expect {:source  "4clojure-prob156-AssertionError.ser"
+         :top-elements-match?  true
+         :beginning-of-unfiltered-trace '({:fn "map", :ns "corefns.corefns", :clojure true})
+         :top-element-of-filtered-trace   {:fn "map", :ns "corefns.corefns", :clojure true}}
+        (make-trace-comparison (read-objects-local "4clojure-prob156-AssertionError.ser") "4clojure-prob156-AssertionError.ser"))
