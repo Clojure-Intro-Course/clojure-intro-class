@@ -309,7 +309,7 @@
   Uncomment the third line here if you want to see a trace-comparison of stacktrace tops."
   [trace-comparisons]
   (do
-    (doall (map format-and-print-comparison trace-comparisons))
+    ;(doall (map format-and-print-comparison trace-comparisons))
     true))
 
 (defn make-and-print-comparisons
@@ -344,25 +344,29 @@
 
 ;; saved-exceptions is actually at the top of this file
 
-;(expect true (apply compare-traces-of-saved-exceptions saved-exceptions))
+(expect true (apply compare-traces-of-saved-exceptions saved-exceptions))
 
-;(expect true (compare-traces-of-quoted-code 'intro.student
-                                            ;'(+ 2 "string")
-                                            ;'(cons 1 2)
-                                            ;'(inc "apple")
-                                            ;'(prob16 "Dave")
-                                            ;'(exercise2 "hello " "world")
-                                            ;'(exercise9)
-                                            ;'(error-in-anonymous)))
+(expect true (compare-traces-of-quoted-code 'intro.core
+                                            '(+ 2 "string")
+                                            '(cons 1 2)
+                                            '(inc "apple")
+                                            '(prob16 "Dave")
+                                            '(exercise2 "hello " "world")
+                                            '(exercise9)
+                                            '(error-in-anonymous)))
 
-(expect true (print-n-elements-of-stacktrace 16 (:stacktrace (run-and-catch-pretty-with-stacktrace
-                                                                    'intro.student
-                                                                    '(error-in-anonymous)))))
+;(expect true (print-n-elements-of-stacktrace 100 (:stacktrace (run-and-catch-pretty-with-stacktrace
+;                                                                    'intro.student
+;                                                                    '(error-in-map-inc)))))
 
-;(expect true (compare-traces-of-quoted-code 'intro.core
-  ;                                          '(cons 16 79)))
+;(expect true (print-n-elements-of-stacktrace 100 (:stacktrace (run-and-catch-pretty-with-stacktrace
+;                                                                    'intro.student
+;                                                                    '(error-in-anonymous)))))
 
-;(expect true (compare-traces-of-saved-exceptions "4clojure-prob156-AssertionError.ser"))
+(expect true (compare-traces-of-quoted-code 'intro.core
+                                            '(cons 16 79)))
+
+(expect true (compare-traces-of-saved-exceptions "4clojure-prob156-AssertionError.ser"))
 
 ;#################
 ;### 6.3 tests ###

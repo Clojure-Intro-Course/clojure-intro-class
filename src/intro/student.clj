@@ -178,17 +178,7 @@
         (recur (rest thing) (rest reverse-thing))
         false))))
 
-(defn number-with-a-print []
-  (do
-    (println "BE MY FRIEND!!")
-    5))
-
-(defn string-with-a-print []
-  (do
-    (println "I'M COOL!!")
-    "REFRIGERATOR"))
-
-;; Dr Racket exercise 0 - exception in exceptions/DrRacket-Exercise9-ArityException.ser
+;; Dr Racket exercise 9 - exception in exceptions/DrRacket-Exercise9-ArityException.ser
     ; ERROR: Wrong number of arguments (1) passed to a function fn--6065
     ; possible hint: make sure you're arguments to your functions are correct
 (defn exercise9 []
@@ -219,7 +209,3 @@
    (map
     inc
     [2 3 "hi" "bye"])))
-
-;; Break this more...
-(defn prob32 [coll]
-  )
