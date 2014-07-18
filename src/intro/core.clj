@@ -648,6 +648,7 @@
     ;(prob23 [5 4 3 2 1])
     ;(prob27 '(\r \a \c \e \c \a \r))
     ;(exercise9)
+    (error-in-anonymous)
     ;(prob38 1 8 3 4)
     ;(prob32 [1 2 3])
     ;(expect 4 (conj 2 2))

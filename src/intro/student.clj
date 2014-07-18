@@ -88,7 +88,7 @@
     (list (first coll-of-nums)))
   (prob18 (rest coll-of-nums)))
 
-;; 4clojure Problem 64 - exception in exceptions/4clojure-prob64-NullPointer.ser
+;; 4clojure Problem 64 - exception in exceptions/4clojure-prob64-NullPointer.ser -- from saved exception, not from recent running
     ; ERROR: An attempt to access a non-existing object.
     ; (NullPointerException)
     ; possible hint: make sure you have a base (termination) case
@@ -207,6 +207,18 @@
     (prob38 (if (> (first args) (second args))
               (prob38 (cons (first args) (rest (rest args))))
               (prob38 (rest args))))))
+
+(defn error-in-anonymous []
+  (doall
+   (map
+    #(+ % 2)
+    [2 3 "hi" "bye"])))
+
+(defn error-in-map-inc []
+  (doall
+   (map
+    inc
+    [2 3 "hi" "bye"])))
 
 ;; Break this more...
 (defn prob32 [coll]
