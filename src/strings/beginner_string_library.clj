@@ -1,4 +1,4 @@
-(ns strings.strings
+(ns strings.beginner_string_library
   (:require [corefns.assert_handling :refer :all]
             [corefns.failed_asserts_info :refer :all]))
 

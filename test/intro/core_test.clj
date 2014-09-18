@@ -1,7 +1,7 @@
 (ns intro.core_test
   (:require [expectations :refer :all]
             [corefns.corefns :refer :all]
-            [strings.strings :refer :all]
+            [strings.beginner_string_library :refer :all]
             [errors.dictionaries :refer :all]
             [errors.exceptions :refer :all]))
 

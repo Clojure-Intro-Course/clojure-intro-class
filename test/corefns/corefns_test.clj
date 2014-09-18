@@ -1,7 +1,7 @@
 (ns corefns.corefns_test
   (:require [expectations :refer :all]
             [corefns.corefns :refer :all]
-            [strings.strings :refer :all]
+            [strings.beginner_string_library :refer :all]
             [errors.messageobj :refer :all]
             [errors.exceptions :refer :all]
             [corefns.collection_fns :refer :all]))

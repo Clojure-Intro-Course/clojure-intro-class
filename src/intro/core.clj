@@ -4,7 +4,7 @@
   (:require [expectations :refer :all]
             [corefns.corefns :refer :all]
             [errors.exceptions :refer :all]
-            [strings.strings :refer :all]
+            [strings.beginner_string_library :refer :all]
             [errors.errorgui :refer :all]
             [intro.student :refer :all]
             [corefns.collection_fns :refer :all]))
