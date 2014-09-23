@@ -380,7 +380,8 @@
                                           {:method "cons", :class "clojure.lang.RT", :java true}
                                           {:fn "cons", :ns "clojure.core", :clojure true})
          :top-element-of-filtered-trace {:fn "cons", :ns "clojure.core", :clojure true}}
-        (make-trace-comparison (run-and-catch-raw 'intro.core '(cons 16 79)) '(cons 16 79)))
+        (make-trace-comparison (run-and-catch-raw 'intro.student
+                                                  '(cons 16 79)) '(cons 16 79)))
 
 (expect {:source  "4clojure-prob156-AssertionError.ser"
          :top-elements-match?  true

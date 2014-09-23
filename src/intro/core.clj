@@ -3,7 +3,7 @@
         [seesaw.core])
   (:require [expectations :refer :all]
             [corefns.corefns :refer :all]
-            [errors.exceptions :refer :all]
+            ;[errors.exceptions :refer :all]
             [strings.beginner_string_library :refer :all]
             [errors.errorgui :refer :all]
             [intro.student :refer :all]
