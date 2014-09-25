@@ -3,7 +3,7 @@
             [clj-stacktrace.core :as stacktrace]
             [errors.prettify_exception :refer :all]
             [errors.messageobj :refer :all]
-            [errors.stacktrace_functions :refer :all]
+            [utilities.stacktrace_functions :refer :all]
             [corefns.collection_fns :refer :all])
   (:import [java.io.FileInputStream]
            [java.io.ObjectInputStream]

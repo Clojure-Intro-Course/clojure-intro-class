@@ -2,7 +2,7 @@
   (:require [expectations :refer :all]
             [errors.messageobj :refer :all]
             [errors.exceptions :refer :all]
-            [errors.stacktrace_functions :refer :all]
+            [utilities.stacktrace_functions :refer :all]
             [intro.student :refer :all]))
 
 ;; testing for exercise2
