@@ -1,4 +1,4 @@
-(ns errors.stacktrace_functions_test
+(ns utilities.stacktrace_functions_test
   (:require [expectations :refer :all]
             [errors.prettify_exception :refer :all]
             [utilities.stacktrace_functions :refer :all]))
