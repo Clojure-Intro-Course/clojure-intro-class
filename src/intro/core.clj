@@ -642,7 +642,7 @@
     ;(assoc {1 2} 3)
     ;(filter odd? 5)
     ;(test-cond)
-    ;(+ 2 "apple")
+    (+ 2 "apple")
     ;(inc 2.5)
     ;(rand "bananqa")
     ;(prob23 [5 4 3 2 1])
