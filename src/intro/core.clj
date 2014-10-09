@@ -658,5 +658,5 @@
     ;(< 4 (string-with-a-print))
     ;(def classcast-exc (import-from-file (str path "classcast1.ser")))
     ;(throw classcast-exc)
-    ;(catch Throwable e (display-error (prettify-exception e)))))
+    (catch Throwable e (display-error (prettify-exception e)))))
     ;(catch Throwable e (write-objects-local e ".ser"))))
