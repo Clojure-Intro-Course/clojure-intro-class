@@ -275,8 +275,8 @@
     :true-exception :unknown
     :match #"(.+): EOF while reading, starting at line (.+), compiling:(.+)"
     :make-msg-info-obj (fn [matches] (make-msg-info-hashes "Compilation error: end of file, starting at line " (nth matches 2) :arg
-                                                           ", while compiling " (nth matches 3) :arg \n ". Probably a non-closing
-                                                           parentheses or bracket."))}
+                                                           ", while compiling " (nth matches 3) :arg
+                                                           ".\nProbably a non-closing parenthesis or bracket."))}
    ])
 
 ;; This is probably somewhat fragile: it occurs in an unbounded recur, but

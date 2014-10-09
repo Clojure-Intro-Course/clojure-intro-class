@@ -561,6 +561,7 @@
 
 (defn -main [& args]
   (try
+    ;(compile 'compilation_errors.eof)
     ;(compile 'compilation_errors.unmatched_delimiter)
     ;(test-our-examples)
     ;(try-counts)
@@ -643,7 +644,7 @@
     ;(assoc {1 2} 3)
     ;(filter odd? 5)
     ;(test-cond)
-    (+ 2 "apple")
+    ;(+ 2 "apple")
     ;(inc 2.5)
     ;(rand "bananqa")
     ;(prob23 [5 4 3 2 1])
@@ -657,5 +658,5 @@
     ;(< 4 (string-with-a-print))
     ;(def classcast-exc (import-from-file (str path "classcast1.ser")))
     ;(throw classcast-exc)
-    (catch Throwable e (display-error (prettify-exception e)))))
-    ;(catch Throwable e (write-objects-local e "unmatched_delimiter.ser"))))
+    ;(catch Throwable e (display-error (prettify-exception e)))))
+    ;(catch Throwable e (write-objects-local e ".ser"))))
