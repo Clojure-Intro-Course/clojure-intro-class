@@ -249,7 +249,7 @@
     :class clojure.lang.Compiler$CompilerException
     :true-exception java.lang.Exception
     :match #"(.+): Unmatched delimiter: (.+), compiling:(.+)"
-    :make-msg-info-obj (fn [matches] (make-msg-info-hashes "Compilation error: there is an unmatched deliminter " (nth matches 2) :arg
+    :make-msg-info-obj (fn [matches] (make-msg-info-hashes "Compilation error: there is an unmatched delimiter " (nth matches 2) :arg
                                                            ", while compiling " (nth matches 3) :arg))}
    {:key :compiler-exception-too-many-arguments
     :class clojure.lang.Compiler$CompilerException

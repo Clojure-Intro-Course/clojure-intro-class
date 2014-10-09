@@ -4,7 +4,8 @@
 	          [errors.exceptions :refer :all]
 	          [errors.errorgui :refer :all]
 	          [clj-stacktrace.core :as stacktrace]
-            [errors.dictionaries :refer :all]))
+            [errors.dictionaries :refer :all]
+            [utilities.file_IO :refer :all]))
 
 ;;; INDEX ;;;
 

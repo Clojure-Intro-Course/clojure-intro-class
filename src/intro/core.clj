@@ -3,11 +3,11 @@
         [seesaw.core])
   (:require [expectations :refer :all]
             [corefns.corefns :refer :all]
-            ;[errors.exceptions :refer :all]
             [strings.beginner_string_library :refer :all]
             [errors.errorgui :refer :all]
             [intro.student :refer :all]
-            [corefns.collection_fns :refer :all]))
+            [corefns.collection_fns :refer :all]
+            [utilities.file_IO :refer :all]))
 
 (refer 'corefns.corefns)
 
@@ -561,6 +561,7 @@
 
 (defn -main [& args]
   (try
+    ;(compile 'compilation_errors.unmatched_delimiter)
     ;(test-our-examples)
     ;(try-counts)
     ;(basic-seesaw-frame)
@@ -657,4 +658,4 @@
     ;(def classcast-exc (import-from-file (str path "classcast1.ser")))
     ;(throw classcast-exc)
     (catch Throwable e (display-error (prettify-exception e)))))
-    ;(catch Throwable e (write-objects-local e ""))))
+    ;(catch Throwable e (write-objects-local e "unmatched_delimiter.ser"))))
