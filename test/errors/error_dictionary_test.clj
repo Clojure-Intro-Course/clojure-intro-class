@@ -147,8 +147,8 @@
         (get-all-text (run-and-catch-pretty-no-stacktrace 'intro.core '(banana 5 6))))
 
 ;; thinks that the unmatched delimiter is part of the expect test not the test itself
-;(expect #"Compilation error: there is an unmatched delimiter ), while compiling (.+)"
-;        (get-all-text (run-and-catch-pretty-no-stacktrace 'intro.core 'defn my-string [x] (str x)))))
+(expect #"Compilation error: there is an unmatched delimiter ), while compiling (.+)"
+        (get-all-text (run-and-catch-pretty-no-stacktrace 'intro.core '(import-from-file "unmatched_delimiter.ser")))))
 
 (expect #"Compilation error: too many arguments to def, while compiling (.+)"
         (get-all-text (run-and-catch-pretty-no-stacktrace 'intro.core '(def my-var 5 6))))
