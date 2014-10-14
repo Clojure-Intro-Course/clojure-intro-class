@@ -659,5 +659,6 @@
     ;(def classcast-exc (import-from-file (str path "classcast1.ser")))
     ;(throw classcast-exc)
     ;(throw (read-objects-local "unmatched_delimiter.ser"))
+    ;(let [x] (+ x 2))
     (catch Throwable e (display-error (prettify-exception e)))))
     ;(catch Throwable e (write-objects-local e ".ser"))))

@@ -1,7 +1,9 @@
 (ns errors.error_dictionary_test
   (:require [expectations :refer :all]
             [errors.messageobj :refer :all]
-            [errors.exceptions :refer :all]))
+            [errors.exceptions :refer :all]
+            [errors.prettify_exception :refer :all]
+            [utilities.file_IO :refer :all]))
 
 ;#########################################
 ;### Testing for Class Cast Exceptions ###
@@ -147,8 +149,8 @@
         (get-all-text (run-and-catch-pretty-no-stacktrace 'intro.core '(banana 5 6))))
 
 ;; thinks that the unmatched delimiter is part of the expect test not the test itself
-(expect #"Compilation error: there is an unmatched delimiter ), while compiling (.+)"
-        (get-all-text (run-and-catch-pretty-no-stacktrace 'intro.core '(import-from-file "unmatched_delimiter.ser")))))
+(expect "Compilation error: there is an unmatched delimiter ), while compiling (compilation_errors/unmatched_delimiter.clj:3:20)"
+        (get-all-text (:msg-info-obj (prettify-exception (read-objects-local "unmatched_delimiter.ser")))))
 
 (expect #"Compilation error: too many arguments to def, while compiling (.+)"
         (get-all-text (run-and-catch-pretty-no-stacktrace 'intro.core '(def my-var 5 6))))
