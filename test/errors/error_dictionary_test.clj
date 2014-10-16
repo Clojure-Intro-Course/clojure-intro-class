@@ -157,7 +157,6 @@
 (expect #"Compilation error: too few arguments to def, while compiling (.+)" ; this is giving NO_SOURCE_PATH
         (get-all-text (run-and-catch-pretty-no-stacktrace 'intro.core '(def))))
 
-;; thinks that the EOF is in our expect test instead of the test itself
 (expect "Compilation error: end of file, starting at line 3, while compiling (compilation_errors/eof.clj:4:1).\nProbably a non-closing parenthesis or bracket."
         (get-all-text (:msg-info-obj (prettify-exception (read-objects-local "end_of_file.ser")))))
 
