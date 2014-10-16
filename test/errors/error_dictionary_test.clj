@@ -149,7 +149,7 @@
         (get-all-text (run-and-catch-pretty-no-stacktrace 'intro.core '(banana 5 6))))
 
 (expect "Compilation error: there is an unmatched delimiter ), while compiling (compilation_errors/unmatched_delimiter.clj:3:20)"
-        (get-all-text (:msg-info-obj (prettify-exception (read-objects-local "unmatched_delimiter.ser")))))
+        (get-all-text (:msg-info-obj (prettify-exception (import-from-file "exceptions/unmatched_delimiter.ser")))))
 
 (expect #"Compilation error: too many arguments to def, while compiling (.+)" ; this is giving NO_SOURCE_PATH
         (get-all-text (run-and-catch-pretty-no-stacktrace 'intro.core '(def my-var 5 6))))
@@ -158,6 +158,6 @@
         (get-all-text (run-and-catch-pretty-no-stacktrace 'intro.core '(def))))
 
 (expect "Compilation error: end of file, starting at line 3, while compiling (compilation_errors/eof.clj:4:1).\nProbably a non-closing parenthesis or bracket."
-        (get-all-text (:msg-info-obj (prettify-exception (read-objects-local "end_of_file.ser")))))
+        (get-all-text (:msg-info-obj (prettify-exception (import-from-file "exceptions/end_of_file.ser")))))
 
 ;; :compiler-exception-must-recur-to-function-or-loop

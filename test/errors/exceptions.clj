@@ -174,7 +174,7 @@
 
 ;;; We actually might want to change this exception by adding or changing a pre-condition for conj
 
-(def dr-racket-exercise-class-cast (read-objects-local "DrRacket-Exercise2-ClassCast.ser"))
+(def dr-racket-exercise-class-cast (import-from-file "exceptions/DrRacket-Exercise2-ClassCast.ser"))
 
 (def prettified-class-cast (prettify-exception dr-racket-exercise-class-cast))
 
@@ -269,7 +269,7 @@
 (defn compare-traces-of-saved-exceptions
   "Takes an unlimited number of filenames, and then calls make-and-print-comparisons on the saved exceptions to print the trace-comparisons."
   [& filename]
-  (make-and-print-comparisons (map read-objects-local filename) filename))
+  (make-and-print-comparisons (map import-from-file (str "exceptions/" filename)) filename))
 
 (defn print-n-elements-of-stacktrace
   "Takes a number n and a stacktrace (filtered or unfiltered), and then prints that many elements of the stacktrace"
@@ -329,4 +329,4 @@
          :top-elements-match?  true
          :beginning-of-unfiltered-trace '({:fn "map", :ns "corefns.corefns", :clojure true})
          :top-element-of-filtered-trace   {:fn "map", :ns "corefns.corefns", :clojure true}}
-        (make-trace-comparison (read-objects-local "4clojure-prob156-AssertionError.ser") "4clojure-prob156-AssertionError.ser"))
+        (make-trace-comparison (import-from-file "exceptions/4clojure-prob156-AssertionError.ser") "4clojure-prob156-AssertionError.ser"))

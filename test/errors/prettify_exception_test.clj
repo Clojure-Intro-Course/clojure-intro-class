@@ -114,7 +114,7 @@
 ;######################################
 
 ;; get a pre-stored exception
-(def classcast-exc (import-from-file (str path "classcast1.ser")))
+(def classcast-exc (import-from-file "exceptions/classcast1.ser"))
 (def classcast-exc-parsed (stacktrace/parse-exception classcast-exc))
 
 (expect java.lang.ClassCastException (class classcast-exc))

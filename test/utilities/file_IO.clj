@@ -17,7 +17,7 @@
 ;################################
 
 ;## global vars ##
-(def path "exceptions/")
+;(def path "exceptions/")
 
 ; 1.1 functions
 
@@ -48,16 +48,6 @@
     (.close file-stream)
     e))
 
-(defn write-objects-local
-  "writes a java object to a file, creating it if it does not exist, in path (see errors.exceptions)"
-  [object filename]
-  (export-to-file object (str path filename)))
-
-(defn read-objects-local
-  "reads a file in path (see errors.exceptions) as a java object"
-  [filename]
-  (import-from-file (str path filename)))
-
 ; 1.2 testing reading/writing to file
 
 (def java-arraylist (new java.util.ArrayList 5))
@@ -65,5 +55,5 @@
 (expect (.equals java-arraylist
            (let [filename "testfile.silly"
                  object java-arraylist]
-             (write-objects-local object filename)
-             (read-objects-local filename))))
+             (export-to-file object (str "exceptions/" filename))
+             (import-from-file (str "exceptions/" filename)))))
