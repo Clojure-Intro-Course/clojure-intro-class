@@ -25,7 +25,9 @@
    {:key :class-cast-exception-cannot-cast-to-map-entry
     :class ClassCastException
     :match #"(.*) cannot be cast to java.util.Map\$Entry(.*)"
-    :make-msg-info-obj make-mock-preobj}
+    :make-msg-info-obj (fn [matches] (make-msg-info-hashes "Attempted to create a map using "
+                                                           (get-type (nth matches 1)) :type
+                                                           ", but a sequence of vectors of length 2 or a sequence of maps is needed."))}
    {:key :class-cast-exception
     :class ClassCastException
     :match #"(.*) cannot be cast to (.*)"

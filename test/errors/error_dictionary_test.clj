@@ -10,7 +10,7 @@
 ;#########################################
 
 ;; testing for :class-cast-exception-cannot-cast-to-map-entry
-(expect "This is a test."
+(expect "Attempted to create a map using a keyword, but a sequence of vectors of length 2 or a sequence of maps is needed."
         (get-all-text
          (run-and-catch-pretty-no-stacktrace 'intro.core
           '(into {} [#{:x :m} #{:q :b}]))))
