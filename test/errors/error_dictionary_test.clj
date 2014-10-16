@@ -43,12 +43,12 @@
 ;; testing for :illegal-argument-even-number-of-forms
 
 ;; testing for :illegal-argument-even-number-of-forms-in-binding-vector
-(expect #"A parameter for a let is missing a binding on line (.*) in the file (.*)"
+(expect #"A parameter for a let is missing a binding on line (.*) in the file intro.core"
         (get-all-text
          (run-and-catch-pretty-no-stacktrace 'intro.core '(let [x] (+ x 2)))))
 
 ;; testing for :illegal-argument-needs-vector-when-binding
-(expect #"When declaring a (.*), you need to pass it a vector of arguments. Line (.*) in the file (.*)"
+(expect #"When declaring a let, you need to pass it a vector of arguments. Line (.*) in the file intro.core"
         (get-all-text
          (run-and-catch-pretty-no-stacktrace 'intro.core '(let (x 2)))))
 
@@ -123,44 +123,42 @@
 ;### Testing for compilation errors ###
 ;######################################
 
-(expect #"Compilation error: loop requires an even number of forms in binding vector, while compiling (.+)"
+(expect "Compilation error: loop requires an even number of forms in binding vector, while compiling intro.core"
         (get-all-text (run-and-catch-pretty-no-stacktrace 'intro.core '(defn s [s] (loop [s])))))
 
-(expect #"Compilation error: this recur is supposed to take 0 arguments, but you are passing 1, while compiling (.+)"
+(expect #"Compilation error: this recur is supposed to take 0 arguments, but you are passing 1, while compiling (.+)" ; this is giving NO_SOURCE_PATH
         (get-all-text (run-and-catch-pretty-no-stacktrace 'intro.core '(recur (inc 1)))))
 
-(expect #"Compilation error: there is an unmatched parameter in declaration of cond, while compiling:(.+)"
+(expect #"Compilation error: there is an unmatched parameter in declaration of cond, while compiling:(.+)" ; this is giving NO_SOURCE_PATH
         (get-all-text
          (run-and-catch-pretty-no-stacktrace 'intro.core '(defn my-num [x] (cond (= 1 x))))))
 
 (expect "Compilation error: wrong number of arguments (0) passed to a function zero?, while compiling "
         (get-all-text (butlast (run-and-catch-pretty-no-stacktrace 'intro.core '(zero?)))))
 
-(expect #"Compilation error: recur can only occur as a tail call, meaning no operations can be done after its return, while compiling (.+)"
+(expect #"Compilation error: recur can only occur as a tail call, meaning no operations can be done after its return, while compiling (.+)" ; this is giving NO_SOURCE_PATH
         (get-all-text (run-and-catch-pretty-no-stacktrace 'intro.core '(defn inc-nums [x] ((recur (inc x)) (loop [x x]))))))
 
-(expect #"Compilation error: def must be followed by a name, while compiling (.+)"
+(expect #"Compilation error: def must be followed by a name, while compiling (.+)" ; this is giving NO_SOURCE_PATH
         (get-all-text (run-and-catch-pretty-no-stacktrace 'intro.core '(def 4 (+ 2 2)))))
 
-(expect #"Compilation error: loop is a macro, cannot be passed to a function, while compiling (.+)"
+(expect #"Compilation error: loop is a macro, cannot be passed to a function, while compiling (.+)" ; this is giving NO_SOURCE_PATH
         (get-all-text (run-and-catch-pretty-no-stacktrace 'intro.core '(defn my-happy [x] loop [x x]))))
 
-(expect #"Compilation error: name banana is undefined, while compiling (.+)"
+(expect #"Compilation error: name banana is undefined, while compiling (.+)" ; this is giving NO_SOURCE_PATH
         (get-all-text (run-and-catch-pretty-no-stacktrace 'intro.core '(banana 5 6))))
 
-;; thinks that the unmatched delimiter is part of the expect test not the test itself
 (expect "Compilation error: there is an unmatched delimiter ), while compiling (compilation_errors/unmatched_delimiter.clj:3:20)"
         (get-all-text (:msg-info-obj (prettify-exception (read-objects-local "unmatched_delimiter.ser")))))
 
-(expect #"Compilation error: too many arguments to def, while compiling (.+)"
+(expect #"Compilation error: too many arguments to def, while compiling (.+)" ; this is giving NO_SOURCE_PATH
         (get-all-text (run-and-catch-pretty-no-stacktrace 'intro.core '(def my-var 5 6))))
 
-(expect #"Compilation error: too few arguments to def, while compiling (.+)"
+(expect #"Compilation error: too few arguments to def, while compiling (.+)" ; this is giving NO_SOURCE_PATH
         (get-all-text (run-and-catch-pretty-no-stacktrace 'intro.core '(def))))
 
 ;; thinks that the EOF is in our expect test instead of the test itself
-;(expect #"Compilation error: end of file, starting at line (.+), while compiling (.+)"
-;         "Probably a non-closing parentheses or bracket."
-;        (get-all-text (run-and-catch-pretty-no-stacktrace 'intro.core '(+ 1 2 )))
+(expect "Compilation error: end of file, starting at line 3, while compiling (compilation_errors/eof.clj:4:1).\nProbably a non-closing parenthesis or bracket."
+        (get-all-text (:msg-info-obj (prettify-exception (read-objects-local "end_of_file.ser")))))
 
 ;; :compiler-exception-must-recur-to-function-or-loop
