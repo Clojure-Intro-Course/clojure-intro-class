@@ -16,10 +16,10 @@
           '(into {} [#{:x :m} #{:q :b}]))))
 
 ;; testing for :class-cast-exception
-(expect "in function + second argument :two must be a number but is a keyword"
+(expect "Attempted to use a string, but a character was expected."
         (get-all-text
          (run-and-catch-pretty-no-stacktrace 'intro.core
-          '(+ 1 :two))))
+          '(int "banana"))))
 
 ;###############################################
 ;### Testing for Illegal Argument Exceptions ###
@@ -100,8 +100,8 @@
         (get-all-text (run-and-catch-pretty-no-stacktrace 'intro.core '(throw (new NullPointerException "some message")))))
 
 ;; testing for :null-pointer-non-existing-object-not-provided
-(expect "in function + first argument nil must be a number but is nil"
-        (get-all-text (run-and-catch-pretty-no-stacktrace 'intro.core '(+ nil 2))))
+(expect "An attempt to access a non-existing object. \n(NullPointerException)"
+        (get-all-text (run-and-catch-pretty-no-stacktrace 'intro.core '(int nil))))
 
 ;###################################################
 ;### Testing for Unsupported Operation Exceptions###

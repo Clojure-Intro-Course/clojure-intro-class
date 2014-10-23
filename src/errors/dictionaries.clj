@@ -163,5 +163,5 @@
         arg (arg-str (if n (Integer. n) (:arg-num @seen-failed-asserts)))]
     (empty-seen) ; empty the seen-failed-asserts hashmap
     (make-msg-info-hashes
-     "in function " fname :arg " " arg " " v-print :arg
-     " must be " t :type " but is " c-type :type)))
+     "In function " fname :arg ", the " arg " " v-print :arg
+     " must be " t :type " but is " c-type :type ".")))

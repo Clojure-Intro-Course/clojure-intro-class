@@ -208,38 +208,38 @@
 ;##########################################################
 
 ;; assert-checking for seq->string
-(expect "in function seq->string first argument :not-a-sequence must be a sequence but is a keyword"
+(expect "In function seq->string, the first argument :not-a-sequence must be a sequence but is a keyword."
         (get-all-text
          (run-and-catch-pretty-no-stacktrace 'strings.beginner_string_library '(seq->string :not-a-sequence))))
 
 ;~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 ;; assert-checking for index-of, first precondition when passed 2 args
-(expect "in function index-of first argument :not-a-string must be a string but is a keyword"
+(expect "In function index-of, the first argument :not-a-string must be a string but is a keyword."
         (get-all-text
          (run-and-catch-pretty-no-stacktrace 'strings.beginner_string_library
                                              '(index-of :not-a-string \e))))
 
 ;; assert-checking for index-of, second precondition when passed 2 args
-(expect "in function index-of second argument :not-a-character must be a character but is a keyword"
+(expect "In function index-of, the second argument :not-a-character must be a character but is a keyword."
         (get-all-text
          (run-and-catch-pretty-no-stacktrace 'strings.beginner_string_library
                                              '(index-of "emma" :not-a-character))))
 
 ;; assert-checking for index-of, first precondition when passed 3 args
-(expect "in function index-of first argument :not-a-string must be a string but is a keyword"
+(expect "In function index-of, the first argument :not-a-string must be a string but is a keyword."
         (get-all-text
          (run-and-catch-pretty-no-stacktrace 'strings.beginner_string_library
                                              '(index-of :not-a-string \e 2))))
 
 ;; assert-checking for index-of, second precondition when passed 3 args
-(expect "in function index-of second argument :not-a-character must be a character but is a keyword"
+(expect "In function index-of, the second argument :not-a-character must be a character but is a keyword."
         (get-all-text
          (run-and-catch-pretty-no-stacktrace 'strings.beginner_string_library
                                              '(index-of "emma" :not-a-character 5))))
 
 ;; assert-checking for index-of, third precondition when passed 3 args
-(expect "in function index-of third argument :not-a-number must be a number but is a keyword"
+(expect "In function index-of, the third argument :not-a-number must be a number but is a keyword."
         (get-all-text
          (run-and-catch-pretty-no-stacktrace 'strings.beginner_string_library
                                              '(index-of "emma" \e :not-a-number))))
@@ -247,31 +247,31 @@
 ;~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 ;; assert-checking for last-index-of, first precondition when passed 2 args
-(expect "in function last-index-of first argument :not-a-string must be a string but is a keyword"
+(expect "In function last-index-of, the first argument :not-a-string must be a string but is a keyword."
         (get-all-text
          (run-and-catch-pretty-no-stacktrace 'strings.beginner_string_library
                                              '(last-index-of :not-a-string \e))))
 
 ;; assert-checking for last-index-of, second precondition when passed 2 args
-(expect "in function last-index-of second argument :not-a-character must be a character but is a keyword"
+(expect "In function last-index-of, the second argument :not-a-character must be a character but is a keyword."
         (get-all-text
          (run-and-catch-pretty-no-stacktrace 'strings.beginner_string_library
                                              '(last-index-of "emma" :not-a-character))))
 
 ;; assert-checking for last-index-of, first precondition when passed 3 args
-(expect "in function last-index-of first argument :not-a-string must be a string but is a keyword"
+(expect "In function last-index-of, the first argument :not-a-string must be a string but is a keyword."
         (get-all-text
          (run-and-catch-pretty-no-stacktrace 'strings.beginner_string_library
                                              '(last-index-of :not-a-string \e 2))))
 
 ;; assert-checking for last-index-of, second precondition when passed 3 args
-(expect "in function last-index-of second argument :not-a-character must be a character but is a keyword"
+(expect "In function last-index-of, the second argument :not-a-character must be a character but is a keyword."
         (get-all-text
          (run-and-catch-pretty-no-stacktrace 'strings.beginner_string_library
                                              '(last-index-of "emma" :not-a-character 5))))
 
 ;; assert-checking for last-index-of, third precondition when passed 3 args
-(expect "in function last-index-of third argument :not-a-number must be a number but is a keyword"
+(expect "In function last-index-of, the third argument :not-a-number must be a number but is a keyword."
         (get-all-text
          (run-and-catch-pretty-no-stacktrace 'strings.beginner_string_library
                                              '(last-index-of "emma" \e :not-a-number))))
@@ -283,13 +283,13 @@
 ;~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 ;; assert-checking for char-at, first precondition
-(expect "in function char-at first argument :not-a-string must be a string but is a keyword"
+(expect "In function char-at, the first argument :not-a-string must be a string but is a keyword."
         (get-all-text
          (run-and-catch-pretty-no-stacktrace 'strings.beginner_string_library
                                              '(char-at :not-a-string 0))))
 
 ;; assert-checking for char-at, second precondition
-(expect "in function char-at second argument :not-a-number must be a number but is a keyword"
+(expect "In function char-at, the second argument :not-a-number must be a number but is a keyword."
         (get-all-text
          (run-and-catch-pretty-no-stacktrace 'strings.beginner_string_library
                                              '(char-at "hello world" :not-a-number))))
@@ -297,7 +297,7 @@
 ;~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 ;; assert-checking for empty-string?
-(expect "in function empty-string? first argument :not-a-string must be a string but is a keyword"
+(expect "In function empty-string?, the first argument :not-a-string must be a string but is a keyword."
         (get-all-text
          (run-and-catch-pretty-no-stacktrace 'strings.beginner_string_library
                                              '(empty-string? :not-a-string))))
@@ -305,7 +305,7 @@
 ;~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 ;; assert-checking for first-of-string
-(expect "in function first-of-string first argument :not-a-string must be a string but is a keyword"
+(expect "In function first-of-string, the first argument :not-a-string must be a string but is a keyword."
         (get-all-text
          (run-and-catch-pretty-no-stacktrace 'strings.beginner_string_library
                                              '(first-of-string :not-a-string))))
@@ -313,7 +313,7 @@
 ;~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 ;; assert-checking for last-of-string
-(expect "in function last-of-string first argument :not-a-string must be a string but is a keyword"
+(expect "In function last-of-string, the first argument :not-a-string must be a string but is a keyword."
         (get-all-text
          (run-and-catch-pretty-no-stacktrace 'strings.beginner_string_library
                                              '(last-of-string :not-a-string))))
@@ -321,7 +321,7 @@
 ;~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 ;; assert-checking for rest-of-string
-(expect "in function rest-of-string first argument :not-a-string must be a string but is a keyword"
+(expect "In function rest-of-string, the first argument :not-a-string must be a string but is a keyword."
         (get-all-text
          (run-and-catch-pretty-no-stacktrace 'strings.beginner_string_library
                                              '(rest-of-string :not-a-string))))
@@ -329,7 +329,7 @@
 ;~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 ;; assert-checking for second-of-string
-(expect "in function second-of-string first argument :not-a-string must be a string but is a keyword"
+(expect "In function second-of-string, the first argument :not-a-string must be a string but is a keyword."
         (get-all-text
          (run-and-catch-pretty-no-stacktrace 'strings.beginner_string_library
                                              '(second-of-string :not-a-string))))
@@ -337,13 +337,13 @@
 ;~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 ;; assert-checking for string-contains?, first precondition
-(expect "in function string-contains? first argument :not-a-string must be a string but is a keyword"
+(expect "In function string-contains?, the first argument :not-a-string must be a string but is a keyword."
         (get-all-text
          (run-and-catch-pretty-no-stacktrace 'strings.beginner_string_library
                                              '(string-contains? :not-a-string "hello world"))))
 
 ;; assert-checking for string-contains?, second precondition
-(expect "in function string-contains? second argument :not-a-string-or-character must be either a string or character but is a keyword"
+(expect "In function string-contains?, the second argument :not-a-string-or-character must be either a string or character but is a keyword."
         (get-all-text
          (run-and-catch-pretty-no-stacktrace 'strings.beginner_string_library
                                              '(string-contains? "hello world" :not-a-string-or-character))))
@@ -351,13 +351,13 @@
 ;~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 ;; assert-checking for drop-from-string, first precondition
-(expect "in function drop-from-string first argument :not-a-number must be a number but is a keyword"
+(expect "In function drop-from-string, the first argument :not-a-number must be a number but is a keyword."
         (get-all-text
          (run-and-catch-pretty-no-stacktrace 'strings.beginner_string_library
                                              '(drop-from-string :not-a-number "hello world"))))
 
 ;; assert-checking for drop-from-string, second precondition
-(expect "in function drop-from-string second argument :not-a-string must be a string but is a keyword"
+(expect "In function drop-from-string, the second argument :not-a-string must be a string but is a keyword."
         (get-all-text
          (run-and-catch-pretty-no-stacktrace 'strings.beginner_string_library
                                              '(drop-from-string 2 :not-a-string))))
@@ -365,13 +365,13 @@
 ;~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 ;; assert-checking for take-from-string, first precondition
-(expect "in function take-from-string first argument :not-a-number must be a number but is a keyword"
+(expect "In function take-from-string, the first argument :not-a-number must be a number but is a keyword."
         (get-all-text
          (run-and-catch-pretty-no-stacktrace 'strings.beginner_string_library
                                              '(take-from-string :not-a-number "hello world"))))
 
 ;; assert-checking for take-from-string, second precondition
-(expect "in function take-from-string second argument :not-a-string must be a string but is a keyword"
+(expect "In function take-from-string, the second argument :not-a-string must be a string but is a keyword."
         (get-all-text
          (run-and-catch-pretty-no-stacktrace 'strings.beginner_string_library
                                              '(take-from-string 2 :not-a-string))))

@@ -42,7 +42,7 @@
 ;; testing for prob17
 (expect (more-of x
                  java.lang.AssertionError (:exception-class x)
-                 "in function + second argument nil must be a number but is nil" (get-all-text (:msg-info-obj x))
+                 "In function +, the second argument nil must be a number but is nil." (get-all-text (:msg-info-obj x))
                  (trace-has-all-pairs? {:fn "prob17" :ns "intro.student"}) (:stacktrace x))
         (run-and-catch-pretty-with-stacktrace 'intro.student
                                               '(prob17 '(1 2 3))))
@@ -50,7 +50,7 @@
 ;; testing for prob18
 (expect (more-of x
                  java.lang.AssertionError (:exception-class x)
-                 "in function < first argument nil must be a number but is nil" (get-all-text (:msg-info-obj x))
+                 "In function <, the first argument nil must be a number but is nil." (get-all-text (:msg-info-obj x))
                  (trace-has-all-pairs? {:fn "prob18" :ns "intro.student"}) (:stacktrace x))
         (run-and-catch-pretty-with-stacktrace 'intro.student
                                               '(prob18 '(3 4 5 6 7))))
@@ -58,7 +58,7 @@
 ;; testing for prob64
 (expect (more-of x
                  java.lang.AssertionError (:exception-class x)
-                 "in function + second argument nil must be a number but is nil" (get-all-text (:msg-info-obj x))
+                 "In function +, the second argument nil must be a number but is nil." (get-all-text (:msg-info-obj x))
                  (trace-has-all-pairs? {:fn "prob64" :ns "intro.student"}) (:stacktrace x))
         (run-and-catch-pretty-with-stacktrace 'intro.student
                                               '(prob64 [1 2 3 4 5])))
@@ -74,7 +74,7 @@
 ;; testing for prob134
 (expect (more-of x
                  java.lang.AssertionError (:exception-class x)
-                 "in function filter first argument :a must be a function but is a keyword" (get-all-text (:msg-info-obj x))
+                 "In function filter, the first argument :a must be a function but is a keyword." (get-all-text (:msg-info-obj x))
                  (trace-has-all-pairs? {:fn "prob134" :ns "intro.student"}) (:filtered-stacktrace x))
         (run-and-catch-pretty-with-stacktrace 'intro.student
                                               '(prob134 :a {:a nil :b 2})))
@@ -82,7 +82,7 @@
 ;; testing for prob156
 (expect (more-of x
                  java.lang.AssertionError (:exception-class x)
-                 "in function map first argument {:a 0} must be a function but is a map" (get-all-text (:msg-info-obj x))
+                 "In function map, the first argument {:a 0} must be a function but is a map." (get-all-text (:msg-info-obj x))
                  (trace-has-all-pairs? {:fn "prob156" :ns "intro.student"}) (:filtered-stacktrace x))
         (run-and-catch-pretty-with-stacktrace 'intro.student
                                               '(prob156 0 [:a :b :c])))
@@ -90,7 +90,7 @@
 ;; testing for prob20
 (expect (more-of x
                  java.lang.AssertionError (:exception-class x)
-                 "in function nth first argument 3 must be a sequence but is a number" (get-all-text (:msg-info-obj x))
+                 "In function nth, the first argument 3 must be a sequence but is a number." (get-all-text (:msg-info-obj x))
                  (trace-has-all-pairs? {:fn "prob20" :ns "intro.student"}) (:filtered-stacktrace x))
         (run-and-catch-pretty-with-stacktrace 'intro.student
                                               '(prob20 [:a :b :c :d])))
@@ -114,7 +114,7 @@
 ;; testing for prob24
 (expect (more-of x
                  java.lang.AssertionError (:exception-class x)
-                 "in function + second argument (2 3) must be a number but is a sequence" (get-all-text (:msg-info-obj x))
+                 "In function +, the second argument (2 3) must be a number but is a sequence." (get-all-text (:msg-info-obj x))
                  (trace-has-all-pairs? {:fn "prob24" :ns "intro.student"}) (:filtered-stacktrace x))
         (run-and-catch-pretty-with-stacktrace 'intro.student
                                               '(prob24 [1 2 3])))
@@ -154,7 +154,7 @@
 ;; testing for error-in-anonymous
 (expect (more-of x
                  java.lang.AssertionError (:exception-class x)
-                 "in function + first argument \"hi\" must be a number but is a string" (get-all-text (:msg-info-obj x))
+                 "In function +, the first argument \"hi\" must be a number but is a string." (get-all-text (:msg-info-obj x))
                  (trace-has-all-pairs? {:fn "error-in-anonymous" :anon-fn true :ns "intro.student"}) (:filtered-stacktrace x)
                  (trace-has-all-pairs? {:fn "error-in-anonymous" :anon-fn false :ns "intro.student"}) (:filtered-stacktrace x))
         (run-and-catch-pretty-with-stacktrace 'intro.student
@@ -163,7 +163,7 @@
 ;; testing for error-in-map-inc
 (expect (more-of x
                  java.lang.AssertionError (:exception-class x)
-                 "in function inc first argument \"hi\" must be a number but is a string" (get-all-text (:msg-info-obj x))
+                 "In function inc, the first argument \"hi\" must be a number but is a string." (get-all-text (:msg-info-obj x))
                  (trace-has-all-pairs? {:fn "error-in-map-inc" :anon-fn false :ns "intro.student"}) (:filtered-stacktrace x))
         (run-and-catch-pretty-with-stacktrace 'intro.student
                                               '(error-in-map-inc)))
