@@ -320,12 +320,6 @@
          (run-and-catch-pretty-no-stacktrace 'intro.core
                                              '(into #{} :not-a-collection))))
 
-;; testing for the third precondition of into
-(expect "This is a test."
-        (get-all-text
-         (run-and-catch-pretty-no-stacktrace 'intro.core
-                                             '(into {} [[1 2] [3]]))))
-
 ;~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 ;; testing for the first precondition of reduce

@@ -42,11 +42,12 @@
    {:key :illegal-argument-no-val-supplied-for-key
     :class IllegalArgumentException
     :match #"No value supplied for key: (.*)"
-    :make-msg-info-obj make-mock-preobj}
+    :make-msg-info-obj (fn [matches] (make-msg-info-hashes "No value found for key "
+                                                           (nth matches 1) :arg ". Every key must be paired with a value; the value should be immediately following the key."))}
    {:key :illegal-argument-vector-arg-to-map-conj
     :class IllegalArgumentException
     :match #"Vector arg to map conj must be a pair(.*)"
-    :make-msg-info-obj make-mock-preobj}
+    :make-msg-info-obj (fn [matches] (make-msg-info-hashes "All the inner vectors in the outer collection must have length two."))}
    {:key :illegal-argument-cannot-convert-type
     :class IllegalArgumentException
     :match #"Don't know how to create (.*) from: (.*)"

@@ -26,12 +26,12 @@
 ;###############################################
 
 ;; testing for :illegal-argument-no-val-supplied-for-key
-(expect "This is a test."
+(expect "No value found for key d. Every key must be paired with a value; the value should be immediately following the key."
         (get-all-text
          (run-and-catch-pretty-no-stacktrace 'intro.core '(hash-map "c" :d "d"))))
 
 ;; testing for :illegal-argument-vector-arg-to-map-conj
-(expect "This is a test."
+(expect "All the inner vectors in the outer collection must have length two."
         (get-all-text
          (run-and-catch-pretty-no-stacktrace 'intro.core '(into {} [[1 2] [3]]))))
 
