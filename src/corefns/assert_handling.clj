@@ -4,10 +4,11 @@
 
 ;; Functions to check pre-conditions and record the offenders for
 ;; error processing
-(defn check-if-seqable? [fname x & [n]]
+(defn check-if-seqable?
   "returns true if x is seqable and false otherwise, sets data
   in seen-failed-asserts. If the second argument is present, it's added
   to the seen-failed-asserts as the number of the argument"
+  [fname x & [n]]
   (if (seqable? x) true
     (do (add-to-seen {:check "a sequence"
                       :class (class x)
