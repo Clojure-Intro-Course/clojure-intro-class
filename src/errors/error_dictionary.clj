@@ -83,8 +83,10 @@
                                                            " should be a vector, but is " (nth matches 1) :arg))}
    {:key :illegal-argument-exactly-2-forms
     :class IllegalArgumentException
-    :match #"(.*) requires exactly 2 forms in binding vector(.*)"
-    :make-msg-info-obj make-mock-preobj}
+    :match #"(.*) requires exactly 2 forms in binding vector in (.*):(.*)"
+    :make-msg-info-obj (fn [matches] (make-msg-info-hashes "The function " (nth matches 1) :arg
+                                                           " requires exactly 2 forms in binding vector. Line "
+                                                           (nth matches 3) " in the file " (nth matches 2)))}
 
    ;######################################
    ;### Index Out of Bounds Exceptions ###
