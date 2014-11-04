@@ -64,7 +64,8 @@
     :match #"(.*) requires an even number of forms in binding vector in (.*):(.*)"
     :make-msg-info-obj (fn [matches] (make-msg-info-hashes "A parameter for a " (nth matches 1)
                                                            " is missing a binding on line "
-                                                           (nth matches 3) " in the file " (nth matches 2)))}
+                                                           (nth matches 3) " in the file " (nth matches 2)))
+    :info (fn [matches] {:path :unknown :file (nth matches 2) :line (nth matches 3) :char :unknown :flag :runtime})}
    {:key :illegal-argument-needs-vector-when-binding
     :class IllegalArgumentException
     :match #"(.*) requires a vector for its binding in (.*):(.*)"

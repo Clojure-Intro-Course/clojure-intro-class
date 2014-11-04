@@ -132,13 +132,19 @@
         filtered-trace (filter-stacktrace stacktrace)
         entry (first-match e-class message)
         msg-info-obj (msg-from-matched-entry entry message)
+        thehashmap (the-function entry message)
         hint-message (hints-for-matched-entry entry)]
     ;; create an exception object
     {:exception-class e-class
      :msg-info-obj msg-info-obj
      :stacktrace stacktrace
      :filtered-stacktrace filtered-trace
-     :hints hint-message}))
+     :hints hint-message
+     :path (:path thehashmap)
+     :fsdf sdf
+     :fsdfsdf asdf
+     :fsdf asdf
+     :fsdf asdf}))
 
 ;;; Elena's note: we are not using get-pretty-message anymore
 ;;; in prettify-exception, so we need to retire it, but it seems
