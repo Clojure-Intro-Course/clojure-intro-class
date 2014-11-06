@@ -122,6 +122,11 @@
   ;(println (filter keep-stack-trace-elem stacktrace))
   (filter keep-stack-trace-elem stacktrace))
 
+(defn get-exception-location-hashmap
+  "takes an error-dictionary entry and a message and returns a hashmap with the exception's
+  filepath, filename, line number, character number, and exception type (runtime or compilation)."
+  [entry message] {})
+
 ;; All together:
 (defn prettify-exception [e]
   (let [e-class (class e)
@@ -132,7 +137,7 @@
         filtered-trace (filter-stacktrace stacktrace)
         entry (first-match e-class message)
         msg-info-obj (msg-from-matched-entry entry message)
-        thehashmap (the-function entry message)
+        ;exception-location-hashmap (get-exception-location-hashmap entry message)
         hint-message (hints-for-matched-entry entry)]
     ;; create an exception object
     {:exception-class e-class
@@ -140,11 +145,12 @@
      :stacktrace stacktrace
      :filtered-stacktrace filtered-trace
      :hints hint-message
-     :path (:path thehashmap)
-     :fsdf sdf
-     :fsdfsdf asdf
-     :fsdf asdf
-     :fsdf asdf}))
+     ;:path (:path exception-location-hashmap)
+     ;:filename (:filename exception-location-hashmap)
+     ;:line (:line exception-location-hashmap)
+     ;:character (:character exception-location-hashmap)
+     ;:exception-type (:exception-type exception-location-hashmap)
+     }))
 
 ;;; Elena's note: we are not using get-pretty-message anymore
 ;;; in prettify-exception, so we need to retire it, but it seems

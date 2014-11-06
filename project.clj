@@ -6,5 +6,6 @@
                  [org.clojure/core.incubator "0.1.2"]
                  [seesaw "1.4.3"]
                  [expectations "2.0.6"]]
-  :plugins [[lein-autoexpect "1.0"]]
+  :plugins [[lein-autoexpect "1.0"]
+            [lein-pprint "1.1.2"]]
   :main intro.core)

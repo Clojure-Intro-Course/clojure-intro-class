@@ -5,7 +5,8 @@
 	          [errors.errorgui :refer :all]
 	          [clj-stacktrace.core :as stacktrace]
             [errors.dictionaries :refer :all]
-            [utilities.file_IO :refer :all]))
+            [utilities.file_IO :refer :all]
+            [errors.prettify_exception :refer :all]))
 
 ;;; INDEX ;;;
 
@@ -105,9 +106,17 @@
 	[{:msg "This is a " :stylekey :reg :length 10}
 	 {:msg "test." :stylekey :arg :length 5}])
 
-;####################################
-;### 4. errors.exceptionobj tests ###
-;####################################
+;###############################################
+;### 4. get-exception-location-hashmap tests ###
+;###############################################
+
+(expect {:path :unknown
+         :filename "intro.core"
+         :line 20
+         :character :unknown
+         :exception-type :runtime}
+        (get-exception-location-hashmap (first-match IllegalArgumentException
+                                                     "java.lang.IllegalArgumentException: let requires an even number of forms in binding vector in intro.core:20")))
 
 ;######################################
 ;### 5. errors.core, errorgui tests ###
