@@ -125,7 +125,8 @@
 (defn get-exception-location-hashmap
   "takes an error-dictionary entry and a message and returns a hashmap with the exception's
   filepath, filename, line number, character number, and exception type (runtime or compilation)."
-  [entry message] {})
+  [entry message]
+  ((:exc-location entry) (re-matches (:match entry) message)))
 
 ;; All together:
 (defn prettify-exception [e]

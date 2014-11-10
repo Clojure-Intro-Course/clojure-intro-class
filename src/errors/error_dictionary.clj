@@ -65,8 +65,7 @@
     :make-msg-info-obj (fn [matches] (make-msg-info-hashes "A parameter for a " (nth matches 1)
                                                            " is missing a binding on line "
                                                            (nth matches 3) " in the file " (nth matches 2)))
-    ;:info (fn [matches] {:path :unknown :file (nth matches 2) :line (nth matches 3) :char :unknown :flag :runtime})
-    }
+    :exc-location (fn [matches] {:path :unknown, :filename (nth matches 2), :line (read-string (nth matches 3)), :character :unknown, :exception-type :runtime})}
 
    {:key :illegal-argument-needs-vector-when-binding
     :class IllegalArgumentException

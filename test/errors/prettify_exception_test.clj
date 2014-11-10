@@ -110,13 +110,15 @@
 ;### 4. get-exception-location-hashmap tests ###
 ;###############################################
 
-(expect {:path :unknown
+(expect-let [message "java.lang.IllegalArgumentException: let requires an even number of forms in binding vector in intro.core:20"]
+        {:path :unknown
          :filename "intro.core"
          :line 20
          :character :unknown
          :exception-type :runtime}
         (get-exception-location-hashmap (first-match IllegalArgumentException
-                                                     "java.lang.IllegalArgumentException: let requires an even number of forms in binding vector in intro.core:20")))
+                                                     message)
+                                        message))
 
 ;######################################
 ;### 5. errors.core, errorgui tests ###

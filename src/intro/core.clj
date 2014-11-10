@@ -7,9 +7,7 @@
             [errors.errorgui :refer :all]
             [intro.student :refer :all]
             [corefns.collection_fns :refer :all]
-            [utilities.file_IO :refer :all]
-            [errors.exceptions :refer :all] ;takeout
-            [errors.messageobj :refer :all])) ;takeout
+            [utilities.file_IO :refer :all]))
 
 (refer 'corefns.corefns)
 
