@@ -13,12 +13,13 @@
     :class AssertionError
     :match #"Assert failed: \((.*) argument(.*)\)"
     :make-msg-info-obj (fn [matches] (process-asserts-obj (nth matches 2)))
-    :exc-location (fn [matches] {:path :unknown, :filename :unknown, :line :unknown, :character :unknown, :exception-type :unknown})}
+    :exc-location (fn [matches] {:path :unknown, :filename :unknown, :line :unknown, :character :unknown, :exception-type :runtime})}
+
    {:key :assertion-error-without-argument
     :class AssertionError
     :match #"Assert failed: \((.*)\)"
     :make-msg-info-obj (fn [matches] (process-asserts-obj nil))
-    :exc-location (fn [matches] {:path :unknown, :filename :unknown, :line :unknown, :character :unknown, :exception-type :unknown})}
+    :exc-location (fn [matches] {:path :unknown, :filename :unknown, :line :unknown, :character :unknown, :exception-type :runtime})}
 
    ;#############################
    ;### Class Cast Exceptions ###
@@ -30,7 +31,7 @@
     :make-msg-info-obj (fn [matches] (make-msg-info-hashes "Attempted to create a map using "
                                                            (get-type (nth matches 1)) :type
                                                            ", but a sequence of vectors of length 2 or a sequence of maps is needed."))
-    :exc-location (fn [matches] {:path :unknown, :filename :unknown, :line :unknown, :character :unknown, :exception-type :unknown})}
+    :exc-location (fn [matches] {:path :unknown, :filename :unknown, :line :unknown, :character :unknown, :exception-type :runtime})}
    {:key :class-cast-exception
     :class ClassCastException
     :match #"(.*) cannot be cast to (.*)"

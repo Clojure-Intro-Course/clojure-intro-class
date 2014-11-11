@@ -7,7 +7,12 @@
             [errors.errorgui :refer :all]
             [intro.student :refer :all]
             [corefns.collection_fns :refer :all]
-            [utilities.file_IO :refer :all]))
+            [utilities.file_IO :refer :all]
+            [errors.error_dictionary_test :refer :all] ;takeout
+            [errors.exceptions :refer :all] ;takeout
+            [clj-stacktrace.core :as stacktrace] ;takeout
+            ))
+;(.getMessage (run-and-catch-raw 'intro.core '(hash-map "c" :d "d")))
 
 (refer 'corefns.corefns)
 

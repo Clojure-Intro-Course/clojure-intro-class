@@ -3,7 +3,8 @@
             [errors.messageobj :refer :all]
             [errors.exceptions :refer :all]
             [errors.prettify_exception :refer :all]
-            [utilities.file_IO :refer :all]))
+            [utilities.file_IO :refer :all]
+            ))
 
 ;#########################################
 ;### Testing for Class Cast Exceptions ###
