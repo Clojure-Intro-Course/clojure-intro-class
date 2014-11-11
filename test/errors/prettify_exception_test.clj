@@ -116,8 +116,7 @@
          :line 20
          :character :unknown
          :exception-type :runtime}
-        (get-exception-location-hashmap (first-match IllegalArgumentException
-                                                     message)
+        (get-exception-location-hashmap (first-match IllegalArgumentException message)
                                         message))
 
 ;######################################

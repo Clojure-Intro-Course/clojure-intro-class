@@ -12,11 +12,13 @@
    {:key :assertion-error-with-argument
     :class AssertionError
     :match #"Assert failed: \((.*) argument(.*)\)"
-    :make-msg-info-obj (fn [matches] (process-asserts-obj (nth matches 2)))}
+    :make-msg-info-obj (fn [matches] (process-asserts-obj (nth matches 2)))
+    :exc-location (fn [matches] {:path :unknown, :filename :unknown, :line :unknown, :character :unknown, :exception-type :unknown})}
    {:key :assertion-error-without-argument
     :class AssertionError
     :match #"Assert failed: \((.*)\)"
-    :make-msg-info-obj (fn [matches] (process-asserts-obj nil))}
+    :make-msg-info-obj (fn [matches] (process-asserts-obj nil))
+    :exc-location (fn [matches] {:path :unknown, :filename :unknown, :line :unknown, :character :unknown, :exception-type :unknown})}
 
    ;#############################
    ;### Class Cast Exceptions ###
@@ -27,13 +29,15 @@
     :match #"(.*) cannot be cast to java.util.Map\$Entry(.*)"
     :make-msg-info-obj (fn [matches] (make-msg-info-hashes "Attempted to create a map using "
                                                            (get-type (nth matches 1)) :type
-                                                           ", but a sequence of vectors of length 2 or a sequence of maps is needed."))}
+                                                           ", but a sequence of vectors of length 2 or a sequence of maps is needed."))
+    :exc-location (fn [matches] {:path :unknown, :filename :unknown, :line :unknown, :character :unknown, :exception-type :unknown})}
    {:key :class-cast-exception
     :class ClassCastException
     :match #"(.*) cannot be cast to (.*)"
     :make-msg-info-obj (fn [matches] (make-msg-info-hashes "Attempted to use "
                                                            (get-type (nth matches 1)) :type ", but "
-                                                           (get-type (nth matches 2)) :type " was expected."))}
+                                                           (get-type (nth matches 2)) :type " was expected."))
+    :exc-location (fn [matches] {:path :unknown, :filename :unknown, :line :unknown, :character :unknown, :exception-type :unknown})}
 
    ;###################################
    ;### Illegal Argument Exceptions ###
@@ -43,22 +47,26 @@
     :class IllegalArgumentException
     :match #"No value supplied for key: (.*)"
     :make-msg-info-obj (fn [matches] (make-msg-info-hashes "No value found for key "
-                                                           (nth matches 1) :arg ". Every key must be paired with a value; the value should be immediately following the key."))}
+                                                           (nth matches 1) :arg ". Every key must be paired with a value; the value should be immediately following the key."))
+    :exc-location (fn [matches] {:path :unknown, :filename :unknown, :line :unknown, :character :unknown, :exception-type :unknown})}
    {:key :illegal-argument-vector-arg-to-map-conj
     :class IllegalArgumentException
     :match #"Vector arg to map conj must be a pair(.*)"
-    :make-msg-info-obj (fn [matches] (make-msg-info-hashes "All the inner vectors in the outer collection must have length two."))}
+    :make-msg-info-obj (fn [matches] (make-msg-info-hashes "All the inner vectors in the outer collection must have length two."))
+    :exc-location (fn [matches] {:path :unknown, :filename :unknown, :line :unknown, :character :unknown, :exception-type :unknown})}
    {:key :illegal-argument-cannot-convert-type
     :class IllegalArgumentException
     :match #"Don't know how to create (.*) from: (.*)"
     :make-msg-info-obj (fn [matches] (make-msg-info-hashes "Don't know how to create "
                                                            (get-type (nth matches 1)) :type
-                                                           " from "(get-type (nth matches 2)) :type))}
+                                                           " from "(get-type (nth matches 2)) :type))
+    :exc-location (fn [matches] {:path :unknown, :filename :unknown, :line :unknown, :character :unknown, :exception-type :unknown})}
    {:key :illegal-argument-even-number-of-forms
     :class IllegalArgumentException
     :match #"(.*) requires an even number of forms"
     :make-msg-info-obj (fn [matches] (make-msg-info-hashes "There is an unmatched parameter in declaration of "
-                                                           (nth matches 1) :arg))}
+                                                           (nth matches 1) :arg))
+    :exc-location (fn [matches] {:path :unknown, :filename :unknown, :line :unknown, :character :unknown, :exception-type :unknown})}
    {:key :illegal-argument-even-number-of-forms-in-binding-vector
     :class IllegalArgumentException
     :match #"(.*) requires an even number of forms in binding vector in (.*):(.*)"
@@ -72,23 +80,27 @@
     :match #"(.*) requires a vector for its binding in (.*):(.*)"
     :make-msg-info-obj (fn [matches] (make-msg-info-hashes "When declaring a " (nth matches 1)
                                                            ", you need to pass it a vector of arguments. Line "
-                                                           (nth matches 3) " in the file " (nth matches 2)))}
+                                                           (nth matches 3) " in the file " (nth matches 2)))
+    :exc-location (fn [matches] {:path :unknown, :filename :unknown, :line :unknown, :character :unknown, :exception-type :unknown})}
    {:key :illegal-argument-type-not-supported
     :class IllegalArgumentException
     :match #"(.*) not supported on type: (.*)"
     :make-msg-info-obj (fn [matches] (make-msg-info-hashes "Function " (nth matches 1) :arg
-                                                           " does not allow " (get-type (nth matches 2)) :type " as an argument"))}
+                                                           " does not allow " (get-type (nth matches 2)) :type " as an argument"))
+    :exc-location (fn [matches] {:path :unknown, :filename :unknown, :line :unknown, :character :unknown, :exception-type :unknown})}
    {:key :illegal-argument-parameters-must-be-in-vector
     :class IllegalArgumentException
     :match #"Parameter declaration (.*) should be a vector"
     :make-msg-info-obj (fn [matches] (make-msg-info-hashes "Parameters in " "defn" :arg
-                                                           " should be a vector, but is " (nth matches 1) :arg))}
+                                                           " should be a vector, but is " (nth matches 1) :arg))
+    :exc-location (fn [matches] {:path :unknown, :filename :unknown, :line :unknown, :character :unknown, :exception-type :unknown})}
    {:key :illegal-argument-exactly-2-forms
     :class IllegalArgumentException
     :match #"(.*) requires exactly 2 forms in binding vector in (.*):(.*)"
     :make-msg-info-obj (fn [matches] (make-msg-info-hashes "The function " (nth matches 1) :arg
                                                            " requires exactly 2 forms in binding vector. Line "
-                                                           (nth matches 3) " in the file " (nth matches 2)))}
+                                                           (nth matches 3) " in the file " (nth matches 2)))
+    :exc-location (fn [matches] {:path :unknown, :filename :unknown, :line :unknown, :character :unknown, :exception-type :unknown})}
 
    ;######################################
    ;### Index Out of Bounds Exceptions ###
@@ -98,11 +110,13 @@
     :class IndexOutOfBoundsException
     :match #"(\d+)"
     :make-msg-info-obj (fn [matches] (make-msg-info-hashes "An index in a sequence is out of bounds."
-                                                           " The index is: " (nth matches 0) :arg))}
+                                                           " The index is: " (nth matches 0) :arg))
+    :exc-location (fn [matches] {:path :unknown, :filename :unknown, :line :unknown, :character :unknown, :exception-type :unknown})}
    {:key :index-out-of-bounds-index-not-provided
     :class IndexOutOfBoundsException
     :match #"" ; an empty message
-    :make-msg-info-obj (fn [matches] (make-msg-info-hashes "An index in a sequence is out of bounds or invalid"))}
+    :make-msg-info-obj (fn [matches] (make-msg-info-hashes "An index in a sequence is out of bounds or invalid"))
+    :exc-location (fn [matches] {:path :unknown, :filename :unknown, :line :unknown, :character :unknown, :exception-type :unknown})}
 
    ;########################
    ;### Arity Exceptions ###
@@ -117,7 +131,8 @@
                                         "an "
                                         (str "a function "))]
                            (make-msg-info-hashes "Wrong number of arguments ("
-                                                 (nth matches 1) ") passed to " funstr fstr :arg)))}
+                                                 (nth matches 1) ") passed to " funstr fstr :arg)))
+    :exc-location (fn [matches] {:path :unknown, :filename :unknown, :line :unknown, :character :unknown, :exception-type :unknown})}
 
    ;###############################
    ;### Null Pointer Exceptions ###
@@ -127,11 +142,13 @@
     :class NullPointerException
     :match #"(.+)" ; for some reason (.*) matches twice. Since we know there is at least one symbol, + is fine
     :make-msg-info-obj (fn [matches] (make-msg-info-hashes "An attempt to access a non-existing object: "
-                                                           (nth matches 1) :arg "\n(NullPointerException)"))}
+                                                           (nth matches 1) :arg "\n(NullPointerException)"))
+    :exc-location (fn [matches] {:path :unknown, :filename :unknown, :line :unknown, :character :unknown, :exception-type :unknown})}
    {:key :null-pointer-non-existing-object-not-provided
     :class NullPointerException
     :match  #""
-    :make-msg-info-obj (fn [matches] (make-msg-info-hashes "An attempt to access a non-existing object. \n(NullPointerException)"))}
+    :make-msg-info-obj (fn [matches] (make-msg-info-hashes "An attempt to access a non-existing object. \n(NullPointerException)"))
+    :exc-location (fn [matches] {:path :unknown, :filename :unknown, :line :unknown, :character :unknown, :exception-type :unknown})}
 
    ;########################################
    ;### Unsupported Operation Exceptions ###
@@ -141,7 +158,8 @@
     :class UnsupportedOperationException
     :match #"(.*) not supported on this type: (.*)"
     :make-msg-info-obj (fn [matches] (make-msg-info-hashes "Function " (nth matches 1) :arg
-                                                           " does not allow " (get-type (nth matches 2)) :type " as an argument"))}
+                                                           " does not allow " (get-type (nth matches 2)) :type " as an argument"))
+    :exc-location (fn [matches] {:path :unknown, :filename :unknown, :line :unknown, :character :unknown, :exception-type :unknown})}
 
    ;############################
    ;### Stack Overflow Error ###
@@ -150,7 +168,8 @@
    {:key make-mock-preobj
     :class StackOverflowError
     :match "????????"
-    :make-msg-info-obj make-mock-preobj}
+    :make-msg-info-obj make-mock-preobj
+    :exc-location (fn [matches] {:path :unknown, :filename :unknown, :line :unknown, :character :unknown, :exception-type :unknown})}
 
    ;#######################
    ;### Java Exceptions ###
@@ -160,7 +179,8 @@
     :class java.lang.Exception
     :match #"Unsupported binding form: (.*)"
     :make-msg-info-obj (fn [matches] (make-msg-info-hashes "You cannot use " (nth matches 1) :arg
-                                                           " as a variable."))}
+                                                           " as a variable."))
+    :exc-location (fn [matches] {:path :unknown, :filename :unknown, :line :unknown, :character :unknown, :exception-type :unknown})}
 
    ;#######################################################
    ;### Compilation Errors: Illegal Argument Exceptions ###
@@ -172,7 +192,8 @@
     :match #"(.+): (.+) requires an even number of forms in binding vector in (.+):(.+), compiling:(.+)"
     :make-msg-info-obj (fn [matches] (make-msg-info-hashes "Compilation error: " (nth matches 2)
                                                            " requires an even number of forms in binding vector, while compiling "
-                                                           (nth matches 3)))}
+                                                           (nth matches 3)))
+    :exc-location (fn [matches] {:path :unknown, :filename :unknown, :line :unknown, :character :unknown, :exception-type :unknown})}
    {:key :compiler-exception-wrong-number-of-arguments-to-recur
     :class clojure.lang.Compiler$CompilerException
     :true-exception java.lang.IllegalArgumentException
@@ -182,13 +203,15 @@
                                                            ", while compiling " (nth matches 4)))
     ;;TODO: handle singular/plural arguments
     :hints "1. You are passing a wrong number of arguments to recur. Check its function or loop.
-    2. recur might be outside of the scope of its function or loop"}
+    2. recur might be outside of the scope of its function or loop"
+    :exc-location (fn [matches] {:path :unknown, :filename :unknown, :line :unknown, :character :unknown, :exception-type :unknown})}
    {:key :compiler-exception-even-number-of-forms-needed
     :class clojure.lang.Compiler$CompilerException
     :true-exception java.lang.IllegalArgumentException
     :match #"(.*): (.*) requires an even number of forms, compiling:\((.+)\)"
     :make-msg-info-obj (fn [matches] (make-msg-info-hashes "Compilation error: there is an unmatched parameter in declaration of "
-                                                           (nth matches 2) :arg ", while compiling: " (nth matches 3)))}
+                                                           (nth matches 2) :arg ", while compiling: " (nth matches 3)))
+    :exc-location (fn [matches] {:path :unknown, :filename :unknown, :line :unknown, :character :unknown, :exception-type :unknown})}
 
    ;############################################
    ;### Compilation Errors: Arity Exceptions ###
@@ -206,7 +229,8 @@
                            (make-msg-info-hashes "Compilation error: wrong number of arguments ("
                                                  (nth matches 2) ") passed to " funstr fstr :arg
                                                  ", while compiling "
-                                                 (nth matches 4) :arg)))}
+                                                 (nth matches 4) :arg)))
+    :exc-location (fn [matches] {:path :unknown, :filename :unknown, :line :unknown, :character :unknown, :exception-type :unknown})}
 
    ;############################################################
    ;### Compilation Errors: Unsupported Operation Exceptions ###
@@ -219,7 +243,8 @@
     :make-msg-info-obj (fn [matches] (make-msg-info-hashes "Compilation error: recur can only occur "
                                                            "as a tail call, meaning no operations can"
                                                            " be done after its return, while compiling "
-                                                           (nth matches 2)))}
+                                                           (nth matches 2)))
+    :exc-location (fn [matches] {:path :unknown, :filename :unknown, :line :unknown, :character :unknown, :exception-type :unknown})}
 
    ;##############################################
    ;### Compilation Errors: Runtime Exceptions ###
@@ -231,7 +256,8 @@
     :match #"(.*) First argument to (.*) must be a Symbol, compiling:\((.+)\)"
     :make-msg-info-obj (fn [matches] (make-msg-info-hashes "Compilation error: "
                                                            (nth matches 2) :arg " must be followed by a name, while compiling "
-                                                           (nth matches 3)))}
+                                                           (nth matches 3)))
+    :exc-location (fn [matches] {:path :unknown, :filename :unknown, :line :unknown, :character :unknown, :exception-type :unknown})}
    {:key :compiler-exception-cannot-take-value-of-macro
     :class clojure.lang.Compiler$CompilerException
     :true-exception java.lang.RuntimeException
@@ -239,14 +265,16 @@
     :make-msg-info-obj (fn [matches] (make-msg-info-hashes "Compilation error: "
                                                            (get-macro-name (nth matches 2)) :arg
                                                            " is a macro, cannot be passed to a function, while compiling "
-                                                           (nth matches 3)))}
+                                                           (nth matches 3)))
+    :exc-location (fn [matches] {:path :unknown, :filename :unknown, :line :unknown, :character :unknown, :exception-type :unknown})}
    {:key :compiler-exception-cannot-resolve-symbol
     :class clojure.lang.Compiler$CompilerException
     :true-exception java.lang.RuntimeException
     :match #"(.+): Unable to resolve symbol: (.+) in this context, compiling:\((.+)\)"
     :make-msg-info-obj (fn [matches] (make-msg-info-hashes "Compilation error: " "name "
                                                            (nth matches 2) :arg " is undefined, while compiling "
-                                                           (nth matches 3) :arg))}
+                                                           (nth matches 3) :arg))
+    :exc-location (fn [matches] {:path :unknown, :filename :unknown, :line :unknown, :character :unknown, :exception-type :unknown})}
 
    ;###########################################
    ;### Compilation Errors: Java Exceptions ###
@@ -257,21 +285,24 @@
     :true-exception java.lang.Exception
     :match #"(.+): Unmatched delimiter: (.+), compiling:(.+)"
     :make-msg-info-obj (fn [matches] (make-msg-info-hashes "Compilation error: there is an unmatched delimiter " (nth matches 2) :arg
-                                                           ", while compiling " (nth matches 3) :arg))}
+                                                           ", while compiling " (nth matches 3) :arg))
+    :exc-location (fn [matches] {:path :unknown, :filename :unknown, :line :unknown, :character :unknown, :exception-type :unknown})}
    {:key :compiler-exception-too-many-arguments
     :class clojure.lang.Compiler$CompilerException
     :true-exception java.lang.Exception
     :match #"(.+): Too many arguments to (.+), compiling:(.+)"
     :make-msg-info-obj (fn [matches] (make-msg-info-hashes "Compilation error: too many arguments to "
                                                            (nth matches 2) :arg ", while compiling "
-                                                           (nth matches 3) :arg))}
+                                                           (nth matches 3) :arg))
+    :exc-location (fn [matches] {:path :unknown, :filename :unknown, :line :unknown, :character :unknown, :exception-type :unknown})}
    {:key :compiler-exception-too-few-arguments
     :class clojure.lang.Compiler$CompilerException
     :true-exception java.lang.Exception
     :match #"(.+): Too few arguments to (.+), compiling:(.+)"
     :make-msg-info-obj (fn [matches] (make-msg-info-hashes "Compilation error: too few arguments to "
                                                            (nth matches 2) :arg  ", while compiling "
-                                                           (nth matches 3) :arg))}
+                                                           (nth matches 3) :arg))
+    :exc-location (fn [matches] {:path :unknown, :filename :unknown, :line :unknown, :character :unknown, :exception-type :unknown})}
 
    ;###################################
    ;### Compilation Errors: Unknown ###
@@ -283,7 +314,8 @@
     :match #"(.+): EOF while reading, starting at line (.+), compiling:(.+)"
     :make-msg-info-obj (fn [matches] (make-msg-info-hashes "Compilation error: end of file, starting at line " (nth matches 2) :arg
                                                            ", while compiling " (nth matches 3) :arg
-                                                           ".\nProbably a non-closing parenthesis or bracket."))}
+                                                           ".\nProbably a non-closing parenthesis or bracket."))
+    :exc-location (fn [matches] {:path :unknown, :filename :unknown, :line :unknown, :character :unknown, :exception-type :unknown})}
    ])
 
 ;; This is probably somewhat fragile: it occurs in an unbounded recur, but
