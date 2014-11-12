@@ -122,7 +122,7 @@
   ;(println (filter keep-stack-trace-elem stacktrace))
   (filter keep-stack-trace-elem stacktrace))
 
-(defn get-exception-location-hashmap
+(defn extract-exception-location-hashmap
   "takes an error-dictionary entry and a message and returns a hashmap with the exception's
   filepath, filename, line number, character number, and exception type (runtime or compilation)."
   [entry message]
@@ -140,7 +140,7 @@
         filtered-trace (filter-stacktrace stacktrace)
         entry (first-match e-class message)
         msg-info-obj (msg-from-matched-entry entry message)
-        exception-location-hashmap (get-exception-location-hashmap entry message)
+        exception-location-hashmap (extract-exception-location-hashmap entry message)
         hint-message (hints-for-matched-entry entry)]
     ;; create an exception object
     {:exception-class e-class

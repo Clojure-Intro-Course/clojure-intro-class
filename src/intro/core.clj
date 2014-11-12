@@ -11,6 +11,7 @@
             [errors.error_dictionary_test :refer :all] ;takeout
             [errors.exceptions :refer :all] ;takeout
             [clj-stacktrace.core :as stacktrace] ;takeout
+            [errors.THE_ERROR_IS_HERE :refer :all] ;takeout
             ))
 ;(.getMessage (run-and-catch-raw 'intro.core '(hash-map "c" :d "d")))
 

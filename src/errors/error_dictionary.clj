@@ -195,6 +195,7 @@
                                                            " requires an even number of forms in binding vector, while compiling "
                                                            (nth matches 3)))
     :exc-location (fn [matches] {:path :unknown, :filename :unknown, :line :unknown, :character :unknown, :exception-type :unknown})}
+
    {:key :compiler-exception-wrong-number-of-arguments-to-recur
     :class clojure.lang.Compiler$CompilerException
     :true-exception java.lang.IllegalArgumentException

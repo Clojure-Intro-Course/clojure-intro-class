@@ -65,6 +65,7 @@
      (catch Throwable e e)))
   ([name-space code]
    (in-ns name-space)
+ ;;We might want to switch back to original ns
    (try
      (eval code)
      (catch Throwable e e))))
