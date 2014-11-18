@@ -69,5 +69,5 @@
 ;(defn t []
 ;   (let [x :two 7 :seven]))
 
-(defn u []
-  (defn s [s] (loop [s])))
+;(defn u []
+;  (defn s [s] (loop [s])))

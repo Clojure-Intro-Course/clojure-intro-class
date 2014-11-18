@@ -665,5 +665,6 @@
     ;(def classcast-exc (import-from-file "exceptions/classcast1.ser"))
     ;(throw classcast-exc)
     ;(let [x] (+ x 2))
+    (e)
     (catch Throwable e (display-error (prettify-exception e)))))
     ;(catch Throwable e (export-to-file e "exceptions/type_something_here.ser"))))
