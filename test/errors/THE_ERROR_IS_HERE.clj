@@ -62,8 +62,8 @@
 (defn r []
    (int nil))
 
-(defn s []
-   (nth {:a 10 :z 4} 20))
+;(defn s []
+;   (nth {:a 10 :z 4} 20))
 
 ; Unsupported binding form: 7, compiling:(errors/THE_ERROR_IS_HERE.clj:69:4)
 ;(defn t []

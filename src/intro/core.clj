@@ -12,6 +12,7 @@
             [errors.exceptions :refer :all] ;takeout
             [clj-stacktrace.core :as stacktrace] ;takeout
             [errors.THE_ERROR_IS_HERE :refer :all] ;takeout
+            [compilation_errors.loopevenforms :refer :all]
             ))
 ;(.getMessage (run-and-catch-raw 'intro.core '(hash-map "c" :d "d")))
 
@@ -665,6 +666,6 @@
     ;(def classcast-exc (import-from-file "exceptions/classcast1.ser"))
     ;(throw classcast-exc)
     ;(let [x] (+ x 2))
-    (e)
+    (compile 'errors.loopevenforms)
     (catch Throwable e (display-error (prettify-exception e)))))
     ;(catch Throwable e (export-to-file e "exceptions/type_something_here.ser"))))

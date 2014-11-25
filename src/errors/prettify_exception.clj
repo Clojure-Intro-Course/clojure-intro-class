@@ -154,6 +154,42 @@
      :character (:character exception-location-hashmap)
      :exception-type (:exception-type exception-location-hashmap)}))
 
+
+;(def exc (run-and-catch-raw '(n)))
+;(def exc-class (class exc))
+;(.isAssignableFrom Exception y) not currently used
+;(def our-array (into-array Class [java.lang.String]))
+;(def our-constructor (.getConstructor exc-class our-array))
+;(def our-string (into-array String ["YOLO"]))
+;(def our-java-exception (.newInstance our-constructor our-string))
+;(throw our-java-exception)
+
+;(defn exception-obj->Throwable
+;  "Converts an exception-obj hashmap into a Java Throwable"
+;  [exception-obj]
+;  (if (.instanceof)
+  ;(let [e-class (class e)
+  ;      m (.getMessage e)
+  ;      message  (if m m "") ; converting an empty message from nil to ""
+  ;      exc (stacktrace/parse-exception e)
+  ;      stacktrace (:trace-elems exc)
+  ;      filtered-trace (filter-stacktrace stacktrace)
+  ;      entry (first-match e-class message)
+  ;      msg-info-obj (msg-from-matched-entry entry message)
+  ;      exception-location-hashmap (extract-exception-location-hashmap entry message)
+  ;      hint-message (hints-for-matched-entry entry)]
+  ;  ;; create an exception object
+  ;  {:exception-class e-class
+  ;   :msg-info-obj msg-info-obj
+  ;   :stacktrace stacktrace
+  ;   :filtered-stacktrace filtered-trace
+  ;   :hints hint-message
+  ;   :path (:path exception-location-hashmap)
+  ;   :filename (:filename exception-location-hashmap)
+  ;   :line (:line exception-location-hashmap)
+  ;   :character (:character exception-location-hashmap)
+  ;   :exception-type (:exception-type exception-location-hashmap)}))
+
 ;;; Elena's note: we are not using get-pretty-message anymore
 ;;; in prettify-exception, so we need to retire it, but it seems
 ;;; to be used in some tests.....
