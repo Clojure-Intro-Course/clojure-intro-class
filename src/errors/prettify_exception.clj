@@ -164,10 +164,17 @@
 ;(def our-java-exception (.newInstance our-constructor our-string))
 ;(throw our-java-exception)
 
-;(defn exception-obj->Throwable
-;  "Converts an exception-obj hashmap into a Java Throwable"
-;  [exception-obj]
-;  (if (.instanceof)
+(defn exception-obj->Throwable
+  "Converts an exception-obj hashmap into a Java Throwable"
+  [exception-obj]
+  (let [e-class (class exception-obj)
+        class-array (into-array Class [java.lang.String])
+        constructor-with-message (.getConstructor e-class class-array)
+        m (.getMessage exception-obj)
+        message  (if m m "") ; converting an empty message from nil to ""
+        message-array (into-array String [message])
+        java-exception (.newInstance constructor-with-message message-array)]
+    java-exception))
   ;(let [e-class (class e)
   ;      m (.getMessage e)
   ;      message  (if m m "") ; converting an empty message from nil to ""
