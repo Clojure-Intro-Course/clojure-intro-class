@@ -155,6 +155,17 @@
      :exception-type (:exception-type exception-location-hashmap)}))
 
 
+; get message and use it in Throwable(String message) constructor
+;     use get-all-text on :msg-info-obj
+;     use that string in the constructor
+; call setStackTrace(StackTraceElement[] stackTrace) on our new Throwable
+;     use filtered-stacktrace
+;     turn the big hashmap into StackTraceElement[] (make-array StackTraceElement length-of-hashmap)
+;
+;     use the array in setStackTrace
+; return it
+
+
 ;(def exc (run-and-catch-raw '(n)))
 ;(def exc-class (class exc))
 ;(.isAssignableFrom Exception y) not currently used
@@ -164,10 +175,14 @@
 ;(def our-java-exception (.newInstance our-constructor our-string))
 ;(throw our-java-exception)
 
+;; write tests that test if the java exception is the same as the prettify exception
+;; fix java reflection issue by getting old stacktrace to new exception using .getStackTraceElement
+;; from throwable and .setStackTrace or .getCause
 (defn exception-obj->Throwable
   "Converts an exception-obj hashmap into a Java Throwable"
   [exception-obj]
   (let [e-class (class exception-obj)
+        ; e-class (:exception-class exception-obj)
         class-array (into-array Class [java.lang.String])
         constructor-with-message (.getConstructor e-class class-array)
         m (.getMessage exception-obj)
