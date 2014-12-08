@@ -178,18 +178,46 @@
 ;; write tests that test if the java exception is the same as the prettify exception
 ;; fix java reflection issue by getting old stacktrace to new exception using .getStackTraceElement
 ;; from throwable and .setStackTrace or .getCause
+
+; (run-and-catch-pretty-with-stacktrace '(n))
+; (n)
+; (run-and-catch-raw '(n))
+; (exception-obj->Throwable (run-and-catch-pretty-with-stacktrace '(n)))
+;
+
+
+
+(defn trace-hashmap->StackTraceElement
+  "Converts a clojure stacktrace element (hashmap) to a java StackTraceElement"
+  [trace-hashmap]
+  (let [declaringClass (if-let [class-name (:class trace-hashmap)]
+                     class-name
+                     (:ns trace-hashmap))
+        methodName (if-let [method (:method trace-hashmap)]
+                     method
+                     (:fn trace-hashmap))
+        fileName (:file trace-hashmap)
+        lineNumber (:line trace-hashmap)]
+    (new StackTraceElement declaringClass methodName fileName lineNumber)))
+
 (defn exception-obj->Throwable
   "Converts an exception-obj hashmap into a Java Throwable"
   [exception-obj]
-  (let [e-class (class exception-obj)
-        ; e-class (:exception-class exception-obj)
-        class-array (into-array Class [java.lang.String])
-        constructor-with-message (.getConstructor e-class class-array)
-        m (.getMessage exception-obj)
-        message  (if m m "") ; converting an empty message from nil to ""
-        message-array (into-array String [message])
-        java-exception (.newInstance constructor-with-message message-array)]
-    java-exception))
+  (let [;e-class (:exception-class exception-obj)
+        message (get-all-text (:msg-info-obj exception-obj))
+        java-Throwable (new Throwable message)
+        stack-trace-element-sequence (map trace-hashmap->StackTraceElement (:filtered-stacktrace exception-obj)); "for each thing in :filtered-stacktrace, turn it into StackTraceElement and put it in the array"
+        stack-trace-element-array (into-array stack-trace-element-sequence)
+
+        ;class-array (into-array Class [java.lang.String])
+        ;constructor-with-message (.getConstructor e-class class-array)
+        ;m (.getMessage exception-obj)
+        ;message  (if m m "") ; converting an empty message from nil to ""
+        ;message-array (into-array String [message])
+        ;java-exception (.newInstance constructor-with-message message-array)
+        ]
+    (do (.setStackTrace java-Throwable stack-trace-element-array)
+        java-Throwable)))
   ;(let [e-class (class e)
   ;      m (.getMessage e)
   ;      message  (if m m "") ; converting an empty message from nil to ""
