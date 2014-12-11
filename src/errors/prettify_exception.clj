@@ -154,40 +154,7 @@
      :character (:character exception-location-hashmap)
      :exception-type (:exception-type exception-location-hashmap)}))
 
-
-; get message and use it in Throwable(String message) constructor
-;     use get-all-text on :msg-info-obj
-;     use that string in the constructor
-; call setStackTrace(StackTraceElement[] stackTrace) on our new Throwable
-;     use filtered-stacktrace
-;     turn the big hashmap into StackTraceElement[] (make-array StackTraceElement length-of-hashmap)
-;
-;     use the array in setStackTrace
-; return it
-
-
-;(def exc (run-and-catch-raw '(n)))
-;(def exc-class (class exc))
-;(.isAssignableFrom Exception y) not currently used
-;(def our-array (into-array Class [java.lang.String]))
-;(def our-constructor (.getConstructor exc-class our-array))
-;(def our-string (into-array String ["YOLO"]))
-;(def our-java-exception (.newInstance our-constructor our-string))
-;(throw our-java-exception)
-
-;; write tests that test if the java exception is the same as the prettify exception
-;; fix java reflection issue by getting old stacktrace to new exception using .getStackTraceElement
-;; from throwable and .setStackTrace or .getCause
-
-; (run-and-catch-pretty-with-stacktrace '(n))
-; (n)
-; (run-and-catch-raw '(n))
-; (exception-obj->Throwable (run-and-catch-pretty-with-stacktrace '(n)))
-;
-
-
-
-(defn trace-hashmap->StackTraceElement
+(defn trace-hashmap-to-StackTraceElement
   "Converts a clojure stacktrace element (hashmap) to a java StackTraceElement"
   [trace-hashmap]
   (let [declaringClass (if-let [class-name (:class trace-hashmap)]
@@ -200,45 +167,17 @@
         lineNumber (:line trace-hashmap)]
     (new StackTraceElement declaringClass methodName fileName lineNumber)))
 
-(defn exception-obj->Throwable
-  "Converts an exception-obj hashmap into a Java Throwable"
+(defn exception-obj-to-java-Throwable
+  "Converts an exception-obj hashmap into the correct subtype of Java Throwable"
   [exception-obj]
-  (let [;e-class (:exception-class exception-obj)
+  (let [e-class (:exception-class exception-obj)
         message (get-all-text (:msg-info-obj exception-obj))
-        java-Throwable (new Throwable message)
-        stack-trace-element-sequence (map trace-hashmap->StackTraceElement (:filtered-stacktrace exception-obj)); "for each thing in :filtered-stacktrace, turn it into StackTraceElement and put it in the array"
+        java-Throwable (eval `(new ~e-class ~message))
+        stack-trace-element-sequence (map trace-hashmap-to-StackTraceElement (:filtered-stacktrace exception-obj)); "for each thing in :filtered-stacktrace, turn it into StackTraceElement and put it in the array"
         stack-trace-element-array (into-array stack-trace-element-sequence)
-
-        ;class-array (into-array Class [java.lang.String])
-        ;constructor-with-message (.getConstructor e-class class-array)
-        ;m (.getMessage exception-obj)
-        ;message  (if m m "") ; converting an empty message from nil to ""
-        ;message-array (into-array String [message])
-        ;java-exception (.newInstance constructor-with-message message-array)
         ]
     (do (.setStackTrace java-Throwable stack-trace-element-array)
         java-Throwable)))
-  ;(let [e-class (class e)
-  ;      m (.getMessage e)
-  ;      message  (if m m "") ; converting an empty message from nil to ""
-  ;      exc (stacktrace/parse-exception e)
-  ;      stacktrace (:trace-elems exc)
-  ;      filtered-trace (filter-stacktrace stacktrace)
-  ;      entry (first-match e-class message)
-  ;      msg-info-obj (msg-from-matched-entry entry message)
-  ;      exception-location-hashmap (extract-exception-location-hashmap entry message)
-  ;      hint-message (hints-for-matched-entry entry)]
-  ;  ;; create an exception object
-  ;  {:exception-class e-class
-  ;   :msg-info-obj msg-info-obj
-  ;   :stacktrace stacktrace
-  ;   :filtered-stacktrace filtered-trace
-  ;   :hints hint-message
-  ;   :path (:path exception-location-hashmap)
-  ;   :filename (:filename exception-location-hashmap)
-  ;   :line (:line exception-location-hashmap)
-  ;   :character (:character exception-location-hashmap)
-  ;   :exception-type (:exception-type exception-location-hashmap)}))
 
 ;;; Elena's note: we are not using get-pretty-message anymore
 ;;; in prettify-exception, so we need to retire it, but it seems

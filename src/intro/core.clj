@@ -13,7 +13,8 @@
             [clj-stacktrace.core :as stacktrace] ;takeout
             [errors.THE_ERROR_IS_HERE :refer :all] ;takeout
             [compilation_errors.loopevenforms :refer :all]
-            [errors.prettify_exception :refer :all]))
+            [errors.prettify_exception :refer :all]
+            [errors.messageobj :refer :all])) ;takeout
 ;(.getMessage (run-and-catch-raw 'intro.core '(hash-map "c" :d "d")))
 
 (refer 'corefns.corefns)
@@ -667,8 +668,7 @@
     ;(throw classcast-exc)
     ;(let [x] (+ x 2))
     ;(compile 'errors.loopevenforms)
-    (def exc (run-and-catch-pretty-with-stacktrace '(n)))
-    (println (exception-obj->Throwable exc))
-    ;(throw (exception-obj->Throwable (run-and-catch-raw '(n))))
-    (catch Throwable e (display-error (prettify-exception e)))))
+    (throw (exception-obj-to-java-Throwable (run-and-catch-pretty-with-stacktrace `(n))))
+    ;(display-error (run-and-catch-pretty-with-stacktrace '(n)))
+  (catch Throwable e (display-error (prettify-exception e)))))
     ;(catch Throwable e (export-to-file e "exceptions/type_something_here.ser"))))
