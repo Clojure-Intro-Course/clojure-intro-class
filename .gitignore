@@ -13,3 +13,8 @@ target/
 .gitignore.swp
 *.silly
 .lein-repl-history
+*.aux
+*.log
+*.out
+*.pdf
+*.gz
