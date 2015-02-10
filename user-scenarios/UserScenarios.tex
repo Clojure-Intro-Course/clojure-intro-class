@@ -157,7 +157,7 @@ For the second day, Jaden wants to define a function in a repl from within our p
 
 \begin{verbatim}
 	(fn squareThis [x] (* x x)))
-	(squareThis 5)
+	(squareThis 5)max
 \end{verbatim}
 \begin{itemize}
 	\item Unable to resolve symbol “squareThis”. This breaks because fn doesn’t make the function last like defn does. fn is only temporary. Our program suggest that the user makes sure he/she defined the symbol correctly.
@@ -224,7 +224,21 @@ On the fourth day of Clojure, Keylan is a little bit nervous to work with Maps. 
 \end{itemize}
 
 \section{Day 5}
+On the fifth day of Clojure, Addison needs to write a function which takes a sequence and returns the maximum value from the sequence without using max or key-max. Here are Addison's attempts:
 
+\begin{verbatim}
+	(defn [coll] penultimate (last (drop-last coll)))
+\end{verbatim}
+\begin{itemize}
+	\item This throws an IllegalArgumentException: Don't know how to create ISeq from: clojure.lang.Symbol. In this specific case we could give a hint that the function name and the parameter list are out of order.
+\end{itemize}
+
+\begin{verbatim}
+	(defn penultimate [coll] (last (drop-last coll)))
+\end{verbatim}
+\begin{itemize}
+	\item This works!
+\end{itemize}
 
 % That's all folks!
 \end{document}
