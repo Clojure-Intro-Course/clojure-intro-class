@@ -55,6 +55,7 @@
 \usepackage{hyperref}
 \usepackage{url}
 \usepackage{parskip}
+%%\usepackage{upquote}
 
 %% Elena's favorite green (thanks, Fernando!)
 \definecolor{ForestGreen}{RGB}{34,139,34}
@@ -117,34 +118,64 @@ schli202@umn.edu, lemmo031@umn.edu
 \section{Day 1}
 Suzie starts her first “Hello World” program on the first day of class in a repl from our project. Here are all her code attempts:
 
-\begin{verbatim}
-	print(Hello World)
-\end{verbatim}
+\verb|print(Hello World)|
+
+{\addtolength{\leftskip}{10mm}
 \subsubsection*{Clojure message:}
-\begin{verbatim}
-		java.lang.Exception: Unable to resolve symbol: Hello in this context
-\end{verbatim}
+\verb|java.lang.Exception: Unable to resolve symbol: Hello in this context|
+
 \subsubsection*{Our project message:}
-\begin{verbatim}
-		Some other thing
-\end{verbatim}
+\verb|some stuff|
 \subsubsection*{Hint/Explanation:}
-Try some stuff.
-		
-		
-		
-		
-\begin{itemize}
-	\item Clojure message: 
-		\begin{verbatim}
-			java.lang.Exception: Unable to resolve symbol: Hello in this context
-		\end{verbatim}
-	\item This breaks because clojure thinks that Hello is a symbol (identifier) when Suzie wanted it to be just plain text. Our program could respond with a suggestion that if the user wanted the phrase to be plain text to surround it with double quotes. It could also suggest to double-check that the user spelled the symbol correctly. 
-\end{itemize}
+
+This breaks because Clojure thinks that Hello is a symbol (identifier) when Suzie wanted it to be just plain text. Our program could respond with a suggestion that if the user wanted the phrase to be plain text to surround it with double quotes. It could also suggest to double-check that the user spelled the symbol correctly.
+
+}
 
 \begin{verbatim}
-	print(“Hello World”)
+	(print Hello World)
 \end{verbatim}
+
+{\addtolength{\leftskip}{10mm}
+\subsubsection*{Clojure message:}
+\verb|java.lang.Exception: Unable to resolve symbol: Hello in this context|
+
+\subsubsection*{Our project message:}
+\verb|some stuff|
+\subsubsection*{Hint/Explanation:}
+
+Try some stuff.
+
+}
+
+\verb|(print Hello World)|
+
+{\addtolength{\leftskip}{10mm}
+\subsubsection*{Clojure message:}
+\verb|java.lang.Exception: Unable to resolve symbol: Hello in this context|
+
+\subsubsection*{Our project message:}
+\verb|some stuff|
+\subsubsection*{Hint/Explanation:}
+
+Try some stuff.
+
+}
+
+\verb|(print "Hello World")|
+
+{\addtolength{\leftskip}{10mm}
+\subsubsection*{Clojure message:}
+\verb|java.lang.Exception: Unable to resolve symbol: Hello in this context|
+
+\subsubsection*{Our project message:}
+\verb|some stuff|
+\subsubsection*{Hint/Explanation:}
+
+Try some stuff.
+
+}
+ 
 \begin{itemize}
 	\item This breaks because Clojure thinks the first thing after an open paren should be a function. Our program could respond with a suggestion to the user to make sure that the item right after the open paren is a function, otherwise check syntax. 
 \end{itemize}
