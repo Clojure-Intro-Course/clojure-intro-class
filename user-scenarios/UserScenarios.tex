@@ -118,81 +118,57 @@ schli202@umn.edu, lemmo031@umn.edu
 \section{Day 1}
 Suzie starts her first “Hello World” program on the first day of class in a repl from our project. Here are all her code attempts:
 
-\verb|'print(Hello World)|
-
-{\addtolength{\leftskip}{10mm}
-\subsubsection*{Clojure message:}
-\verb|java.lang.Exception: Unable to resolve symbol: Hello in this context|
-
-\subsubsection*{Our project message:}
-\verb|some stuff|
-\subsubsection*{Hint/Explanation:}
-
-This breaks because Clojure thinks that Hello is a symbol (identifier) when Suzie wanted it to be just plain text. Our program could respond with a suggestion that if the user wanted the phrase to be plain text to surround it with double quotes. It could also suggest to double-check that the user spelled the symbol correctly.
-
-}
-
-\begin{verbatim}
-	'(print Hello World)
-\end{verbatim}
-
-{\addtolength{\leftskip}{10mm}
-\subsubsection*{Clojure message:}
-\verb|java.lang.Exception: Unable to resolve symbol: Hello in this context|
-
-\subsubsection*{Our project message:}
-\verb|some stuff|
-\subsubsection*{Hint/Explanation:}
-
-Try some stuff.
-
-}
-
-\verb|print ("Hello World")|
-
-{\addtolength{\leftskip}{10mm}
-\subsubsection*{Clojure message:}
-\verb|java.lang.Exception: Unable to resolve symbol: Hello in this context|
-
-\subsubsection*{Our project message:}
-\verb|some stuff|
-\subsubsection*{Hint/Explanation:}
-
-Try some stuff.
-
-}
-
-\verb|(print "Hello World")|
-
-{\addtolength{\leftskip}{10mm}
-\subsubsection*{Clojure message:}
-\verb|java.lang.Exception: Unable to resolve symbol: Hello in this context|
-
-\subsubsection*{Our project message:}
-\verb|some stuff|
-\subsubsection*{Hint/Explanation:}
-
-Try some stuff.
-
-}
- 
-\begin{itemize}
-	\item This breaks because Clojure thinks the first thing after an open paren should be a function. Our program could respond with a suggestion to the user to make sure that the item right after the open paren is a function, otherwise check syntax. 
-\end{itemize}
-
 \begin{verbatim}
 	(print Hello World)
 \end{verbatim}
-\begin{itemize}
-	\item This is the same scenario as the first.
-\end{itemize}
+
+{\addtolength{\leftskip}{10mm}
+	\subsubsection*{Clojure message:}
+
+	\verb|java.lang.Exception: Unable to resolve symbol: Hello in this context|
+
+	\subsubsection*{Our project message:}
+	
+	\verb|Some stuff|
+
+	\subsubsection*{Hint/Explanation:}
+
+This breaks because Clojure thinks that Hello is a symbol (identifier) when Suzie 	wanted it to be just plain text. Our program could respond with a suggestion that if the user wanted the phrase to be plain text to surround it with double quotes. It could also suggest to double-check that the user spelled the symbol correctly.
+
+}
+
+\begin{verbatim}
+	print("Hello World")
+\end{verbatim}
+
+{\addtolength{\leftskip}{10mm}
+
+	\subsubsection*{Clojure message:}
+	
+	\verb|some stuff|
+
+	\subsubsection*{Our project message:}
+	
+	\verb|some stuff|
+	
+	\subsubsection*{Hint/Explanation:}
+
+This breaks because Clojure thinks the first thing after an open paren should be a function. Our program could respond with a suggestion to the user to make sure that the item right after the open paren is a function, otherwise check syntax. 
+
+}
 
 \begin{verbatim}
 	(print "Hello World")
 \end{verbatim}
-\begin{itemize}
-	\item This works!
-\end{itemize}
+
+{\addtolength{\leftskip}{10mm}
+
+	\subsubsection*{Hint/Explanation:}
+	
+	This works!
+	
+}
+
 
 \section{Day 2}
 For the second day, Jaden wants to define a function in a repl from within our project. Here are all his code attempts:
@@ -200,78 +176,194 @@ For the second day, Jaden wants to define a function in a repl from within our p
 \begin{verbatim}
 	(fn squareThis input*input)
 \end{verbatim}
-\begin{itemize}
-	\item Problem: java.lang.RuntimeException: java.lang.UnsupportedOperationException: nth not supported on this type: Symbol.
-	\item In this particular case, fn was expecting a vector of parameters and it didn't find one. In the general case, something was looking for a collection and didn't find one.
-\end{itemize}
+
+{\addtolength{\leftskip}{10mm}
+
+	\subsubsection*{Clojure message:}
+	
+	\verb|java.lang.RuntimeException: java.lang.UnsupportedOperationException: |
+	
+	\verb|nth not supported on this type: Symbol|
+
+	\subsubsection*{Our project message:}
+	
+	\verb|some stuff|
+	
+	\subsubsection*{Hint/Explanation:}
+In this particular case, fn was expecting a vector of parameters and it didn't find one. In the general case, something was looking for a collection and didn't find one.
+	
+}
 
 \begin{verbatim}
 	(fn squareThis [x] (* x x))
 	(squareThis 5)
 \end{verbatim}
-\begin{itemize}
-	\item Unable to resolve symbol “squareThis”. This breaks because fn doesn’t make the function last like defn does. fn is only temporary. Our program suggest that the user makes sure he/she defined the symbol correctly.
-\end{itemize}
+
+{\addtolength{\leftskip}{10mm}
+
+	\subsubsection*{Clojure message:}
+	
+	\verb|some stuff|
+
+	\subsubsection*{Our project message:}
+	
+	\verb|some stuff|
+	
+	\subsubsection*{Hint/Explanation:}
+	
+Unable to resolve symbol “squareThis”. This breaks because fn doesn’t make the function last like defn does. fn is only temporary. Our program suggest that the user makes sure he/she defined the symbol correctly.
+
+}
 
 \begin{verbatim}
 	(defn squareThis [x] (* x x))
 \end{verbatim}
-\begin{itemize}
-	\item This works!
-\end{itemize}
+
+{\addtolength{\leftskip}{10mm}
+	
+	\subsubsection*{Hint/Explanation:}
+	
+	This works!
+	
+}
 
 \section{Day 3}
 On the third day of Clojure, Laken is super-excited to start working with lists! She has a list of her favorite bands and she wants to add a new one. Here are her attempts to do this in Clojure:
+
 \begin{verbatim}
 	(conj "ACDC" ("Daft Punk" "U2" "ZZ Top"))
 \end{verbatim}
-\begin{itemize}
-	\item This breaks because there is no single quote on the parentheses, so Clojure thinks that the first thing after the open paren is a function, but a string was provided instead. Our program could suggest to the user if they are trying to use lists, to put a single quote before the open paren. 
-\end{itemize}
+
+{\addtolength{\leftskip}{10mm}
+
+	\subsubsection*{Clojure message:}
+	
+	\verb|some stuff|
+
+	\subsubsection*{Our project message:}
+	
+	\verb|some stuff|
+	
+	\subsubsection*{Hint/Explanation:}
+	
+This breaks because there is no single quote on the parentheses, so Clojure thinks that the first thing after the open paren is a function, but a string was provided instead. Our program could suggest to the user if they are trying to use lists, to put a single quote before the open paren.
+	
+}
 
 \begin{verbatim}
 	(conj "ACDC" '("Daft Punk" "U2" "ZZ Top"))
 \end{verbatim}
-\begin{itemize}
-	\item This breaks because the arguments conj are in the wrong order. When class cast exceptions like these are thrown our program could suggest double-checking the correct order of arguments.
-\end{itemize}
+
+{\addtolength{\leftskip}{10mm}
+
+	\subsubsection*{Clojure message:}
+	
+	\verb|some stuff|
+
+	\subsubsection*{Our project message:}
+	
+	\verb|some stuff|
+	
+	\subsubsection*{Hint/Explanation:}
+	
+This breaks because the arguments conj are in the wrong order. When class cast exceptions like these are thrown our program could suggest double-checking the correct order of arguments.
+	
+}
 
 \begin{verbatim}
 	(conj '("Daft Punk" "U2" "ZZ Top") "ACDC")
 \end{verbatim}
-\begin{itemize}
-	\item This works!
-\end{itemize}
+
+{\addtolength{\leftskip}{10mm}
+	
+	\subsubsection*{Hint/Explanation:}
+	
+This works!
+	
+}
 
 \section{Day 4}
 On the fourth day of Clojure, Keylan is a little bit nervous to work with Maps. He wants to update a value associated with a key in a map he has created. Here are his attempts:
+
 \begin{verbatim}
 	(assoc :a 3 {:a 5, :b 8, :c 9})
 \end{verbatim}
-\begin{itemize}
-	\item This breaks because Clojure is trying to apply assoc to :a where it expects a collection to update. So, our program could suggest to the user to make sure their arguments are in the right order.
-\end{itemize}
+
+{\addtolength{\leftskip}{10mm}
+
+	\subsubsection*{Clojure message:}
+	
+	\verb|some stuff|
+
+	\subsubsection*{Our project message:}
+	
+	\verb|some stuff|
+	
+	\subsubsection*{Hint/Explanation:}
+	
+This breaks because Clojure is trying to apply assoc to :a where it expects a collection to update. So, our program could suggest to the user to make sure their arguments are in the right order.
+	
+}
 
 \begin{verbatim}
 	(assoc (:a 3) {:a 5, :b 8, :c 9})
 \end{verbatim}
-\begin{itemize}
-	\item This breaks because Clojure detects that the wrong number of arguments were passed to the function. assoc expects an odd number of arguments but only 2 were passed in. Our program can tell the user to double-check the function definition to see how many arguments it expects.
-\end{itemize}
+
+{\addtolength{\leftskip}{10mm}
+
+	\subsubsection*{Clojure message:}
+	
+	\verb|some stuff|
+
+	\subsubsection*{Our project message:}
+	
+	\verb|some stuff|
+	
+	\subsubsection*{Hint/Explanation:}
+	
+This breaks because Clojure detects that the wrong number of arguments were passed to the function. assoc expects an odd number of arguments but only 2 were passed in. Our program can tell the user to double-check the function definition to see how many arguments it expects.
+	
+}
 
 \begin{verbatim}
 	(assoc {:a 3} {:a 5, :b 8, :c 9})
 \end{verbatim}
-\begin{itemize}
-	\item This breaks for the same reason as above
-\end{itemize}
+
+{\addtolength{\leftskip}{10mm}
+
+	\subsubsection*{Clojure message:}
+	
+	\verb|some stuff|
+
+	\subsubsection*{Our project message:}
+	
+	\verb|some stuff|
+	
+	\subsubsection*{Hint/Explanation:}
+	
+This breaks for the same reason as above
+
+}
 
 \begin{verbatim}
 	(assoc {:a 5, :b 8, :c 9} :a 3)
 \end{verbatim}
-\begin{itemize}
-	\item This works!
-\end{itemize}
+
+{\addtolength{\leftskip}{10mm}
+
+	\subsubsection*{Clojure message:}
+	
+	\verb|some stuff|
+
+	\subsubsection*{Our project message:}
+	
+	\verb|some stuff|
+	
+	\subsubsection*{Hint/Explanation:}
+	
+This works!
+
+}
 
 \section{Day 5}
 On the fifth day of Clojure, Addison needs to write a function which takes a sequence and returns the maximum value from the sequence without using max or key-max. Here are Addison's attempts:
@@ -279,16 +371,42 @@ On the fifth day of Clojure, Addison needs to write a function which takes a seq
 \begin{verbatim}
 	(defn [coll] penultimate (last (drop-last coll)))
 \end{verbatim}
-\begin{itemize}
-	\item This throws an IllegalArgumentException: Don't know how to create ISeq from: clojure.lang.Symbol. In this specific case we could give a hint that the function name and the parameter list are out of order.
-\end{itemize}
+
+{\addtolength{\leftskip}{10mm}
+
+	\subsubsection*{Clojure message:}
+	
+	\verb|some stuff|
+
+	\subsubsection*{Our project message:}
+	
+	\verb|some stuff|
+	
+	\subsubsection*{Hint/Explanation:}
+	
+This throws an IllegalArgumentException: Don't know how to create ISeq from: clojure.lang.Symbol. In this specific case we could give a hint that the function name and the parameter list are out of order.
+
+}
 
 \begin{verbatim}
 	(defn penultimate [coll] (last (drop-last coll)))
 \end{verbatim}
-\begin{itemize}
-	\item This works!
-\end{itemize}
+
+{\addtolength{\leftskip}{10mm}
+
+	\subsubsection*{Clojure message:}
+	
+	\verb|some stuff|
+
+	\subsubsection*{Our project message:}
+	
+	\verb|some stuff|
+	
+	\subsubsection*{Hint/Explanation:}
+	
+This works!
+
+}
 
 % That's all folks!
 \end{document}
