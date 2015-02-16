@@ -13,8 +13,10 @@ target/
 .gitignore.swp
 *.silly
 .lein-repl-history
+
+### Latex ###
 *.aux
 *.log
 *.out
 *.pdf
-*.gz
+*synctex.gz

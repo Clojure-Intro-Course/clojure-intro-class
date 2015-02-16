@@ -55,7 +55,7 @@
 \usepackage{hyperref}
 \usepackage{url}
 \usepackage{parskip}
-%%\usepackage{upquote}
+\usepackage{upquote}
 
 %% Elena's favorite green (thanks, Fernando!)
 \definecolor{ForestGreen}{RGB}{34,139,34}
@@ -118,7 +118,7 @@ schli202@umn.edu, lemmo031@umn.edu
 \section{Day 1}
 Suzie starts her first “Hello World” program on the first day of class in a repl from our project. Here are all her code attempts:
 
-\verb|print(Hello World)|
+\verb|'print(Hello World)|
 
 {\addtolength{\leftskip}{10mm}
 \subsubsection*{Clojure message:}
@@ -133,7 +133,7 @@ This breaks because Clojure thinks that Hello is a symbol (identifier) when Suzi
 }
 
 \begin{verbatim}
-	(print Hello World)
+	'(print Hello World)
 \end{verbatim}
 
 {\addtolength{\leftskip}{10mm}
@@ -148,7 +148,7 @@ Try some stuff.
 
 }
 
-\verb|(print Hello World)|
+\verb|print ("Hello World")|
 
 {\addtolength{\leftskip}{10mm}
 \subsubsection*{Clojure message:}
