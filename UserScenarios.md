@@ -9,6 +9,14 @@ Suzie starts her first “Hello World” program on the first day of class in a 
   * Hint/Explanation:
     * This breaks because Clojure thinks that Hello is a symbol (identifier) when Suzie 	wanted it to be just plain text. Our program could respond with a suggestion that if the user wanted the phrase to be plain text to surround it with double quotes. It could also suggest to double-check that the user spelled the symbol correctly.
 
+* ``(print 'Hello World')``
+  * Clojure message:
+    * ``message``
+  * Our project message:
+    * ``message``
+  * Hint/Explanation:
+    * Work on THIS
+
 * ``print("Hello World")``
   * Clojure message:
     * ``message``
