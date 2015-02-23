@@ -4,24 +4,24 @@ Suzie starts her first “Hello World” program on the first day of class in a 
 * ``(print Hello World)``
   * Clojure message:
     * ``java.lang.Exception: Unable to resolve symbol: Hello in this context``
-  * Our projFor the second day, Jaden wants to define a function in a repl from within our project. Here are all his code attempts:ect message:
-    * ``message``
+  * Our project message:
+    * Currently not handling this type of error
   * Hint/Explanation:
     * This breaks because Clojure thinks that Hello is a symbol (identifier) when Suzie 	wanted it to be just plain text. Our program could respond with a suggestion that if the user wanted the phrase to be plain text to surround it with double quotes. It could also suggest to double-check that the user spelled the symbol correctly.
 
 * ``(print 'Hello World')``
   * Clojure message:
-    * ``message``
+    * ``java.lang.Exception: Unmatched delimiter: )``
   * Our project message:
-    * ``message``
+    * Currently not handling this type of error
   * Hint/Explanation:
     * Work on THIS
 
 * ``print("Hello World")``
   * Clojure message:
-    * ``message``
+    * ``java.lang.ClassCastException: java.lang.String cannot be cast to clojure.lang.IFn``
   * Our project message:
-    * ``message``
+    * ``ERROR: Attempted to use a string, but a function was expected.``
   * Hint/Explanation:
     * This breaks because Clojure thinks the first thing after an open paren should be a function. Our program could respond with a suggestion to the user to make sure that the item right after the open paren is a function, otherwise check syntax.
 
@@ -44,31 +44,19 @@ For the second day of Clojure, Jaden wants to define a function in a repl from w
     
   ``(squareThis 5)``
   * Clojure message:
-    * ``message``
+    * ``java.lang.Exception: Unable to resolve symbol: squareThis in this context``
   * Our project message:
     * ``message``
   * Hint/Explanation:
     * 
 
-* ``code3``
-  * Clojure message:
-    * ``message``
-  * Our project message:
-    * ``message``
+* ``(defn squareThis [x] (* x x))``
   * Hint/Explanation:
-    * 
-
-* ``code3``
-  * Clojure message:
-    * ``message``
-  * Our project message:
-    * ``message``
-  * Hint/Explanation:
-    * 
+    * This works!
 
 ####Day 3
 
-* ``code3``
+* ``(conj "ACDC" ("Daft Punk" "U2" "ZZ Top"))``
   * Clojure message:
     * ``message``
   * Our project message:
@@ -76,7 +64,7 @@ For the second day of Clojure, Jaden wants to define a function in a repl from w
   * Hint/Explanation:
     * 
 
-* ``code3``
+* ``(conj "ACDC" '("Daft Punk" "U2" "ZZ Top"))``
   * Clojure message:
     * ``message``
   * Our project message:
@@ -84,15 +72,7 @@ For the second day of Clojure, Jaden wants to define a function in a repl from w
   * Hint/Explanation:
     * 
 
-* ``code3``
-  * Clojure message:
-    * ``message``
-  * Our project message:
-    * ``message``
-  * Hint/Explanation:
-    * 
-
-* ``code3``
+* ``(conj '("Daft Punk" "U2" "ZZ Top") "ACDC")``
   * Clojure message:
     * ``message``
   * Our project message:
@@ -102,7 +82,7 @@ For the second day of Clojure, Jaden wants to define a function in a repl from w
 
 ####Day 4
 
-* ``code3``
+* ``(assoc :a 3 {:a 5, :b 8, :c 9})``
   * Clojure message:
     * ``message``
   * Our project message:
@@ -110,7 +90,7 @@ For the second day of Clojure, Jaden wants to define a function in a repl from w
   * Hint/Explanation:
     * 
 
-* ``code3``
+* ``(assoc (:a 3) {:a 5, :b 8, :c 9})``
   * Clojure message:
     * ``message``
   * Our project message:
@@ -118,7 +98,7 @@ For the second day of Clojure, Jaden wants to define a function in a repl from w
   * Hint/Explanation:
     * 
 
-* ``code3``
+* ``(assoc {:a 3} {:a 5, :b 8, :c 9})``
   * Clojure message:
     * ``message``
   * Our project message:
@@ -126,7 +106,7 @@ For the second day of Clojure, Jaden wants to define a function in a repl from w
   * Hint/Explanation:
     * 
 
-* ``code3``
+* ``(assoc {:a 5, :b 8, :c 9} :a 3)``
   * Clojure message:
     * ``message``
   * Our project message:
@@ -136,7 +116,7 @@ For the second day of Clojure, Jaden wants to define a function in a repl from w
 
 ####Day 5
 
-* ``code3``
+* ``(defn [coll] penultimate (last (drop-last coll)))``
   * Clojure message:
     * ``message``
   * Our project message:
@@ -144,23 +124,7 @@ For the second day of Clojure, Jaden wants to define a function in a repl from w
   * Hint/Explanation:
     * 
 
-* ``code3``
-  * Clojure message:
-    * ``message``
-  * Our project message:
-    * ``message``
-  * Hint/Explanation:
-    * 
-
-* ``code3``
-  * Clojure message:
-    * ``message``
-  * Our project message:
-    * ``message``
-  * Hint/Explanation:
-    * 
-
-* ``code3``
+* ``(defn penultimate [coll] (last (drop-last coll)))``
   * Clojure message:
     * ``message``
   * Our project message:
