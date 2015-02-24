@@ -1,11 +1,14 @@
 ###User Scenarios
+
+Notes from Paul: Nightcode is much more user friendly for writing code, our error message system does not handle several kinds of errors, our error message system displays clojure functions in bold (which is cool), when our custom error pops up and you press the 'X' button instead of 'ok', clojure doesn't stop and continues running until the user force stops the program.
+
 ####Day 1
 Suzie starts her first “Hello World” program on the first day of class in a repl from our project. Here are all her code attempts:
 * ``(print Hello World)``
   * Clojure message:
     * ``java.lang.Exception: Unable to resolve symbol: Hello in this context``
   * Our project message:
-    * Currently not handling this type of error
+    * Our system does not currently not handle this type of error
   * Hint/Explanation:
     * This breaks because Clojure thinks that Hello is a symbol (identifier) when Suzie 	wanted it to be just plain text. Our program could respond with a suggestion that if the user wanted the phrase to be plain text to surround it with double quotes. It could also suggest to double-check that the user spelled the symbol correctly.
 
@@ -13,7 +16,7 @@ Suzie starts her first “Hello World” program on the first day of class in a 
   * Clojure message:
     * ``java.lang.Exception: Unmatched delimiter: )``
   * Our project message:
-    * Currently not handling this type of error
+    * Our system does not currently not handle this type of error
   * Hint/Explanation:
     * Work on THIS
 
@@ -36,7 +39,7 @@ For the second day of Clojure, Jaden wants to define a function in a repl from w
   * Clojure message:
     * ``java.lang.RuntimeException: java.lang.UnsupportedOperationException: nth not supported on this type: Symbol``
   * Our project message:
-    * ``message``
+    * Our system does not currently not handle this type of error
   * Hint/Explanation:
     * In this particular case, fn was expecting a vector of parameters and it didn't find one. In the general case, something was looking for a collection and didn't find one.
 
@@ -46,7 +49,7 @@ For the second day of Clojure, Jaden wants to define a function in a repl from w
   * Clojure message:
     * ``java.lang.Exception: Unable to resolve symbol: squareThis in this context``
   * Our project message:
-    * ``message``
+    * Our system does not currently not handle this type of error
   * Hint/Explanation:
     * 
 
@@ -55,79 +58,102 @@ For the second day of Clojure, Jaden wants to define a function in a repl from w
     * This works!
 
 ####Day 3
+On the third day of Clojure, Laken is super-excited to start working with lists! She has a list of her favorite bands and she wants to add a new one. Here are her attempts to do this in Clojure:
 
 * ``(conj "ACDC" ("Daft Punk" "U2" "ZZ Top"))``
   * Clojure message:
-    * ``message``
+    * ``ClassCastException java.lang.String cannot be cast to clojure.lang.IFn``
   * Our project message:
-    * ``message``
+    * ``ERROR: Attempted to use a string, but a function was expected.``
   * Hint/Explanation:
     * 
 
 * ``(conj "ACDC" '("Daft Punk" "U2" "ZZ Top"))``
   * Clojure message:
-    * ``message``
+    * ``ClassCastException java.lang.String cannot be cast to clojure.lang.IPersistentCollection``
   * Our project message:
-    * ``message``
+    * ``ERROR: Attempted to use a string, but a collection was expected.``
   * Hint/Explanation:
     * 
 
 * ``(conj '("Daft Punk" "U2" "ZZ Top") "ACDC")``
-  * Clojure message:
-    * ``message``
-  * Our project message:
-    * ``message``
   * Hint/Explanation:
-    * 
+    * This works!
 
 ####Day 4
+On the fourth day of Clojure, Keylan is a little bit nervous to work with Maps. He wants to update a value associated with a key in a map he has created. Here are his attempts:
 
 * ``(assoc :a 3 {:a 5, :b 8, :c 9})``
   * Clojure message:
-    * ``message``
+    * ``ClassCastException clojure.lang.Keyword cannot be cast to clojure.lang.Associative``
   * Our project message:
-    * ``message``
+    * ``ERROR: Attempted to use a keyword, but a map or a vector was expected.``
   * Hint/Explanation:
     * 
 
 * ``(assoc (:a 3) {:a 5, :b 8, :c 9})``
   * Clojure message:
-    * ``message``
+    * ``ArityException Wrong number of args (2) passed to: core/assoc``
   * Our project message:
-    * ``message``
+    * ``ERROR: Attempted to use a keyword, but a map or a vector was expected.``
   * Hint/Explanation:
     * 
 
 * ``(assoc {:a 3} {:a 5, :b 8, :c 9})``
   * Clojure message:
-    * ``message``
+    * ``ArityException Wrong number of args (2) passed to: core/assoc``
   * Our project message:
-    * ``message``
+    * ``ERROR: Wrong number of arguments (2) passed to a function assoc``
   * Hint/Explanation:
     * 
 
 * ``(assoc {:a 5, :b 8, :c 9} :a 3)``
-  * Clojure message:
-    * ``message``
-  * Our project message:
-    * ``message``
   * Hint/Explanation:
-    * 
+    * This works!
 
 ####Day 5
+On the fifth day of Clojure, Addison needs to write a function which takes a sequence and returns the maximum value from the sequence without using max or key-max. Here are Addison's attempts:
 
 * ``(defn [coll] penultimate (last (drop-last coll)))``
   * Clojure message:
-    * ``message``
+    * ``IllegalArgumentException First argument to defn must be a symbol``
   * Our project message:
-    * ``message``
+    * Our system does not currently not handle this type of error
   * Hint/Explanation:
     * 
 
 * ``(defn penultimate [coll] (last (drop-last coll)))``
-  * Clojure message:
-    * ``message``
-  * Our project message:
-    * ``message``
   * Hint/Explanation:
+    * This works!
+ 
+####Day 6
+On the sixth day of Clojure, Darwin has been given the task to write a print statement that prints out a list of numbers using loop and he needs some help. Here are Darwin's attempts:
+
+* ``(loop [x 10] (while (> x 1) (println x) (recur (- x 1))))``
+  * Clojure message:
+    * ``java.lang.UnsupportedOperationException: Can only recur from tail position``
+  * Our project message:
+    * Our system does not currently not handle this type of error
+  * Hint/Explanation:
+    * 
+* ``(loop [x 10] (when (> x 1) (println x) (recur (- x 1))))``
+  * Clojure message:
+    * No error message given
+  * Our project message:
+    * ``ERROR: An index in a sequence is out of bounds. The index is: 10``
+  * Hint/Explanation:
+    * 
+* ``(loop [x 10] (if (> x 1) (println x) (recur (- x 1))))``
+  * Clojure message:
+    * No error message given
+  * Our project message:
+    * ``ERROR: An index in a sequence is out of bounds. The index is: 10``
+  * Hint/Explanation:
+    * 
+* ``(loop [x 10] (if (= x 0) x (do (println x) (recur (- x 1)))))``
+  * Clojure message:
+    * No error message given
+  * Our project message:
+    * ``ERROR: An index in a sequence is out of bounds. The index is: 10``
+  * Hint/Explanation
     * 
