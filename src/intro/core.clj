@@ -8,13 +8,14 @@
             [intro.student :refer :all]
             [corefns.collection_fns :refer :all]
             [utilities.file_IO :refer :all]
-            [errors.error_dictionary_test :refer :all] ;takeout
-            [errors.exceptions :refer :all] ;takeout
-            [clj-stacktrace.core :as stacktrace] ;takeout
-            [errors.THE_ERROR_IS_HERE :refer :all] ;takeout
+            ;[errors.error_dictionary_test :refer :all] ;takeout
+            ;[errors.exceptions :refer :all] ;takeout
+            ;[clj-stacktrace.core :as stacktrace] ;takeout
+            ;[errors.THE_ERROR_IS_HERE :refer :all] ;takeout
             [compilation_errors.loopevenforms :refer :all]
             [errors.prettify_exception :refer :all]
-            [errors.messageobj :refer :all])) ;takeout
+           ; [errors.messageobj :refer :all] ;takeout
+            ))
 ;(.getMessage (run-and-catch-raw 'intro.core '(hash-map "c" :d "d")))
 
 (refer 'corefns.corefns)
@@ -569,6 +570,7 @@
 
 (defn -main [& args]
   (try
+    (loop [x 10] (if (> x 1) (println x) (recur (- x 1))))
     ;(compile 'compilation_errors.eof)
     ;(compile 'compilation_errors.unmatched_delimiter)
     ;(test-our-examples)
@@ -668,7 +670,7 @@
     ;(let [x] (+ x 2))
     ;(compile 'errors.loopevenforms)
     ;(throw (new NullPointerException "some message"))
-    (throw (exception-obj-to-java-Throwable (run-and-catch-pretty-with-stacktrace `(n))))
+    ;(throw (exception-obj-to-java-Throwable (run-and-catch-pretty-with-stacktrace `(n))))
     ;(display-error (run-and-catch-pretty-with-stacktrace '(n)))
   (catch Throwable e (display-error (prettify-exception e)))))
     ;(catch Throwable e (export-to-file e "exceptions/type_something_here.ser"))))
