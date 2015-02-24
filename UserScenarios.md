@@ -66,7 +66,8 @@ On the third day of Clojure, Laken is super-excited to start working with lists!
   * Our project message:
     * ``ERROR: Attempted to use a string, but a function was expected.``
   * Hint/Explanation:
-    * 
+    * Be careful about what comes immediately after an open paren. Clojure might think that it is a function name.
+    Example: ("add" 5 3) (first argument would be dynamic depending on what type the exception complains about
 
 * ``(conj "ACDC" '("Daft Punk" "U2" "ZZ Top"))``
   * Clojure message:
@@ -74,7 +75,7 @@ On the third day of Clojure, Laken is super-excited to start working with lists!
   * Our project message:
     * ``ERROR: Attempted to use a string, but a collection was expected.``
   * Hint/Explanation:
-    * 
+    * Check that the order of arguments for a function are in the correct order.
 
 * ``(conj '("Daft Punk" "U2" "ZZ Top") "ACDC")``
   * Hint/Explanation:
@@ -89,15 +90,16 @@ On the fourth day of Clojure, Keylan is a little bit nervous to work with Maps. 
   * Our project message:
     * ``ERROR: Attempted to use a keyword, but a map or a vector was expected.``
   * Hint/Explanation:
-    * 
+    * Check that the order of arguments for a function are in the correct order.
 
 * ``(assoc (:a 3) {:a 5, :b 8, :c 9})``
   * Clojure message:
     * ``ArityException Wrong number of args (2) passed to: core/assoc``
   * Our project message:
-    * ``ERROR: Attempted to use a keyword, but a map or a vector was expected.``
+    * ``ERROR: Wrong number of arguments (2) passed to a function assoc``
   * Hint/Explanation:
-    * 
+    * Check the documentation of the function to see how many arguments are required. 
+     (possibly adding links to the documentation to the error message)
 
 * ``(assoc {:a 3} {:a 5, :b 8, :c 9})``
   * Clojure message:
@@ -105,7 +107,7 @@ On the fourth day of Clojure, Keylan is a little bit nervous to work with Maps. 
   * Our project message:
     * ``ERROR: Wrong number of arguments (2) passed to a function assoc``
   * Hint/Explanation:
-    * 
+    * Check the documentation of the function to see how many arguments are required. 
 
 * ``(assoc {:a 5, :b 8, :c 9} :a 3)``
   * Hint/Explanation:
@@ -118,7 +120,7 @@ On the fifth day of Clojure, Addison needs to write a function which takes a seq
   * Clojure message:
     * ``IllegalArgumentException First argument to defn must be a symbol``
   * Our project message:
-    * Our system does not currently not handle this type of error
+    * Our system does not currently not handle this type of error. (Compilation Error)
   * Hint/Explanation:
     * 
 
@@ -133,23 +135,10 @@ On the sixth day of Clojure, Darwin has been given the task to write a print sta
   * Clojure message:
     * ``java.lang.UnsupportedOperationException: Can only recur from tail position``
   * Our project message:
-    * Our system does not currently not handle this type of error
+    * Our system does not currently not handle this type of error (Compilation Error)
   * Hint/Explanation:
     * 
-* ``(loop [x 10] (when (> x 1) (println x) (recur (- x 1))))``
-  * Clojure message:
-    * No error message given
-  * Our project message:
-    * ``ERROR: An index in a sequence is out of bounds. The index is: 10``
-  * Hint/Explanation:
-    * 
-* ``(loop [x 10] (if (> x 1) (println x) (recur (- x 1))))``
-  * Clojure message:
-    * No error message given
-  * Our project message:
-    * ``ERROR: An index in a sequence is out of bounds. The index is: 10``
-  * Hint/Explanation:
-    * 
+
 * ``(loop [x 10] (if (= x 0) x (do (println x) (recur (- x 1)))))``
   * Clojure message:
     * No error message given
