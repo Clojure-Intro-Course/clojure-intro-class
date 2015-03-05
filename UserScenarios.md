@@ -6,7 +6,7 @@ Notes from Paul: Nightcode is much more user friendly for writing code, our erro
 Suzie starts her first “Hello World” program on the first day of class in a repl from our project. Here are all her code attempts:
 * ``(print Hello World)``
   * Clojure message:
-    * ``java.lang.Exception: Unable to resolve symbol: Hello in this context``
+    * ``CompilerException java.lang.RuntimeException: Unable to resolve symbol: Hello in this context``
   * Our project message:
     * Our system does not currently not handle this type of error
   * Hint/Explanation:
@@ -14,15 +14,15 @@ Suzie starts her first “Hello World” program on the first day of class in a 
 
 * ``(print 'Hello World')``
   * Clojure message:
-    * ``java.lang.Exception: Unmatched delimiter: )``
+    * ``CompilerException java.lang.RuntimeException: Unable to resolve symbol: World' in this context ``
   * Our project message:
     * Our system does not currently not handle this type of error
   * Hint/Explanation:
     * Work on THIS
 
-* ``print("Hello World")``
+* `` print("Hello World")``
   * Clojure message:
-    * ``java.lang.ClassCastException: java.lang.String cannot be cast to clojure.lang.IFn``
+    * ``ClassCastException java.lang.String cannot be cast to clojure.lang.IFn``
   * Our project message:
     * ``ERROR: Attempted to use a string, but a function was expected.``
   * Hint/Explanation:
@@ -37,7 +37,7 @@ Suzie starts her first “Hello World” program on the first day of class in a 
 For the second day of Clojure, Jaden wants to define a function in a repl from within our project. Here are all his code attempts:
 * ``(fn squareThis input*input)``
   * Clojure message:
-    * ``java.lang.RuntimeException: java.lang.UnsupportedOperationException: nth not supported on this type: Symbol``
+    * ``IllegalArgumentException Parameter declaration input*input should be a vector``
   * Our project message:
     * Our system does not currently not handle this type of error
   * Hint/Explanation:
@@ -47,13 +47,15 @@ For the second day of Clojure, Jaden wants to define a function in a repl from w
     
   ``(squareThis 5)``
   * Clojure message:
-    * ``java.lang.Exception: Unable to resolve symbol: squareThis in this context``
+    * ``CompilerException java.lang.RuntimeException: Unable to resolve symbol: squareThis in this context``
   * Our project message:
     * Our system does not currently not handle this type of error
   * Hint/Explanation:
     * 
 
 * ``(defn squareThis [x] (* x x))``
+
+  ``(squareThis 5)``
   * Hint/Explanation:
     * This works!
 
@@ -125,6 +127,8 @@ On the fifth day of Clojure, Addison needs to write a function which takes a seq
     * 
 
 * ``(defn penultimate [coll] (last (drop-last coll)))``
+
+  ``(penultimate [3 4 5 8 9 0 3])``
   * Hint/Explanation:
     * This works!
  
@@ -133,7 +137,7 @@ On the sixth day of Clojure, Darwin has been given the task to write a print sta
 
 * ``(loop [x 10] (while (> x 1) (println x) (recur (- x 1))))``
   * Clojure message:
-    * ``java.lang.UnsupportedOperationException: Can only recur from tail position``
+    * ``CompilerException java.lang.UnsupportedOperationException: Can only recur from tail position``
   * Our project message:
     * Our system does not currently not handle this type of error (Compilation Error)
   * Hint/Explanation:
@@ -145,4 +149,4 @@ On the sixth day of Clojure, Darwin has been given the task to write a print sta
   * Our project message:
     * ``ERROR: An index in a sequence is out of bounds. The index is: 10``
   * Hint/Explanation
-    * 
+    * This works????? (I think??)
