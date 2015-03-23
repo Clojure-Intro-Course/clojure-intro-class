@@ -44,7 +44,7 @@ For the second day of Clojure, Jaden wants to define a function in a repl from w
     * In this particular case, fn was expecting a vector of parameters and it didn't find one. In the general case, something was looking for a collection and didn't find one.
 
 * ``(fn squareThis [x] (* x x))``<br>
-     ``(squareThis 5)``
+  ``(squareThis 5)``
   * Clojure message:
     * ``CompilerException java.lang.RuntimeException: Unable to resolve symbol: squareThis in this context``
   * Our project message:
@@ -52,8 +52,7 @@ For the second day of Clojure, Jaden wants to define a function in a repl from w
   * Hint/Explanation:
     * 
 
-* ``(defn squareThis [x] (* x x))``
-
+* ``(defn squareThis [x] (* x x))``<br>
   ``(squareThis 5)``
   * Hint/Explanation:
     * This works!
@@ -125,8 +124,7 @@ On the fifth day of Clojure, Addison needs to write a function which takes a seq
   * Hint/Explanation:
     * 
 
-* ``(defn penultimate [coll] (last (drop-last coll)))``
-
+* ``(defn penultimate [coll] (last (drop-last coll)))``<br>
   ``(penultimate [3 4 5 8 9 0 3])``
   * Hint/Explanation:
     * This works!
