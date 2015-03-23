@@ -44,12 +44,10 @@ For the second day of Clojure, Jaden wants to define a function in a repl from w
     * In this particular case, fn was expecting a vector of parameters and it didn't find one. In the general case, something was looking for a collection and didn't find one.
 
 * example
-
   ```
   (fn squareThis [x] (* x x))
   (squareThis 5)
   ```
-  
   * Clojure message:
     * ``CompilerException java.lang.RuntimeException: Unable to resolve symbol: squareThis in this context``
   * Our project message:
