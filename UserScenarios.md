@@ -10,7 +10,7 @@ Suzie starts her first “Hello World” program on the first day of class in a 
   * Our project message:
     * Our system does not currently not handle this type of error
   * Hint/Explanation:
-    * This breaks because Clojure thinks that Hello is a symbol (identifier) when Suzie 	wanted it to be just plain text. Our program could respond with a suggestion that if the user wanted the phrase to be plain text to surround it with double quotes. It could also suggest to double-check that the user spelled the symbol correctly.
+    * This breaks because Clojure thinks that Hello is a symbol (identifier) when Suzie	wanted it to be just plain text. Our program could respond with a suggestion that if the user wanted the phrase to be plain text to surround it with double quotes. It could also suggest to double-check that the user spelled the symbol correctly.
 
 * ``(print 'Hello World')``
   * Clojure message:
@@ -18,7 +18,7 @@ Suzie starts her first “Hello World” program on the first day of class in a 
   * Our project message:
     * Our system does not currently not handle this type of error
   * Hint/Explanation:
-    * Work on THIS
+    * Be careful about your usage of single quotation marks, they do not behave the same as double quotes.
 
 * `` print("Hello World")``
   * Clojure message:
@@ -50,7 +50,7 @@ For the second day of Clojure, Jaden wants to define a function in a repl from w
   * Our project message:
     * Our system does not currently not handle this type of error
   * Hint/Explanation:
-    * 
+    * If you want squareThis to be a function that you can reference later, use defn instead of fn.
 
 * ``(defn squareThis [x] (* x x))``<br>
   ``(squareThis 5)``
