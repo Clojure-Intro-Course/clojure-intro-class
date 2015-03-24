@@ -570,7 +570,7 @@
 
 (defn -main [& args]
   (try
-    (loop [x 10] (if (> x 1) (println x) (recur (- x 1))))
+    ;(loop [x 10] (if (> x 1) (println x) (recur (- x 1))))
     ;(compile 'compilation_errors.eof)
     ;(compile 'compilation_errors.unmatched_delimiter)
     ;(test-our-examples)
@@ -672,5 +672,11 @@
     ;(throw (new NullPointerException "some message"))
     ;(throw (exception-obj-to-java-Throwable (run-and-catch-pretty-with-stacktrace `(n))))
     ;(display-error (run-and-catch-pretty-with-stacktrace '(n)))
+    ;(5 - 5)
+    ;(map "add one" [1 2 3])
+    ;(print Hello World)
+    ;(/ (+ (* 5 2) nil) 8)
+    ;(nil 3)
+    (2 3)
   (catch Throwable e (display-error (prettify-exception e)))))
     ;(catch Throwable e (export-to-file e "exceptions/type_something_here.ser"))))
