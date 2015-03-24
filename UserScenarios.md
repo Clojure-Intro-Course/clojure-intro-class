@@ -18,7 +18,7 @@ Suzie starts her first “Hello World” program on the first day of class in a 
   * Our project message:
     * Our system does not currently not handle this type of error
   * Hint/Explanation:
-    * Be careful about your usage of single quotation marks, they do not behave the same as double quotes.
+    * Be careful about your usage of single quotation marks, they do not behave the same as double quotes. Make sure your strings are wrapped in double quotes.
 
 * `` print("Hello World")``
   * Clojure message:
