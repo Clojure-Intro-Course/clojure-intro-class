@@ -1,7 +1,4 @@
 ###User Scenarios
-
-Notes from Paul: Nightcode is much more user friendly for writing code, our error message system does not handle several kinds of errors, our error message system displays clojure functions in bold (which is cool), when our custom error pops up and you press the 'X' button instead of 'ok', clojure doesn't stop and continues running until the user force stops the program.
-
 ####Day 1
 Suzie starts her first “Hello World” program on the first day of class in a repl from our project. Here are all her code attempts:
 * ``(print Hello World)``
