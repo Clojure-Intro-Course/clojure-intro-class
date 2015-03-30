@@ -5,7 +5,7 @@ Suzie starts her first “Hello World” program on the first day of class in a 
   * Clojure message:
     * ``CompilerException java.lang.RuntimeException: Unable to resolve symbol: Hello in this context``
   * Our project message:
-    * Our system does not currently not handle this type of error
+    * ``ERROR: Compilation error: name Hello is undefined, while compiling``
   * Hint/Explanation:
     * This breaks because Clojure thinks that Hello is a symbol (identifier) when Suzie	wanted it to be just plain text. Our program could respond with a suggestion that if the user wanted the phrase to be plain text to surround it with double quotes. It could also suggest to double-check that the user spelled the symbol correctly.
 
@@ -13,7 +13,7 @@ Suzie starts her first “Hello World” program on the first day of class in a 
   * Clojure message:
     * ``CompilerException java.lang.RuntimeException: Unable to resolve symbol: World' in this context ``
   * Our project message:
-    * Our system does not currently not handle this type of error
+    * ``ERROR: Compilation error: name World' is undefined, while compiling``
   * Hint/Explanation:
     * Be careful about your usage of single quotation marks, they do not behave the same as double quotes. Make sure your strings are wrapped in double quotes.
 
@@ -36,7 +36,7 @@ For the second day of Clojure, Jaden wants to define a function in a repl from w
   * Clojure message:
     * ``IllegalArgumentException Parameter declaration input*input should be a vector``
   * Our project message:
-    * Our system does not currently not handle this type of error
+    * ``ERROR: Parameters in defn should be a vector, but is input*input`` NOTE: WE ACTUALLY USED FN
   * Hint/Explanation:
     * In this particular case, fn was expecting a vector of parameters and it didn't find one. In the general case, something was looking for a collection and didn't find one.
 
@@ -45,7 +45,7 @@ For the second day of Clojure, Jaden wants to define a function in a repl from w
   * Clojure message:
     * ``CompilerException java.lang.RuntimeException: Unable to resolve symbol: squareThis in this context``
   * Our project message:
-    * Our system does not currently not handle this type of error
+    * ``ERROR: Compilation error: name squareThis is undefined, while compiling``
   * Hint/Explanation:
     * If you want squareThis to be a function that you can reference later, use defn instead of fn.
 
@@ -117,7 +117,7 @@ On the fifth day of Clojure, Addison needs to write a function which takes a seq
   * Clojure message:
     * ``IllegalArgumentException First argument to defn must be a symbol``
   * Our project message:
-    * Our system does not currently not handle this type of error. (Compilation Error)
+    * ``ERROR: First argument to defn must be a symbol``
   * Hint/Explanation:
     * 
 
@@ -133,7 +133,7 @@ On the sixth day of Clojure, Darwin has been given the task to write a print sta
   * Clojure message:
     * ``CompilerException java.lang.UnsupportedOperationException: Can only recur from tail position``
   * Our project message:
-    * Our system does not currently not handle this type of error (Compilation Error)
+    * ``ERROR: Compilation error: recur can only occur as a tail call, meaning no operations can be done after its return, while compiling``
   * Hint/Explanation:
     * 
 
