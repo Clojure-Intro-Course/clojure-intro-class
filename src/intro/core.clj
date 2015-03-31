@@ -12,7 +12,8 @@
             ;[errors.exceptions :refer :all] ;takeout
             ;[clj-stacktrace.core :as stacktrace] ;takeout
             ;[errors.THE_ERROR_IS_HERE :refer :all] ;takeout
-            [compilation_errors.loopevenforms :refer :all]
+            ;[compilation_errors.loopevenforms :refer :all]
+            ;[compilation_errors.unmatched_delimiter :refer :all]
             [errors.prettify_exception :refer :all]
            ; [errors.messageobj :refer :all] ;takeout
             ))
@@ -677,6 +678,15 @@
     ;(print Hello World)
     ;(/ (+ (* 5 2) nil) 8)
     ;(nil 3)
-    (2 3)
-  (catch Throwable e (display-error (prettify-exception e)))))
+    ;(2 3)
+    ;(print Hello World)
+    ;(compile 'compilation_errors.unmatched_delimiter)
+    ;(eval 'compilation_errors.unmatched_delimiter)
+    ;(compile 'compilation_errors.unable_to_resolve_symbol_hello)
+    ;(compile 'compilation_errors.unable_to_resolve_world)
+    ;(compile 'compilation_errors.parameter_declaration)
+    ;(compile 'compilation_errors.unable_to_resolve_squareThis)
+    ;(compile 'compilation_errors.first_argument_must_be_symbol)
+    (compile 'compilation_errors.only_recur_from_tail)
+    (catch Throwable e (display-error (prettify-exception e)))))
     ;(catch Throwable e (export-to-file e "exceptions/type_something_here.ser"))))
