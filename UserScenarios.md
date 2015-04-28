@@ -144,3 +144,42 @@ On the sixth day of Clojure, Darwin has been given the task to write a print sta
     * ``ERROR: An index in a sequence is out of bounds. The index is: 10``
   * Hint/Explanation
     * This works????? (I think??)
+
+####Day 7
+On the seventh day of Clojure, Geoff has been given the task to write a factorial function that uses recurion and he needs help. Here are his attempts:
+
+* ``(defn factorial [input] (* input (factorial (- input 1))))``<br>
+  ``(factorial 5)``
+  * Clojure message:
+    * ``StackOverflowError   clojure.lang.Numbers$LongOps.negate (Numbers.java:518)``
+  * Our project message:
+    * ``Exception in thread "main" java.lang.ClassCastException: java.lang.String cannot be cast to java.util.regex.Pattern``
+  * Hint/Explanation:
+    * You may have forgetten a base case for your recursive/looping function.
+
+* ``(defn factorial [input] (if (>= input 1) (* input (factorial (- input 1))) 1))``<br>
+  ``(factorial 5)``<br>
+  ``-> 120``
+  * Hint/Explanation
+    * This works!
+
+####Day 8
+On the eighth day of Clojure, Symmetra has been given the task to find the square root of the first odd number in a collection. Here are her attempts:
+
+* ``(defn first-odd-sqrt [my-collection] (Math/sqrt (first (filter odd? my-collection))))``<br>
+  ``(first-odd-sqrt [2, 4])``
+  * Clojure message:
+    * ``NullPointerException   clojure.lang.RT.doubleCast (RT.java:1222)``
+  * Our project message:
+    * ``ERROR: An attempt to access a non-existing object. (NullPointerException)``
+  * Hint/Explanation:
+    * One of the functions you are using might be returning nil for some reason. Try to evaluate the function calls from the inside out to see where this might be occuring.
+
+* ``(defn first-odd-sqrt [my-collection] (Math/sqrt (filter odd? my-collection)))``<br>
+  ``(first-odd-sqrt [2, 3, 9, 12, 5])``
+  * Clojure message:
+    * ``ClassCastException clojure.lang.LazySeq cannot be cast to java.lang.Number``
+  * Our project message:
+    * ``ERROR: Attempted to use a sequence, but a number was expected.``
+  * Hint/Explanation:
+    * 
