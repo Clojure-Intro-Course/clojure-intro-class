@@ -1,3 +1,3 @@
 (ns compilation_errors.parameter_declaration)
 
-(fn squareThis input*input)
+(defn square-this (input * input))
