@@ -695,6 +695,15 @@
     ;(defn square-this [input] (input * input))
     ;(square-this 2)
     ;(compile 'compilation_errors.unable_to_resolve_symbol_hello)
-    (print "Hello World")
+    ;(print "Hello World")
+    ;(defn factorial [input]
+    ;  (if (>= input 1) (* input (factorial (- input 1))) 1))
+    ;(print (factorial 5))
+    (defn first-odd-sqrt [my-collection]
+      (Math/sqrt (filter odd? my-collection)))
+    (first-odd-sqrt [2, 3, 9, 12, 5])
+    ;(defn first-odd-sqrt [my-collection]
+    ;  (Math/sqrt (first (filter odd? my-collection))))
+    ;(first-odd-sqrt [2, 4])
     (catch Throwable e (display-error (prettify-exception e)))))
     ;(catch Throwable e (export-to-file e "exceptions/type_something_here.ser"))))
