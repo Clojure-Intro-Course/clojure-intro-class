@@ -26,6 +26,13 @@
 	"creates a vector of hash-maps out of a vector that are strings, possibly followed by optional keywords"
 	(make-msg-info-hashes-helper args []))
 
+
+(defn add-to-msg-info
+  "adds an addition (converted to a string) to the end of an existing msg-info-obj, with an optional style keyword"
+  ([old-msg-info addition style] (conj old-msg-info (make-msg-info-hash addition style)))
+  ([old-msg-info addition] (conj old-msg-info (make-msg-info-hash addition))))
+
+
 ;(defn make-msg-info-hashes  [messages]
 ;	"creates a vector of hash-maps out of a vector of vectors of msg + optional style"
 ;	;; apply is needed since messages contains vectors of 1 or 2 elements
