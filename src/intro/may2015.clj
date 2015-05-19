@@ -4,5 +4,8 @@
             [corefns.collection_fns :refer :all]))
 
 ;(defn 4 5)
-(+ 4 5)
-(map 2 '(1 2 3))
+;(+ 4 5)
+;(zero? 7 8)
+;(nth [1 2] 3)
+;(map 2 '(1 2 3))
+

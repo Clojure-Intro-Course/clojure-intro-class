@@ -131,8 +131,10 @@
     {}))
 
 ;; All together:
-(defn prettify-exception [e]
-  (let [e-class (class e)
+(defn prettify-exception [ex]
+  (let [cause (.getCause ex)
+        e (if (and cause (= (class ex) clojure.lang.Compiler$CompilerException)) cause ex)
+        e-class (class e)
         m (.getMessage e)
         message  (if m m "") ; converting an empty message from nil to ""
         exc (stacktrace/parse-exception e)

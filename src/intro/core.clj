@@ -709,5 +709,5 @@
     ;(map 2 '(1 2 3))
     (compile 'intro.may2015)
     (print (load-file "src/intro/may2015.clj"))
-    (catch Throwable e (print e) (display-error (prettify-exception e)))))
+    (catch Throwable e (print (.getCause e)) (display-error (prettify-exception e)))))
     ;(catch Throwable e (export-to-file e "exceptions/type_something_here.ser"))))
