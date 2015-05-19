@@ -195,6 +195,12 @@
     :make-msg-info-obj  (fn [matches] (process-assert-obj-with-extra-arg nil (str " Compiling " (nth matches 3))))
     :exc-location (fn [matches] {:path :unknown, :filename :unknown, :line :unknown, :character :unknown, :exception-type :unknown})}
 
+   {:key :compiler-assertion-error-with-argument
+    :class clojure.lang.Compiler$CompilerException
+    ;; This seems to match the wrong thing when we run load-file:
+    :match #"(.*): Assert failed: \((.*) argument(.*)\), compiling:\((.*)\)"
+    :make-msg-info-obj  (fn [matches] (process-assert-obj-with-extra-arg (nth matches 3) (str " Compiling " (nth matches 4))))
+    :exc-location (fn [matches] {:path :unknown, :filename :unknown, :line :unknown, :character :unknown, :exception-type :unknown})}
 
    ;################################################
    ;### Compilation Errors: Class Cast Exception ###
