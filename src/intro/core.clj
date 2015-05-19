@@ -6,13 +6,14 @@
             [strings.beginner_string_library :refer :all]
             [errors.errorgui :refer :all]
             [intro.student :refer :all]
+            ;[intro.may2015 :refer :all]
             [corefns.collection_fns :refer :all]
             [utilities.file_IO :refer :all]
             ;[errors.error_dictionary_test :refer :all] ;takeout
             ;[errors.exceptions :refer :all] ;takeout
             ;[clj-stacktrace.core :as stacktrace] ;takeout
             ;[errors.THE_ERROR_IS_HERE :refer :all] ;takeout
-            [compilation_errors.eof :refer :all]
+            ;[compilation_errors.eof :refer :all]
             ;[compilation_errors.unmatched_delimiter :refer :all]
             [errors.prettify_exception :refer :all]
            ; [errors.messageobj :refer :all] ;takeout
@@ -699,11 +700,13 @@
     ;(defn factorial [input]
     ;  (if (>= input 1) (* input (factorial (- input 1))) 1))
     ;(print (factorial 5))
-    (defn first-odd-sqrt [my-collection]
-      (Math/sqrt (filter odd? my-collection)))
-    (first-odd-sqrt [2, 3, 9, 12, 5])
+    ;(defn first-odd-sqrt [my-collection]
+    ;  (Math/sqrt (filter odd? my-collection)))
+    ;(first-odd-sqrt [2, 3, 9, 12, 5])
     ;(defn first-odd-sqrt [my-collection]
     ;  (Math/sqrt (first (filter odd? my-collection))))
     ;(first-odd-sqrt [2, 4])
+    (compile 'intro.may2015)
+    (print (load-file "src/intro/may2015.clj"))
     (catch Throwable e (display-error (prettify-exception e)))))
     ;(catch Throwable e (export-to-file e "exceptions/type_something_here.ser"))))

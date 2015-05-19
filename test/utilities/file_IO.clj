@@ -35,7 +35,7 @@
     (.writeObject obj-stream obj)
     (.close obj-stream)
     (.close file-stream)
-    (println (str "data saved in project folder or: " filepath))
+    ;(println (str "data saved in project folder or: " filepath))
   ))
 
 (defn import-from-file
