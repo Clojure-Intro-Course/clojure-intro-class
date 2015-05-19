@@ -183,6 +183,19 @@
                                                            " as a variable."))
     :exc-location (fn [matches] {:path :unknown, :filename :unknown, :line :unknown, :character :unknown, :exception-type :unknown})}
 
+   ;################################################
+   ;### Compilation Errors: Class Cast Exception ###
+   ;################################################
+
+   {:key :compiler-class-cast-exception-compiling
+    :class clojure.lang.Compiler$CompilerException
+    :match #"(.+): (.*) cannot be cast to (.*), compiling:(.*)"
+    :make-msg-info-obj (fn [matches] (make-msg-info-hashes "Attempted to use "
+                                                           (get-type (nth matches 2)) :type ", but "
+                                                           (get-type (nth matches 3)) :type " was expected."
+                                                           ", while compiling " (nth matches 4)))
+    :exc-location (fn [matches] {:path :unknown, :filename :unknown, :line :unknown, :character :unknown, :exception-type :unknown})}
+
    ;#######################################################
    ;### Compilation Errors: Illegal Argument Exceptions ###
    ;#######################################################
