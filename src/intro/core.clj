@@ -706,7 +706,8 @@
     ;(defn first-odd-sqrt [my-collection]
     ;  (Math/sqrt (first (filter odd? my-collection))))
     ;(first-odd-sqrt [2, 4])
+    ;(map 2 '(1 2 3))
     (compile 'intro.may2015)
     (print (load-file "src/intro/may2015.clj"))
-    (catch Throwable e (display-error (prettify-exception e)))))
+    (catch Throwable e (print e) (display-error (prettify-exception e)))))
     ;(catch Throwable e (export-to-file e "exceptions/type_something_here.ser"))))
