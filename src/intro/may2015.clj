@@ -3,9 +3,5 @@
             [corefns.corefns :refer :all]
             [corefns.collection_fns :refer :all]))
 
-;(defn 4 5)
-;(+ 4 5)
-;(zero? 7 8)
-;(nth [1 2] 3)
-;(map 2 '(1 2 3))
+(= ((fn [x] (for [y x :when odd? y] y)) #{1 2 3 4 5}) '(1 3 5))
 

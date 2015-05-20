@@ -65,14 +65,13 @@
    {:key :illegal-argument-even-number-of-forms
     :class IllegalArgumentException
     :match #"(.*) requires an even number of forms"
-    :make-msg-info-obj (fn [matches] (make-msg-info-hashes "There is an unmatched parameter in declaration of "
-                                                           (nth matches 1) :arg))
+    :make-msg-info-obj (fn [matches] (make-msg-info-hashes "Parameters for " (nth matches 1) :arg "must come in pairs, but one of them does not have a match"))
     :exc-location (fn [matches] {:path :unknown, :filename :unknown, :line :unknown, :character :unknown, :exception-type :unknown})}
    {:key :illegal-argument-even-number-of-forms-in-binding-vector
     :class IllegalArgumentException
     :match #"(.*) requires an even number of forms in binding vector in (.*):(.*)"
-    :make-msg-info-obj (fn [matches] (make-msg-info-hashes "A parameter for a " (nth matches 1)
-                                                           " is missing a binding on line "
+    :make-msg-info-obj (fn [matches] (make-msg-info-hashes "Parameters for " (nth matches 1) :arg
+                                                           " must come in pairs, but one of them does not have a match; on line "
                                                            (nth matches 3) " in the file " (nth matches 2)))
     :exc-location (fn [matches] {:path :unknown, :filename (nth matches 2), :line (read-string (nth matches 3)), :character :unknown, :exception-type :runtime})}
 
