@@ -209,3 +209,4 @@
    (map
     inc
     [2 3 "hi" "bye"])))
+(def not-your-usual-name 5)

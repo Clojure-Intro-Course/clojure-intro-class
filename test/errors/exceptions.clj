@@ -58,17 +58,18 @@
 (defn run-and-catch-raw
   "A function that takes quoted code and runs it, attempting to catch any
   exceptions it may throw. Returns the exeception or nil. If a quoted namespace is
-  given, it runs the code in that namespace."
+  given, it runs the code in that namespace.Attempted to use a symbol, but unrecognized type clojure.lang.Namespace was expected."
   ([code]
    (try
      (eval code)
      (catch Throwable e e)))
   ([name-space code]
-   (in-ns name-space)
- ;;We might want to switch back to original ns
-   (try
-     (eval code)
-     (catch Throwable e e))))
+    (try
+      (let [our-ns (find-ns name-space)]
+        ;(print (filter (fn [x] (re-matches #".*intro.*" (str x)))  (all-ns)))
+        ;(print (str "printing namespace: " (nil? our-ns)))
+        (binding [*ns* our-ns] (eval code)))
+     (catch Throwable e (print e) e))))
 
 (defn run-and-catch-pretty-no-stacktrace
   "A function that takes quoted code and runs it, attempting to catch any
