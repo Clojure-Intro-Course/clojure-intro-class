@@ -133,7 +133,7 @@
 ;; All together:
 (defn prettify-exception [ex]
   (let [cause (.getCause ex)
-        e (if (and cause (= (class ex) clojure.lang.Compiler$CompilerException)) cause ex)
+        e (if (and cause (= (class ex) clojure.lang.Compiler$CompilerException) (not= (class cause) java.lang.RuntimeException)) cause ex)
         e-class (class e)
         m (.getMessage e)
         message  (if m m "") ; converting an empty message from nil to ""

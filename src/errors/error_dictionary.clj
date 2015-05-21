@@ -186,9 +186,10 @@
    ;### Compilation Errors: Assertion Failed ###
    ;############################################
 
+   ; Elena: these should probably go away:
+
    {:key :compiler-assertion-error-with-argument
     :class clojure.lang.Compiler$CompilerException
-    ;; This seems to match the wrong thing when we run load-file:
     :match #"(.*): Assert failed: \((.*) argument(.*)\), compiling:\((.*)\)"
     :make-msg-info-obj  (fn [matches] (process-assert-obj-with-extra-arg (nth matches 3) (str " Compiling " (nth matches 4))))
     :exc-location (fn [matches] {:path :unknown, :filename :unknown, :line :unknown, :character :unknown, :exception-type :unknown})}
@@ -202,6 +203,8 @@
    ;################################################
    ;### Compilation Errors: Class Cast Exception ###
    ;################################################
+
+   ; This should probably go away:
 
    {:key :compiler-class-cast-exception-compiling
     :class clojure.lang.Compiler$CompilerException
@@ -339,7 +342,15 @@
    ;### Compilation Errors: Unknown ###
    ;###################################
 
-   {:key :compiler-exception-end-of-file
+    {:key :compiler-exception-end-of-file
+    :class clojure.lang.Compiler$CompilerException
+    :true-exception :unknown
+    :match #"EOF while reading, starting at line (.+)"
+    :make-msg-info-obj (fn [matches] (make-msg-info-hashes "Compilation error: end of file, starting at line " (nth matches 1) :arg
+                                                           ".\nProbably a non-closing parenthesis or bracket."))
+    :exc-location (fn [matches] {:path :unknown, :filename :unknown, :line :unknown, :character :unknown, :exception-type :unknown})}
+
+   {:key :compiler-exception-end-of-file-with-location
     :class clojure.lang.Compiler$CompilerException
     :true-exception :unknown
     :match #"(.+): EOF while reading, starting at line (.+), compiling:(.+)"

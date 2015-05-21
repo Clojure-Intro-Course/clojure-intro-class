@@ -18,7 +18,6 @@
             [errors.prettify_exception :refer :all]
            ; [errors.messageobj :refer :all] ;takeout
             ))
-;(.getMessage (run-and-catch-raw 'intro.core '(hash-map "c" :d "d")))
 
 (refer 'corefns.corefns)
 
