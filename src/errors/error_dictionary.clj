@@ -182,38 +182,6 @@
                                                            " as a variable."))
     :exc-location (fn [matches] {:path :unknown, :filename :unknown, :line :unknown, :character :unknown, :exception-type :unknown})}
 
-   ;############################################
-   ;### Compilation Errors: Assertion Failed ###
-   ;############################################
-
-   ; Elena: these should probably go away:
-
-   {:key :compiler-assertion-error-with-argument
-    :class clojure.lang.Compiler$CompilerException
-    :match #"(.*): Assert failed: \((.*) argument(.*)\), compiling:\((.*)\)"
-    :make-msg-info-obj  (fn [matches] (process-assert-obj-with-extra-arg (nth matches 3) (str " Compiling " (nth matches 4))))
-    :exc-location (fn [matches] {:path :unknown, :filename :unknown, :line :unknown, :character :unknown, :exception-type :unknown})}
-
-   {:key :compiler-assertion-error-without-argument
-    :class clojure.lang.Compiler$CompilerException
-    :match #"(.*): Assert failed: (.*), compiling:\((.*)\)"
-    :make-msg-info-obj  (fn [matches] (process-assert-obj-with-extra-arg nil (str " Compiling " (nth matches 3))))
-    :exc-location (fn [matches] {:path :unknown, :filename :unknown, :line :unknown, :character :unknown, :exception-type :unknown})}
-
-   ;################################################
-   ;### Compilation Errors: Class Cast Exception ###
-   ;################################################
-
-   ; This should probably go away:
-
-   {:key :compiler-class-cast-exception-compiling
-    :class clojure.lang.Compiler$CompilerException
-    :match #"(.+): (.*) cannot be cast to (.*), compiling:(.*)"
-    :make-msg-info-obj (fn [matches] (make-msg-info-hashes "Attempted to use "
-                                                           (get-type (nth matches 2)) :type ", but "
-                                                           (get-type (nth matches 3)) :type " was expected."
-                                                           ", while compiling " (nth matches 4)))
-    :exc-location (fn [matches] {:path :unknown, :filename :unknown, :line :unknown, :character :unknown, :exception-type :unknown})}
 
    ;#######################################################
    ;### Compilation Errors: Illegal Argument Exceptions ###

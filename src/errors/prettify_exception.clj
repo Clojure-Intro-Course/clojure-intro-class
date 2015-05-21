@@ -130,10 +130,20 @@
     ((:exc-location entry) (re-matches (:match entry) message))
     {}))
 
+(defn get-cause-if-needed
+  "returns the cause of a compilation exception in cases when we need
+   to process the cause, not the exception itself"
+  ; this may acquire a lot of separate cases
+  [e]
+  (let [cause (.getCause e)]
+    (if (and cause ; has a non-nil cause
+             (= (class e) clojure.lang.Compiler$CompilerException)
+             (not= (class cause) java.lang.RuntimeException))
+      cause e)))
+
 ;; All together:
 (defn prettify-exception [ex]
-  (let [cause (.getCause ex)
-        e (if (and cause (= (class ex) clojure.lang.Compiler$CompilerException) (not= (class cause) java.lang.RuntimeException)) cause ex)
+  (let [e (get-cause-if-needed ex)
         e-class (class e)
         m (.getMessage e)
         message  (if m m "") ; converting an empty message from nil to ""
