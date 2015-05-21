@@ -6,7 +6,8 @@
                  [clj-stacktrace "0.2.8"] ;;No updates for over a year
                  [org.clojure/core.incubator "0.1.2"] ;;No updates for over a year
                  [seesaw "1.4.3"]
-                 [expectations "2.0.9"]]
+                 [expectations "2.0.9"]
+                 [quil "2.2.5"]]
   :plugins [[lein-autoexpect "1.0"]
             [lein-pprint "1.1.2"]]
   :main intro.core)
