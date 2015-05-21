@@ -122,6 +122,7 @@
    ;### Arity Exceptions ###
    ;########################
 
+   ; We probably need to rewrite this, indicate what the right nubmer of args is
    {:key :arity-exception-wrong-number-of-arguments
     :class clojure.lang.ArityException
     :match #"Wrong number of args \((.*)\) passed to: (.*)"

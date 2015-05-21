@@ -100,7 +100,7 @@
 
 ;;; check-if-anonymous-function: string -> string
 (defn check-if-anonymous-function [fname]
-  (if (or (= fname "fn") (re-matches #"fn_(.*)" fname))
+  (if (or (= fname "fn") (re-matches #"fn_(.*)" fname) (re-matches #"fn-(.*)" fname))
       "anonymous function" fname))
 
 ;;; get-match-name: string -> string
