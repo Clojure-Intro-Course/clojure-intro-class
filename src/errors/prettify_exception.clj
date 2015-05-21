@@ -136,8 +136,8 @@
   ; this may acquire a lot of separate cases
   [e]
   (let [cause (.getCause e)]
-    (if (and cause ; has a non-nil cause
-             (= (class e) clojure.lang.Compiler$CompilerException)
+    (if (and (= (class e) clojure.lang.Compiler$CompilerException)
+             cause ; has a non-nil cause
              (not= (class cause) java.lang.RuntimeException))
       cause e)))
 
