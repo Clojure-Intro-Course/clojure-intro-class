@@ -67,6 +67,7 @@
     :match #"(.*) requires an even number of forms"
     :make-msg-info-obj (fn [matches] (make-msg-info-hashes "Parameters for " (nth matches 1) :arg "must come in pairs, but one of them does not have a match"))
     :exc-location (fn [matches] {:path :unknown, :filename :unknown, :line :unknown, :character :unknown, :exception-type :unknown})}
+
    {:key :illegal-argument-even-number-of-forms-in-binding-vector
     :class IllegalArgumentException
     :match #"(.*) requires an even number of forms in binding vector in (.*):(.*)"

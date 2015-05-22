@@ -66,6 +66,13 @@
           (check-if-seqable? "into" argument2)]}
    (clojure.core/into argument1 argument2))
 
+;; (cons x seq)
+;; Returns a new seq where x is the first element and seq is
+;;  the rest.
+(defn cons [argument1 argument2]
+  {:pre [(check-if-seqable? "cons" argument2)]}
+  (apply clojure.core/cons argument1 argument2))
+
 ;; (reduce f coll)
 ;; (reduce f val coll)
 ;; f should be a function of :not-a-function2 arguments. If val is not supplied,

@@ -69,7 +69,7 @@
         ;(print (filter (fn [x] (re-matches #".*intro.*" (str x)))  (all-ns)))
         ;(print (str "printing namespace: " (nil? our-ns)))
         (binding [*ns* our-ns] (eval code)))
-     (catch Throwable e (print e) e))))
+     (catch Throwable e e))))
 
 (defn run-and-catch-pretty-no-stacktrace
   "A function that takes quoted code and runs it, attempting to catch any
@@ -317,15 +317,17 @@
 ;#################
 
 ;; testing for make-trace-comparison
-(expect {:source '(cons 16 79)
-         :top-elements-match? false
-         :beginning-of-unfiltered-trace '({:method "seqFrom", :class "clojure.lang.RT", :java true}
-                                          {:method "seq", :class "clojure.lang.RT", :java true}
-                                          {:method "cons", :class "clojure.lang.RT", :java true}
-                                          {:fn "cons", :ns "clojure.core", :clojure true})
-         :top-element-of-filtered-trace {:fn "cons", :ns "clojure.core", :clojure true}}
-        (make-trace-comparison (run-and-catch-raw 'intro.student
-                                                  '(cons 16 79)) '(cons 16 79)))
+;; Elena: this used to be a test for non-matching top of teh stack, but now that we
+;; have overwritten cons this is no longer valid. Commenting out.
+;(expect {:source '(cons 16 79)
+;         :top-elements-match? false
+;         :beginning-of-unfiltered-trace '({:method "seqFrom", :class "clojure.lang.RT", :java true}
+;                                          {:method "seq", :class "clojure.lang.RT", :java true}
+;                                        {:method "cons", :class "clojure.lang.RT", :java true}
+;                                          {:fn "cons", :ns "clojure.core", :clojure true})
+;         :top-element-of-filtered-trace {:fn "cons", :ns "clojure.core", :clojure true}}
+;        (make-trace-comparison (run-and-catch-raw 'intro.student
+;                                                  '(cons 16 79)) '(cons 16 79)))
 
 (expect {:source  "4clojure-prob156-AssertionError.ser"
          :top-elements-match?  true
