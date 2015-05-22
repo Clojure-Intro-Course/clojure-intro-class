@@ -115,7 +115,7 @@
 ;;; remove-inliner: string -> string
 (defn- remove-inliner [fname]
   "If fname ends with inliner this will return everything before it"
-  (let [match (nth (re-matches #"(.*)--inliner" fname) 1)]
+  (let [match (nth (re-matches #"(.*)--inliner(.*)" fname) 1)]
     (if match match fname)))
 
 ;;; get-function-name: string -> string

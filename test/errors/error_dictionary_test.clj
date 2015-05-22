@@ -38,7 +38,7 @@
          (run-and-catch-pretty-no-stacktrace 'intro.core '(into {} [[1 2] [3]]))))
 
 ;; testing for :illegal-argument-cannot-convert-type
-(expect "Don't know how to create a sequence from a number"
+(expect "In function cons, the second argument 2 must be a sequence but is a number."
         (get-all-text
          (run-and-catch-pretty-no-stacktrace 'intro.core '(cons 1 2))))
 
@@ -121,9 +121,10 @@
 ;### Testing for Java Exceptions###
 ;##################################
 
+;; Elena: this is a compilation error in clojure 1.7, so we can't test it like this
 ;; testing for :java.lang.Exception-improper-identifier
-(expect "You cannot use 7 as a variable."
-        (get-all-text (run-and-catch-pretty-no-stacktrace 'intro.core '(let [x :two 7 :seven]))))
+;(expect "You cannot use 7 as a variable."
+;        (get-all-text (run-and-catch-pretty-no-stacktrace 'intro.core '(let [x :two 7 :seven]))))
 
 ;######################################
 ;### Testing for compilation errors ###
@@ -139,6 +140,8 @@
         (get-all-text
          (run-and-catch-pretty-no-stacktrace 'intro.core '(defn my-num [x] (cond (= 1 x))))))
 
+;; the internal representation of zero? is zero?--inliner--4238 (in this particular test), i.e. it has
+;; an inliner part
 (expect "Compilation error: wrong number of arguments (0) passed to a function zero?, while compiling "
         (get-all-text (butlast (run-and-catch-pretty-no-stacktrace 'intro.core '(zero?)))))
 

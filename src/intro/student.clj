@@ -99,6 +99,7 @@
     (recur (rest coll)
            (+ result (first coll)))))
 
+;; take-while now is allowed arity 1, as of Clojure 1.7
 ;; 4clojure Problem 57 - exception in exceptions/4clojure-prob57-ArityException.ser
     ; ERROR: Wrong number of arguments (1) passed to a function take-while
     ; possible hint: make sure you're passing the right number of args to your functions
@@ -133,6 +134,7 @@
 (defn prob20 [coll]
   (nth (- (count coll) 1) coll))
 
+;; take now is allowed arity 1, as of Clojure 1.7
 ;; 4clojure Problem 21 - exception in exceptions/4clojure-prob21-ArityException.ser
     ; ERROR: Wrong number of arguments (1) passed to a function take
     ; possible hint: make sure you're using the right number of arguments.
