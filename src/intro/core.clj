@@ -6,17 +6,10 @@
             [strings.beginner_string_library :refer :all]
             [errors.errorgui :refer :all]
             [intro.student :refer :all]
-            ;[intro.may2015 :refer :all]
             [corefns.collection_fns :refer :all]
             [utilities.file_IO :refer :all]
-            ;[errors.error_dictionary_test :refer :all] ;takeout
-            ;[errors.exceptions :refer :all] ;takeout
-            ;[clj-stacktrace.core :as stacktrace] ;takeout
-            ;[errors.THE_ERROR_IS_HERE :refer :all] ;takeout
-            ;[compilation_errors.eof :refer :all]
-            ;[compilation_errors.unmatched_delimiter :refer :all]
             [errors.prettify_exception :refer :all]
-           ; [errors.messageobj :refer :all] ;takeout
+            [clojure.pprint :refer :all]
             ))
 
 (refer 'corefns.corefns)
@@ -706,6 +699,7 @@
     ;  (Math/sqrt (first (filter odd? my-collection))))
     ;(first-odd-sqrt [2, 4])
     ;(map 2 '(1 2 3))
+    ;(pprint (get-all-match-strings))
     (print (load-file "src/intro/may2015.clj"))
     (catch Throwable e (print (.getCause e)) (display-error (prettify-exception e)))))
     ;(catch Throwable e (export-to-file e "exceptions/type_something_here.ser"))))

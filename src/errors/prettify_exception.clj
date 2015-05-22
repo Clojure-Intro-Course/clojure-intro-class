@@ -12,6 +12,13 @@
 ;;(def ignore-nses #"(user|clojure|java)\..*")
 ;; We should think of making this customizable: building blocks???
 
+(defn get-all-match-strings
+  "Returns the list of all match strings and their corresponding exception types
+   in error dictionary"
+  []
+  (map #(vector (:match %) (:class %)) error-dictionary))
+
+
 (defn first-match [e-class message]
 	(first (filter #(and (= (:class %) e-class) (re-matches (:match %) message))
 			error-dictionary)))

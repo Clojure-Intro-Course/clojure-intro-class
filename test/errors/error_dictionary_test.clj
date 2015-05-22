@@ -145,7 +145,7 @@
 (expect "Compilation error: wrong number of arguments (0) passed to a function zero?, while compiling "
         (get-all-text (butlast (run-and-catch-pretty-no-stacktrace 'intro.core '(zero?)))))
 
-(expect #"Compilation error: recur can only occur as a tail call, meaning no operations can be done after its return, while compiling (.+)" ; this is giving NO_SOURCE_PATH
+(expect #"Compilation error: recur can only occur as a tail call: no operations can be done after its return, while compiling (.+)" ; this is giving NO_SOURCE_PATH
         (get-all-text (run-and-catch-pretty-no-stacktrace 'intro.core '(defn inc-nums [x] ((recur (inc x)) (loop [x x]))))))
 
 (expect #"Compilation error: def must be followed by a name, while compiling (.+)" ; this is giving NO_SOURCE_PATH

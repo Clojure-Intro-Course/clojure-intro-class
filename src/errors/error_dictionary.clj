@@ -245,7 +245,7 @@
     :true-exception java.lang.UnsupportedOperationException
     :match #"(.*) Can only recur from tail position, compiling:(.*)"
     :make-msg-info-obj (fn [matches] (make-msg-info-hashes "Compilation error: recur can only occur "
-                                                           "as a tail call, meaning no operations can"
+                                                           "as a tail call: no operations can"
                                                            " be done after its return, while compiling "
                                                            (nth matches 2)))
     :exc-location (fn [matches] {:path :unknown, :filename :unknown, :line :unknown, :character :unknown, :exception-type :unknown})}
