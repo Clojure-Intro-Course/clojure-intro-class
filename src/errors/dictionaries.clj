@@ -100,7 +100,7 @@
 
 ;;; check-if-anonymous-function: string -> string
 (defn check-if-anonymous-function [fname]
-  (if (or (= fname "fn") (re-matches #"fn_(.*)" fname))
+  (if (or (= fname "fn") (re-matches #"fn_(.*)" fname) (re-matches #"fn-(.*)" fname))
       "anonymous function" fname))
 
 ;;; get-match-name: string -> string
@@ -149,9 +149,10 @@
     (str n "th argument")))
 
 ;;; process-asserts-obj: string or nil -> string
-(defn process-asserts-obj [n]
+(defn process-asserts-obj
   "Returns a msg-info-obj generated for an assert failure based on the
 	global seen-failed-asserts hashmap, clears the hashmap"
+  [n]
   ;; and perhaps need manual error handling, in case the seen-object is empty
   (let [t (:check @seen-failed-asserts)
         cl (:class @seen-failed-asserts)
@@ -165,3 +166,11 @@
     (make-msg-info-hashes
      "In function " fname :arg ", the " arg " " v-print :arg
      " must be " t :type " but is " c-type :type ".")))
+
+(defn process-assert-obj-with-extra-arg
+  "Returns a msg-info-obj generated for an assert failure based on the
+	global seen-failed-asserts hashmap, clears the hashmap, adds
+  an extra argument at the end of the hash map"
+  [n addition]
+  (add-to-msg-info (process-asserts-obj n) addition))
+

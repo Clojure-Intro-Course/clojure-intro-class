@@ -4,6 +4,7 @@
             [errors.exceptions :refer :all]
             [errors.prettify_exception :refer :all]
             [utilities.file_IO :refer :all]
+            [intro.core :refer :all]
             ))
 
 ;#########################################
@@ -44,7 +45,7 @@
 ;; testing for :illegal-argument-even-number-of-forms
 
 ;; testing for :illegal-argument-even-number-of-forms-in-binding-vector
-(expect #"A parameter for a let is missing a binding on line (.*) in the file intro.core"
+(expect #"Parameters for let must come in pairs, but one of them does not have a match; on line (.*) in the file intro.core"
         (get-all-text
          (run-and-catch-pretty-no-stacktrace 'intro.core '(let [x] (+ x 2)))))
 

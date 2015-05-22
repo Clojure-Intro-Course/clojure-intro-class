@@ -65,14 +65,13 @@
    {:key :illegal-argument-even-number-of-forms
     :class IllegalArgumentException
     :match #"(.*) requires an even number of forms"
-    :make-msg-info-obj (fn [matches] (make-msg-info-hashes "There is an unmatched parameter in declaration of "
-                                                           (nth matches 1) :arg))
+    :make-msg-info-obj (fn [matches] (make-msg-info-hashes "Parameters for " (nth matches 1) :arg "must come in pairs, but one of them does not have a match"))
     :exc-location (fn [matches] {:path :unknown, :filename :unknown, :line :unknown, :character :unknown, :exception-type :unknown})}
    {:key :illegal-argument-even-number-of-forms-in-binding-vector
     :class IllegalArgumentException
     :match #"(.*) requires an even number of forms in binding vector in (.*):(.*)"
-    :make-msg-info-obj (fn [matches] (make-msg-info-hashes "A parameter for a " (nth matches 1)
-                                                           " is missing a binding on line "
+    :make-msg-info-obj (fn [matches] (make-msg-info-hashes "Parameters for " (nth matches 1) :arg
+                                                           " must come in pairs, but one of them does not have a match; on line "
                                                            (nth matches 3) " in the file " (nth matches 2)))
     :exc-location (fn [matches] {:path :unknown, :filename (nth matches 2), :line (read-string (nth matches 3)), :character :unknown, :exception-type :runtime})}
 
@@ -123,6 +122,7 @@
    ;### Arity Exceptions ###
    ;########################
 
+   ; We probably need to rewrite this, indicate what the right nubmer of args is
    {:key :arity-exception-wrong-number-of-arguments
     :class clojure.lang.ArityException
     :match #"Wrong number of args \((.*)\) passed to: (.*)"
@@ -183,18 +183,6 @@
                                                            " as a variable."))
     :exc-location (fn [matches] {:path :unknown, :filename :unknown, :line :unknown, :character :unknown, :exception-type :unknown})}
 
-   ;################################################
-   ;### Compilation Errors: Class Cast Exception ###
-   ;################################################
-
-   {:key :compiler-class-cast-exception-compiling
-    :class clojure.lang.Compiler$CompilerException
-    :match #"(.+): (.*) cannot be cast to (.*), compiling:(.*)"
-    :make-msg-info-obj (fn [matches] (make-msg-info-hashes "Attempted to use "
-                                                           (get-type (nth matches 2)) :type ", but "
-                                                           (get-type (nth matches 3)) :type " was expected."
-                                                           ", while compiling " (nth matches 4)))
-    :exc-location (fn [matches] {:path :unknown, :filename :unknown, :line :unknown, :character :unknown, :exception-type :unknown})}
 
    ;#######################################################
    ;### Compilation Errors: Illegal Argument Exceptions ###
@@ -323,7 +311,15 @@
    ;### Compilation Errors: Unknown ###
    ;###################################
 
-   {:key :compiler-exception-end-of-file
+    {:key :compiler-exception-end-of-file
+    :class clojure.lang.Compiler$CompilerException
+    :true-exception :unknown
+    :match #"EOF while reading, starting at line (.+)"
+    :make-msg-info-obj (fn [matches] (make-msg-info-hashes "Compilation error: end of file, starting at line " (nth matches 1) :arg
+                                                           ".\nProbably a non-closing parenthesis or bracket."))
+    :exc-location (fn [matches] {:path :unknown, :filename :unknown, :line :unknown, :character :unknown, :exception-type :unknown})}
+
+   {:key :compiler-exception-end-of-file-with-location
     :class clojure.lang.Compiler$CompilerException
     :true-exception :unknown
     :match #"(.+): EOF while reading, starting at line (.+), compiling:(.+)"

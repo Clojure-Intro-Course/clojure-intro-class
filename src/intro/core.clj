@@ -18,7 +18,6 @@
             [errors.prettify_exception :refer :all]
            ; [errors.messageobj :refer :all] ;takeout
             ))
-;(.getMessage (run-and-catch-raw 'intro.core '(hash-map "c" :d "d")))
 
 (refer 'corefns.corefns)
 
@@ -706,7 +705,7 @@
     ;(defn first-odd-sqrt [my-collection]
     ;  (Math/sqrt (first (filter odd? my-collection))))
     ;(first-odd-sqrt [2, 4])
-    (compile 'intro.may2015)
+    ;(map 2 '(1 2 3))
     (print (load-file "src/intro/may2015.clj"))
-    (catch Throwable e (display-error (prettify-exception e)))))
+    (catch Throwable e (print (.getCause e)) (display-error (prettify-exception e)))))
     ;(catch Throwable e (export-to-file e "exceptions/type_something_here.ser"))))
