@@ -139,7 +139,7 @@
 ;; testing for exercise9
 (expect (more-of x
                  clojure.lang.ArityException (:exception-class x)
-                 #"Wrong number of arguments \(1\) passed to a function(.*)" (get-all-text (:msg-info-obj x))
+                 #"Wrong number of arguments \(1\) passed to an anonymous function" (get-all-text (:msg-info-obj x))
                  (trace-has-all-pairs? {:fn "exercise9" :ns "intro.student"}) (:filtered-stacktrace x))
         (run-and-catch-pretty-with-stacktrace 'intro.student
                                               '(exercise9)))
