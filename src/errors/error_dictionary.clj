@@ -202,8 +202,7 @@
     :true-exception java.lang.IllegalArgumentException
     :match #"(.*) Mismatched argument count to recur, expected: (.*) args, got: (.*), compiling:(.*)"
     :make-msg-info-obj (fn [matches] (make-msg-info-hashes "Compilation error: this recur is supposed to take "
-                                                           (nth matches 2) " arguments, but you are passing " (nth matches 3)
-                                                           ", while compiling " (nth matches 4)))
+                                                           (nth matches 2) " arguments, but you are passing " (nth matches 3)))
     ;;TODO: handle singular/plural arguments
     :hints "1. You are passing a wrong number of arguments to recur. Check its function or loop.
     2. recur might be outside of the scope of its function or loop"
@@ -213,7 +212,7 @@
     :true-exception java.lang.IllegalArgumentException
     :match #"(.*): (.*) requires an even number of forms, compiling:\((.+)\)"
     :make-msg-info-obj (fn [matches] (make-msg-info-hashes "Compilation error: there is an unmatched parameter in declaration of "
-                                                           (nth matches 2) :arg ", while compiling: " (nth matches 3)))
+                                                           (nth matches 2) :arg))
     :exc-location (fn [matches] {:path :unknown, :filename :unknown, :line :unknown, :character :unknown, :exception-type :unknown})}
 
    ;############################################
