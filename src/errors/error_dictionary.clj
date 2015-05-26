@@ -193,15 +193,15 @@
     :class clojure.lang.Compiler$CompilerException
     :true-exception java.lang.IllegalArgumentException
     :match #"(.+): (.+) requires an even number of forms in binding vector in (.+):(.+)"
-    :make-msg-info-obj (fn [matches] (make-msg-info-hashes "Compilation error: " (nth matches 2)
-                                                           " requires an even number of forms in binding vector"))
+    :make-msg-info-obj (fn [matches] (make-msg-info-hashes (nth matches 2)
+                                                           " requires an even number of forms in binding vector."))
     :exc-location (fn [matches] {:path :unknown, :filename :unknown, :line :unknown, :character :unknown, :exception-type :unknown})}
 
    {:key :compiler-exception-wrong-number-of-arguments-to-recur
     :class clojure.lang.Compiler$CompilerException
     :true-exception java.lang.IllegalArgumentException
     :match #"(.*) Mismatched argument count to recur, expected: (.*) args, got: (.*), compiling:(.*)"
-    :make-msg-info-obj (fn [matches] (make-msg-info-hashes "Compilation error: this recur is supposed to take "
+    :make-msg-info-obj (fn [matches] (make-msg-info-hashes "This recur is supposed to take "
                                                            (nth matches 2) " arguments, but you are passing " (nth matches 3)))
     ;;TODO: handle singular/plural arguments
     :hints "1. You are passing a wrong number of arguments to recur. Check its function or loop.
@@ -211,8 +211,8 @@
     :class clojure.lang.Compiler$CompilerException
     :true-exception java.lang.IllegalArgumentException
     :match #"(.*): (.*) requires an even number of forms, compiling:\((.+)\)"
-    :make-msg-info-obj (fn [matches] (make-msg-info-hashes "Compilation error: there is an unmatched parameter in declaration of "
-                                                           (nth matches 2) :arg))
+    :make-msg-info-obj (fn [matches] (make-msg-info-hashes "There is an unmatched parameter in declaration of "
+                                                           (nth matches 2) :arg "."))
     :exc-location (fn [matches] {:path :unknown, :filename :unknown, :line :unknown, :character :unknown, :exception-type :unknown})}
 
    ;############################################
@@ -228,10 +228,8 @@
                                funstr (if (= fstr "anonymous function")
                                         "an "
                                         (str "a function "))]
-                           (make-msg-info-hashes "Compilation error: wrong number of arguments ("
-                                                 (nth matches 2) ") passed to " funstr fstr :arg
-                                                 ", while compiling "
-                                                 (nth matches 4) :arg)))
+                           (make-msg-info-hashes "Wrong number of arguments ("
+                                                 (nth matches 2) ") passed to " funstr fstr :arg ".")))
     :exc-location (fn [matches] {:path :unknown, :filename :unknown, :line :unknown, :character :unknown, :exception-type :unknown})}
 
    ;############################################################
@@ -242,10 +240,9 @@
     :class clojure.lang.Compiler$CompilerException
     :true-exception java.lang.UnsupportedOperationException
     :match #"(.*) Can only recur from tail position, compiling:(.*)"
-    :make-msg-info-obj (fn [matches] (make-msg-info-hashes "Compilation error: recur can only occur "
+    :make-msg-info-obj (fn [matches] (make-msg-info-hashes "Recur can only occur "
                                                            "as a tail call: no operations can"
-                                                           " be done after its return, while compiling "
-                                                           (nth matches 2)))
+                                                           " be done after its return. "))
     :exc-location (fn [matches] {:path :unknown, :filename :unknown, :line :unknown, :character :unknown, :exception-type :unknown})}
 
    ;##############################################
@@ -256,26 +253,23 @@
     :class clojure.lang.Compiler$CompilerException
     :true-exception java.lang.RuntimeException
     :match #"(.*) First argument to (.*) must be a Symbol, compiling:\((.+)\)"
-    :make-msg-info-obj (fn [matches] (make-msg-info-hashes "Compilation error: "
-                                                           (nth matches 2) :arg " must be followed by a name, while compiling "
-                                                           (nth matches 3)))
+    :make-msg-info-obj (fn [matches] (make-msg-info-hashes (nth matches 2) :arg " must be followed by a name."))
     :exc-location (fn [matches] {:path :unknown, :filename :unknown, :line :unknown, :character :unknown, :exception-type :unknown})}
+
    {:key :compiler-exception-cannot-take-value-of-macro
     :class clojure.lang.Compiler$CompilerException
     :true-exception java.lang.RuntimeException
     :match #"(.+): Can't take value of a macro: (.+), compiling:\((.+)\)"
-    :make-msg-info-obj (fn [matches] (make-msg-info-hashes "Compilation error: "
+    :make-msg-info-obj (fn [matches] (make-msg-info-hashes
                                                            (get-macro-name (nth matches 2)) :arg
-                                                           " is a macro, cannot be passed to a function, while compiling "
-                                                           (nth matches 3)))
+                                                           " is a macro, cannot be passed to a function."))
     :exc-location (fn [matches] {:path :unknown, :filename :unknown, :line :unknown, :character :unknown, :exception-type :unknown})}
    {:key :compiler-exception-cannot-resolve-symbol
     :class clojure.lang.Compiler$CompilerException
     :true-exception java.lang.RuntimeException
     :match #"(.+): Unable to resolve symbol: (.+) in this context, compiling:\((.+)\)"
-    :make-msg-info-obj (fn [matches] (make-msg-info-hashes "Compilation error: " "name "
-                                                           (nth matches 2) :arg " is undefined, while compiling "
-                                                           (nth matches 3) :arg))
+    :make-msg-info-obj (fn [matches] (make-msg-info-hashes "Name "
+                                                           (nth matches 2) :arg " is undefined."))
     :exc-location (fn [matches] {:path :unknown, :filename :unknown, :line :unknown, :character :unknown, :exception-type :unknown})}
 
    ;###########################################
@@ -286,24 +280,22 @@
     :class clojure.lang.Compiler$CompilerException
     :true-exception java.lang.Exception
     :match #"(.+): Unmatched delimiter: (.+), compiling:\((.+)\)"
-    :make-msg-info-obj (fn [matches] (make-msg-info-hashes "Compilation error: there is an unmatched delimiter " (nth matches 2) :arg))
+    :make-msg-info-obj (fn [matches] (make-msg-info-hashes "There is an unmatched delimiter " (nth matches 2) :arg "."))
     :exc-location (fn [matches] {:path :unknown, :filename :unknown, :line :unknown, :character :unknown, :exception-type :unknown})}
 
    {:key :compiler-exception-too-many-arguments
     :class clojure.lang.Compiler$CompilerException
     :true-exception java.lang.Exception
     :match #"(.+): Too many arguments to (.+), compiling:(.+)"
-    :make-msg-info-obj (fn [matches] (make-msg-info-hashes "Compilation error: too many arguments to "
-                                                           (nth matches 2) :arg ", while compiling "
-                                                           (nth matches 3) :arg))
+    :make-msg-info-obj (fn [matches] (make-msg-info-hashes "Too many arguments to "
+                                                           (nth matches 2) :arg "."))
     :exc-location (fn [matches] {:path :unknown, :filename :unknown, :line :unknown, :character :unknown, :exception-type :unknown})}
    {:key :compiler-exception-too-few-arguments
     :class clojure.lang.Compiler$CompilerException
     :true-exception java.lang.Exception
     :match #"(.+): Too few arguments to (.+), compiling:(.+)"
-    :make-msg-info-obj (fn [matches] (make-msg-info-hashes "Compilation error: too few arguments to "
-                                                           (nth matches 2) :arg  ", while compiling "
-                                                           (nth matches 3) :arg))
+    :make-msg-info-obj (fn [matches] (make-msg-info-hashes "Too few arguments to "
+                                                           (nth matches 2) :arg "."))
     :exc-location (fn [matches] {:path :unknown, :filename :unknown, :line :unknown, :character :unknown, :exception-type :unknown})}
 
    ;###################################
@@ -314,7 +306,7 @@
     :class clojure.lang.Compiler$CompilerException
     :true-exception :unknown
     :match #"EOF while reading, starting at line (.+)"
-    :make-msg-info-obj (fn [matches] (make-msg-info-hashes "Compilation error: end of file, starting at line " (nth matches 1) :arg
+    :make-msg-info-obj (fn [matches] (make-msg-info-hashes "End of file, starting at line " (nth matches 1) :arg
                                                            ".\nProbably a non-closing parenthesis or bracket."))
     :exc-location (fn [matches] {:path :unknown, :filename :unknown, :line :unknown, :character :unknown, :exception-type :unknown})}
 
@@ -322,8 +314,7 @@
     :class clojure.lang.Compiler$CompilerException
     :true-exception :unknown
     :match #"(.+): EOF while reading, starting at line (.+), compiling:(.+)"
-    :make-msg-info-obj (fn [matches] (make-msg-info-hashes "Compilation error: end of file, starting at line " (nth matches 2) :arg
-                                                           ", while compiling " (nth matches 3) :arg
+    :make-msg-info-obj (fn [matches] (make-msg-info-hashes "End of file, starting at line " (nth matches 2) :arg
                                                            ".\nProbably a non-closing parenthesis or bracket."))
     :exc-location (fn [matches] {:path :unknown, :filename :unknown, :line :unknown, :character :unknown, :exception-type :unknown})}
    ])

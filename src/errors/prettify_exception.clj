@@ -172,7 +172,7 @@
         ;; this is just a temporary way of adding the location, we might
         ;; want to break it down into path, file, etc:
         location (get-compile-error-location (.getMessage ex))
-        at-if-needed (if (blank? location) "" " at ")
+        at-if-needed (if (blank? location) "" " At ")
         entry (first-match e-class message)
         msg-info-obj (into (msg-from-matched-entry entry message) (make-msg-info-hashes at-if-needed location :loc))
         exception-location-hashmap (extract-exception-location-hashmap entry message)
