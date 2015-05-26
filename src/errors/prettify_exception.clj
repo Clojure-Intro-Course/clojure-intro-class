@@ -129,6 +129,8 @@
   ;(println (filter keep-stack-trace-elem stacktrace))
   (filter keep-stack-trace-elem stacktrace))
 
+;; Elena: I think this would go away since it's easier to figure out the location
+;; in prettify-exception
 (defn extract-exception-location-hashmap
   "takes an error-dictionary entry and a message and returns a hashmap with the exception's
   filepath, filename, line number, character number, and exception type (runtime or compilation)."
@@ -166,8 +168,11 @@
         exc (stacktrace/parse-exception e)
         stacktrace (:trace-elems exc)
         filtered-trace (filter-stacktrace stacktrace)
+        ;; this is just a temporary way of adding the location, we might
+        ;; want to break it down into path, file, etc:
+        location (if compiler? (get-compile-error-location (.getMessage ex)) "")
         entry (first-match e-class message)
-        msg-info-obj (msg-from-matched-entry entry message)
+        msg-info-obj (add-to-msg-info (msg-from-matched-entry entry message) location :loc)
         exception-location-hashmap (extract-exception-location-hashmap entry message)
         hint-message (hints-for-matched-entry entry)]
     ;; create an exception object

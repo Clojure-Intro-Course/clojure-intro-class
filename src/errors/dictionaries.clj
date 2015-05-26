@@ -2,6 +2,7 @@
   (:use [corefns.corefns]
         [errors.messageobj]
         [corefns.failed_asserts_info]
+        [clojure.string :refer :all]
         ))
 
 ;; A dictionary of known types and their user-friendly representations
@@ -174,3 +175,9 @@
   [n addition]
   (add-to-msg-info (process-asserts-obj n) addition))
 
+(defn get-compile-error-location
+  "takes a message of a compiler error and returns
+  the location part that matches after 'compiling"
+  [m]
+  (let [loc (nth (re-matches #"(.*), compiling:\((.+)\)" m) 2)]
+    (if (blank? loc) "" (str " at " loc "."))))

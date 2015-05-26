@@ -192,10 +192,9 @@
    {:key :compiler-exception-even-numbers-in-binding-vector
     :class clojure.lang.Compiler$CompilerException
     :true-exception java.lang.IllegalArgumentException
-    :match #"(.+): (.+) requires an even number of forms in binding vector in (.+):(.+), compiling:(.+)"
+    :match #"(.+): (.+) requires an even number of forms in binding vector in (.+):(.+)"
     :make-msg-info-obj (fn [matches] (make-msg-info-hashes "Compilation error: " (nth matches 2)
-                                                           " requires an even number of forms in binding vector, while compiling "
-                                                           (nth matches 3)))
+                                                           " requires an even number of forms in binding vector"))
     :exc-location (fn [matches] {:path :unknown, :filename :unknown, :line :unknown, :character :unknown, :exception-type :unknown})}
 
    {:key :compiler-exception-wrong-number-of-arguments-to-recur
@@ -287,10 +286,10 @@
    {:key :compiler-exception-unmatched-delimiter
     :class clojure.lang.Compiler$CompilerException
     :true-exception java.lang.Exception
-    :match #"(.+): Unmatched delimiter: (.+), compiling:(.+)"
-    :make-msg-info-obj (fn [matches] (make-msg-info-hashes "Compilation error: there is an unmatched delimiter " (nth matches 2) :arg
-                                                           ", while compiling " (nth matches 3) :arg))
+    :match #"(.+): Unmatched delimiter: (.+), compiling:\((.+)\)"
+    :make-msg-info-obj (fn [matches] (make-msg-info-hashes "Compilation error: there is an unmatched delimiter " (nth matches 2) :arg))
     :exc-location (fn [matches] {:path :unknown, :filename :unknown, :line :unknown, :character :unknown, :exception-type :unknown})}
+
    {:key :compiler-exception-too-many-arguments
     :class clojure.lang.Compiler$CompilerException
     :true-exception java.lang.Exception
