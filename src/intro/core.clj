@@ -700,6 +700,9 @@
     ;(first-odd-sqrt [2, 4])
     ;(map 2 '(1 2 3))
     ;(pprint (get-all-match-strings))
-    (print (load-file "src/intro/may2015.clj"))
-    (catch Throwable e (print (.getCause e)) (display-error (prettify-exception e)))))
+    (try
+      (print (load-file "src/intro/may2015.clj"))
+    (catch Throwable e (print (str "itself:" (class e) ", cause: " (class (.getCause e)))) (throw e)))
+    ;(+ 2 "banana")
+    (catch Throwable e (display-error (prettify-exception e)))))
     ;(catch Throwable e (export-to-file e "exceptions/type_something_here.ser"))))

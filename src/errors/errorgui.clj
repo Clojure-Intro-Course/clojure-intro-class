@@ -3,7 +3,8 @@
 	      [clojure.string :only [join]]
        	[errors.messageobj]))
 
-(def error-prefix "ERROR: ")
+(def error-prefix "Error: ")
+(def comp-error-prefix "Syntax error: ")
 (def trace-elems-separator "\t")
 (def trace-lines-separator "\n")
 
@@ -47,7 +48,7 @@
 
 (defn- make-message-with-filtered-trace [exc-obj]
   "returns a display-msg that includes the filtered stacktrace"
-  (make-display-msg (concat (make-msg-info-hashes error-prefix :err)
+  (make-display-msg (concat (make-msg-info-hashes (if (:compiler? exc-obj) comp-error-prefix error-prefix) :err)
 		                            (:msg-info-obj exc-obj)
                                 (make-msg-info-hashes trace-lines-separator) ; to separate the message from the stacktrace
                                 (make-msg-info-hashes (trace->string (:filtered-stacktrace exc-obj) trace-elems-separator trace-lines-separator)

@@ -148,9 +148,18 @@
              (not= (class cause) java.lang.RuntimeException))
       cause e)))
 
+(defn compiler-error?
+  "an ad-hoc method to determine if an exception is really a compilation error:
+  it's a compilation error with no cause or a generic cause."
+  [e]
+  (let [cause (.getCause e)]
+    (and (= (class e) clojure.lang.Compiler$CompilerException)
+         (or (nil? cause) (= (class cause) java.lang.RuntimeException)))))
+
 ;; All together:
 (defn prettify-exception [ex]
-  (let [e (get-cause-if-needed ex)
+  (let [compiler? (compiler-error? ex)
+        e (get-cause-if-needed ex)
         e-class (class e)
         m (.getMessage e)
         message  (if m m "") ; converting an empty message from nil to ""
@@ -163,6 +172,7 @@
         hint-message (hints-for-matched-entry entry)]
     ;; create an exception object
     {:exception-class e-class
+     :compiler? compiler?
      :msg-info-obj msg-info-obj
      :stacktrace stacktrace
      :filtered-stacktrace filtered-trace
