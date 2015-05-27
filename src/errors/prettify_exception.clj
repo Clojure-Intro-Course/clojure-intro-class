@@ -159,6 +159,16 @@
     (and (= (class e) clojure.lang.Compiler$CompilerException)
          (or (nil? cause) (= (class cause) java.lang.RuntimeException)))))
 
+(defn location-info
+  "Takes the location hashmap (possibly empty) and returns a message info
+  object to be merged with the rest of the message"
+  [location]
+  (if (empty? location) ""
+    (let [file (:file location)
+          line (:line location)
+          character (:char location)]
+      (make-msg-info-hashes "\nFound in file " file :loc " on line " line :loc " at character " character :loc "."))))
+
 ;; All together:
 (defn prettify-exception [ex]
   (let [compiler? (compiler-error? ex)
@@ -172,9 +182,8 @@
         ;; this is just a temporary way of adding the location, we might
         ;; want to break it down into path, file, etc:
         location (get-compile-error-location (.getMessage ex))
-        at-if-needed (if (empty? location) "" "\nFound in ")
         entry (first-match e-class message)
-        msg-info-obj (into (add-to-msg-info (msg-from-matched-entry entry message) at-if-needed) (make-msg-info-hashes (:file location) :loc))
+        msg-info-obj (into (msg-from-matched-entry entry message) (location-info location))
         exception-location-hashmap (extract-exception-location-hashmap entry message)
         hint-message (hints-for-matched-entry entry)]
     ;; create an exception object
