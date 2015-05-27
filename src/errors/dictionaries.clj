@@ -176,6 +176,8 @@
 
 (defn get-compile-error-location
   "takes a message of a compiler error and returns
-  the location part that matches after 'compiling"
+  the location part that matches after 'compiling',
+  as a hashmap. Returns an empty hashmap (no keys)
+  when there is no match"
   [m]
-  (nth (re-matches #"(.*), compiling:\((.+)\)" m) 2))
+  (zipmap [:file :line :char] (rest (rest (re-matches #"(.*), compiling:\((.+):(.+):(.+)\)" m)))))
