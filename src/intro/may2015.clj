@@ -4,7 +4,7 @@
             [corefns.collection_fns :refer :all]
             [intro.student :refer :all]))
 
-(hash-map 1)
+;(hash-map 1)
 
 ;(
 
@@ -21,3 +21,7 @@
 ;(reduce inc [1 2 3])
 
 ;(take 5)
+
+;(reduce inc)
+;(map inc)
+(< 23 5)

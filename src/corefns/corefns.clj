@@ -24,6 +24,7 @@
 ;; Including the standard Clojure documentation to make sure that asserts
 ;; and cases are consistent with the standard Clojure.
 
+;; As of clojure 1.7 allows (map f)
 ;; (map f coll)
 ;; (map f c1 c2)
 ;; (map f c1 c2 c3)
@@ -110,13 +111,18 @@
           (check-if-number? "nth" argument2)]}
    (clojure.core/nth argument1 argument2 argument3)))
 
+;; As of clojure 1.7 allows (filter f)
 ;; (filter pred coll)
 ;; Returns a lazy sequence of the items in coll for which
 ;; (pred item) returns true. pred must be free of side-effects.
-(defn filter [argument1 argument2]
-  {:pre [(check-if-function? "filter" argument1)
+(defn filter
+  ([argument1]
+   {:pre [(check-if-function? "filter" argument1)]}
+   (clojure.core/filter argument1))
+  ([argument1 argument2]
+   {:pre [(check-if-function? "filter" argument1)
          (check-if-seqable? "filter" argument2)]}
-  (clojure.core/filter argument1 argument2))
+  (clojure.core/filter argument1 argument2)))
 
 ;; (mapcat f & colls)
 ;; Returns the result of applying concat to the result of applying map
@@ -140,36 +146,40 @@
 ;;    (< x y & more)
 ;; Returns non-nil if nums are in monotonically increasing order,
 ;; otherwise false.
-(defn < [& args]
-   {:pre [(check-if-numbers? "<" args 1)]}
-   (apply clojure.core/< args))
+(defn < [argument1 & args]
+   {:pre [(check-if-number? "<" argument1)
+          (check-if-numbers? "<" args 2)]}
+   (apply clojure.core/< argument1 args))
 
 ;;    (<= x)
 ;;    (<= x y)
 ;;    (<= x y & more)
 ;; Returns non-nil if nums are in monotonically non-decreasing order,
 ;; otherwise false.
-(defn <= [& args]
-  {:pre [(check-if-numbers? "<=" args 1)]}
-  (apply clojure.core/<= args))
+(defn <= [argument1 & args]
+   {:pre [(check-if-number? "<=" argument1)
+          (check-if-numbers? "<=" args 2)]}
+  (apply clojure.core/<= argument1 args))
 
 ;;    (> x)
 ;;    (> x y)
 ;;    (> x y & more)
 ;; Returns non-nil if nums are in monotonically decreasing order,
 ;; otherwise false.
-(defn > [& args]
-   {:pre [(check-if-numbers? ">" args 1)]}
-   (apply clojure.core/> args))
+(defn > [argument1 & args]
+   {:pre [(check-if-number? ">" argument1)
+          (check-if-numbers? ">" args 2)]}
+   (apply clojure.core/> argument1 args))
 
 ;;    (>= x)
 ;;    (>= x y)
 ;;    (>= x y & more)
 ;; Returns non-nil if nums are in monotonically non-increasing order,
 ;; otherwise false.
-(defn >= [& args]
-   {:pre [(check-if-numbers? ">=" args 1)]}
-   (apply clojure.core/>= args))
+(defn >= [argument1 & args]
+   {:pre [(check-if-number? ">=" argument1)
+          (check-if-numbers? ">=" args 2)]}
+   (apply clojure.core/>= argument1 args))
 
 ;;    (+)
 ;;    (+ x)
