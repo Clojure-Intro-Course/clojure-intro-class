@@ -48,19 +48,21 @@
     :class IllegalArgumentException
     :match #"No value supplied for key: (.*)"
     :make-msg-info-obj (fn [matches] (make-msg-info-hashes "No value found for key "
-                                                           (nth matches 1) :arg ". Every key must be paired with a value; the value should be immediately following the key."))
+                                                           ; is this too wordy?
+                                                           ;(nth matches 1) :arg ". Every key must be paired with a value; the value should be immediately following the key."))
+                                                           (nth matches 1) :arg ". Every key for a hash-map must be followed by a value."))
     :exc-location (fn [matches] {:path :unknown, :filename :unknown, :line :unknown, :character :unknown, :exception-type :unknown})}
    {:key :illegal-argument-vector-arg-to-map-conj
     :class IllegalArgumentException
     :match #"Vector arg to map conj must be a pair(.*)"
-    :make-msg-info-obj (fn [matches] (make-msg-info-hashes "All the inner vectors in the outer collection must have length two."))
+    :make-msg-info-obj (fn [matches] (make-msg-info-hashes "Each inner vector must be a pair: a key followed by a value."))
     :exc-location (fn [matches] {:path :unknown, :filename :unknown, :line :unknown, :character :unknown, :exception-type :unknown})}
    {:key :illegal-argument-cannot-convert-type
     :class IllegalArgumentException
     :match #"Don't know how to create (.*) from: (.*)"
     :make-msg-info-obj (fn [matches] (make-msg-info-hashes "Don't know how to create "
                                                            (get-type (nth matches 1)) :type
-                                                           " from "(get-type (nth matches 2)) :type))
+                                                           " from "(get-type (nth matches 2)) :type "."))
     :exc-location (fn [matches] {:path :unknown, :filename :unknown, :line :unknown, :character :unknown, :exception-type :unknown})}
    {:key :illegal-argument-even-number-of-forms
     :class IllegalArgumentException
@@ -80,26 +82,30 @@
     :class IllegalArgumentException
     :match #"(.*) requires a vector for its binding in (.*):(.*)"
     :make-msg-info-obj (fn [matches] (make-msg-info-hashes "When declaring a " (nth matches 1)
-                                                           ", you need to pass it a vector of arguments. Line "
+                                                           ", you need to pass it a vector of arguments. "
+                                                           ; we need to make this consistent with file/line reporting for comp. error.
+                                                           "Line "
                                                            (nth matches 3) " in the file " (nth matches 2)))
     :exc-location (fn [matches] {:path :unknown, :filename :unknown, :line :unknown, :character :unknown, :exception-type :unknown})}
    {:key :illegal-argument-type-not-supported
     :class IllegalArgumentException
     :match #"(.*) not supported on type: (.*)"
     :make-msg-info-obj (fn [matches] (make-msg-info-hashes "Function " (nth matches 1) :arg
-                                                           " does not allow " (get-type (nth matches 2)) :type " as an argument"))
+                                                           " does not allow " (get-type (nth matches 2)) :type " as an argument."))
     :exc-location (fn [matches] {:path :unknown, :filename :unknown, :line :unknown, :character :unknown, :exception-type :unknown})}
    {:key :illegal-argument-parameters-must-be-in-vector
     :class IllegalArgumentException
     :match #"Parameter declaration (.*) should be a vector"
     :make-msg-info-obj (fn [matches] (make-msg-info-hashes "Parameters in " "defn" :arg
-                                                           " should be a vector, but is " (nth matches 1) :arg))
+                                                           " should be a vector, but is " (nth matches 1) :arg "."))
     :exc-location (fn [matches] {:path :unknown, :filename :unknown, :line :unknown, :character :unknown, :exception-type :unknown})}
    {:key :illegal-argument-exactly-2-forms
     :class IllegalArgumentException
     :match #"(.*) requires exactly 2 forms in binding vector in (.*):(.*)"
     :make-msg-info-obj (fn [matches] (make-msg-info-hashes "The function " (nth matches 1) :arg
-                                                           " requires exactly 2 forms in binding vector. Line "
+                                                           " requires exactly 2 forms in binding vector. "
+                                                           ; we need to make this consistent with file/line reporting for comp. error.
+                                                           "Line "
                                                            (nth matches 3) " in the file " (nth matches 2)))
     :exc-location (fn [matches] {:path :unknown, :filename :unknown, :line :unknown, :character :unknown, :exception-type :unknown})}
 
@@ -111,12 +117,12 @@
     :class IndexOutOfBoundsException
     :match #"(\d+)"
     :make-msg-info-obj (fn [matches] (make-msg-info-hashes "An index in a sequence is out of bounds."
-                                                           " The index is: " (nth matches 0) :arg))
+                                                           " The index is: " (nth matches 0) :arg "."))
     :exc-location (fn [matches] {:path :unknown, :filename :unknown, :line :unknown, :character :unknown, :exception-type :unknown})}
    {:key :index-out-of-bounds-index-not-provided
     :class IndexOutOfBoundsException
     :match #"" ; an empty message
-    :make-msg-info-obj (fn [matches] (make-msg-info-hashes "An index in a sequence is out of bounds or invalid"))
+    :make-msg-info-obj (fn [matches] (make-msg-info-hashes "An index in a sequence is out of bounds or invalid."))
     :exc-location (fn [matches] {:path :unknown, :filename :unknown, :line :unknown, :character :unknown, :exception-type :unknown})}
 
    ;########################
@@ -133,7 +139,7 @@
                                         "an "
                                         (str "a function "))]
                            (make-msg-info-hashes "Wrong number of arguments ("
-                                                 (nth matches 1) ") passed to " funstr fstr :arg)))
+                                                 (nth matches 1) ") passed to " funstr fstr :arg ".")))
     :exc-location (fn [matches] {:path :unknown, :filename :unknown, :line :unknown, :character :unknown, :exception-type :unknown})}
 
    ;###############################
@@ -144,12 +150,12 @@
     :class NullPointerException
     :match #"(.+)" ; for some reason (.*) matches twice. Since we know there is at least one symbol, + is fine
     :make-msg-info-obj (fn [matches] (make-msg-info-hashes "An attempt to access a non-existing object: "
-                                                           (nth matches 1) :arg "\n(NullPointerException)"))
+                                                           (nth matches 1) :arg " (NullPointerException)."))
     :exc-location (fn [matches] {:path :unknown, :filename :unknown, :line :unknown, :character :unknown, :exception-type :unknown})}
    {:key :null-pointer-non-existing-object-not-provided
     :class NullPointerException
     :match  #""
-    :make-msg-info-obj (fn [matches] (make-msg-info-hashes "An attempt to access a non-existing object. \n(NullPointerException)"))
+    :make-msg-info-obj (fn [matches] (make-msg-info-hashes "An attempt to access a non-existing object (NullPointerException)."))
     :exc-location (fn [matches] {:path :unknown, :filename :unknown, :line :unknown, :character :unknown, :exception-type :unknown})}
 
    ;########################################
@@ -160,7 +166,7 @@
     :class UnsupportedOperationException
     :match #"(.*) not supported on this type: (.*)"
     :make-msg-info-obj (fn [matches] (make-msg-info-hashes "Function " (nth matches 1) :arg
-                                                           " does not allow " (get-type (nth matches 2)) :type " as an argument"))
+                                                           " does not allow " (get-type (nth matches 2)) :type " as an argument."))
     :exc-location (fn [matches] {:path :unknown, :filename :unknown, :line :unknown, :character :unknown, :exception-type :unknown})}
 
    ;############################

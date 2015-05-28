@@ -4,6 +4,8 @@
             [corefns.collection_fns :refer :all]
             [intro.student :refer :all]))
 
+(hash-map 1)
+
 ;(
 
 ;(= ((fn [x] (for [y x :when odd? y] y)) #{1 2 3 4 5}) '(1 3 5)
@@ -14,7 +16,7 @@
 
 ;(defn 4 5)
 
-(+ 2 "banana")
+;(+ 2 "banana")
 
 ;(reduce inc [1 2 3])
 
