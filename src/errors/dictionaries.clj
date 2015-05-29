@@ -148,6 +148,14 @@
     5 "fifth argument"
     (str n "th argument")))
 
+(defn number-word [n]
+  (case n
+    "0" "zero"
+    "1" "one"
+    "2" "two"
+    "3" "three"
+    n))
+
 ;;; process-asserts-obj: string or nil -> string
 (defn process-asserts-obj
   "Returns a msg-info-obj generated for an assert failure based on the
@@ -181,3 +189,12 @@
   when there is no match"
   [m]
   (zipmap [:file :line :char] (rest (rest (re-matches #"(.*), compiling:\((.+):(.+):(.+)\)" m)))))
+
+;; do we want to move this to corefns?
+(def known-args-number {:map "at least one", :count "one", :conj "at least one",
+                        :into "two", :cons "two"})
+
+(defn lookup-arity
+  "returns expected arity (as a string) for a function if we know it, nil otherwise"
+  [f]
+  ((keyword f) known-args-number))

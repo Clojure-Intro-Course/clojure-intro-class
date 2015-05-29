@@ -6,6 +6,10 @@
 
 ;(hash-map 1)
 
+;{1 2 1 3}
+
+(map #(+ %1 %2) [1 2 3])
+
 ;(
 
 ;(= ((fn [x] (for [y x :when odd? y] y)) #{1 2 3 4 5}) '(1 3 5)
@@ -21,7 +25,3 @@
 ;(reduce inc [1 2 3])
 
 ;(take 5)
-
-;(reduce inc)
-;(map inc)
-(< 23 5)
