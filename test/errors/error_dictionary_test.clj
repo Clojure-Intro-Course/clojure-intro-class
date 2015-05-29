@@ -97,6 +97,11 @@
 (expect "Wrong number of arguments (0) passed to a function odd?"
         (get-all-text (run-and-catch-pretty-no-stacktrace 'intro.core '(odd?))))
 
+(expect "You cannot use the same key in a hash map twice, but you have duplicated the key :b."
+        ;; note: let is needed in the test since the error must happen only at run time
+        (get-all-text (run-and-catch-pretty-no-stacktrace 'intro.core '(let [a :b b :b] {a 1 b 2}))))
+
+
 ;##########################################
 ;### Testing for Null Pointer Exceptions###
 ;##########################################

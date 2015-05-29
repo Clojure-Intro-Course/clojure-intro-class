@@ -109,6 +109,13 @@
                                                            (nth matches 3) " in the file " (nth matches 2)))
     :exc-location (fn [matches] {:path :unknown, :filename :unknown, :line :unknown, :character :unknown, :exception-type :unknown})}
 
+   {:key :duplicate-key-hashmap ;example: {1 2 1 3}
+    :class IllegalArgumentException
+    :match #"Duplicate key: (.*)"
+    :make-msg-info-obj (fn [matches] (make-msg-info-hashes "You cannot use the same key in a hash map twice, but you have duplicated the key "
+                                                           (nth matches 1) :arg "."))
+    :exc-location (fn [matches] {:path :unknown, :filename :unknown, :line :unknown, :character :unknown, :exception-type :unknown})}
+
    ;######################################
    ;### Index Out of Bounds Exceptions ###
    ;######################################
@@ -138,7 +145,7 @@
                                arity (lookup-arity  fstr)
                                ;; now the message doesn't make sense for anonymous functions, need a special case?
                                funstr (if (= fstr "anonymous function")
-                                        "an "
+                                        "this "
                                         (str "a function "))]
                            (make-msg-info-hashes "You cannot pass "
                                                  ;; fix plural/singular
@@ -281,6 +288,12 @@
     :match #"(.+): Unable to resolve symbol: (.+) in this context, compiling:\((.+)\)"
     :make-msg-info-obj (fn [matches] (make-msg-info-hashes "Name "
                                                            (nth matches 2) :arg " is undefined."))
+    :exc-location (fn [matches] {:path :unknown, :filename :unknown, :line :unknown, :character :unknown, :exception-type :unknown})}
+   {:key :compiler-exception-map-literal-even
+    :class clojure.lang.Compiler$CompilerException
+    :true-exception java.lang.RuntimeException
+    :match #"(.+): Map literal must contain an even number of forms, compiling:\((.+)\)"
+    :make-msg-info-obj (fn [matches] (make-msg-info-hashes "A hash map must consist of key/value pairs; you have a key that's missing a value."))
     :exc-location (fn [matches] {:path :unknown, :filename :unknown, :line :unknown, :character :unknown, :exception-type :unknown})}
 
    ;###########################################
