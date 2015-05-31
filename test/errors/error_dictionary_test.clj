@@ -52,10 +52,10 @@
 
 ;; Changed the test to load from a file. No exception, but the test still fails.
 ;; Need to look into this more: is it a compiler or run-time exception?
+;; It seems to be a compiler exception thrown at run-time, not compilation time
 ;; testing for :illegal-argument-needs-vector-when-binding
-(expect #"Parameters for let must come in pairs, but one of them does not have a match(.*)"
-        (get-all-text
-         (try (compile 'compilation_errors.let-odd-number-bindings) (catch Throwable e (prettify-exception e)))))
+(expect clojure.lang.Compiler$CompilerException; #"Parameters for let must come in pairs, but one of them does not have a match(.*)"
+        (compile 'compilation_errors.let-odd-number-bindings));(prettify-exception e)))))
 
 ;; testing for :illegal-argument-type-not-supported
 (expect "Function contains? does not allow a sequence as an argument"
