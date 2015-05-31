@@ -4,9 +4,11 @@
             [corefns.collection_fns :refer :all]
             [intro.student :refer :all]))
 
+(let [x] (+ x 2))
+
 ;(hash-map 1)
 
-{"a" 1 "a"}
+;{"a" 1 "a"}
 
 ;(map #(+ %1 %2) [1 2 3])
 

@@ -50,11 +50,12 @@
 ;(expect #"Parameters for let must come in pairs, but one of them does not have a match; on line (.*) in the file intro.core"
          ;(run-and-catch-pretty-no-stacktrace 'intro.core '(let [x] (+ x 2)))))
 
-;; Elena: this is a compilation error in clojure 1.7, so we can't test it like this
+;; Changed the test to load from a file. No exception, but the test still fails.
+;; Need to look into this more: is it a compiler or run-time exception?
 ;; testing for :illegal-argument-needs-vector-when-binding
-;(expect #"When declaring a let, you need to pass it a vector of arguments. Line (.*) in the file intro.core"
-;        (get-all-text
-;         (run-and-catch-pretty-no-stacktrace 'intro.core '(let (x 2)))))
+(expect #"Parameters for let must come in pairs, but one of them does not have a match(.*)"
+        (get-all-text
+         (try (compile 'compilation_errors.let-odd-number-bindings) (catch Throwable e (prettify-exception e)))))
 
 ;; testing for :illegal-argument-type-not-supported
 (expect "Function contains? does not allow a sequence as an argument"
