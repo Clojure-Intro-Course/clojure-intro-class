@@ -106,11 +106,12 @@
 (expect "load" (ignore-function? #"load" "load"))
 (expect "load5" (ignore-function? #"load.*" "load5"))
 
+
 ;; this thing really needs refactoring
 (defn- ignored-function? [nspace fname]
   (let [key-ns (keyword nspace)
         ;; There should be only one match for filter
-        names (key-ns ignore-functions)]
+        names (key-ns (merge-with into ignore-functions ignore-utils-functions))]
         ;names (key-ns functions-for-namespace)]
     (if (nil? names) false (not (empty? (filter #(ignore-function? % fname) names))))))
 
