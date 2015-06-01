@@ -120,20 +120,46 @@
 (expect true (ignored-function? "clojure.core" "load-one"))
 
 
-(defn keep-stack-trace-elem [st-elem]
+(defn keep-stack-trace-elem
   "returns true if the stack trace element should be kept
    and false otherwise"
+  [st-elem]
   (let [nspace (:ns st-elem)
 	      namespace (if nspace nspace "") ;; in case there's no :ns element
         fname (:fn st-elem)]
   (and (:clojure st-elem) (not (re-matches ns-pattern namespace))
        (not (ignored-function? namespace fname)))))
 
-(defn filter-stacktrace [stacktrace]
+(defn filter-stacktrace
   "takes a stack trace and filters out unneeded elements"
+  [stacktrace]
   ;(println stacktrace)
   ;(println (filter keep-stack-trace-elem stacktrace))
   (filter keep-stack-trace-elem stacktrace))
+
+(def non-student-namespaces ["clojure."])
+
+(def ns-pattern-non-student
+  (re-pattern (make-pattern-string non-student-namespaces)))
+
+(defn is-student-code?
+  "determines whether a stack trace element corresponds to student code,
+  assuming that the element appears in the filtered stacktrace"
+  [st-elem]
+  (let [nspace (:ns st-elem)
+        namespace (if nspace nspace "")]
+    (not (re-matches ns-pattern-non-student namespace))))
+
+(expect true (is-student-code? {:file "NO_SOURCE_FILE", :line 154, :clojure true, :ns "intro.student", :fn "eval15883"}))
+(expect false (is-student-code? {:file "core.clj", :line 3079, :clojure true, :ns "clojure.core", :fn "eval", :anon-fn false}))
+
+(defn get-location-info
+  "returns the location at the top-most occurrence of student code,
+  assuming that the stack trace has already been filtered"
+  [filtered-trace]
+  (let [top-student-line (first (filter is-student-code? filtered-trace))]
+    {:filename (:file top-student-line), :line (:line top-student-line), :fn (:fn top-student-line)}))
+
 
 ;; Elena: I think this would go away since it's easier to figure out the location
 ;; in prettify-exception
