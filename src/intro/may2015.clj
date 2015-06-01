@@ -91,7 +91,7 @@
 (defn draw-rocks [state]
 
   (doseq [a (:rocks state)]
-  (q/fill (+ 100 (rand-int 106)) 0 0)
+  (q/fill 255 0 0)
   (q/rect (first a) (second a) 50 50)))
 
 
@@ -201,16 +201,16 @@
           :box-2-pos (:box-2-pos state)
           :rocks (:rocks state)
           :hit-player 0}
-      :else
+        :else
         {:speed (update-speed state)
-        :level (update-level state)
-        :box-1-points (update-box-1-points state)
-        :box-2-points (update-box-2-points state)
-        :box-1-pos (:box-1-pos state)
-        :box-2-pos (:box-2-pos state)
-        :rocks (update-rocks state)
+         :level (update-level state)
+         :box-1-points (update-box-1-points state)
+         :box-2-points (update-box-2-points state)
+         :box-1-pos (:box-1-pos state)
+         :box-2-pos (:box-2-pos state)
+         :rocks (update-rocks state)
          :hit-player (hit-player state)})
-  (catch Throwable e (print (.getCause e)) (display-error (prettify-exception e)))))
+    (catch Throwable e (print (.getCause e)) (display-error (prettify-exception e)))))
 
 
 
