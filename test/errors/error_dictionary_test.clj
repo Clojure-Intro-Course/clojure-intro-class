@@ -55,7 +55,10 @@
 ;; It seems to be a compiler exception thrown at run-time, not compilation time
 ;; testing for :illegal-argument-needs-vector-when-binding
 (expect clojure.lang.Compiler$CompilerException; #"Parameters for let must come in pairs, but one of them does not have a match(.*)"
-        (compile 'compilation_errors.let-odd-number-bindings));(prettify-exception e)))))
+       (load-file "exceptions/compilation_errors/let-odd-number-bindings.clj"));(prettify-exception e)))))
+;(expect #"When declaring a let, you need to pass it a vector of arguments. Line (.*) in the file intro.core"
+;        (get-all-text
+;         (run-and-catch-pretty-no-stacktrace 'intro.core '(let (x 2)))))
 
 ;; testing for :illegal-argument-type-not-supported
 (expect "Function contains? does not allow a sequence as an argument"
