@@ -1,16 +1,18 @@
 (ns intro.may2015
 (:require [expectations :refer :all]
-            [corefns.corefns :refer :all]
-            [corefns.collection_fns :refer :all]
-            [quil.core :as q]
-            [quil.middleware :as m]
-            [quil.quil :refer :all :as qq]))
+          [corefns.corefns :refer :all]
+          [corefns.collection_fns :refer :all]
+          [quil.core :as q]
+          [quil.middleware :as m]
+          [quil.quil :refer :all :as qq]
+          [errors.errorgui :refer :all]
+          [errors.prettify_exception :refer :all]))
 
 (defn setup []
   "Sets up the inital state of the game.
    From setup, you can set your framerate and add or remove variables you use."
 
-  (q/frame-rate 30)
+  (q/frame-rate 60)
   (q/color-mode :rgb)
   ;Put variables and their starting values for your game in the hash-map after this comment.
   {:speed 1
@@ -22,18 +24,38 @@
    :rocks []
    :hit-player 0})
 
-(defn update-speed [state] (:speed state))
-(defn update-level[state] (:level state))
-(defn update-box-1-points [state] (:box-1-points state))
-(defn update-box-2-points [state] (:box-2-points state))
+(defn update-speed [state]
+ (+ 1 (* 0.1 (quot (max (:box-1-points state) (:box-2-points state)) 50))))
 
-(defn spawn-rocks? [state] (= (quot (rand-int 6) 1) 5))
+
+
+(defn update-level [state] (:level state))
+
+
+(defn update-box-1-points [state]
+  (if (= (:hit-player state) 1)
+    0
+    (inc (:box-1-points state))))
+
+
+
+
+(defn update-box-2-points [state]
+  (if (= (:hit-player state) 2)
+    0
+    (inc (:box-2-points state))))
+
+
+(defn spawn-rocks? [state]
+
+  (= (quot (rand-int (- 10 (:speed state))) 1) 0))
+
 
 
 (defn move-rocks [state]
   (vec (for [x (:rocks state)
              :when (> (q/height) (second x))]
-         (vector (first x) (+ 10 (second x))))))
+         (vector (first x) (+ (* 5 (:speed state)) (second x))))))
 
 
 
@@ -45,7 +67,6 @@
 
 
 (defn hit [x1 y1 x2 y2 rx ry]
-  (println "got to hit")
   (cond (and (= rx x1) (> ry y1) (< ry (+ 50 y1)))
         1
         (and (= rx x2) (> ry y2) (< ry (+ 50 y2)))
@@ -115,8 +136,22 @@
     (:box-2-pos state)))
 ;For changing player speed, look here! ^^^
 
+(defn has-won? [state]
+  (> (max (:box-1-points state) (:box-2-points state)) 2600))
+
 (defn move [state event]
-  (cond (or (= (:key event) :d) (= (:key event) :a) (= (:key event) :w) (= (:key event) :s))
+  (println event)
+  (cond (and (has-won? state) (= (:key-code event) 32))
+        {:speed 1
+         :level 1
+         :box-1-points 0
+         :box-2-points 0
+         :box-1-pos {:x 0 :y (- (q/height) 50)}
+         :box-2-pos {:x (- (q/width) 50) :y (- (q/height) 50)}
+         :rocks []
+         :hit-player 0}
+
+   (or (= (:key event) :d) (= (:key event) :a) (= (:key event) :w) (= (:key event) :s))
         (assoc state :box-1-pos (update-box-1-pos (direction (:key event)) state))
 
         (or (= (:key event) :right) (= (:key event) :left) (= (:key event) :up) (= (:key event) :down))
@@ -125,34 +160,47 @@
 
 
 (defn draw-points [state]
+    (q/text-size 12)
     (q/fill 255)
     (q/text-num (:box-1-points state) 25 50)
-    (q/text-num (:box-2-points state) 750 50))
+    (q/text-num (:box-2-points state) 725 50)
+    (q/text-num (:speed state) 400 50))
 
+
+
+(defn win-text [state]
+  (q/text-size 30)
+  (q/fill 255)
+  (cond (> (:box-1-points state) (:box-2-points state))
+        (q/text "Green Box Wins!" 300 200)
+        (< (:box-1-points state) (:box-2-points state))
+        (q/text "Blue Box Wins!" 300 200)
+        :else
+        (q/text "You Both Win!" 300 200))
+  (q/text "Press Space Bar To Reset!" 225 500))
+
+(defn draw-lines []
+  (q/stroke 80 255 80)
+  (doseq [x (range 8)]
+       (q/line (* x 100) 0 (* x 100) 1000))
+  (q/stroke 80 255 255)
+  (doseq [x (range 8)]
+       (q/line (+ 50 (* x 100)) 0 (+ 50 (* x 100)) 1000)))
 
 
 (defn update-state [state]
   "Takes in the current state and returns the updated state.
    Put functions that change your world state here"
-  (cond (= (:hit-player state) 1)
-        ({:speed (update-speed state)
-        :level (update-level state)
-        :box-1-points (update-box-1-points state)
-        :box-2-points (update-box-2-points state)
-        :box-1-pos (:box-1-pos state)
-        :box-2-pos (:box-2-pos state)
-        :rocks (update-rocks state)
-        :hit-player (hit-player state)})
-
-        (= (:hit-player state) 2)
-        ({:speed (update-speed state)
-          :level (update-level state)
-          :box-1-points (update-box-1-points state)
-          :box-2-points (update-box-2-points state)
+  (try
+  (cond (has-won? state)
+         {:speed 0
+          :level 1
+          :box-1-points (:box-1-points state)
+          :box-2-points (:box-2-points state)
           :box-1-pos (:box-1-pos state)
           :box-2-pos (:box-2-pos state)
-          :rocks (update-rocks state)
-          :hit-player (hit-player state)})
+          :rocks (:rocks state)
+          :hit-player 0}
       :else
         {:speed (update-speed state)
         :level (update-level state)
@@ -161,7 +209,8 @@
         :box-1-pos (:box-1-pos state)
         :box-2-pos (:box-2-pos state)
         :rocks (update-rocks state)
-         :hit-player (hit-player state)}))
+         :hit-player (hit-player state)})
+  (catch Throwable e (print (.getCause e)) (display-error (prettify-exception e)))))
 
 
 
@@ -171,7 +220,8 @@
         y1 (:y (:box-1-pos state))
         x2 (:x (:box-2-pos state))
         y2 (:y (:box-2-pos state))]
-    (q/background 0)
+    (q/background 50)
+    (draw-lines)
     (q/stroke 255)
     (q/fill 80 255 80)
     (q/rect x1 y1 50 50)
@@ -182,8 +232,7 @@
 
     (draw-rocks state)
     (draw-points state)
-
-    (println state)))
+    (if (has-won? state) (win-text state))))
 
 (q/defsketch gol
   :title "Game"
@@ -192,9 +241,8 @@
   :setup setup
   ; Update-state is called on each iteration before draw-state.
   :update update-state
-  (try
   :draw draw-state
-    (catch Exception e (str "caught exception: " (.getMessage e))))
   :key-pressed move
   :middleware [m/fun-mode])
+
 
