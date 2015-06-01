@@ -50,15 +50,13 @@
 ;(expect #"Parameters for let must come in pairs, but one of them does not have a match; on line (.*) in the file intro.core"
          ;(run-and-catch-pretty-no-stacktrace 'intro.core '(let [x] (+ x 2)))))
 
-;; Changed the test to load from a file. No exception, but the test still fails.
-;; Need to look into this more: is it a compiler or run-time exception?
-;; It seems to be a compiler exception thrown at run-time, not compilation time
-;; testing for :illegal-argument-needs-vector-when-binding
-(expect clojure.lang.Compiler$CompilerException; #"Parameters for let must come in pairs, but one of them does not have a match(.*)"
-       (load-file "exceptions/compilation_errors/let-odd-number-bindings.clj"));(prettify-exception e)))))
-;(expect #"When declaring a let, you need to pass it a vector of arguments. Line (.*) in the file intro.core"
-;        (get-all-text
-;         (run-and-catch-pretty-no-stacktrace 'intro.core '(let (x 2)))))
+;; testing for :illegal-argument-needs-vector-when-binding.
+;; This is a compiler error as of clojue 1.7, need load-file to test.
+;; Note: using "compile" is tricky to get to work because of classpath issues:
+;; we don't want the error to happen before we run this test.
+;; Need to check for the location as well: currently incomplete.
+(expect #"When declaring a let, you need to pass it a vector of arguments.(.*)"
+       (get-all-text (prettify-exception (load-file "exceptions/compilation_errors/let-odd-number-bindings.clj"))))
 
 ;; testing for :illegal-argument-type-not-supported
 (expect "Function contains? does not allow a sequence as an argument"
