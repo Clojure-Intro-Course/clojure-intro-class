@@ -712,16 +712,11 @@
     ;(pprint (get-all-match-strings))
     ;(let [x] (+ x 2))
 
-    ;(print (load-file "exceptions/compilation_errors/let-odd-number-bindings.clj"))
-    ;(fffff [1 2 3])
-    (print (map #(+ %1 %2) [1 2 3 4]))
-
-
     ;(even? 3 6 1)
     ;(defn user-def-fcn [x] (+ x 1))
     ;(user-def-fcn 1 2 3 4)
     ;(defn adde--345321 [x y] (+ x y))
-    ;(print (map adde--345321 [1 2 3 4]))
+    (print (map #(+ %1 %2) [1 2 3 4]))
     ;(#(+ %1 %2) 1)
     ;(map)
 
