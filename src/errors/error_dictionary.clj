@@ -141,15 +141,19 @@
     :class clojure.lang.ArityException
     :match #"Wrong number of args \((.*)\) passed to: (.*)"
     :make-msg-info-obj (fn [matches]
-                         (let [fstr (get-function-name (nth matches 2))
+                         (let [fstr  (clojure.string/replace (get-function-name (nth matches 2)) #"--(\d+)$" "")
                                arity (lookup-arity  fstr)
                                ;; now the message doesn't make sense for anonymous functions, need a special case?
                                funstr (if (= fstr "anonymous function")
                                         "this "
-                                        (str "a function "))]
+                                        (str "a function "))
+                               ;;corrects plurality of argument(s)
+                               arg-args (if  (= "1" (nth matches 1))
+                                          " argument"
+                                          " arguments")]
                            (make-msg-info-hashes "You cannot pass "
                                                  ;; fix plural/singular
-                                                 (number-word (nth matches 1)) " arguments to " funstr fstr :arg
+                                                 (number-word (nth matches 1)) arg-args " to " funstr fstr :arg
                                                  (if arity (str ", need " arity) "")
                                                  ".")))
     :exc-location (fn [matches] {:path :unknown, :filename :unknown, :line :unknown, :character :unknown, :exception-type :unknown})}

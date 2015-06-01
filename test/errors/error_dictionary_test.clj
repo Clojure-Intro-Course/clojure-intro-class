@@ -91,11 +91,18 @@
 ;###################################
 
 ;; testing for :arity-exception-wrong-number-of-arguments
-(expect "Wrong number of arguments (3) passed to a function even?"
+(expect "You cannot pass three arguments to a function even?."
         (get-all-text (run-and-catch-pretty-no-stacktrace 'intro.core '(even? 3 6 1))))
 
-(expect "Wrong number of arguments (0) passed to a function odd?"
+(expect "You cannot pass zero arguments to a function odd?."
         (get-all-text (run-and-catch-pretty-no-stacktrace 'intro.core '(odd?))))
+
+(expect "You cannot pass one argument to this anonymous function."
+        (get-all-text (run-and-catch-pretty-no-stacktrace 'intro.core '(#(+ %1 %2) 1))))
+
+(expect "You cannot pass 4 arguments to a function user-def-fcn."
+        (get-all-text (run-and-catch-pretty-no-stacktrace 'intro.core '((defn user-def-fcn [x] (+ x 1))
+    (user-def-fcn 1 2 3 4)))))
 
 (expect "You cannot use the same key in a hash map twice, but you have duplicated the key :b."
         ;; note: let is needed in the test since the error must happen only at run time
