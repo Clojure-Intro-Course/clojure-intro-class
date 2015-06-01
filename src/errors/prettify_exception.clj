@@ -161,6 +161,28 @@
   (let [top-student-line (first (filter is-student-code? filtered-trace))]
     {:filename (:file top-student-line), :line (:line top-student-line), :fn (:fn top-student-line)}))
 
+(expect
+ {:filename  "student.clj", :line 154, :fn "my-fn"}
+ (get-location-info (filter-stacktrace
+                            [{:file "AFn.java", :line 429, :java true, :class "clojure.lang.AFn", :method "throwArity"}
+                             {:file "AFn.java", :line 44, :java true, :class "clojure.lang.AFn", :method "invoke"}
+                             {:file "Compiler.java", :line 6792, :java true, :class "clojure.lang.Compiler", :method "eval"}
+                             {:file "Compiler.java", :line 6755, :java true, :class "clojure.lang.Compiler", :method "eval"}
+                             {:file "core.clj", :line 3079, :clojure true, :ns "clojure.core", :fn "eval", :anon-fn false}
+                             {:file "student.clj", :line 154, :clojure true, :ns "intro.student", :fn "my-fn", :anon-fn false}
+                             {:file "student_test.clj", :line 153, :clojure true, :ns "intro.student-test", :fn "expect1132213279", :anon-fn true}
+                             {:file "student_test.clj", :line 150, :clojure true, :ns "intro.student-test", :fn "expect1132213279", :anon-fn false}
+                             {:file "expectations.clj", :line 229, :clojure true, :ns "expectations", :fn "test-var", :anon-fn true}
+                             {:file "expectations.clj", :line 225, :clojure true, :ns "expectations", :fn "test-var", :anon-fn false}
+                             {:file "expectations.clj", :line 263, :clojure true, :ns "expectations", :fn "test-vars", :anon-fn true}
+                             {:file "expectations.clj", :line 243, :clojure true, :ns "expectations", :fn "create-context", :anon-fn false}
+                             {:file "expectations.clj", :line 263, :clojure true, :ns "expectations", :fn "test-vars", :anon-fn false}
+                             {:file "expectations.clj", :line 308, :clojure true, :ns "expectations", :fn "run-tests", :anon-fn false}
+                             {:file "expectations.clj", :line 314, :clojure true, :ns "expectations", :fn "run-all-tests", :anon-fn false}
+                             {:file "expectations.clj", :line 571, :clojure true, :ns "expectations", :fn "eval2603", :anon-fn true}
+                             {:file nil, :line nil, :java true, :class "expectations.proxy$java.lang.Thread$ff19274a", :method "run"}])))
+
+
 
 ;; Elena: I think this would go away since it's easier to figure out the location
 ;; in prettify-exception
