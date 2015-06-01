@@ -605,7 +605,11 @@
     ;(test-assoc)
     ;(test-reversible)
     ;(test-arity)
-    ;(test-sorted-collections)
+    ;(test-sorted-col    ;(let [x] (+ x 2))
+    ;(defn adde--8719 [x y] (+ x y))
+    ;(print (map adde--8719 [1 2 3 4]))    ;(let [x] (+ x 2))
+    ;(defn adde--8719 [x y] (+ x y))
+    ;(print (map adde--8719 [1 2 3 4]))lections)
     ;(test-asserts)
     ;(test-drop-while)
     ;(test-asserts-multiple-args)
@@ -628,7 +632,9 @@
     ;(prob120 19)
     ;(prob120 (range 10)
     ;(prob120 (range 100))
-    ;(prob120 (range 1000))
+    ;(prob120 (range 1000))    ;(let [x] (+ x 2))
+    ;(defn adde--8719 [x y] (+ x y))
+    ;(print (map adde--8719 [1 2 3 4]))
     ;(do (eval '(prob44 2 [1 2 3 4 5])))
     ;(exercise2 "hello " "world")
     ;(exercise3 "helloworld" 5)
@@ -659,7 +665,9 @@
     ;(prob38 1 8 3 4)
     ;(expect 4 (conj 2 2))
     ;(< 4 (number-with-a-print))
-    ;(< 4 (string-with-a-print))
+    ;(< 4 (string-with-a-pri    ;(let [x] (+ x 2))
+    ;(defn adde--8719 [x y] (+ x y))
+    ;(print (map adde--8719 [1 2 3 4]))nt))
     ;(def classcast-exc (import-from-file "exceptions/classcast1.ser"))
     ;(let [x] (+ x 2))
     ;(compile 'errors.loopevenforms)
@@ -689,7 +697,9 @@
     ;(square-this 2)
     ;(compile 'compilation_errors.unable_to_resolve_symbol_hello)
     ;(print "Hello World")
-    ;(defn factorial [input]
+    ;(defn factorial [input]    ;(let [x] (+ x 2))
+    ;(defn adde--8719 [x y] (+ x y))
+    ;(print (map adde--8719 [1 2 3 4]))
     ;  (if (>= input 1) (* input (factorial (- input 1))) 1))
     ;(print (factorial 5))
     ;(defn first-odd-sqrt [my-collection]
@@ -701,7 +711,18 @@
     ;(map 2 '(1 2 3))
     ;(pprint (get-all-match-strings))
     ;(let [x] (+ x 2))
-    (print (load-file "exceptions/compilation_errors/let-odd-number-bindings.clj"))
+
+
+
+    (defn adde--345321 [x y] (+ x y))
+    (print (map adde--345321 [1 2 3 4]))
+    ;(#(+ %1 %2) 1)
+    ;(map)
+
+
+
+
+    ;(print (load-file "exceptions/compilation_errors/let-odd-number-bindings.clj"))
     (try
       (print (load-file "src/intro/may2015.clj"))
     (catch Throwable e (print (str "itself:" (class e) ", cause: " (class (.getCause e)))) (throw e)))
