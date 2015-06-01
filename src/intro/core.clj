@@ -701,7 +701,9 @@
     ;(map 2 '(1 2 3))
     ;(pprint (get-all-match-strings))
     ;(let [x] (+ x 2))
-    (print (load-file "exceptions/compilation_errors/let-odd-number-bindings.clj"))
+    ;(print (load-file "exceptions/compilation_errors/let-odd-number-bindings.clj"))
+    ;(fffff [1 2 3])
+    (print (map #(+ %1 %2) [1 2 3 4]))
     (try
       (print (load-file "src/intro/may2015.clj"))
     (catch Throwable e (print (str "itself:" (class e) ", cause: " (class (.getCause e)))) (throw e)))

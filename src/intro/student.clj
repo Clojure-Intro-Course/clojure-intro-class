@@ -3,6 +3,9 @@
             [corefns.corefns :refer :all]
             [corefns.collection_fns :refer :all]))
 
+(defn fffff [x]
+  (map 2 x))
+
 ;##################################
 ;### Testing compilation errors ###
 ;##################################

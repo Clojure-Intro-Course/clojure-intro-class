@@ -43,8 +43,6 @@
          (run-and-catch-pretty-no-stacktrace 'intro.core '(cons 1 2))))
 
 ;; testing for :illegal-argument-even-number-of-forms
-
-
 ;; Elena: this is a compilation error in clojure 1.7, so we can't test it like this
 ;; testing for :illegal-argument-even-number-of-forms-in-binding-vector
 ;(expect #"Parameters for let must come in pairs, but one of them does not have a match; on line (.*) in the file intro.core"

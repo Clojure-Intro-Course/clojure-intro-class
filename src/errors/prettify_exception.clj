@@ -91,7 +91,11 @@
 (expect "clojure.main" (first (re-matches (re-pattern "clojure\\.main((\\.|/)?(.*))") "clojure.main")))
 
 ;; specify namespaces and function names or patterns
-(def ignore-functions [{:clojure.core [#"load.*" "require" "alter-var-root"]}])
+(def ignore-functions {:clojure.core [#"load.*" "require" "alter-var-root"]})
+
+;; these functions are probably not needed for beginners, but might be needed at
+;; more advanced levels
+(def ignore-utils-functions {:clojure.core ["print-sequential" "pr-on" "pr"]})
 
 (defn- ignore-function? [str-or-regex fname]
   (if (string? str-or-regex) (= str-or-regex fname)
@@ -102,11 +106,12 @@
 (expect "load" (ignore-function? #"load" "load"))
 (expect "load5" (ignore-function? #"load.*" "load5"))
 
+;; this thing really needs refactoring
 (defn- ignored-function? [nspace fname]
   (let [key-ns (keyword nspace)
         ;; There should be only one match for filter
-        functions-for-namespace (first (filter #(not (nil? (key-ns %))) ignore-functions))
-        names (key-ns functions-for-namespace)]
+        names (key-ns ignore-functions)]
+        ;names (key-ns functions-for-namespace)]
     (if (nil? names) false (not (empty? (filter #(ignore-function? % fname) names))))))
 
 (expect true (ignored-function? "clojure.core" "require"))
