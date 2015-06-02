@@ -172,6 +172,7 @@
         (q/text-num player-points x y))
 
 (defn pimp-score [state player-points]
+  (q/stroke 255)
   (cond (< 2500 player-points)
         (if (= player-points (:box-1-points state))
           (draw-score 32 255 0 255 75 50 player-points)
@@ -219,12 +220,12 @@
   (q/text-size 30)
   (q/fill 255)
   (cond (> (:box-1-points state) (:box-2-points state))
-        (q/text "Green Box Wins!" 300 200)
+        (q/text "Green Box Wins!" 400 200)
         (< (:box-1-points state) (:box-2-points state))
-        (q/text "Blue Box Wins!" 300 200)
+        (q/text "Blue Box Wins!" 400 200)
         :else
-        (q/text "You Both Win!" 300 200))
-  (q/text "Press Space Bar To Reset!" 225 500))
+        (q/text "You Both Win!" 400 200))
+  (q/text "Press Space Bar To Reset!" 400 500))
 
 (defn draw-lines []
   (q/stroke 80 255 80)
