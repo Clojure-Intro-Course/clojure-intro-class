@@ -182,21 +182,9 @@
                              {:file "expectations.clj", :line 571, :clojure true, :ns "expectations", :fn "eval2603", :anon-fn true}
                              {:file nil, :line nil, :java true, :class "expectations.proxy$java.lang.Thread$ff19274a", :method "run"}])))
 
-
-;; Elena: I think this would go away since it's easier to figure out the location
-;; in prettify-exception
-(defn extract-exception-location-hashmap
-  "takes an error-dictionary entry and a message and returns a hashmap with the exception's
-  filepath, filename, line number, character number, and exception type (runtime or compilation)."
-  [entry message]
-  (if entry
-    ((:exc-location entry) (re-matches (:match entry) message))
-    {}))
-
 (defn get-cause-if-needed
   "returns the cause of a compilation exception in cases when we need
    to process the cause, not the exception itself"
-  ; this may acquire a lot of separate cases        [clojure.string :refer :all]
   [e]
   (let [cause (.getCause e)]
     (if (and (= (class e) clojure.lang.Compiler$CompilerException)
@@ -244,7 +232,6 @@
         location (if (empty? comp-location) (get-location-info filtered-trace) comp-location)
         entry (first-match e-class message)
         msg-info-obj (into (msg-from-matched-entry entry message) (location-info location))
-        exception-location-hashmap (extract-exception-location-hashmap entry message)
         hint-message (hints-for-matched-entry entry)]
     ;; create an exception object
     {:exception-class e-class
@@ -252,12 +239,7 @@
      :msg-info-obj msg-info-obj
      :stacktrace stacktrace
      :filtered-stacktrace filtered-trace
-     :hints hint-message
-     :path (:path exception-location-hashmap)
-     :filename (:filename exception-location-hashmap)
-     :line (:line exception-location-hashmap)
-     :character (:character exception-location-hashmap)
-     :exception-type (:exception-type exception-location-hashmap)}))
+     :hints hint-message}))
 
 (defn trace-hashmap-to-StackTraceElement
   "Converts a clojure stacktrace element (hashmap) to a java StackTraceElement"

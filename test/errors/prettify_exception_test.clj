@@ -106,18 +106,6 @@
 	[{:msg "This is a " :stylekey :reg :length 10}
 	 {:msg "test." :stylekey :arg :length 5}])
 
-;###############################################
-;### 4. extract-exception-location-hashmap tests ###
-;###############################################
-
-(expect-let [message "java.lang.IllegalArgumentException: let requires an even number of forms in binding vector in intro.core:20"]
-        {:path :unknown
-         :filename "intro.core"
-         :line 20
-         :character :unknown
-         :exception-type :runtime}
-        (extract-exception-location-hashmap (first-match IllegalArgumentException message)
-                                        message))
 
 ;######################################
 ;### 5. errors.core, errorgui tests ###
