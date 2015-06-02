@@ -159,7 +159,7 @@
   assuming that the stack trace has already been filtered"
   [filtered-trace]
   (let [top-student-line (first (filter is-student-code? filtered-trace))]
-    {:filename (:file top-student-line), :line (:line top-student-line), :fn (:fn top-student-line)}))
+    {:file (:file top-student-line), :line (:line top-student-line), :fn (:fn top-student-line)}))
 
 (expect
  {:filename  "student.clj", :line 154, :fn "my-fn"}

@@ -720,13 +720,13 @@
     ;(#(+ %1 %2) 1)
     ;(map)
 
-
+    ;(exercise3 "hello" 12)
 
 
     ;(print (load-file "exceptions/compilation_errors/let-odd-number-bindings.clj"))
-    (try
-      (print (load-file "src/intro/may2015.clj"))
-    (catch Throwable e (print (str "itself:" (class e) ", cause: " (class (.getCause e)))) (throw e)))
+    ;(try
+    ;  (print (load-file "src/intro/may2015.clj"))
+    ;(catch Throwable e (print (str "itself:" (class e) ", cause: " (class (.getCause e)))) (throw e)))
     ;(+ 2 "banana")
     (catch Throwable e (display-error (prettify-exception e)))))
     ;(catch Throwable e (export-to-file e "exceptions/type_something_here.ser"))))
