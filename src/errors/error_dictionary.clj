@@ -124,8 +124,18 @@
     :class IndexOutOfBoundsException
     :match #"(\d+)"
     :make-msg-info-obj (fn [matches] (make-msg-info-hashes "An index in a sequence is out of bounds."
-                                                           " The index is: " (nth matches 0) :arg "."))
+                                                           " The index is: " (nth matches 0) :arg  "."))
     :exc-location (fn [matches] {:path :unknown, :filename :unknown, :line :unknown, :character :unknown, :exception-type :unknown})}
+
+   {:key :string-index-out-of-bounds
+    :class StringIndexOutOfBoundsException
+    :match #"String index out of range: (\d+)"
+    :make-msg-info-obj (fn [matches] (make-msg-info-hashes "Position " (nth matches 1) :arg " is outside of the string."))
+    :hint "String positions start at zero, so there is no character at a position equal to the string length.
+    Example: a string \"hi\" does not have a character at position 2. \n
+    Also the string may be empty, in this case accessing any position in it gives this error."
+    :exc-location (fn [matches] {:path :unknown, :filename :unknown, :line :unknown, :character :unknown, :exception-type :unknown})}
+
    {:key :index-out-of-bounds-index-not-provided
     :class IndexOutOfBoundsException
     :match #"" ; an empty message

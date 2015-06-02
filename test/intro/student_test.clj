@@ -17,7 +17,7 @@
 ;; testing for exercise3
 (expect (more-of x
                  java.lang.StringIndexOutOfBoundsException (:exception-class x)
-                 "String index out of range: 12" (get-all-text (:msg-info-obj x))
+                 #"Position 12 is outside of the string.(.*)" (get-all-text (:msg-info-obj x))
                  (trace-has-all-pairs? {:fn "subs" :ns "clojure.core"}) (:stacktrace x)
                  (trace-doesnt-have-pair? :ns "expectations") (:filtered-stacktrace x))
         (run-and-catch-pretty-with-stacktrace 'intro.student

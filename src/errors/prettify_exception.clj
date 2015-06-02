@@ -162,7 +162,7 @@
     {:file (:file top-student-line), :line (:line top-student-line), :fn (:fn top-student-line)}))
 
 (expect
- {:filename  "student.clj", :line 154, :fn "my-fn"}
+ {:file  "student.clj", :line 154, :fn "my-fn"}
  (get-location-info (filter-stacktrace
                             [{:file "AFn.java", :line 429, :java true, :class "clojure.lang.AFn", :method "throwArity"}
                              {:file "AFn.java", :line 44, :java true, :class "clojure.lang.AFn", :method "invoke"}
