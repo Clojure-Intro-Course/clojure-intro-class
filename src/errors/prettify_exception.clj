@@ -3,6 +3,7 @@
             [expectations :refer :all]
             [errors.error_dictionary :refer :all]
             [errors.error_hints :refer :all])
+            ;[clojure.string :refer :all])
   (:use [errors.dictionaries]
 	      [errors.messageobj]
 	      [errors.errorgui]
@@ -11,6 +12,13 @@
 ;;(def ignore-nses #"(clojure|java)\..*")
 ;;(def ignore-nses #"(user|clojure|java)\..*")
 ;; We should think of making this customizable: building blocks???
+
+(defn get-all-match-strings
+  "Returns the list of all match strings and their corresponding exception types
+   in error dictionary"
+  []
+  (map #(vector (:match %) (:class %)) error-dictionary))
+
 
 (defn first-match [e-class message]
 	(first (filter #(and (= (:class %) e-class) (re-matches (:match %) message))
@@ -83,7 +91,11 @@
 (expect "clojure.main" (first (re-matches (re-pattern "clojure\\.main((\\.|/)?(.*))") "clojure.main")))
 
 ;; specify namespaces and function names or patterns
-(def ignore-functions [{:clojure.core [#"load.*" "require" "alter-var-root"]}])
+(def ignore-functions {:clojure.core [#"load.*" "require" "alter-var-root"]})
+
+;; these functions are probably not needed for beginners, but might be needed at
+;; more advanced levels
+(def ignore-utils-functions {:clojure.core ["print-sequential" "pr-on" "pr"]})
 
 (defn- ignore-function? [str-or-regex fname]
   (if (string? str-or-regex) (= str-or-regex fname)
@@ -94,11 +106,13 @@
 (expect "load" (ignore-function? #"load" "load"))
 (expect "load5" (ignore-function? #"load.*" "load5"))
 
+
+;; this thing really needs refactoring
 (defn- ignored-function? [nspace fname]
   (let [key-ns (keyword nspace)
         ;; There should be only one match for filter
-        functions-for-namespace (first (filter #(not (nil? (key-ns %))) ignore-functions))
-        names (key-ns functions-for-namespace)]
+        names (key-ns (merge-with into ignore-functions ignore-utils-functions))]
+        ;names (key-ns functions-for-namespace)]
     (if (nil? names) false (not (empty? (filter #(ignore-function? % fname) names))))))
 
 (expect true (ignored-function? "clojure.core" "require"))
@@ -107,21 +121,70 @@
 (expect true (ignored-function? "clojure.core" "load-one"))
 
 
-(defn keep-stack-trace-elem [st-elem]
+(defn keep-stack-trace-elem
   "returns true if the stack trace element should be kept
    and false otherwise"
+  [st-elem]
   (let [nspace (:ns st-elem)
 	      namespace (if nspace nspace "") ;; in case there's no :ns element
         fname (:fn st-elem)]
   (and (:clojure st-elem) (not (re-matches ns-pattern namespace))
        (not (ignored-function? namespace fname)))))
 
-(defn filter-stacktrace [stacktrace]
+(defn filter-stacktrace
   "takes a stack trace and filters out unneeded elements"
+  [stacktrace]
   ;(println stacktrace)
   ;(println (filter keep-stack-trace-elem stacktrace))
   (filter keep-stack-trace-elem stacktrace))
 
+(def non-student-namespaces ["clojure."])
+
+(def ns-pattern-non-student
+  (re-pattern (make-pattern-string non-student-namespaces)))
+
+(defn is-student-code?
+  "determines whether a stack trace element corresponds to student code,
+  assuming that the element appears in the filtered stacktrace"
+  [st-elem]
+  (let [nspace (:ns st-elem)
+        namespace (if nspace nspace "")]
+    (not (re-matches ns-pattern-non-student namespace))))
+
+(expect true (is-student-code? {:file "NO_SOURCE_FILE", :line 154, :clojure true, :ns "intro.student", :fn "eval15883"}))
+(expect false (is-student-code? {:file "core.clj", :line 3079, :clojure true, :ns "clojure.core", :fn "eval", :anon-fn false}))
+
+(defn get-location-info
+  "returns the location at the top-most occurrence of student code,
+  assuming that the stack trace has already been filtered"
+  [filtered-trace]
+  (let [top-student-line (first (filter is-student-code? filtered-trace))]
+    {:file (:file top-student-line), :line (:line top-student-line), :fn (:fn top-student-line)}))
+
+(expect
+ {:filename  "student.clj", :line 154, :fn "my-fn"}
+ (get-location-info (filter-stacktrace
+                            [{:file "AFn.java", :line 429, :java true, :class "clojure.lang.AFn", :method "throwArity"}
+                             {:file "AFn.java", :line 44, :java true, :class "clojure.lang.AFn", :method "invoke"}
+                             {:file "Compiler.java", :line 6792, :java true, :class "clojure.lang.Compiler", :method "eval"}
+                             {:file "Compiler.java", :line 6755, :java true, :class "clojure.lang.Compiler", :method "eval"}
+                             {:file "core.clj", :line 3079, :clojure true, :ns "clojure.core", :fn "eval", :anon-fn false}
+                             {:file "student.clj", :line 154, :clojure true, :ns "intro.student", :fn "my-fn", :anon-fn false}
+                             {:file "student_test.clj", :line 153, :clojure true, :ns "intro.student-test", :fn "expect1132213279", :anon-fn true}
+                             {:file "student_test.clj", :line 150, :clojure true, :ns "intro.student-test", :fn "expect1132213279", :anon-fn false}
+                             {:file "expectations.clj", :line 229, :clojure true, :ns "expectations", :fn "test-var", :anon-fn true}
+                             {:file "expectations.clj", :line 225, :clojure true, :ns "expectations", :fn "test-var", :anon-fn false}
+                             {:file "expectations.clj", :line 263, :clojure true, :ns "expectations", :fn "test-vars", :anon-fn true}
+                             {:file "expectations.clj", :line 243, :clojure true, :ns "expectations", :fn "create-context", :anon-fn false}
+                             {:file "expectations.clj", :line 263, :clojure true, :ns "expectations", :fn "test-vars", :anon-fn false}
+                             {:file "expectations.clj", :line 308, :clojure true, :ns "expectations", :fn "run-tests", :anon-fn false}
+                             {:file "expectations.clj", :line 314, :clojure true, :ns "expectations", :fn "run-all-tests", :anon-fn false}
+                             {:file "expectations.clj", :line 571, :clojure true, :ns "expectations", :fn "eval2603", :anon-fn true}
+                             {:file nil, :line nil, :java true, :class "expectations.proxy$java.lang.Thread$ff19274a", :method "run"}])))
+
+
+;; Elena: I think this would go away since it's easier to figure out the location
+;; in prettify-exception
 (defn extract-exception-location-hashmap
   "takes an error-dictionary entry and a message and returns a hashmap with the exception's
   filepath, filename, line number, character number, and exception type (runtime or compilation)."
@@ -130,22 +193,62 @@
     ((:exc-location entry) (re-matches (:match entry) message))
     {}))
 
+(defn get-cause-if-needed
+  "returns the cause of a compilation exception in cases when we need
+   to process the cause, not the exception itself"
+  ; this may acquire a lot of separate cases        [clojure.string :refer :all]
+  [e]
+  (let [cause (.getCause e)]
+    (if (and (= (class e) clojure.lang.Compiler$CompilerException)
+             cause ; has a non-nil cause
+             (not= (class cause) java.lang.RuntimeException))
+      cause e)))
+
+(defn compiler-error?
+  "an ad-hoc method to determine if an exception is really a compilation error:
+  it's a compilation error with no cause or a generic cause."
+  [e]
+  (let [cause (.getCause e)]
+    (and (= (class e) clojure.lang.Compiler$CompilerException)
+         (or (nil? cause) (= (class cause) java.lang.RuntimeException)))))
+
+(defn location-info
+  "Takes the location hashmap (possibly empty) and returns a message info
+  object to be merged with the rest of the message"
+  [location]
+  (if (empty? location) ""
+    (let [file (:file location)
+          line (:line location)
+          character (:char location)
+          fn-name (:fn location)
+          character-msg (if character (make-msg-info-hashes " at character " character :loc) nil)
+          fn-msg (if fn-name (make-msg-info-hashes " in function " fn-name :loc) nil)]
+      (reduce into [(make-msg-info-hashes "\nFound in file " file :loc " on line " line :loc)
+            character-msg
+            fn-msg
+            (make-msg-info-hashes ".")]))))
+
 ;; All together:
 (defn prettify-exception [ex]
-  (let [cause (.getCause ex)
-        e (if (and cause (= (class ex) clojure.lang.Compiler$CompilerException)) cause ex)
+  (let [compiler? (compiler-error? ex)
+        e (get-cause-if-needed ex)
         e-class (class e)
         m (.getMessage e)
         message  (if m m "") ; converting an empty message from nil to ""
         exc (stacktrace/parse-exception e)
         stacktrace (:trace-elems exc)
         filtered-trace (filter-stacktrace stacktrace)
+        ;; this is just a temporary way of adding the location, we might
+        ;; want to break it down into path, file, etc:
+        comp-location (get-compile-error-location (.getMessage ex))
+        location (if (empty? comp-location) (get-location-info filtered-trace) comp-location)
         entry (first-match e-class message)
-        msg-info-obj (msg-from-matched-entry entry message)
+        msg-info-obj (into (msg-from-matched-entry entry message) (location-info location))
         exception-location-hashmap (extract-exception-location-hashmap entry message)
         hint-message (hints-for-matched-entry entry)]
     ;; create an exception object
     {:exception-class e-class
+     :compiler? compiler?
      :msg-info-obj msg-info-obj
      :stacktrace stacktrace
      :filtered-stacktrace filtered-trace

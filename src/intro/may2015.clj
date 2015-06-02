@@ -293,5 +293,3 @@
   :draw draw-state
   :key-pressed move
   :middleware [m/fun-mode])
-
-

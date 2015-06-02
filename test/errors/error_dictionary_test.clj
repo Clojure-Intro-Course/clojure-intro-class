@@ -38,35 +38,39 @@
          (run-and-catch-pretty-no-stacktrace 'intro.core '(into {} [[1 2] [3]]))))
 
 ;; testing for :illegal-argument-cannot-convert-type
-(expect "Don't know how to create a sequence from a number"
+(expect "In function cons, the second argument 2 must be a sequence but is a number."
         (get-all-text
          (run-and-catch-pretty-no-stacktrace 'intro.core '(cons 1 2))))
 
 ;; testing for :illegal-argument-even-number-of-forms
-
+;; Elena: this is a compilation error in clojure 1.7, so we can't test it like this
 ;; testing for :illegal-argument-even-number-of-forms-in-binding-vector
-(expect #"A parameter for a let is missing a binding on line (.*) in the file intro.core"
-        (get-all-text
-         (run-and-catch-pretty-no-stacktrace 'intro.core '(let [x] (+ x 2)))))
+;(expect #"Parameters for let must come in pairs, but one of them does not have a match; on line (.*) in the file intro.core"
+         ;(run-and-catch-pretty-no-stacktrace 'intro.core '(let [x] (+ x 2)))))
 
-;; testing for :illegal-argument-needs-vector-when-binding
-(expect #"When declaring a let, you need to pass it a vector of arguments. Line (.*) in the file intro.core"
-        (get-all-text
-         (run-and-catch-pretty-no-stacktrace 'intro.core '(let (x 2)))))
+;; testing for :illegal-argument-needs-vector-when-binding.
+;; This is a compiler error as of clojue 1.7, need load-file to test.
+;; Note: using "compile" is tricky to get to work because of classpath issues:
+;; we don't want the error to happen before we run this test.
+;; Need to check for the location as well: currently incomplete.
+(expect #"When declaring a let, you need to pass it a vector of arguments.(.*)"
+       (get-all-text (prettify-exception (load-file "exceptions/compilation_errors/let-odd-number-bindings.clj"))))
 
 ;; testing for :illegal-argument-type-not-supported
 (expect "Function contains? does not allow a sequence as an argument"
         (get-all-text
          (run-and-catch-pretty-no-stacktrace 'intro.core '(contains? (seq [1 3 6]) 2))))
 
+;; Elena: this is a compilation error in clojure 1.7, so we can't test it like this
 ;; testing for :illegal-argument-parameters-must-be-in-vector
-(expect "Parameters in defn should be a vector, but is my-argument"
-        (get-all-text
-         (run-and-catch-pretty-no-stacktrace 'intro.core '(defn my-function my-argument))))
+;(expect "Parameters in defn should be a vector, but is my-argument"
+;        (get-all-text
+;         (run-and-catch-pretty-no-stacktrace 'intro.core '(defn my-function my-argument))))
 
+;; Elena: this is a compilation error in clojure 1.7, so we can't test it like this
 ;; testing for :illegal-argument-exactly-2-forms
-(expect #"The function when-let requires exactly 2 forms in binding vector. Line (.*) in the file intro.core"
-        (get-all-text (run-and-catch-pretty-no-stacktrace 'intro.core '(when-let [num1 1 num2 2] "hello"))))
+;(expect #"The function when-let requires exactly 2 forms in binding vector. Line (.*) in the file intro.core"
+;        (get-all-text (run-and-catch-pretty-no-stacktrace 'intro.core '(when-let [num1 1 num2 2] "hello"))))
 
 ;##################################################
 ;### Testing for Index Out of Bounds Exceptions ###
@@ -87,11 +91,23 @@
 ;###################################
 
 ;; testing for :arity-exception-wrong-number-of-arguments
-(expect "Wrong number of arguments (3) passed to a function even?"
+(expect "You cannot pass three arguments to a function even?."
         (get-all-text (run-and-catch-pretty-no-stacktrace 'intro.core '(even? 3 6 1))))
 
-(expect "Wrong number of arguments (0) passed to a function odd?"
+(expect "You cannot pass zero arguments to a function odd?."
         (get-all-text (run-and-catch-pretty-no-stacktrace 'intro.core '(odd?))))
+
+(expect "You cannot pass one argument to this anonymous function."
+        (get-all-text (run-and-catch-pretty-no-stacktrace 'intro.core '(#(+ %1 %2) 1))))
+
+(expect "You cannot pass 4 arguments to a function user-def-fcn."
+        (get-all-text (run-and-catch-pretty-no-stacktrace 'intro.core '((defn user-def-fcn [x] (+ x 1))
+    (user-def-fcn 1 2 3 4)))))
+
+(expect "You cannot use the same key in a hash map twice, but you have duplicated the key :b."
+        ;; note: let is needed in the test since the error must happen only at run time
+        (get-all-text (run-and-catch-pretty-no-stacktrace 'intro.core '(let [a :b b :b] {a 1 b 2}))))
+
 
 ;##########################################
 ;### Testing for Null Pointer Exceptions###
@@ -117,9 +133,10 @@
 ;### Testing for Java Exceptions###
 ;##################################
 
+;; Elena: this is a compilation error in clojure 1.7, so we can't test it like this
 ;; testing for :java.lang.Exception-improper-identifier
-(expect "You cannot use 7 as a variable."
-        (get-all-text (run-and-catch-pretty-no-stacktrace 'intro.core '(let [x :two 7 :seven]))))
+;(expect "You cannot use 7 as a variable."
+;        (get-all-text (run-and-catch-pretty-no-stacktrace 'intro.core '(let [x :two 7 :seven]))))
 
 ;######################################
 ;### Testing for compilation errors ###
@@ -135,10 +152,12 @@
         (get-all-text
          (run-and-catch-pretty-no-stacktrace 'intro.core '(defn my-num [x] (cond (= 1 x))))))
 
+;; the internal representation of zero? is zero?--inliner--4238 (in this particular test), i.e. it has
+;; an inliner part
 (expect "Compilation error: wrong number of arguments (0) passed to a function zero?, while compiling "
         (get-all-text (butlast (run-and-catch-pretty-no-stacktrace 'intro.core '(zero?)))))
 
-(expect #"Compilation error: recur can only occur as a tail call, meaning no operations can be done after its return, while compiling (.+)" ; this is giving NO_SOURCE_PATH
+(expect #"Compilation error: recur can only occur as a tail call: no operations can be done after its return, while compiling (.+)" ; this is giving NO_SOURCE_PATH
         (get-all-text (run-and-catch-pretty-no-stacktrace 'intro.core '(defn inc-nums [x] ((recur (inc x)) (loop [x x]))))))
 
 (expect #"Compilation error: def must be followed by a name, while compiling (.+)" ; this is giving NO_SOURCE_PATH

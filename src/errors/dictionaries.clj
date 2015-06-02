@@ -100,7 +100,7 @@
 
 ;;; check-if-anonymous-function: string -> string
 (defn check-if-anonymous-function [fname]
-  (if (or (= fname "fn") (re-matches #"fn_(.*)" fname))
+  (if (or (= fname "fn") (re-matches #"fn_(.*)" fname) (re-matches #"fn-(.*)" fname))
       "anonymous function" fname))
 
 ;;; get-match-name: string -> string
@@ -115,7 +115,7 @@
 ;;; remove-inliner: string -> string
 (defn- remove-inliner [fname]
   "If fname ends with inliner this will return everything before it"
-  (let [match (nth (re-matches #"(.*)--inliner" fname) 1)]
+  (let [match (nth (re-matches #"(.*)--inliner(.*)" fname) 1)]
     (if match match fname)))
 
 ;;; get-function-name: string -> string
@@ -148,6 +148,14 @@
     5 "fifth argument"
     (str n "th argument")))
 
+(defn number-word [n]
+  (case n
+    "0" "zero"
+    "1" "one"
+    "2" "two"
+    "3" "three"
+    n))
+
 ;;; process-asserts-obj: string or nil -> string
 (defn process-asserts-obj
   "Returns a msg-info-obj generated for an assert failure based on the
@@ -174,3 +182,19 @@
   [n addition]
   (add-to-msg-info (process-asserts-obj n) addition))
 
+(defn get-compile-error-location
+  "takes a message of a compiler error and returns
+  the location part that matches after 'compiling',
+  as a hashmap. Returns an empty hashmap (no keys)
+  when there is no match"
+  [m]
+  (zipmap [:file :line :char] (rest (rest (re-matches #"(.*), compiling:\((.+):(.+):(.+)\)" m)))))
+
+;; do we want to move this to corefns?
+(def known-args-number {:map "at least one", :count "one", :conj "at least one",
+                        :into "two", :cons "two"})
+
+(defn lookup-arity
+  "returns expected arity (as a string) for a function if we know it, nil otherwise"
+  [f]
+  ((keyword f) known-args-number))

@@ -63,13 +63,14 @@
         (run-and-catch-pretty-with-stacktrace 'intro.student
                                               '(prob64 [1 2 3 4 5])))
 
+;; take-while now is allowed arity 1, as of Clojure 1.7
 ;; testing for prob57
-(expect (more-of x
-                 clojure.lang.ArityException (:exception-class x)
-                 "Wrong number of arguments (1) passed to a function take-while" (get-all-text (:msg-info-obj x))
-                 (trace-has-all-pairs? {:fn "prob57" :ns "intro.student"}) (:stacktrace x))
-        (run-and-catch-pretty-with-stacktrace 'intro.student
-                                              '(prob57 5)))
+;(expect (more-of x
+;                 clojure.lang.ArityException (:exception-class x)
+;                 "Wrong number of arguments (1) passed to a function take-while" (get-all-text (:msg-info-obj x))
+;                 (trace-has-all-pairs? {:fn "prob57" :ns "intro.student"}) (:stacktrace x))
+;        (run-and-catch-pretty-with-stacktrace 'intro.student
+;                                              '(prob57 5)))
 
 ;; testing for prob134
 (expect (more-of x
@@ -95,18 +96,19 @@
         (run-and-catch-pretty-with-stacktrace 'intro.student
                                               '(prob20 [:a :b :c :d])))
 
+;; take now is allowed arity 1, as of Clojure 1.7
 ;; testing for prob21
-(expect (more-of x
-                 clojure.lang.ArityException (:exception-class x)
-                 "Wrong number of arguments (1) passed to a function take" (get-all-text (:msg-info-obj x))
-                 (trace-has-all-pairs? {:fn "prob21" :ns "intro.student"}) (:filtered-stacktrace x))
-        (run-and-catch-pretty-with-stacktrace 'intro.student
-                                              '(prob21 '(4 5 6 7) 2)))
+;(expect (more-of x
+;                 clojure.lang.ArityException (:exception-class x)
+;                 "Wrong number of arguments (1) passed to a function take" (get-all-text (:msg-info-obj x))
+;                 (trace-has-all-pairs? {:fn "prob21" :ns "intro.student"}) (:filtered-stacktrace x))
+;        (run-and-catch-pretty-with-stacktrace 'intro.student
+;                                              '(prob21 '(4 5 6 7) 2)))
 
 ;; testing for add-five
 (expect (more-of x
-                 java.lang.IllegalArgumentException (:exception-class x)
-                 "Don't know how to create a sequence from a number" (get-all-text (:msg-info-obj x))
+                 java.lang.AssertionError (:exception-class x)
+                 "In function cons, the second argument 5 must be a sequence but is a number." (get-all-text (:msg-info-obj x))
                  (trace-has-all-pairs? {:fn "add-five" :ns "intro.student"}) (:filtered-stacktrace x))
         (run-and-catch-pretty-with-stacktrace 'intro.student
                                               '(add-five 5)))
@@ -139,7 +141,7 @@
 ;; testing for exercise9
 (expect (more-of x
                  clojure.lang.ArityException (:exception-class x)
-                 #"Wrong number of arguments \(1\) passed to a function(.*)" (get-all-text (:msg-info-obj x))
+                 #"Wrong number of arguments \(1\) passed to an anonymous function" (get-all-text (:msg-info-obj x))
                  (trace-has-all-pairs? {:fn "exercise9" :ns "intro.student"}) (:filtered-stacktrace x))
         (run-and-catch-pretty-with-stacktrace 'intro.student
                                               '(exercise9)))

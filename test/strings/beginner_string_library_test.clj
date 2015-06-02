@@ -63,7 +63,8 @@
 (expect "abc123" (append "abc" 123))
 (expect "abc1230[1 3 4]*" (append "abc" 123 \0 nil [1 3 4] \*))
 (expect "abc1230[[1 2] 3 4]*" (append "abc" 123 \0 nil [[1 2] 3 4] \*))
-(expect  "{:one 1, :three 3, :two 2} abc do re mi"(append {:one 1 :two 2 :three 3} \space "abc" \space "do re mi"))
+;; caution: the result of str on a hash map has unspecified order, so we can't hardwire it:
+(expect  (str (str {:one 1, :three 3, :two 2}) " abc do re mi"(append {:one 1 :two 2 :three 3} \space "abc" \space "do re mi")))
 (expect (more-of x
                 35 (count x)
                 true (string-contains? x "{")
