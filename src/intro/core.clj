@@ -99,6 +99,7 @@
 
 (defn -main [& args]
   (try
+    (map 2 3)
     ;(print (map #(+ %1 %2) [1 2 3 4]))
     ;(map)
 
