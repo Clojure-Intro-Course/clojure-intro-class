@@ -58,11 +58,19 @@
          (vector (first x) (+ (* 5 (:speed state)) (second x))))))
 
 
+(defn new-rock [state]
+  (let [rand-x (* (quot (rand-int 16) 1) 50)
+        pr-val (first (last (:rocks state)))]
+    (if (or (= pr-val nil) (or (> (+ rand-x 51) pr-val) (< (- rand-x 51) pr-val)))
+      (conj (:rocks state) [(* (quot (rand-int 16) 1) 50) 0])
+      (:rocks state))))
+
+
 
 (defn update-rocks [state]
   (move-rocks
    (if (spawn-rocks? state)
-    (assoc state :rocks (conj (:rocks state) [(* (quot (rand-int 16) 1) 50) 0]))
+    (assoc state :rocks (new-rock state))
     state)))
 
 
@@ -89,7 +97,6 @@
 
 
 (defn draw-rocks [state]
-
   (doseq [a (:rocks state)]
   (q/fill 255 0 0)
   (q/rect (first a) (second a) 50 50)))
@@ -159,12 +166,52 @@
         :else state))
 
 
+(defn draw-score [txt-size r g b x y player-points]
+        (q/text-size txt-size)
+        (q/fill r g b)
+        (q/text-num player-points x y))
+
+(defn pimp-score [state player-points]
+  (cond (< 2500 player-points)
+        (if (= player-points (:box-1-points state))
+          (draw-score 32 255 0 255 75 50 player-points)
+          (draw-score 32 255 0 255 725 50 player-points))
+
+        (< 2000 player-points)
+        (if (= player-points (:box-1-points state))
+          (draw-score 28 213 0 213 75 50 player-points)
+          (draw-score 28 213 0 213 725 50 player-points))
+
+        (< 1500 player-points)
+        (if (= player-points (:box-1-points state))
+          (draw-score 24 171 0 171 75 50 player-points)
+          (draw-score 24 171 0 171 725 50 player-points))
+
+        (< 1000 player-points)
+        (if (= player-points (:box-1-points state))
+          (draw-score 20 129 0 129 75 50 player-points)
+          (draw-score 20 129 0 129 725 50 player-points))
+
+        (< 500 player-points)
+        (if (= player-points (:box-1-points state))
+          (draw-score 16 87 0 87 75 50 player-points)
+          (draw-score 16 87 0 87 725 50 player-points))
+
+        :else
+        (if (= player-points (:box-1-points state))
+          (draw-score 12 45 0 45 75 50 player-points)
+          (draw-score 12 45 0 45 725 50 player-points))))
+
+
+
+
 (defn draw-points [state]
-    (q/text-size 12)
-    (q/fill 255)
-    (q/text-num (:box-1-points state) 25 50)
-    (q/text-num (:box-2-points state) 725 50)
-    (q/text-num (:speed state) 400 50))
+  (q/text-align :center)
+  (pimp-score state (:box-2-points state))
+  (pimp-score state (:box-1-points state))
+  (q/text-size 32)
+  (q/fill 255)
+  (q/text-num (:speed state) 400 50))
 
 
 
@@ -216,6 +263,7 @@
 
 
 (defn draw-state [state]
+  (try
   (let [x1 (:x (:box-1-pos state))
         y1 (:y (:box-1-pos state))
         x2 (:x (:box-2-pos state))
@@ -232,7 +280,8 @@
 
     (draw-rocks state)
     (draw-points state)
-    (if (has-won? state) (win-text state))))
+    (if (has-won? state) (win-text state)))
+  (catch Throwable e (print (.getCause e)) (display-error (prettify-exception e)))))
 
 (q/defsketch gol
   :title "Game"
