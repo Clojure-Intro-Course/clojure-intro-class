@@ -183,7 +183,6 @@
                              {:file nil, :line nil, :java true, :class "expectations.proxy$java.lang.Thread$ff19274a", :method "run"}])))
 
 
-
 ;; Elena: I think this would go away since it's easier to figure out the location
 ;; in prettify-exception
 (defn extract-exception-location-hashmap
@@ -220,8 +219,14 @@
   (if (empty? location) ""
     (let [file (:file location)
           line (:line location)
-          character (:char location)]
-      (make-msg-info-hashes "\nFound in file " file :loc " on line " line :loc " at character " character :loc "."))))
+          character (:char location)
+          fn-name (:fn location)
+          character-msg (if character (make-msg-info-hashes " at character " character :loc) nil)
+          fn-msg (if fn-name (make-msg-info-hashes " in function " fn-name :loc) nil)]
+      (reduce into [(make-msg-info-hashes "\nFound in file " file :loc " on line " line :loc)
+            character-msg
+            fn-msg
+            (make-msg-info-hashes ".")]))))
 
 ;; All together:
 (defn prettify-exception [ex]
@@ -235,7 +240,8 @@
         filtered-trace (filter-stacktrace stacktrace)
         ;; this is just a temporary way of adding the location, we might
         ;; want to break it down into path, file, etc:
-        location (get-compile-error-location (.getMessage ex))
+        comp-location (get-compile-error-location (.getMessage ex))
+        location (if (empty? comp-location) (get-location-info filtered-trace) comp-location)
         entry (first-match e-class message)
         msg-info-obj (into (msg-from-matched-entry entry message) (location-info location))
         exception-location-hashmap (extract-exception-location-hashmap entry message)
