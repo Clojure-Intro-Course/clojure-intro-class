@@ -216,19 +216,24 @@
             fn-msg
             (make-msg-info-hashes ".")]))))
 
+(defn get-exc-message
+  "returns the message in an exception or an empty string if the message is nil"
+  [e]
+  (let [m (.getMessage e)]
+    (if m m "")))
+
 ;; All together:
 (defn prettify-exception [ex]
   (let [compiler? (compiler-error? ex)
         e (get-cause-if-needed ex)
         e-class (class e)
-        m (.getMessage e)
-        message  (if m m "") ; converting an empty message from nil to ""
+        message (get-exc-message e) ; converting an empty message from nil to ""
         exc (stacktrace/parse-exception e)
         stacktrace (:trace-elems exc)
         filtered-trace (filter-stacktrace stacktrace)
         ;; this is just a temporary way of adding the location, we might
         ;; want to break it down into path, file, etc:
-        comp-location (get-compile-error-location (.getMessage ex))
+        comp-location (get-compile-error-location (get-exc-message ex))
         location (if (empty? comp-location) (get-location-info filtered-trace) comp-location)
         entry (first-match e-class message)
         msg-info-obj (into (msg-from-matched-entry entry message) (location-info location))

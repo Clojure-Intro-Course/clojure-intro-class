@@ -4,6 +4,8 @@
             [corefns.collection_fns :refer :all]
             [intro.student :refer :all]))
 
+(float nil)
+
 ;(let [x] (+ x 2))
 
 ;(hash-map 1)
