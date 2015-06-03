@@ -8,9 +8,11 @@
           [errors.errorgui :refer :all]
           [errors.prettify_exception :refer :all]))
 
+
 (defn setup []
   "Sets up the inital state of the game.
    From setup, you can set your framerate and add or remove variables you use."
+
 
   (q/frame-rate 1)
   (q/color-mode :rgb)
