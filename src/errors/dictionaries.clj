@@ -12,16 +12,6 @@
                       :clojure.lang.Keyword "a keyword"
                       :java.lang.Boolean "a boolean"
 		                  ;; I think this is better for new students to lump all numbers together(defn drop [argument1 argument2]
-   {:pre [(check-if-number? "drop" argument1)
-          (check-if-seqable? "drop" argument2)]}
-   (clojure.core/drop argument1 argument2))
-
-;; (take n coll)
-;; Returns a lazy sequence of the first n items in coll, or all items if there are fewer than n.
-(defn take [argument1 argument2]
-   {:pre [(check-if-number? "take" argument1)
-          (check-if-seqable? "take" argument2)]}
-   (clojure.core/take argument1 argument2))
 		                  :java.lang.Long "a number"
 		                  :java.lang.Integer "a number"
 		                  :java.lang.Double "a number"
@@ -212,7 +202,7 @@
                         :first "one",        :empty? "one",      :join "one or two",       :string? "one",
                         :- "at least one",   :rem "two",         :mod "two",               :inc "one",
                         :dec "one",          :max "one or more", :min "one or more",       :rand "zero or one",
-                        :rand-int "one",     :lookup-arity "one",
+                        :rand-int "one",
                         })
 
 (defn lookup-arity
