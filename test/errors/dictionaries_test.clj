@@ -22,3 +22,9 @@
 (expect "anonymous function" (check-if-anonymous-function "fn_test"))
 (expect "anonymous function" (check-if-anonymous-function "fn_"))
 (expect "random_function" (check-if-anonymous-function "random_function"))
+
+;######################################
+;### Testing for location functions ###
+;######################################
+
+(expect {} (get-compile-error-location ""))
