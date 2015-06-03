@@ -28,12 +28,12 @@
 ;###############################################
 
 ;; testing for :illegal-argument-no-val-supplied-for-key
-(expect "No value found for key d. Every key must be paired with a value; the value should be immediately following the key."
+(expect "No value found for key d. Every key for a hash-map must be followed by a value."
         (get-all-text
          (run-and-catch-pretty-no-stacktrace 'intro.core '(hash-map "c" :d "d"))))
 
 ;; testing for :illegal-argument-vector-arg-to-map-conj
-(expect "All the inner vectors in the outer collection must have length two."
+(expect "Each inner vector must be a pair: a key followed by a value."
         (get-all-text
          (run-and-catch-pretty-no-stacktrace 'intro.core '(into {} [[1 2] [3]]))))
 
@@ -57,7 +57,7 @@
        (get-all-text (prettify-exception (load-file "exceptions/compilation_errors/let-odd-number-bindings.clj"))))
 
 ;; testing for :illegal-argument-type-not-supported
-(expect "Function contains? does not allow a sequence as an argument"
+(expect "Function contains? does not allow a sequence as an argument."
         (get-all-text
          (run-and-catch-pretty-no-stacktrace 'intro.core '(contains? (seq [1 3 6]) 2))))
 
@@ -77,12 +77,12 @@
 ;##################################################
 
 ;; testing for :index-out-of-bounds-index-provided
-(expect "An index in a sequence is out of bounds. The index is: 10"
+(expect "An index in a sequence is out of bounds. The index is: 10."
         (get-all-text
           (run-and-catch-pretty-no-stacktrace 'intro.core '(throw (new IndexOutOfBoundsException "10")))))
 
 ;; testing for :index-out-of-bounds-index-not-provided
-(expect "An index in a sequence is out of bounds or invalid"
+(expect "An index in a sequence is out of bounds or invalid."
         (get-all-text
          (run-and-catch-pretty-no-stacktrace 'intro.core '(nth [0 1 2 3 4 5] 10))))
 
@@ -114,7 +114,7 @@
 ;##########################################
 
 ;; testing for :null-pointer-non-existing-object-provided
-(expect "An attempt to access a non-existing object: some message\n(NullPointerException)"
+(expect "An attempt to access a non-existing object: some message (NullPointerException)."
         (get-all-text (run-and-catch-pretty-no-stacktrace 'intro.core '(throw (new NullPointerException "some message")))))
 
 ;; testing for :null-pointer-non-existing-object-not-provided
@@ -126,7 +126,7 @@
 ;###################################################
 
 ;; testing for :unsupported-operation-wrong-type-of-argument
-(expect "Function nth does not allow a map as an argument"
+(expect "Function nth does not allow a map as an argument."
         (get-all-text (run-and-catch-pretty-no-stacktrace 'intro.core '(nth {:a 10 :z 4} 20))))
 
 ;##################################
