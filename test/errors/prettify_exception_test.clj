@@ -270,3 +270,16 @@
 (expect "first argument" (arg-str 1))
 (expect "21th argument" (arg-str 21))
 (expect "210528th argument" (arg-str 210528))
+
+;; testing for lookup-arity
+(expect "at least one" (lookup-arity map))
+(expect null (lookup-arity concat))
+(expect "one" (lookup-arity lookup-arity))
+(expect "two or three" (lookup-arity reduce))
+(expect null (lookup-arity #(+ %1 %2)))
+
+
+
+
+
+

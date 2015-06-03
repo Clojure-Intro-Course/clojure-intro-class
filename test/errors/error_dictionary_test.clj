@@ -112,7 +112,7 @@
 ;##########################################
 ;### Testing for Null Pointer Exceptions###
 ;##########################################
-
+mapcat
 ;; testing for :null-pointer-non-existing-object-provided
 (expect "An attempt to access a non-existing object: some message\n(NullPointerException)"
         (get-all-text (run-and-catch-pretty-no-stacktrace 'intro.core '(throw (new NullPointerException "some message")))))

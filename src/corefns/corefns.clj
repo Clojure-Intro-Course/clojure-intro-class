@@ -141,6 +141,20 @@
   {:pre [(check-if-seqables? "concat" args 1)]}
   (apply clojure.core/concat args))
 
+;; (drop n coll)
+;; Returns a lazy sequence of all but the first n items in coll.
+(defn drop [argument1 argument2]
+   {:pre [(check-if-number? "drop" argument1)
+          (check-if-seqable? "drop" argument2)]}
+   (clojure.core/drop argument1 argument2))
+
+;; (take n coll)
+;; Returns a lazy sequence of the first n items in coll, or all items if there are fewer than n.
+(defn take [argument1 argument2]
+   {:pre [(check-if-number? "take" argument1)
+          (check-if-seqable? "take" argument2)]}
+   (clojure.core/take argument1 argument2))
+
 ;;    (< x)
 ;;    (< x y)
 ;;    (< x y & more)

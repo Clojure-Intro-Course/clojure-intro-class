@@ -4,12 +4,12 @@
             [corefns.collection_fns :refer :all]
             [intro.student :refer :all]))
 
-(float nil)
+;(float nil)
 
 ;(let [x] (+ x 2))
 
 ;(hash-map 1)
-
+(lookup-arity map)
 ;{"a" 1 "a"}
 
 ;(map #(+ %1 %2) [1 2 3])
@@ -29,3 +29,4 @@
 ;(reduce inc [1 2 3])
 
 ;(take 5)
+;(drop "not a number" '(1 2 3 4 5 6 7 8 9))
