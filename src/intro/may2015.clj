@@ -4,9 +4,7 @@
             [corefns.collection_fns :refer :all]
             [intro.student :refer :all]))
 
-(throw (Exception. "my custom message"))
-
-(let (x 2))
+(zero?)
 
 ;(let [x] (+ x 2))
 
