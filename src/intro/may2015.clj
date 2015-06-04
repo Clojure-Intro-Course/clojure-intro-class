@@ -4,6 +4,8 @@
             [corefns.collection_fns :refer :all]
             [intro.student :refer :all]))
 
+(+ 5 (filter odd? [2 3 4 5 6]) 5)
+
 (zero?)
 
 ;(let [x] (+ x 2))
