@@ -133,6 +133,7 @@
     ; strings are printed in double quotes:
   (if (string? value) (str "\"" value "\"")
       (if (nil? value) "nil"
+        ;; TO-DO: We wnat to evaluate a lazy sequence here!
           (if (= type "a function")
             ; extract a function from the class fname (easier than from value):
             (get-function-name fname)

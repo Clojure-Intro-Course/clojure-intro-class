@@ -182,7 +182,8 @@
 
 (expect ClassCastException (:exception-class prettified-class-cast))
 
-(expect "Attempted to use a string, but a collection was expected." (get-all-text (:msg-info-obj prettified-class-cast)))
+(expect "Attempted to use a string, but a collection was expected.\nFound in file student.clj on line 50 in function exercise2."
+        (get-all-text (:msg-info-obj prettified-class-cast)))
 
 (expect (trace-has-pair? :fn "exercise2") (:stacktrace prettified-class-cast))
 

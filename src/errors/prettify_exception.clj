@@ -138,7 +138,7 @@
   ;(println (filter keep-stack-trace-elem stacktrace))
   (filter keep-stack-trace-elem stacktrace))
 
-(def non-student-namespaces ["clojure."])
+(def non-student-namespaces ["clojure." "corefns"])
 
 (def ns-pattern-non-student
   (re-pattern (make-pattern-string non-student-namespaces)))

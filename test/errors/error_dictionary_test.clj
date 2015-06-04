@@ -28,12 +28,12 @@
 ;###############################################
 
 ;; testing for :illegal-argument-no-val-supplied-for-key
-(expect "No value found for key d. Every key must be paired with a value; the value should be immediately following the key."
+(expect "No value found for key d. Every key for a hash-map must be followed by a value."
         (get-all-text
          (run-and-catch-pretty-no-stacktrace 'intro.core '(hash-map "c" :d "d"))))
 
 ;; testing for :illegal-argument-vector-arg-to-map-conj
-(expect "All the inner vectors in the outer collection must have length two."
+(expect "Each inner vector must be a pair: a key followed by a value."
         (get-all-text
          (run-and-catch-pretty-no-stacktrace 'intro.core '(into {} [[1 2] [3]]))))
 
@@ -54,10 +54,11 @@
 ;; we don't want the error to happen before we run this test.
 ;; Need to check for the location as well: currently incomplete.
 (expect #"When declaring a let, you need to pass it a vector of arguments.(.*)"
-       (get-all-text (prettify-exception (load-file "exceptions/compilation_errors/let-odd-number-bindings.clj"))))
+       (get-all-text (:msg-info-obj (try (load-file "exceptions/compilation_errors/let-odd-number-bindings.clj")
+                       (catch Throwable e (prettify-exception e))))))
 
 ;; testing for :illegal-argument-type-not-supported
-(expect "Function contains? does not allow a sequence as an argument"
+(expect "Function contains? does not allow a sequence as an argument."
         (get-all-text
          (run-and-catch-pretty-no-stacktrace 'intro.core '(contains? (seq [1 3 6]) 2))))
 
@@ -77,12 +78,12 @@
 ;##################################################
 
 ;; testing for :index-out-of-bounds-index-provided
-(expect "An index in a sequence is out of bounds. The index is: 10"
+(expect "An index in a sequence is out of bounds. The index is: 10."
         (get-all-text
           (run-and-catch-pretty-no-stacktrace 'intro.core '(throw (new IndexOutOfBoundsException "10")))))
 
 ;; testing for :index-out-of-bounds-index-not-provided
-(expect "An index in a sequence is out of bounds or invalid"
+(expect "An index in a sequence is out of bounds or invalid."
         (get-all-text
          (run-and-catch-pretty-no-stacktrace 'intro.core '(nth [0 1 2 3 4 5] 10))))
 
@@ -114,11 +115,11 @@
 ;##########################################
 
 ;; testing for :null-pointer-non-existing-object-provided
-(expect "An attempt to access a non-existing object: some message\n(NullPointerException)"
+(expect "An attempt to access a non-existing object: some message (NullPointerException)."
         (get-all-text (run-and-catch-pretty-no-stacktrace 'intro.core '(throw (new NullPointerException "some message")))))
 
 ;; testing for :null-pointer-non-existing-object-not-provided
-(expect "An attempt to access a non-existing object. \n(NullPointerException)"
+(expect "An attempt to access a non-existing object (NullPointerException)."
         (get-all-text (run-and-catch-pretty-no-stacktrace 'intro.core '(int nil))))
 
 ;###################################################
@@ -126,7 +127,7 @@
 ;###################################################
 
 ;; testing for :unsupported-operation-wrong-type-of-argument
-(expect "Function nth does not allow a map as an argument"
+(expect "Function nth does not allow a map as an argument."
         (get-all-text (run-and-catch-pretty-no-stacktrace 'intro.core '(nth {:a 10 :z 4} 20))))
 
 ;##################################
@@ -142,43 +143,44 @@
 ;### Testing for compilation errors ###
 ;######################################
 
-(expect "Compilation error: loop requires an even number of forms in binding vector, while compiling intro.core"
+(expect "loop requires an even number of forms in binding vector."
         (get-all-text (run-and-catch-pretty-no-stacktrace 'intro.core '(defn s [s] (loop [s])))))
 
-(expect #"Compilation error: this recur is supposed to take 0 arguments, but you are passing 1, while compiling (.+)" ; this is giving NO_SOURCE_PATH
+(expect #"This recur is supposed to take 0 arguments, but you are passing 1." ; this is giving NO_SOURCE_PATH
         (get-all-text (run-and-catch-pretty-no-stacktrace 'intro.core '(recur (inc 1)))))
 
-(expect #"Compilation error: there is an unmatched parameter in declaration of cond, while compiling:(.+)" ; this is giving NO_SOURCE_PATH
+(expect #"There is an unmatched parameter in declaration of cond." ; this is giving NO_SOURCE_PATH
         (get-all-text
          (run-and-catch-pretty-no-stacktrace 'intro.core '(defn my-num [x] (cond (= 1 x))))))
 
 ;; the internal representation of zero? is zero?--inliner--4238 (in this particular test), i.e. it has
 ;; an inliner part
-(expect "Compilation error: wrong number of arguments (0) passed to a function zero?, while compiling "
-        (get-all-text (butlast (run-and-catch-pretty-no-stacktrace 'intro.core '(zero?)))))
+;;; Why doesn't it process the message?
+(expect "You cannot pass zero arguments to a function zero?."
+        (get-all-text (run-and-catch-pretty-no-stacktrace 'intro.core '(zero?))))
 
-(expect #"Compilation error: recur can only occur as a tail call: no operations can be done after its return, while compiling (.+)" ; this is giving NO_SOURCE_PATH
+(expect #"Recur can only occur as a tail call: no operations can be done after its return." ; this is giving NO_SOURCE_PATH
         (get-all-text (run-and-catch-pretty-no-stacktrace 'intro.core '(defn inc-nums [x] ((recur (inc x)) (loop [x x]))))))
 
-(expect #"Compilation error: def must be followed by a name, while compiling (.+)" ; this is giving NO_SOURCE_PATH
+(expect #"def must be followed by a name." ; this is giving NO_SOURCE_PATH
         (get-all-text (run-and-catch-pretty-no-stacktrace 'intro.core '(def 4 (+ 2 2)))))
 
-(expect #"Compilation error: loop is a macro, cannot be passed to a function, while compiling (.+)" ; this is giving NO_SOURCE_PATH
+(expect #"loop is a macro, cannot be passed to a function." ; this is giving NO_SOURCE_PATH
         (get-all-text (run-and-catch-pretty-no-stacktrace 'intro.core '(defn my-happy [x] loop [x x]))))
 
-(expect #"Compilation error: name banana is undefined, while compiling (.+)" ; this is giving NO_SOURCE_PATH
+(expect #"Name banana is undefined." ; this is giving NO_SOURCE_PATH
         (get-all-text (run-and-catch-pretty-no-stacktrace 'intro.core '(banana 5 6))))
 
-(expect "Compilation error: there is an unmatched delimiter ), while compiling (compilation_errors/unmatched_delimiter.clj:3:20)"
+(expect "There is an unmatched delimiter ).\nFound in file compilation_errors/unmatched_delimiter.clj on line 3 at character 20."
         (get-all-text (:msg-info-obj (prettify-exception (import-from-file "exceptions/unmatched_delimiter.ser")))))
 
-(expect #"Compilation error: too many arguments to def, while compiling (.+)" ; this is giving NO_SOURCE_PATH
+(expect #"Too many arguments to def." ; this is giving NO_SOURCE_PATH
         (get-all-text (run-and-catch-pretty-no-stacktrace 'intro.core '(def my-var 5 6))))
 
-(expect #"Compilation error: too few arguments to def, while compiling (.+)" ; this is giving NO_SOURCE_PATH
+(expect #"Too few arguments to def." ; this is giving NO_SOURCE_PATH
         (get-all-text (run-and-catch-pretty-no-stacktrace 'intro.core '(def))))
 
-(expect "Compilation error: end of file, starting at line 3, while compiling (compilation_errors/eof.clj:4:1).\nProbably a non-closing parenthesis or bracket."
+(expect "End of file, starting at line 3.\nProbably a non-closing parenthesis or bracket.\nFound in file compilation_errors/eof.clj on line 4 at character 1."
         (get-all-text (:msg-info-obj (prettify-exception (import-from-file "exceptions/end_of_file.ser")))))
 
 ;; :compiler-exception-must-recur-to-function-or-loop

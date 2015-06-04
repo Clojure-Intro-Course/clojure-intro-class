@@ -211,7 +211,7 @@
     :true-exception java.lang.IllegalArgumentException
     :match #"(.*) Mismatched argument count to recur, expected: (.*) args, got: (.*), compiling:(.*)"
     :make-msg-info-obj (fn [matches] (make-msg-info-hashes "This recur is supposed to take "
-                                                           (nth matches 2) " arguments, but you are passing " (nth matches 3)))
+                                                           (nth matches 2) " arguments, but you are passing " (nth matches 3) "."))
     :hints "1. You are passing a wrong number of arguments to recur. Check its function or loop.
     2. recur might be outside of the scope of its function or loop."}
 
