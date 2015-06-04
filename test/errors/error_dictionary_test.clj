@@ -54,7 +54,8 @@
 ;; we don't want the error to happen before we run this test.
 ;; Need to check for the location as well: currently incomplete.
 (expect #"When declaring a let, you need to pass it a vector of arguments.(.*)"
-       (get-all-text (prettify-exception (load-file "exceptions/compilation_errors/let-odd-number-bindings.clj"))))
+       (get-all-text (:msg-info-obj (try (load-file "exceptions/compilation_errors/let-odd-number-bindings.clj")
+                       (catch Throwable e (print e) (prettify-exception e))))))
 
 ;; testing for :illegal-argument-type-not-supported
 (expect "Function contains? does not allow a sequence as an argument."
