@@ -132,9 +132,15 @@
   "evaluates the first up to 10 elements of a lazy sequence
   and returns it as a string, indicating whether it was the entire sequence"
   [s]
-  (let [str-seq (str (seq (into [] (take 10 s))))
-        length (.length str-seq)]
-    (if (> (count (take 11 s)) 10) (str (.substring str-seq 0 (dec length)) "...)") str-seq)))
+  (try
+    (let [str-seq (str (seq (into [] (take 10 s))))
+          length (.length str-seq)]
+      (if (> (count (take 11 s)) 10) (str (.substring str-seq 0 (dec length)) "...)") str-seq))
+    ;; It's possible that there is an error evaluating their sequence.
+    ;; Rather than going down the rabbit hole of reporting a secondary error,
+    ;; we report the type mismatch in the original function call
+    ;; since we can't give a reasonable location here.
+    (catch Throwable e "a sequence that we cannot evaluate")))
 
 ;;; pretty-print-value: anything, string, string -> string
 (defn pretty-print-value [value fname type]
