@@ -127,15 +127,21 @@
   "extract a macro name from a qualified name"
     (nth (re-matches #"(.*)/(.*)" mname) 2))
 
+(defn safe-into
+  "partially evaluates a lazy sequence that may contain lazy sequences"
+  [s n]
+  (into [] (take n s)))
+
+
 ;;; evaluate a lazy sequence (for some reason doall doesn't do it):
-(defn eval-first-10
-  "evaluates the first up to 10 elements of a lazy sequence
+(defn eval-first-n
+  "evaluates the first up to n elements of a lazy sequence
   and returns it as a string, indicating whether it was the entire sequence"
-  [s]
+  [s n]
   (try
-    (let [str-seq (str (seq (into [] (take 10 s))))
+    (let [str-seq (str (seq (into [] (take n s))))
           length (.length str-seq)]
-      (if (> (count (take 11 s)) 10) (str (.substring str-seq 0 (dec length)) "...)") str-seq))
+      (if (> (count (take (inc n) s)) n) (str (.substring str-seq 0 (dec length)) "...)") str-seq))
     ;; It's possible that there is an error evaluating their sequence.
     ;; Rather than going down the rabbit hole of reporting a secondary error,
     ;; we report the type mismatch in the original function call
@@ -148,7 +154,7 @@
     ; strings are printed in double quotes:
   (if (string? value) (str "\"" value "\"")
       (if (nil? value) "nil"
-        (if (= (class value) clojure.lang.LazySeq) (eval-first-10 value)
+        (if (instance? clojure.lang.LazySeq value) (eval-first-n value 10)
           (if (= type "a function")
             ; extract a function from the class fname (easier than from value):
             (get-function-name fname)
