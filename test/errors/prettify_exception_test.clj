@@ -273,11 +273,12 @@
 
 ;; testing for lookup-arity
 ;6 errors here
-(expect "at least one" (lookup-arity map))
-(expect "one" (lookup-arity count))
-(expect nil (lookup-arity concat))
-(expect "two or three" (lookup-arity reduce))
-(expect nil (lookup-arity #(+ %1 %2))) ;(two of which are here)
+(expect "at least one" (lookup-arity "map"))
+(expect "one" (lookup-arity "count"))
+(expect nil (lookup-arity "concat"))
+(expect "two or three" (lookup-arity "reduce"))
+(expect nil (lookup-arity "anonymous function"))
+(expect nil (lookup-arity "not a function"))
 
 
 

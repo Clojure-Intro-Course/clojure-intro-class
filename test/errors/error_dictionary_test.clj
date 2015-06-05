@@ -100,7 +100,7 @@
 (expect "You cannot pass one argument to this anonymous function."
         (get-all-text (run-and-catch-pretty-no-stacktrace 'intro.core '(#(+ %1 %2) 1))))
 
-(expect "You cannot pass 4 arguments to a function user-def-fcn."
+(expect "You cannot pass four arguments to a function user-def-fcn."
         (get-all-text (run-and-catch-pretty-no-stacktrace 'intro.core '((defn user-def-fcn [x] (+ x 1))
     (user-def-fcn 1 2 3 4)))))
 
