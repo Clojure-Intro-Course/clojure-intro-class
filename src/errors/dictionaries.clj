@@ -127,17 +127,26 @@
   "extract a macro name from a qualified name"
     (nth (re-matches #"(.*)/(.*)" mname) 2))
 
+;;; evaluate a lazy sequence (for some reason doall doesn't do it):
+(defn eval-first-10
+  "evaluates the first up to 10 elements of a lazy sequence
+  and returns it as a string, indicating whether it was the entire sequence"
+  [s]
+  (let [str-seq (str (seq (into [] (take 10 s))))
+        length (.length str-seq)]
+    (if (> (count (take 11 s)) 10) (str (.substring str-seq 0 (dec length)) "...)") str-seq)))
+
 ;;; pretty-print-value: anything, string, string -> string
 (defn pretty-print-value [value fname type]
   "returns a pretty-printed value based on its class, handles various messy cases"
     ; strings are printed in double quotes:
   (if (string? value) (str "\"" value "\"")
       (if (nil? value) "nil"
-        ;; TO-DO: We wnat to evaluate a lazy sequence here!
+        (if (= (class value) clojure.lang.LazySeq) (eval-first-10 value)
           (if (= type "a function")
             ; extract a function from the class fname (easier than from value):
             (get-function-name fname)
-            (str value)))))
+            (str value))))))
 
 ;;; arg-str: number -> string
 (defn arg-str [n]

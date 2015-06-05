@@ -4,7 +4,9 @@
             [corefns.collection_fns :refer :all]
             [intro.student :refer :all]))
 
-(+ 5 (filter odd? [2 3 4 5 6]) 5)
+;(+ 5 (filter odd? [2 3 4 5 6 3  33 3 3 3 3 33 3 3  3 3 3  3 3 3 3 3 3 ]) 5)
+
+(+ 5 (filter odd? (range)))
 
 (zero?)
 

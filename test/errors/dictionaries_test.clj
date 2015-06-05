@@ -28,3 +28,6 @@
 ;######################################
 
 (expect {} (get-compile-error-location ""))
+
+(expect "(2 3 4 5)" (eval-first-10 (map inc [1 2 3 4])))
+(expect "(1 2 3 4 5 6 7 8 9 10...)" (eval-first-10 (map inc (range))))
