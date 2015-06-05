@@ -11,7 +11,7 @@
                       :java.lang.Number "a number"
                       :clojure.lang.Keyword "a keyword"
                       :java.lang.Boolean "a boolean"
-		                  ;; I think this is better for new students to lump all numbers together
+		                  ;; I think this is better for new students to lump all numbers together(defn drop [argument1 argument2]
 		                  :java.lang.Long "a number"
 		                  :java.lang.Integer "a number"
 		                  :java.lang.Double "a number"
@@ -176,6 +176,12 @@
     "1" "one"
     "2" "two"
     "3" "three"
+    "4" "four"
+    "5" "five"
+    "6" "six"
+    "7" "seven"
+    "8" "eight"
+    "9" "nine"
     n))
 
 ;;; process-asserts-obj: string or nil -> string
@@ -213,8 +219,19 @@
   (zipmap [:file :line :char] (rest (rest (re-matches #"(.*), compiling:\((.+):(.+):(.+)\)" m)))))
 
 ;; do we want to move this to corefns?
-(def known-args-number {:map "at least one", :count "one", :conj "at least one",
-                        :into "two", :cons "two"})
+(def known-args-number {:map "at least one", :count "one",       :conj "at least one",     :rand-nth "one",
+                        :into "two",         :cons "two",        :nth "two or three",      :drop "two",
+                        :take "two",         :filter "two",      :reduce "two or three",   :mapcat "at least one",
+                        :reverse "one",      :sort "one or two", :sort-by "two or three",  :ffirst "one",
+                        :map-indexed "two",  :for "two",         :pmap "two or more",      :reductions "two or three",
+                        :second "one",       :last "one",        :rest "one",              :next "one",
+                        :nfirst "one",       :fnext "one",       :nnext "one",             :nthnext "two",
+                        :some "two",         :realized? "one",   :index "two",             :contains? "two",
+                        :first "one",        :empty? "one",      :join "one or two",       :string? "one",
+                        :- "at least one",   :rem "two",         :mod "two",               :inc "one",
+                        :dec "one",          :max "one or more", :min "one or more",       :rand "zero or one",
+                        :rand-int "one",
+                        })
 
 (defn lookup-arity
   "returns expected arity (as a string) for a function if we know it, nil otherwise"

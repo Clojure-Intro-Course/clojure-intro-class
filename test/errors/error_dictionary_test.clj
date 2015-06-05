@@ -73,6 +73,10 @@
 ;(expect #"The function when-let requires exactly 2 forms in binding vector. Line (.*) in the file intro.core"
 ;        (get-all-text (run-and-catch-pretty-no-stacktrace 'intro.core '(when-let [num1 1 num2 2] "hello"))))
 
+(expect "Cannot call nil as a function."
+        (get-all-text
+         (run-and-catch-pretty-no-stacktrace 'intro.core '(nil 5))))
+
 ;##################################################
 ;### Testing for Index Out of Bounds Exceptions ###
 ;##################################################
@@ -101,7 +105,7 @@
 (expect "You cannot pass one argument to this anonymous function."
         (get-all-text (run-and-catch-pretty-no-stacktrace 'intro.core '(#(+ %1 %2) 1))))
 
-(expect "You cannot pass 4 arguments to a function user-def-fcn."
+(expect "You cannot pass four arguments to a function user-def-fcn."
         (get-all-text (run-and-catch-pretty-no-stacktrace 'intro.core '((defn user-def-fcn [x] (+ x 1))
     (user-def-fcn 1 2 3 4)))))
 
@@ -113,7 +117,7 @@
 ;##########################################
 ;### Testing for Null Pointer Exceptions###
 ;##########################################
-
+mapcat
 ;; testing for :null-pointer-non-existing-object-provided
 (expect "An attempt to access a non-existing object: some message (NullPointerException)."
         (get-all-text (run-and-catch-pretty-no-stacktrace 'intro.core '(throw (new NullPointerException "some message")))))

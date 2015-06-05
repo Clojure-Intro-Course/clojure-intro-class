@@ -105,7 +105,6 @@
 
     ;(exercise3 "hello" 12)
 
-    ;(throw (Exception. "my custom message"))
 
 
     (try

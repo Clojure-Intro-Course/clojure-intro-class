@@ -103,6 +103,12 @@
     :make-msg-info-obj (fn [matches] (make-msg-info-hashes "You cannot use the same key in a hash map twice, but you have duplicated the key "
                                                            (nth matches 1) :arg "."))}
 
+  {:key :cant-call-nil
+    :class IllegalArgumentException
+    :match #"Can't call nil(.*)"
+    :make-msg-info-obj (fn [matches] (make-msg-info-hashes "Cannot call "
+                                                           "nil" :arg " as a function."))}
+
    ;######################################
    ;### Index Out of Bounds Exceptions ###
    ;######################################
