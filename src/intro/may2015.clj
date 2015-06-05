@@ -4,6 +4,40 @@
             [corefns.collection_fns :refer :all]
             [intro.student :refer :all]))
 
+(nil 5)
+;Error: Can't call nil
+;Found in file /home/stock424/Documents/code/clojure-intro-class/src/intro/may2015.clj on line 7 at character 1.
+;	intro.core/-main (core.clj line 111)
+;Error: Can't call nil
+;Found in file /home/stock424/Documents/code/clojure-intro-class/src/intro/may2015.clj on line 7 at character 1.
+;	intro.core/-main (core.clj line 111)
+
+;((first []) 5)
+;(false )
+;Error: Attempted to use a boolean, but a function was expected.
+;Found in file /home/stock424/Documents/code/clojure-intro-class/src/intro/may2015.clj on line 7 at character 1.
+;	intro.may2015/eval8626 (may2015.clj line 9)
+;	intro.core/-main (core.clj line 111)
+;(map nil 5)
+
+;(5 5)
+
+
+
+
+
+
+;Error: Cannot call nil as a function.
+
+
+
+
+
+
+
+
+
+;(+ 5 (map (fn [x] (repeat x)) (range)))
 
 
 ;(let [x] (+ x 2))
@@ -203,8 +237,36 @@
 ;      [a b c d] [:A :B :C :D]]
 ;  (println a b c d))
 
-;(let [[a b c d] '(:A :B :C)]
-;  (println a b c d))
+(let [[:1 a b] (map inc (range))]
+  (println a b))
+
+(let [[:1 a b] "str"]
+  (println a b))
+
+
+;;(let [[:1 a b] 1234]
+;;  (println a b))
+;;nth does not allow a number as an argument
+
+;(let [[:1 a b] concat]
+;  (println a b))
+;nth again
+
+;(let [[:1 a b] :abcd]
+;(println a b))
+;weird error
+
+;;(let [[:1 a b] true]
+;;  (println a b))
+;;Error: Function nth does not allow unrecognized type Boolean as an argument.
+;;Found in file /home/stock424/Documents/code/clojure-intro-class/src/intro/may2015.clj on line 216 at character 1.
+;;	intro.may2015/eval8633 (may2015.clj line 228)
+;;	intro.core/-main (core.clj line 111)
+
+;(map inc true)
+
+(let [[:1 a b] true]
+  (println a b))
 
 ;(let [[a b c d] {}]
 ;  (println a b c d))
@@ -278,9 +340,8 @@
 ;  (println a b :c))
 ;Error: name c is undefined
 
-;(let [[x y z d m] ["1" "2" "3"]
-;      {a :a b :b c :c d :d} {:a x :b y :c z}]
-;  (println a b c d))
+(let [[x y _ d m] ["1" "2" "3"]]
+  (println x y d))
 
 
 
