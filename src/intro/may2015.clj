@@ -5,20 +5,6 @@
             [intro.student :refer :all]))
 
 
-;;I found an error.
-;(defn repeater (fn [f x] (repeatedly (fn [y] (map f y)) x))]
-;(let [map-repeatedly (fn [f] (map (repeatedly f) (range)))]
-;(->> (repeat map-repeatedly)))
-;(->> (repeat inc))
-;(repeat inc)
-;(repeat 1)
-;ok, maybe I didn't find anything new. I'll mention it monday.
-;(->> '(+ inc inc inc inc inc inc +))
-;enter the matrix, or maybe it's just a windows thing?
-;(repeat (repeat (repeat (repeat (repeat (repeat (repeat (repeat (repeat (repeat (repeat (range))))))))))))
-;(range)
-;(+ 1 (repeat 1))
-
 ;(nil 5)
 ;Error: Can't call nil
 ;Found in file /home/stock424/Documents/code/clojure-intro-class/src/intro/may2015.clj on line 7 at character 1.
@@ -26,8 +12,66 @@
 ;Error: Can't call nil
 ;Found in file /home/stock424/Documents/code/clojure-intro-class/src/intro/may2015.clj on line 7 at character 1.
 ;	intro.core/-main (core.clj line 111)
+;(+ 5 (repeat 5))
+;(+ 5 (map #(/ % 0) (range)))
+;(println (instance? clojure.lang.LazySeq (lazy-seq )))
+;(println (instance? String "string"))
 
-;;(+ 5 (map #(/ % 0) (range)))
+;(into [] (take 10 (range)))
+;(loop [m 0 vec [] vec-remaining (map repeat (range))]
+;  (cond
+;   (= m 10) vec
+
+
+
+
+;number number seq => string
+
+(defn nested-lazy-preview [n1 n2 aseq]
+  (let [bad-seq? (fn [y] (or (instance? clojure.lang.LazySeq y)
+                             (instance? clojure.lang.Repeat y)
+                             (instance? clojure.lang.Iterate y)))
+        inner-seq-fn (fn [y]
+                       (if
+                         (> (count (take (inc n2) (map #(if  (bad-seq? %) '() %) y))) n2)
+
+                          (clojure.string/join [ "(" (clojure.string/join " " (seq (into [] (take n2 (map #(if  (bad-seq? %) "(...)" %) y))))) "...)"])
+
+                         (clojure.string/join [ "(" (clojure.string/join " " (seq (into [] (take n2 (map #(if  (bad-seq? %) "(...)" %) y))))) ")"])))
+        outer-seq (take (inc n1) (map (fn [x] (if (bad-seq? x) (inner-seq-fn x) x)) aseq))]
+    (if (> (count outer-seq) n1)
+      (clojure.string/join [ "(" (clojure.string/join " " (seq (into [] (take n1 outer-seq)))) "...)"])
+      (clojure.string/join [ "(" (clojure.string/join " "  (seq (into [] (take n1 outer-seq)))) "...)"]))))
+
+
+
+(println (nested-lazy-preview 10 3 (repeat (repeat 1))))
+(println (nested-lazy-preview 10 3 (repeat (range))))
+(println (nested-lazy-preview 10 3 (repeat (repeat (range)))))
+(println (nested-lazy-preview 10 3 (range)))
+(println (nested-lazy-preview 10 3 (repeat 2 (range))))
+(println (nested-lazy-preview 10 3 (repeat (map inc '(1 2 3 4 5 6 7 8)))))
+
+
+
+;number number seq => seq
+(defn nested-lazy-preview1 [n1 n2 aseq]
+  (let [bad-seq? (fn [y] (or (instance? clojure.lang.LazySeq y)
+                             (instance? clojure.lang.Repeat y)
+                             (instance? clojure.lang.Iterate y)))]
+(take n1 (map (fn [x]
+                (if (bad-seq? x)
+                  (take n2 (map #(if  (bad-seq? %) "lazy seq" %) x))
+                  x)) aseq))))
+
+
+
+
+;(println (class (repeat (repeat 1))))
+
+;(= (class (map repeat (range))) clojure.lang.LazySeq)
+
+;(+ 5 (map #(/ % 0) (range)))
 ;;Error: In function +, the second argument a sequence that we cannot evaluate must be a number but is a sequence.
 ;;Found in file H:\Git\clojure-intro-class\src\intro\may2015.clj on line 7 at character 1.
 ;;	corefns.corefns/+ (corefns.clj line 204)
@@ -40,9 +84,7 @@
 ;;	intro.may2015/eval8632 (may2015.clj line 252)
 ;;	intro.core/-main (core.clj line 111)
 
-
 ;(+ 5 (map #(repeat %) (range)))
-
 
 
 ;(let [x] (+ x 2))
@@ -73,7 +115,6 @@
 ;;#######################
 ;;##DESTRUCTURING TESTS##
 ;;#######################
-;(print "################################################################################")
 ;;the first several are from the link you sent me
 ;;https://gist.github.com/john2x/e1dca953548bfdfb9844
 

@@ -105,7 +105,7 @@
 
     ;(exercise3 "hello" 12)
 
-
+;((first []) 5)
 
     (try
       (print (load-file "src/intro/may2015.clj"))

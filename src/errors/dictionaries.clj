@@ -132,6 +132,13 @@
   [s n]
   (into [] (take n s)))
 
+(defn nested-lazy-preview [n1 n2 aseq]
+  (let [bad-seq? (fn [y] (or (instance? clojure.lang.LazySeq y)
+                             (instance? clojure.lang.Repeat y)))]
+(take n1 (map (fn [x]
+                (if (bad-seq? x)
+                  (take n2 (map #(if  (bad-seq? %) "(lazy seq)" %) x))
+                  x)) aseq))))
 
 ;;; evaluate a lazy sequence (for some reason doall doesn't do it):
 (defn eval-first-n
@@ -141,7 +148,10 @@
   (try
     (let [str-seq (str (seq (into [] (take n s))))
           length (.length str-seq)]
-      (if (> (count (take (inc n) s)) n) (str (.substring str-seq 0 (dec length)) "...)") str-seq))
+      (if
+        (> (count (take (inc n) s)) n)
+        (str (.substring str-seq 0 (dec length)) "...)")
+        str-seq))
     ;; It's possible that there is an error evaluating their sequence.
     ;; Rather than going down the rabbit hole of reporting a secondary error,
     ;; we report the type mismatch in the original function call
