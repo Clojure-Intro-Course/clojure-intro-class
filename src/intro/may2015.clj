@@ -4,7 +4,22 @@
             [corefns.collection_fns :refer :all]
             [intro.student :refer :all]))
 
-(nil 5)
+
+;;I found an error.
+;(defn repeater (fn [f x] (repeatedly (fn [y] (map f y)) x))]
+;(let [map-repeatedly (fn [f] (map (repeatedly f) (range)))]
+;(->> (repeat map-repeatedly)))
+;(->> (repeat inc))
+;(repeat inc)
+;(repeat 1)
+;ok, maybe I didn't find anything new. I'll mention it monday.
+;(->> '(+ inc inc inc inc inc inc +))
+;enter the matrix, or maybe it's just a windows thing?
+;(repeat (repeat (repeat (repeat (repeat (repeat (repeat (repeat (repeat (repeat (repeat (range))))))))))))
+;(range)
+;(+ 1 (repeat 1))
+
+;(nil 5)
 ;Error: Can't call nil
 ;Found in file /home/stock424/Documents/code/clojure-intro-class/src/intro/may2015.clj on line 7 at character 1.
 ;	intro.core/-main (core.clj line 111)
@@ -12,7 +27,19 @@
 ;Found in file /home/stock424/Documents/code/clojure-intro-class/src/intro/may2015.clj on line 7 at character 1.
 ;	intro.core/-main (core.clj line 111)
 
-(+ 5 (map #(/ % 0) (range)))
+;;(+ 5 (map #(/ % 0) (range)))
+;;Error: In function +, the second argument a sequence that we cannot evaluate must be a number but is a sequence.
+;;Found in file H:\Git\clojure-intro-class\src\intro\may2015.clj on line 7 at character 1.
+;;	corefns.corefns/+ (corefns.clj line 204)
+;;	intro.may2015/eval8630 (may2015.clj line 15)
+;;	intro.core/-main (core.clj line 111)
+
+;;(odd? nil)
+;;Error: Function nth does not allow unrecognized type Boolean as an argument.
+;;Found in file H:\Git\clojure-intro-class\src\intro\may2015.clj on line 23 at character 1.
+;;	intro.may2015/eval8632 (may2015.clj line 252)
+;;	intro.core/-main (core.clj line 111)
+
 
 ;(+ 5 (map #(repeat %) (range)))
 
@@ -215,11 +242,11 @@
 ;      [a b c d] [:A :B :C :D]]
 ;  (println a b c d))
 
-(let [[:1 a b] (map inc (range))]
-  (println a b))
-
-(let [[:1 a b] "str"]
-  (println a b))
+;(let [[:1 a b] (map inc (range))]
+;  (println a b))
+;
+;(let [[:1 a b] "str"]
+;  (println a b))
 
 
 ;;(let [[:1 a b] 1234]
@@ -243,8 +270,8 @@
 
 ;(map inc true)
 
-(let [[:1 a b] true]
-  (println a b))
+;(let [[:1 a b] true]
+;  (println a b))
 
 ;(let [[a b c d] {}]
 ;  (println a b c d))
@@ -318,8 +345,8 @@
 ;  (println a b :c))
 ;Error: name c is undefined
 
-(let [[x y _ d m] ["1" "2" "3"]]
-  (println x y d))
+;(let [[x y _ d m] ["1" "2" "3"]]
+;  (println x y d))
 
 
 
