@@ -132,15 +132,38 @@
   [s n]
   (into [] (take n s)))
 
-(defn nested-lazy-preview [n1 n2 aseq]
-  (let [bad-seq? (fn [y] (or (instance? clojure.lang.LazySeq y)
-                             (instance? clojure.lang.Repeat y)))]
-(take n1 (map (fn [x]
-                (if (bad-seq? x)
-                  (take n2 (map #(if  (bad-seq? %) "(lazy seq)" %) x))
-                  x)) aseq))))
+(defn- can-be-infinite? [s]
+  "returns true if the parameter is a potentially infinite sequence"
+  (or (instance? clojure.lang.LazySeq s)
+      (instance? clojure.lang.Repeat s)
+      (instance? clojure.lang.Iterate s)))
+
 
 ;;; evaluate a lazy sequence (for some reason doall doesn't do it):
+;; This needs refactoring!!!!
+(defn nested-lazy-preview [n1 n2 s]
+  "Gives a finite preview of a potentially infinite sequence s.
+  n1 is the maximum number of elements shown in the outer sequences,
+  n2 is the maximum number of elements in the inner sequence.
+  If there is an error in evaluating the preview, it returns a string
+  'a sequence that we cannot evaluate'"
+  (try
+  (let [inner-seq-fn (fn [y]
+                       (if
+                         (> (count (take (inc n2) (map #(if  (can-be-infinite? %) '() %) y))) n2)
+
+                          (clojure.string/join ["(" (clojure.string/join " " (seq (into [] (take n2 (map #(if  (can-be-infinite? %) "(...)" %) y))))) "...)"])
+
+                         (clojure.string/join [ "(" (clojure.string/join " " (seq (into [] (take n2 (map #(if  (can-be-infinite? %) "(...)" %) y))))) ")"])))
+        outer-seq (take (inc n1) (map (fn [x] (if (can-be-infinite? x) (inner-seq-fn x) x)) s))]
+    (if (> (count outer-seq) n1)
+      (clojure.string/join [ "(" (clojure.string/join " " (seq (into [] (take n1 outer-seq)))) "...)"])
+      (clojure.string/join [ "(" (clojure.string/join " "  (seq (into [] (take n1 outer-seq)))) "...)"])))
+    (catch Throwable e "a sequence that we cannot evaluate")))
+
+
+;;; evaluate a lazy sequence (for some reason doall doesn't do it):
+;;; THIS IS BEING REPLACED BY THE FUNCTION ABOVE
 (defn eval-first-n
   "evaluates the first up to n elements of a lazy sequence
   and returns it as a string, indicating whether it was the entire sequence"
@@ -164,7 +187,7 @@
     ; strings are printed in double quotes:
   (if (string? value) (str "\"" value "\"")
       (if (nil? value) "nil"
-        (if (instance? clojure.lang.LazySeq value) (eval-first-n value 10)
+        (if (can-be-infinite? value) (nested-lazy-preview 10 2 value)
           (if (= type "a function")
             ; extract a function from the class fname (easier than from value):
             (get-function-name fname)

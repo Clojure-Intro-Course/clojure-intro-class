@@ -23,6 +23,9 @@
 ;   (= m 10) vec
 
 
+(+ 5 (map #(/ % 0) (range)))
+(+ 5 (repeat 5))
+(+ 5 (map inc (range)))
 
 
 ;number number seq => string
