@@ -13,6 +13,14 @@
 
 
 
+
+
+
+
+
+
+
+
 (defn create-rect [w h color]
   {:w w
    :h h
@@ -26,18 +34,57 @@
 
 
 (defn ds [shape x y]
-  ((:ds shape) x y))
+  (if
+    (not (vector? shape))
+    ((:ds shape) x y)
+    (doseq [i (range (count shape))]
+    ((:ds (nth shape i)) (+ x (:dx (nth shape i))) (+ y (:dy (nth shape i)))))))
 
-(def black-rect (create-rect 100 100 10))
 
-(def grey-rect (create-rect 200 200 125))
+
+(def black-rect (create-rect 20 20 10))
+
+(def grey-rect (create-rect 40 40 125))
+
+
+(defn calc-tot-h [args]
+  (def tot-h
+    (reduce +
+          (vec (for [i (range (count args))]
+                   (:h (nth args i)))))))
+
+(defn eval-shapes-above [args numb]
+  (conj (if
+          (not= (count args) 1)
+          (eval-shapes-above (rest args) (+ (:h (first args)) numb)))
+        (assoc (first args) :dy (- (+ (quot (:h (first args)) 2) numb) (quot tot-h 2)))))
+
 
 (defn above [& args]
-  (cons (first args) (vec (for [i (range 1 (count args))]
-    (assoc (get (vec args) i) :dy (quot (+ (:h (get (vec args) i)) (:h (get (vec args) (- i 1)))) 2))))))
+  (calc-tot-h (flatten args))
+  (conj
+   (vec (eval-shapes-above (flatten args) 0))))
+
+
+(def bg-tower
+  (above black-rect
+         grey-rect
+         black-rect
+         grey-rect))
+
+(def big-tower
+  (above bg-tower
+         grey-rect
+         bg-tower))
+
+(def super-tower
+  (above big-tower
+         big-tower
+         bg-tower))
+
 
 (defn setup []
-  (q/frame-rate 30)
+  (q/frame-rate 1)
   (q/color-mode :rgb)
 
 
@@ -66,17 +113,19 @@
      ;(q/image (:picture-1 state) 0 0)
      ;(f-fill 80 255 80)
      ;(f-rect 100 100 100 100)
-     (f-stroke 255)
+     (f-stroke 0)
      (f-fill 255)
      (f-text-size 20)
      ;(green-rect (* (+ (q/sin (:x state)) 1) 200) 100 100 100)
      ;(green-rect 100 (* (+ (q/sin (:y state)) 1) 200) 50 50)
-
-     (ds black-rect 100 100)
+     ;(ds black-rect 100 100)
      (f-fill 80 255 80)
-     (q/arc 250 250 100 100 (- q/PI) 0)
-     (println (above black-rect
-                     grey-rect))
+     ;(q/arc 250 250 100 100 (- q/PI) 0)
+     (q/rect-mode :center)
+     (ds super-tower 300 300)
+     (q/line 0 300 300 300)
+     (q/line 300 0 300 300)
+
 
 
      (catch Throwable e (println (.getCause e)) (display-error (prettify-exception e)))))
@@ -84,7 +133,7 @@
 
 (q/defsketch my
   :title "My sketch"
-  :size [500 500]
+  :size [600 600]
   ; Setup function called only once, during sketch initialization.
   :setup setup
   ; Update-state is called on each iteration before draw-state.
