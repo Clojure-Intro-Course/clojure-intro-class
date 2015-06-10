@@ -24,6 +24,8 @@
 (defn create-rect [w h color]
   {:w w
    :h h
+   :tw w
+   :th h
    :dx 0
    :dy 0
    :ds (fn [x y]
@@ -46,24 +48,67 @@
 
 (def grey-rect (create-rect 40 40 125))
 
+(defn calc-max-h [args]
+  (def max-h
+    (reduce max (map #(get % :h) (vec args)))))
 
 (defn calc-tot-h [args]
   (def tot-h
-    (reduce +
-          (vec (for [i (range (count args))]
-                   (:h (nth args i)))))))
+    (reduce + (map #(get % :h) (vec args)))))
 
-(defn eval-shapes-above [args numb]
+(defn calc-max-w [args]
+  (def max-w
+    (reduce max (map #(get % :w) (vec args)))))
+
+(defn calc-tot-w [args]
+  (def tot-w
+    (reduce + (map #(get % :w) (vec args)))))
+
+(defn eval-compshape-vertical [args  numb]
+
+(defn eval-shapes-vertical [args numb]
   (conj (if
           (not= (count args) 1)
-          (eval-shapes-above (rest args) (+ (:h (first args)) numb)))
-        (assoc (first args) :dy (- (+ (quot (:h (first args)) 2) numb) (quot tot-h 2)))))
+          (if (vector? (first args))
+            (eval-shapes-vertical (rest args) (+ (:th (first (first args))) numb))
+            (eval-shapes-vertical (rest args) (+ (:h (first args)) numb))))
+
+        (if
+          (vector? (first args))
+          (eval-compshape-vertical (first args) "add arguments here" numb)
+          (assoc (first args) :dy (- (+ (quot (:h (first args)) 2) numb) (quot tot-h 2)) :tw max-w :th tot-h))))
+
+
+
+
+
+
+ ;(conj (if
+ ;         (not= (count args) 1)
+ ;         (eval-shapes-vertical (rest args) (+ (:h (first args)) numb)))
+ ;       (assoc (first args) :dy (- (+ (quot (:h (first args)) 2) numb) (quot tot-h 2)) :tw max-w :th tot-h)))
+
+
+(defn eval-shapes-horizontal [args numb]
+  (conj (if
+          (not= (count args) 1)
+          (eval-shapes-horizontal (rest args) (+ (:w (first args)) numb)))
+        (assoc (first args) :dx (- (+ (quot (:w (first args)) 2) numb) (quot tot-w 2)) :tw tot-w :th max-h)))
 
 
 (defn above [& args]
   (calc-tot-h (flatten args))
+  (calc-max-w (flatten args))
   (conj
-   (vec (eval-shapes-above (flatten args) 0))))
+   (vec (eval-shapes-vertical args 0))))
+
+(defn beside [& args]
+  (calc-tot-w (flatten args))
+  (calc-max-h (flatten args))
+  (conj
+   (vec (eval-shapes-horizontal (flatten args) 0))))
+
+
 
 
 (def bg-tower
@@ -74,13 +119,9 @@
 
 (def big-tower
   (above bg-tower
-         grey-rect
          bg-tower))
 
-(def super-tower
-  (above big-tower
-         big-tower
-         bg-tower))
+
 
 
 (defn setup []
@@ -122,7 +163,9 @@
      (f-fill 80 255 80)
      ;(q/arc 250 250 100 100 (- q/PI) 0)
      (q/rect-mode :center)
-     (ds super-tower 300 300)
+     (ds big-tower 300 300)
+;     (ds bg-tower 340 300)
+;     (ds bg-tower 260 300)
      (q/line 0 300 300 300)
      (q/line 300 0 300 300)
 
