@@ -5,7 +5,8 @@
                  [org.clojure/core.incubator "0.1.2"] ;;No updates for over a year
                  [seesaw "1.4.5"]
                  [expectations "2.1.1"]
-                 [quil "2.2.5"]]
+                 [quil "2.2.5"]
+                 [overtone "0.9.1"]]
   :plugins [[lein-autoexpect "1.0"]
             [lein-pprint "1.1.2"]]
   :main intro.core)

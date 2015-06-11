@@ -28,6 +28,19 @@
 
 
 
+(defn create-picture [pic]
+  {;:w (q/width (q/load-image pic))
+   ;:h (q/height (q/load-image pic))
+   :tw 0
+   :th 0
+   :dx 0
+   :dy 0
+   :ds (fn [x y]
+         (q/image (q/load-image pic) x y))})
+
+
+
+
 
 
 
@@ -45,8 +58,6 @@
 
 
 
-
-
 (defn ds [shape x y]
   (if
     (not (vector? shape))
@@ -61,6 +72,8 @@
 (def grey-rect (create-rect 40 40 125))
 
 (def white-circle (create-ellipse 20 20 225))
+
+(def light-table (create-picture "/home/mcart046/Pictures/lighttable.png"))
 
 
 
@@ -195,10 +208,6 @@
   (calc-max-h args)
   (vec (flatten (eval-shapes-horizontal args 0))))
 
-(defn overlay [& args]
-  (calc-max-w args)
-  (calc-max-h args)
-  (vec (flatten (eval-shapes-overlay (reverse args)))))
 
 
 (def bg-tower
@@ -206,7 +215,8 @@
          black-rect
          grey-rect
          black-rect
-         grey-rect))
+         grey-rect
+         light-table))
 
 (def big-tower
   (beside bg-tower
@@ -279,7 +289,7 @@
      (f-fill 80 255 80)
      ;(q/arc 250 250 100 100 (- q/PI) 0)
      (q/rect-mode :center)
-     (ds over-tower 400 400)
+     (ds bg-tower 200 200)
 ;     (ds bg-tower 340 300)
 ;     (ds bg-tower 260 300)
      (q/line 0 400 400 400)
