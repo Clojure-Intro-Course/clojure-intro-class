@@ -211,7 +211,7 @@
           fn-name (:fn location)
           character-msg (if character (make-msg-info-hashes " at character " character :loc) nil)
           fn-msg (if fn-name (make-msg-info-hashes " in function " fn-name :loc) nil)]
-      (reduce into [(make-msg-info-hashes "\nFound in file " file :loc " on line " line :loc)
+      (reduce into [(make-msg-info-hashes "\nFound in file " (clojure.string/replace file #".*\/" "") :loc " on line " line :loc)
             character-msg
             fn-msg
             (make-msg-info-hashes ".")]))))

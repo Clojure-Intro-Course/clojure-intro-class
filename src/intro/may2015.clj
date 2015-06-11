@@ -5,6 +5,27 @@
             [intro.student :refer :all]))
 
 
+;;(println (str/split "/home/stock424/Documents/code/clojure-intro-class/src/intro/may2015.clj" #"/"))
+;Syntax error: java.lang.RuntimeException: No such namespace: str, compiling:(/home/stock424/Documents/code/clojure-intro-class/src/intro/may2015.clj:21:10)
+;Found in file /home/stock424/Documents/code/clojure-intro-class/src/intro/may2015.clj on line 21 at character 10.
+;	intro.core/-main (core.clj line 111)
+
+;;(println (clojure.string.split "/home/stock424/Documents/code/clojure-intro-class/src/intro/may2015.clj" #"/"))
+;Error: clojure.string.split
+;Found in file /home/stock424/Documents/code/clojure-intro-class/src/intro/may2015.clj on line 26 at character 10.
+;	intro.core/-main (core.clj line 111)
+
+;;(println (replace #"\p*[/]" "/home/stock424/Documents/code/clojure-intro-class/src/intro/may2015.clj" ""))
+;Error: Unknown character property name {*} near index 2
+;\p*[/]
+;  ^
+;Found in file core.clj on line 111 in function -main.
+;	intro.core/-main (core.clj line 111)
+
+
+
+
+
 ;(nil 5)
 ;Error: Can't call nil
 ;Found in file /home/stock424/Documents/code/clojure-intro-class/src/intro/may2015.clj on line 7 at character 1.
@@ -23,9 +44,9 @@
 ;   (= m 10) vec
 
 
-(+ 5 (map #(/ % 0) (range)))
-(+ 5 (repeat 5))
-(+ 5 (map inc (range)))
+;(+ 5 (map #(/ % 0) (range)))
+;(+ 5 (repeat 5))
+;(+ 5 (map inc (range)))
 
 
 ;number number seq => string
@@ -48,12 +69,12 @@
 
 
 
-(println (nested-lazy-preview 10 3 (repeat (repeat 1))))
-(println (nested-lazy-preview 10 3 (repeat (range))))
-(println (nested-lazy-preview 10 3 (repeat (repeat (range)))))
-(println (nested-lazy-preview 10 3 (range)))
-(println (nested-lazy-preview 10 3 (repeat 2 (range))))
-(println (nested-lazy-preview 10 3 (repeat (map inc '(1 2 3 4 5 6 7 8)))))
+;(println (nested-lazy-preview 10 3 (repeat (repeat 1))))
+;(println (nested-lazy-preview 10 3 (repeat (range))))
+;(println (nested-lazy-preview 10 3 (repeat (repeat (range)))))
+;(println (nested-lazy-preview 10 3 (range)))
+;(println (nested-lazy-preview 10 3 (repeat 2 (range))))
+;(println (nested-lazy-preview 10 3 (repeat (map inc '(1 2 3 4 5 6 7 8)))))
 
 
 
