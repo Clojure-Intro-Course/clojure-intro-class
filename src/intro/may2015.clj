@@ -14,7 +14,17 @@
 
 
 
-
+(defn create-ellipse [w h color]
+  {:w w
+   :h h
+   :tw w
+   :th h
+   :dx 0
+   :dy 0
+   :ds (fn [x y]
+         (f-fill color)
+         (f-ellipse x y w h)
+         (q/no-fill))})
 
 
 
@@ -29,9 +39,11 @@
    :dx 0
    :dy 0
    :ds (fn [x y]
-    (f-fill color)
-    (f-rect x y w h)
-    (q/no-fill))})
+         (f-fill color)
+         (f-rect x y w h)
+         (q/no-fill))})
+
+
 
 
 
@@ -42,84 +54,188 @@
     (doseq [i (range (count shape))]
     ((:ds (nth shape i)) (+ x (:dx (nth shape i))) (+ y (:dy (nth shape i)))))))
 
-
+(def black-circle (create-ellipse 40 40 25))
 
 (def black-rect (create-rect 20 20 10))
 
 (def grey-rect (create-rect 40 40 125))
 
-(defn calc-max-h [args]
-  (def max-h
-    (reduce max (map #(get % :h) (vec args)))))
+(def white-circle (create-ellipse 20 20 225))
 
-(defn calc-tot-h [args]
-  (def tot-h
-    (reduce + (map #(get % :h) (vec args)))))
+
+
+;---
+(defn max-w-recur [args]
+  (conj
+   (if
+     (not= (count args) 1)
+     (max-w-recur (rest args)))
+   (if
+     (vector? (first args))
+     (:tw (first (first args)))
+     (:tw (first args)))))
 
 (defn calc-max-w [args]
   (def max-w
-    (reduce max (map #(get % :w) (vec args)))))
+    (apply max (max-w-recur args))))
+
+;---
+(defn tot-w-recur [args]
+  (conj
+   (if
+     (not= (count args) 1)
+     (tot-w-recur (rest args)))
+   (if
+     (vector? (first args))
+     (:tw (first (first args)))
+     (:tw (first args)))))
 
 (defn calc-tot-w [args]
   (def tot-w
-    (reduce + (map #(get % :w) (vec args)))))
+    (reduce + (tot-w-recur args))))
 
-(defn eval-compshape-vertical [args  numb]
+;---
+(defn max-h-recur [args]
+  (conj
+   (if
+     (not= (count args) 1)
+     (max-h-recur (rest args)))
+   (if
+     (vector? (first args))
+     (:th (first (first args)))
+     (:th (first args)))))
+
+(defn calc-max-h [args]
+  (def max-h
+    (apply max (max-h-recur args))))
+
+;---
+(defn tot-h-recur [args]
+  (conj
+   (if
+     (not= (count args) 1)
+     (tot-h-recur (rest args)))
+   (if
+     (vector? (first args))
+     (:th (first (first args)))
+     (:th (first args)))))
+
+(defn calc-tot-h [args]
+  (def tot-h
+    (reduce + (tot-h-recur args))))
+
+;---
+
+
+(defn eval-compshape-vertical [args numb th]
+  (conj
+   (if
+     (not= (count args) 1)
+     (eval-compshape-vertical (rest args) numb th))
+   (assoc (first args) :dy (+ (:dy (first args)) (- (+ (quot th 2) numb) (quot tot-h 2))) :tw max-w :th tot-h)))
 
 (defn eval-shapes-vertical [args numb]
   (conj (if
           (not= (count args) 1)
           (if (vector? (first args))
             (eval-shapes-vertical (rest args) (+ (:th (first (first args))) numb))
-            (eval-shapes-vertical (rest args) (+ (:h (first args)) numb))))
+            (eval-shapes-vertical (rest args) (+ (:th (first args)) numb))))
 
         (if
           (vector? (first args))
-          (eval-compshape-vertical (first args) "add arguments here" numb)
-          (assoc (first args) :dy (- (+ (quot (:h (first args)) 2) numb) (quot tot-h 2)) :tw max-w :th tot-h))))
+          (eval-compshape-vertical (first args) numb (:th (first (first args))))
+          (assoc (first args) :dy (- (+ (quot (:th (first args)) 2) numb) (quot tot-h 2)) :tw max-w :th tot-h))))
 
-
-
-
-
-
- ;(conj (if
- ;         (not= (count args) 1)
- ;         (eval-shapes-vertical (rest args) (+ (:h (first args)) numb)))
- ;       (assoc (first args) :dy (- (+ (quot (:h (first args)) 2) numb) (quot tot-h 2)) :tw max-w :th tot-h)))
-
+;---
+(defn eval-compshape-horizontal [args numb tw]
+  (conj
+   (if
+     (not= (count args) 1)
+     (eval-compshape-horizontal (rest args) numb tw))
+   (assoc (first args) :dx (+ (:dx (first args)) (- (+ (quot tw 2) numb) (quot tot-w 2))) :tw tot-w :th max-h)))
 
 (defn eval-shapes-horizontal [args numb]
   (conj (if
           (not= (count args) 1)
-          (eval-shapes-horizontal (rest args) (+ (:w (first args)) numb)))
-        (assoc (first args) :dx (- (+ (quot (:w (first args)) 2) numb) (quot tot-w 2)) :tw tot-w :th max-h)))
+          (if (vector? (first args))
+            (eval-shapes-horizontal (rest args) (+ (:tw (first (first args))) numb))
+            (eval-shapes-horizontal (rest args) (+ (:tw (first args)) numb))))
+
+        (if
+          (vector? (first args))
+          (eval-compshape-horizontal (first args) numb (:tw (first (first args))))
+          (assoc (first args) :dx (- (+ (quot (:tw (first args)) 2) numb) (quot tot-w 2)) :tw tot-w :th max-h))))
+
+;---
+(defn eval-compshape-overlay [args]
+  (conj
+   (if
+     (not= (count args) 1)
+     (eval-compshape-overlay (rest args)))
+   (assoc (first args) :tw max-w :th max-h)))
+
+(defn eval-shapes-overlay [args]
+  (conj (if
+          (not= (count args) 1)
+          (eval-shapes-overlay (rest args)))
+
+        (if
+          (vector? (first args))
+          (eval-compshape-overlay (first args))
+          (assoc (first args) :tw max-w :th max-h))))
 
 
 (defn above [& args]
-  (calc-tot-h (flatten args))
-  (calc-max-w (flatten args))
-  (conj
-   (vec (eval-shapes-vertical args 0))))
+  (calc-tot-h args)
+  (calc-max-w args)
+  (vec (flatten (eval-shapes-vertical args 0))))
 
 (defn beside [& args]
-  (calc-tot-w (flatten args))
-  (calc-max-h (flatten args))
-  (conj
-   (vec (eval-shapes-horizontal (flatten args) 0))))
+  (calc-tot-w args)
+  (calc-max-h args)
+  (vec (flatten (eval-shapes-horizontal args 0))))
 
-
+(defn overlay [& args]
+  (calc-max-w args)
+  (calc-max-h args)
+  (vec (flatten (eval-shapes-overlay (reverse args)))))
 
 
 (def bg-tower
-  (above black-rect
+  (above black-circle
+         black-rect
          grey-rect
          black-rect
          grey-rect))
 
 (def big-tower
-  (above bg-tower
-         bg-tower))
+  (beside bg-tower
+          bg-tower
+          black-rect))
+
+(def super-tower
+  (beside big-tower
+          big-tower))
+
+(def over-tower
+  (overlay black-rect
+           black-circle
+           bg-tower
+           big-tower
+           super-tower))
+
+(def super-super-tower
+  (above super-tower
+         super-tower
+         super-tower))
+
+(def ssst
+  (beside super-super-tower
+          super-super-tower))
+
+(def two-circles
+  (overlay white-circle
+           black-circle))
 
 
 
@@ -163,11 +279,11 @@
      (f-fill 80 255 80)
      ;(q/arc 250 250 100 100 (- q/PI) 0)
      (q/rect-mode :center)
-     (ds big-tower 300 300)
+     (ds over-tower 400 400)
 ;     (ds bg-tower 340 300)
 ;     (ds bg-tower 260 300)
-     (q/line 0 300 300 300)
-     (q/line 300 0 300 300)
+     (q/line 0 400 400 400)
+     (q/line 400 0 400 400)
 
 
 
@@ -176,7 +292,7 @@
 
 (q/defsketch my
   :title "My sketch"
-  :size [600 600]
+  :size [800 800]
   ; Setup function called only once, during sketch initialization.
   :setup setup
   ; Update-state is called on each iteration before draw-state.
