@@ -146,10 +146,11 @@
    "turns a seq into a string, and if the seq is longer than n, ends with ...)"
    (cs/join [ "(" (cs/join " " (seq (into [] (take n my-seq)))) (if (> (count my-seq) n) "...)" ")")]))
 
+;link to sequential interface
+;http://javadox.com/org.clojure/clojure/1.7.0-alpha6/clojure/lang/class-use/Sequential.html
 (defn- map-take [f s n]
    "maps a function onto the elements of a list who can be infinite, and prints the first n elements of the list, and outputs the result as a string"
    (seq-to-str (take (inc n) (map #(if (sequential? %) (f %) %) s)) n))
-
 
 (defn nested-taker [s & nums]
    "takes possibly infinitly nested infinite sequences, and outputs the first & nums of each nest respectively"
