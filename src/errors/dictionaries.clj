@@ -181,7 +181,11 @@
     3 "third argument"
     4 "fourth argument"
     5 "fifth argument"
-    (str n "th argument")))
+   (= 1 (mod n 10)) (str n "st argument")
+   (= 2 (mod n 10)) (str n "nd argument")
+   (= 3 (mod n 10)) (str n "rd argument")
+   :else   (str n "th argument")
+))
 
 (defn number-word [n]
   (case n
