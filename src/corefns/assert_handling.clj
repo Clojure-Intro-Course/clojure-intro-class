@@ -42,6 +42,15 @@
       (if n (add-to-seen {:arg-num n}))
       false)))
 
+(defn check-if-integer? [fname x & [n]]
+  (if (integer? x) true
+    (do (add-to-seen {:check "an integer number"
+                      :class (class x)
+                      :value x
+                      :fname fname})
+      (if n (add-to-seen {:arg-num n}))
+      false)))
+
 (defn check-if-string? [fname x & [n]]
   (if (string? x) true
     (do (add-to-seen {:check "a string"

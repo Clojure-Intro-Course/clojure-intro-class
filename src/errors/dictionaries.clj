@@ -175,7 +175,7 @@
 
 ;;; arg-str: number -> string
 (defn arg-str [n]
-  (let [abs (fn [m] (if (> 0 n) (- n) n))
+  (let [abs (fn [m] (if (> 0 m) (- m) m))
         n1 (mod (abs n) 100)
         n2 (mod (abs n) 10)]
   (case n
@@ -252,7 +252,7 @@
                         :first "one",        :empty? "one",      :join "one or two",       :string? "one",
                         :- "at least one",   :rem "two",         :mod "two",               :inc "one",
                         :dec "one",          :max "one or more", :min "one or more",       :rand "zero or one",
-                        :rand-int "one",
+                        :rand-int "one",     :odd? "one",        :even? "one",
                         })
 
 (defn lookup-arity
