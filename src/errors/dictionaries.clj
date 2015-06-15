@@ -175,17 +175,21 @@
 
 ;;; arg-str: number -> string
 (defn arg-str [n]
+  (let [abs (fn [m] (if (> 0 n) (- n) n))
+        n1 (mod (abs n) 100)
+        n2 (mod (abs n) 10)]
   (case n
     1 "first argument"
     2 "second argument"
     3 "third argument"
     4 "fourth argument"
     5 "fifth argument"
-   (= 1 (mod n 10)) (str n "st argument")
-   (= 2 (mod n 10)) (str n "nd argument")
-   (= 3 (mod n 10)) (str n "rd argument")
+   (or (= 11 n1) (= 12 n1) (= 13 n1)) (str n "th argument")
+   (= 1 n2) (str n "st argument")
+   (= 2 n2) (str n "nd argument")
+   (= 3 n2) (str n "rd argument")
    :else   (str n "th argument")
-))
+)))
 
 (defn number-word [n]
   (case n

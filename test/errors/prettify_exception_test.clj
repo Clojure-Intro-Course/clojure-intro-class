@@ -272,7 +272,6 @@
 (expect "210528th argument" (arg-str 210528))
 
 ;; testing for lookup-arity
-;6 errors here
 (expect "at least one" (lookup-arity "map"))
 (expect "one" (lookup-arity "count"))
 (expect nil (lookup-arity "concat"))
