@@ -8,7 +8,11 @@
 
 
 
-(odd? 2.2)
+
+;(map 1)
+(println "################")
+;(nth [1 2 3 4 5 6 7 8] 5.4)
+;(odd? 1.5)
 
 
 
@@ -21,28 +25,6 @@
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-;(require '[clojure.string :as cs])
 
 
 ;(println (+ (repeat (range))))

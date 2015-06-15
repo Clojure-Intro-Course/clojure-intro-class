@@ -268,7 +268,7 @@
 
 ;; testing for arg-str
 (expect "first argument" (arg-str 1))
-(expect "21th argument" (arg-str 21))
+(expect "21st argument" (arg-str 21))
 (expect "210528th argument" (arg-str 210528))
 
 ;; testing for lookup-arity
