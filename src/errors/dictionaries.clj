@@ -184,11 +184,12 @@
     3 "third argument"
     4 "fourth argument"
     5 "fifth argument"
-   (or (= 11 n1) (= 12 n1) (= 13 n1)) (str n "th argument")
+   (cond
+  (or (= 11 n1) (= 12 n1) (= 13 n1)) (str n "th argument")
    (= 1 n2) (str n "st argument")
    (= 2 n2) (str n "nd argument")
    (= 3 n2) (str n "rd argument")
-   :else   (str n "th argument")
+   :else   (str n "th argument"))
 )))
 
 (defn number-word [n]
