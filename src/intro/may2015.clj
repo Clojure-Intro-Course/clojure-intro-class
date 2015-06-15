@@ -1,20 +1,21 @@
 (ns intro.may2015
-(:require [expectations :refer :all]
-          [corefns.corefns :refer :all]
-          [corefns.collection_fns :refer :all]
-          [quil.core :as q]
-          [quil.middleware :as m]
-          [quil.q_functions :refer :all]
-          [errors.errorgui :refer :all]
-          [errors.prettify_exception :refer :all]))
-
-;(def best-image (q/blend (f-quad 50 0 100 50 50 100 0 50) (f-rect 0 0 100 100) 0 0 100 100 0 0 100 100 :add))
+  (:require [expectations :refer :all]
+            [corefns.corefns :refer :all]
+            [corefns.collection_fns :refer :all]
+            [quil.core :as q]
+            [quil.middleware :as m]
+            [quil.q_functions :refer :all]
+            [errors.errorgui :refer :all]
+            [errors.prettify_exception :refer :all]))
 
 
 
+(defn return-color [args]
+  (if (not= (count args) 1)
+    (return-color (rest args)))
+  (first args))
 
-
-(defn create-ellipse [w h color]
+(defn create-ellipse [w h & args]
   {:w w
    :h h
    :tw w
@@ -22,29 +23,30 @@
    :dx 0
    :dy 0
    :ds (fn [x y]
-         (f-fill color)
+         (cond (= (count args) 1)
+               (f-fill (first args))
+               (= (count args) 2)
+               (f-fill (first args) (second args))
+               (= (count args) 3)
+               (f-fill (first args) (second args) (second (rest args)))
+               (= (count args) 4)
+               (f-fill (first args) (second args) (second (rest args)) (second (rest (rest args)))))
          (f-ellipse x y w h)
          (q/no-fill))})
 
 
-
 (defn create-picture [pic]
-  {;:w (q/width (q/load-image pic))
-   ;:h (q/height (q/load-image pic))
-   :tw 0
-   :th 0
+  {:w (.width (q/load-image pic))
+   :h (.height (q/load-image pic))
+   :tw (.width (q/load-image pic))
+   :th (.height (q/load-image pic))
    :dx 0
    :dy 0
    :ds (fn [x y]
          (q/image (q/load-image pic) x y))})
 
 
-
-
-
-
-
-(defn create-rect [w h color]
+(defn create-rect [w h & args]
   {:w w
    :h h
    :tw w
@@ -52,32 +54,27 @@
    :dx 0
    :dy 0
    :ds (fn [x y]
-         (f-fill color)
+         (cond (= (count args) 1)
+               (f-fill (first args))
+               (= (count args) 2)
+               (f-fill (first args) (second args))
+               (= (count args) 3)
+               (f-fill (first args) (second args) (second (rest args)))
+               (= (count args) 4)
+               (f-fill (first args) (second args) (second (rest args)) (second (rest (rest args)))))
          (f-rect x y w h)
          (q/no-fill))})
 
-
-
+;---
 (defn ds [shape x y]
   (if
     (not (vector? shape))
     ((:ds shape) x y)
     (doseq [i (range (count shape))]
-    ((:ds (nth shape i)) (+ x (:dx (nth shape i))) (+ y (:dy (nth shape i)))))))
-
-(def black-circle (create-ellipse 40 40 25))
-
-(def black-rect (create-rect 20 20 10))
-
-(def grey-rect (create-rect 40 40 125))
-
-(def white-circle (create-ellipse 20 20 225))
-
-(def light-table (create-picture "/home/mcart046/Pictures/lighttable.png"))
+      ((:ds (nth shape i)) (+ x (:dx (nth shape i))) (+ y (:dy (nth shape i)))))))
 
 
-
-;---
+;------
 (defn max-w-recur [args]
   (conj
    (if
@@ -197,7 +194,7 @@
           (eval-compshape-overlay (first args))
           (assoc (first args) :tw max-w :th max-h))))
 
-
+;------
 (defn above [& args]
   (calc-tot-h args)
   (calc-max-w args)
@@ -208,97 +205,300 @@
   (calc-max-h args)
   (vec (flatten (eval-shapes-horizontal args 0))))
 
+(defn overlay [& args]
+  (calc-max-w args)
+  (calc-max-h args)
+  (vec (flatten (eval-shapes-overlay (reverse args)))))
 
 
-(def bg-tower
-  (above black-circle
-         black-rect
-         grey-rect
-         black-rect
-         grey-rect
-         light-table))
+;------                  ***  OVERLAY-ALIGN  ***
 
-(def big-tower
-  (beside bg-tower
-          bg-tower
-          black-rect))
+(defn overlay-compshape-vertical [vert arg]
+  (cond (= vert "top")
+        (if
+          (= (:th arg) max-h)
+          (:dy arg)
+          (+ (- (:dy arg) (quot max-h 2)) (quot (:th arg) 2)))
+        (= vert "center")
+        (:dy arg)
+        (= vert "bottom")
+        (if
+          (= (:th arg) max-h)
+          (:dy arg)
+          (+ (- (:dy arg) (quot max-h 2)) (quot (:th arg) 2)))
+        :else
+        (throw (Exception. "The function overlay-align takes \"top\", \"center\", or \"bottom\" as its first argument."))))
 
-(def super-tower
-  (beside big-tower
-          big-tower))
+(defn overlay-compshape-horizontal [hor arg]
+  (cond (= hor "left")
+        (if
+          (= (:tw arg) max-w)
+          (:dx arg)
+          (+ (- (:dx arg) (quot max-w 2)) (quot (:tw arg) 2)))
+        (= hor "center")
+        (:dx arg)
+        (= hor "right")
+        (if
+          (= (:tw arg) max-w)
+          (:dx arg)
+          (- (+ (:dx arg) (quot max-w 2)) (quot (:tw arg) 2)))
+        :else
+        (throw (Exception. "The function overlay-align takes \"left\", \"center\", or \"right\" as its second argument."))))
 
-(def over-tower
-  (overlay black-rect
-           black-circle
-           bg-tower
-           big-tower
-           super-tower))
+(defn eval-compshape-overlay-align [vert hor args]
+  (conj
+   (if
+     (not= (count args) 1)
+     (eval-compshape-overlay-align vert hor (rest args)))
+   (assoc (first args) :tw max-w :th max-h :dy (overlay-compshape-vertical vert (first args)) :dx (overlay-compshape-horizontal hor (first args)))))
 
-(def super-super-tower
-  (above super-tower
-         super-tower
-         super-tower))
+(defn overlay-vertical [vert arg]
+  (cond (= vert "top")
+        (- (quot (:th arg) 2) (quot max-h 2))
+        (= vert "center")
+        (:dy arg)
+        (= vert "bottom")
+        (- (quot max-h 2) (quot (:th arg) 2))
+        :else
+        (throw (Exception. "The function overlay-align takes \"top\", \"center\", or \"bottom\" as its first argument."))))
 
-(def ssst
-  (beside super-super-tower
-          super-super-tower))
+(defn overlay-horizontal [hor arg]
+  (cond (= hor "left")
+        (- (quot (:tw arg) 2) (quot max-w 2))
+        (= hor "center")
+        (:dx arg)
+        (= hor "right")
+        (- (quot max-w 2) (quot (:tw arg) 2))
+        :else
+        (throw (Exception. "The function overlay-align takes \"left\", \"center\", or \"right\" as its second argument."))))
 
-(def two-circles
-  (overlay white-circle
-           black-circle))
+(defn eval-shapes-overlay-align [vert hor args]
+  (conj (if
+          (not= (count args) 1)
+          (eval-shapes-overlay-align vert hor (rest args)))
+
+        (if
+          (vector? (first args))
+          (eval-compshape-overlay-align vert hor (first args))
+          (assoc (first args) :tw max-w :th max-h :dy (overlay-vertical vert (first args)) :dx (overlay-horizontal hor (first args))))))
+
+(defn overlay-align [vert hor & args]
+  (calc-max-w args)
+  (calc-tot-w args)
+  (calc-max-h args)
+  (calc-tot-h args)
+  (vec (flatten (eval-shapes-overlay-align vert hor (reverse args)))))
 
 
+;------                  ***  ABOVE-ALIGN  ***
 
+(defn eval-compshape-above-align-right [args numb th]
+  (conj
+   (if
+     (not= (count args) 1)
+     (eval-compshape-above-align-right (rest args) numb th))
+   (assoc (first args) :dy (+ (:dy (first args)) (- (+ (quot th 2) numb) (quot tot-h 2))) :tw max-w :th tot-h :dx (if
+                                                                                                                    (= (:tw (first args)) max-w)
+                                                                                                                    (:dx (first args))
+                                                                                                                    (- (+ (:dx (first args)) (quot max-w 2)) (quot (:tw (first args)) 2))))))
+
+(defn eval-shapes-above-align-right [args numb]
+  (conj (if
+          (not= (count args) 1)
+          (if (vector? (first args))
+            (eval-shapes-above-align-right (rest args) (+ (:th (first (first args))) numb))
+            (eval-shapes-above-align-right (rest args) (+ (:th (first args)) numb))))
+
+        (if
+          (vector? (first args))
+          (eval-compshape-above-align-right (first args) numb (:th (first (first args))))
+          (assoc (first args) :dy (- (+ (quot (:th (first args)) 2) numb) (quot tot-h 2)) :dx (- (quot max-w 2) (quot (:tw (first args)) 2)) :tw max-w :th tot-h))))
+
+(defn eval-compshape-above-align-left [args numb th]
+  (conj
+   (if
+     (not= (count args) 1)
+     (eval-compshape-above-align-left (rest args) numb th))
+   (assoc (first args) :dy (+ (:dy (first args)) (- (+ (quot th 2) numb) (quot tot-h 2))) :tw max-w :th tot-h :dx (if
+                                                                                                                    (= (:tw (first args)) max-w)
+                                                                                                                    (:dx (first args))
+                                                                                                                    (+ (- (:dx (first args)) (quot max-w 2)) (quot (:tw (first args)) 2))))))
+
+(defn eval-shapes-above-align-left [args numb]
+  (conj (if
+          (not= (count args) 1)
+          (if (vector? (first args))
+            (eval-shapes-above-align-left (rest args) (+ (:th (first (first args))) numb))
+            (eval-shapes-above-align-left (rest args) (+ (:th (first args)) numb))))
+
+        (if
+          (vector? (first args))
+          (eval-compshape-above-align-left (first args) numb (:th (first (first args))))
+          (assoc (first args) :dy (- (+ (quot (:th (first args)) 2) numb) (quot tot-h 2)) :dx (- (quot (:tw (first args)) 2) (quot max-w 2)) :tw max-w :th tot-h))))
+
+
+(defn above-align [align & args]
+  (calc-tot-h args)
+  (calc-max-w args)
+  (cond (= align "right")
+        (vec (flatten (eval-shapes-above-align-right args 0)))
+        (= align "left")
+        (vec (flatten (eval-shapes-above-align-left args 0)))
+        :else
+        (throw (Exception. "The function above-align takes in \"right\" or \"left\" as its first argument."))))
+
+
+;------                       *** BESIDE-ALIGN ***
+(defn eval-compshape-beside-align-top [args numb tw]
+  (conj
+   (if
+     (not= (count args) 1)
+     (eval-compshape-beside-align-top (rest args) numb tw))
+   (assoc (first args) :dx (+ (:dx (first args)) (- (+ (quot tw 2) numb) (quot tot-w 2))) :tw tot-w :th max-h :dy (if
+                                                                                                                    (= (:th (first args)) max-h)
+                                                                                                                    (:dy (first args))
+                                                                                                                    (+ (- (:dy (first args)) (quot max-h 2)) (quot (:th (first args)) 2))))))
+
+
+(defn eval-shapes-beside-align-top [args numb]
+  (conj (if
+          (not= (count args) 1)
+          (if (vector? (first args))
+            (eval-shapes-beside-align-top (rest args) (+ (:tw (first (first args))) numb))
+            (eval-shapes-beside-align-top (rest args) (+ (:tw (first args)) numb))))
+
+        (if
+          (vector? (first args))
+          (eval-compshape-beside-align-top (first args) numb (:tw (first (first args))))
+          (assoc (first args) :dx (- (+ (quot (:tw (first args)) 2) numb) (quot tot-w 2)) :tw tot-w :th max-h :dy (- (quot (:th (first args)) 2) (quot max-h 2))))))
+
+(defn eval-compshape-beside-align-bottom [args numb tw]
+  (conj
+   (if
+     (not= (count args) 1)
+     (eval-compshape-beside-align-bottom (rest args) numb tw))
+   (assoc (first args) :dx (+ (:dx (first args)) (- (+ (quot tw 2) numb) (quot tot-w 2))) :tw tot-w :th max-h :dy (if
+                                                                                                                    (= (:th (first args)) max-h)
+                                                                                                                    (:dy (first args))
+                                                                                                                    (- (+ (:dy (first args)) (quot max-h 2)) (quot (:th (first args)) 2))))))
+
+(defn eval-shapes-beside-align-bottom [args numb]
+  (conj (if
+          (not= (count args) 1)
+          (if (vector? (first args))
+            (eval-shapes-beside-align-bottom (rest args) (+ (:tw (first (first args))) numb))
+            (eval-shapes-beside-align-bottom (rest args) (+ (:tw (first args)) numb))))
+
+        (if
+          (vector? (first args))
+          (eval-compshape-beside-align-bottom (first args) numb (:tw (first (first args))))
+          (assoc (first args) :dx (- (+ (quot (:tw (first args)) 2) numb) (quot tot-w 2)) :tw tot-w :th max-h :dy (- (quot max-h 2) (quot (:th (first args)) 2))))))
+
+
+(defn beside-align [align & args]
+  (calc-tot-w args)
+  (calc-max-h args)
+  (cond (= align "top")
+        (vec (flatten (eval-shapes-beside-align-top args 0)))
+        (= align "bottom")
+        (vec (flatten (eval-shapes-beside-align-bottom args 0)))
+        :else
+        (throw (Exception. "The function beside-align takes in \"top\" or \"bottom\" as its first argument."))))
+
+;-----------------------------------------------------------
+;                   SKETCH FUNCTIONS
 
 (defn setup []
-  (q/frame-rate 1)
-  (q/color-mode :rgb)
+  (try
+
+    (def black-circle (create-ellipse 20 20 80 255 255))
+
+    (def black-rect (create-rect 20 20 10))
+
+    (def grey-rect (create-rect 40 40 125))
+
+    (def white-circle (create-ellipse 20 20 225))
+
+    (def big-rect (create-rect 100 100 255 80 255))
+
+    (def bigger-rect (create-rect 150 150 255 80 80))
 
 
-  {:color 0
-   :angle 0
-   :x 1
-   :y 1
-   :picture-1 (q/load-image "/home/hagen715/Desktop/images/404.png")})
+    (def sqr1 (create-rect 10 10 255 80 80))
+    (def sqr2 (create-rect 20 20 80 255 80))
+    (def sqr3 (create-rect 30 30 80 80 255))
+    (def sqr4 (create-rect 40 40 255 255 80))
+    (def sqr5 (create-rect 50 50 255 80 255))
+    (def sqr6 (create-rect 60 60 80 255 255))
+    (def sqr7 (create-rect 70 70 80 80 80))
+    (def sqr8 (create-rect 80 80 255 255 255))
+    (def sqr9 (create-rect 90 90 255 0 0))
+    (def sqr10 (create-rect 100 100 0 80 80))
 
+    (def thing (overlay-align "top" "left" sqr1
+               (overlay-align "top" "center" sqr2
+               (overlay-align "top" "right" sqr3
+               (overlay-align "center" "left" sqr4
+               (overlay-align "center" "center" sqr5
+               (overlay-align "center" "right" sqr6
+               (overlay-align "bottom" "left" sqr7
+               (overlay-align "bottom" "center" sqr8
+               (overlay-align "bottom" "right" sqr9))))))))))
+
+    (def light-table (create-picture "/home/mcart046/Pictures/lighttable.png"))
+    (def kappa (create-picture "/home/hagen715/Desktop/images/kappa96x130.png"))
+    (def frankerz (create-picture "/home/hagen715/Desktop/images/frankerz220x200.jpg"))
+
+    (def thing5 (above grey-rect
+                      black-rect
+                      grey-rect))
+
+    (def thing1 (overlay-align "center" "center" black-rect grey-rect big-rect bigger-rect))
+
+    (def thing2 (overlay-align "bottom" "right" kappa thing1))
+
+    {:color 0
+     :angle 0
+     :x 400
+     :y 400
+     :shape-1 black-rect}
+
+    (catch Throwable e (println (.getCause e)) (display-error (prettify-exception e)))))
+
+;-
 
 (defn update-state [state]
   (try
     (assert (not-nil? state) "Your state is nil")
+    (assoc state :x (+ (:x state) 0.05) :y (+ (:y state) 0.05))
+    (catch Throwable e (println (.getCause e)) (display-error (prettify-exception e)))))
 
-    (assoc state :x (+ (:x state) 0.1) :y (+ (:y state) 0.1))
+;-
 
+(defn draw-state [state]
+  (try
+    ;(ds ssst (+ 400 (* 200 (q/cos (:x state)))) (+ 200 (* 200 (+ 1 (q/sin (:y state))))))
+    (f-background 80 255 80)
+
+    (f-stroke 255)
+    (f-fill 255)
+    (f-text-size 20)
+    (q/rect-mode :center)
+    (q/image-mode :center)
+
+    (ds thing  400 400)
+
+
+
+    (f-fill 80 255 80)
+    (q/text-num (q/frame-count) 400 100)
+    ;(q/line 0 400 400 400)
+    ;(q/line 400 0 400 400)
 
 
     (catch Throwable e (println (.getCause e)) (display-error (prettify-exception e)))))
 
-
-
-(defn draw-state [state]
-   (try
-     (f-background 255)
-     ;(q/image (:picture-1 state) 0 0)
-     ;(f-fill 80 255 80)
-     ;(f-rect 100 100 100 100)
-     (f-stroke 0)
-     (f-fill 255)
-     (f-text-size 20)
-     ;(green-rect (* (+ (q/sin (:x state)) 1) 200) 100 100 100)
-     ;(green-rect 100 (* (+ (q/sin (:y state)) 1) 200) 50 50)
-     ;(ds black-rect 100 100)
-     (f-fill 80 255 80)
-     ;(q/arc 250 250 100 100 (- q/PI) 0)
-     (q/rect-mode :center)
-     (ds bg-tower 200 200)
-;     (ds bg-tower 340 300)
-;     (ds bg-tower 260 300)
-     (q/line 0 400 400 400)
-     (q/line 400 0 400 400)
-
-
-
-     (catch Throwable e (println (.getCause e)) (display-error (prettify-exception e)))))
-
+;-
 
 (q/defsketch my
   :title "My sketch"

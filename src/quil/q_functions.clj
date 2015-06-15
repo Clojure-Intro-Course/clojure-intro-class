@@ -58,41 +58,44 @@
     (ellipse x-pos y-pos width length)
   (catch Throwable e (println (.getCause e)) (display-error (prettify-exception e)))))
 
-(defn f-fill [color & args]
+(defn f-fill [& args]
   (try
-     (if (< 3 (count args))
+     (if (< 4 (count args))
       (throw (Exception. "f-fill expects either 1, 2, 3, or 4 arguments.")))
 
-    (cond (= 0 (count args))
-          {:pre [(assert (not-nil? color) "f-fill expects a number but got nil as its first argument")]}
-
-          (= 1 (count args))
-          {:pre [(assert (not-nil? color) "f-fill expects a number but got nil as its first argument")
-                 (assert (not-nil? (first args)) "f-fill expects a number but got nil as its second argument")]}
+    (cond (= 1 (count args))
+          {:pre [(assert (not-nil? (first args)) "f-fill expects a number but got nil as its first argument")]}
 
           (= 2 (count args))
-          {:pre [(assert (not-nil? color) "f-fill expects a number but got nil as its first argument")
-                 (assert (not-nil? (first args)) "f-fill expects a number but got nil as its second argument")
-                 (assert (not-nil? (second args)) "f-fill expects a number but got nil as its third argument")]}
+          {:pre [(assert (not-nil? (first args)) "f-fill expects a number but got nil as its first argument")
+                 (assert (not-nil? (second args)) "f-fill expects a number but got nil as its second argument")]}
 
           (= 3 (count args))
-          {:pre [(assert (not-nil? color) "f-fill expects a number but got nil as its first argument")
-                 (assert (not-nil? (first args)) "f-fill expects a number but got nil as its second argument")
-                 (assert (not-nil? (second args)) "f-fill expects a number but got nil as its third argument")
-                 (assert (not-nil? (second (rest args))) "f-fill expects a number but got nil as its 4th argument")]})
+          {:pre [(assert (not-nil? (first args)) "f-fill expects a number but got nil as its first argument")
+                 (assert (not-nil? (second args)) "f-fill expects a number but got nil as its second argument")
+                 (assert (not-nil? (second (rest args))) "f-fill expects a number but got nil as its third argument")]}
+
+          (= 4 (count args))
+          {:pre [(assert (not-nil? (first args)) "f-fill expects a number but got nil as its first argument")
+                 (assert (not-nil? (second args)) "f-fill expects a number but got nil as its second argument")
+                 (assert (not-nil? (second (rest args))) "f-fill expects a number but got nil as its third argument")
+                 (assert (not-nil? (second (rest (rest args)))) "f-fill expects a number but got nil as its 4th argument")]})
 
 
-    (cond (= 0 (count args))
-          (fill color)
+    (cond (vector? (first args))
+          (fill (first (first args)) (second (first args)) (second (rest (first args))) (second (rest (rest (first args)))))
 
           (= 1 (count args))
-          (fill color (first args))
+          (fill (first args))
 
           (= 2 (count args))
-          (fill color (first args) (second args))
+          (fill (first args) (second args))
 
           (= 3 (count args))
-          (fill color (first args) (second args) (second (rest args))))
+          (fill (first args) (second args) (second (rest args)))
+
+          (= 4 (count args))
+          (fill (first args) (second args) (second (rest args)) (second (rest (rest args)))))
 
   (catch Throwable e (println (.getCause e)) (display-error (prettify-exception e)))))
 
