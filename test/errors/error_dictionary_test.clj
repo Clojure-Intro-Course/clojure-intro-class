@@ -113,10 +113,10 @@
 ;###################################
 
 ;; testing for :arity-exception-wrong-number-of-arguments
-(expect "You cannot pass three arguments to a function even?."
+(expect "You cannot pass three arguments to a function even?, need one."
         (get-all-text (run-and-catch-pretty-no-stacktrace 'intro.core '(even? 3 6 1))))
 
-(expect "You cannot pass zero arguments to a function odd?."
+(expect "You cannot pass zero arguments to a function odd?, need one."
         (get-all-text (run-and-catch-pretty-no-stacktrace 'intro.core '(odd?))))
 
 (expect "You cannot pass one argument to this anonymous function."
@@ -192,7 +192,7 @@ mapcat
 (expect #"Name banana is undefined." ; this is giving NO_SOURCE_PATH
         (get-all-text (run-and-catch-pretty-no-stacktrace 'intro.core '(banana 5 6))))
 
-(expect "There is an unmatched delimiter ).\nFound in file compilation_errors/unmatched_delimiter.clj on line 3 at character 20."
+(expect "There is an unmatched delimiter ).\nFound in file unmatched_delimiter.clj on line 3 at character 20."
         (get-all-text (:msg-info-obj (prettify-exception (import-from-file "exceptions/unmatched_delimiter.ser")))))
 
 (expect #"Too many arguments to def." ; this is giving NO_SOURCE_PATH
@@ -201,7 +201,7 @@ mapcat
 (expect #"Too few arguments to def." ; this is giving NO_SOURCE_PATH
         (get-all-text (run-and-catch-pretty-no-stacktrace 'intro.core '(def))))
 
-(expect "End of file, starting at line 3.\nProbably a non-closing parenthesis or bracket.\nFound in file compilation_errors/eof.clj on line 4 at character 1."
+(expect "End of file, starting at line 3.\nProbably a non-closing parenthesis or bracket.\nFound in file eof.clj on line 4 at character 1."
         (get-all-text (:msg-info-obj (prettify-exception (import-from-file "exceptions/end_of_file.ser")))))
 
 ;; :compiler-exception-must-recur-to-function-or-loop

@@ -167,7 +167,7 @@
                  clojure.lang.ArityException (:exception-class x)
                  ;;; This is a legitimate location error, need to look into it
                  ;location-regex (get-all-text (:msg-info-obj x)))
-                 #"You cannot pass 4 arguments to a function prob38\.(.*)" (get-all-text (:msg-info-obj x)))
+                 #"You cannot pass four arguments to a function prob38\.(.*)" (get-all-text (:msg-info-obj x)))
         (run-and-catch-pretty-with-stacktrace 'intro.student
                                               '(prob38 1 8 3 4)))
 
