@@ -228,6 +228,14 @@
     :make-msg-info-obj (fn [matches] (make-msg-info-hashes "There is an unmatched parameter in declaration of "
                                                            (nth matches 2) :arg "."))}
 
+
+  {:key :cant-call-nil
+    :class clojure.lang.Compiler$CompilerException
+    :true-exception java.lang.IllegalArgumentException
+    :match #"(.*): Can't call nil(.*)"
+    :make-msg-info-obj (fn [matches] (make-msg-info-hashes "Cannot call "
+                                                           "nil" :arg " as a function."))}
+
    ;############################################
    ;### Compilation Errors: Arity Exceptions ###
    ;############################################

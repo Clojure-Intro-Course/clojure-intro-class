@@ -11,6 +11,8 @@
 ;Found in file /home/stock424/Documents/code/clojure-intro-class/src/intro/may2015.clj on line 21 at character 10.
 ;	intro.core/-main (core.clj line 111)
 
+(nil 5)
+
 (println (clojure.string/splt "/home/stock424/Documents/code/clojure-intro-class/src/intro/may2015.clj" #"/"))
 ;Error: clojure.string.split
 ;Found in file /home/stock424/Documents/code/clojure-intro-class/src/intro/may2015.clj on line 26 at character 10.

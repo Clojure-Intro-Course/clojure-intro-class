@@ -231,8 +231,6 @@
         exc (stacktrace/parse-exception e)
         stacktrace (:trace-elems exc)
         filtered-trace (filter-stacktrace stacktrace)
-        ;; this is just a temporary way of adding the location, we might
-        ;; want to break it down into path, file, etc:
         comp-location (get-compile-error-location (get-exc-message ex))
         location (if (empty? comp-location) (get-location-info filtered-trace) comp-location)
         entry (first-match e-class message)
