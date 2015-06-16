@@ -8,7 +8,26 @@
 
 
 
-(require '[clojure.string :as cs])
+
+;(map 1)
+;(println "################")
+;(quot 2.5 1.4)
+;(println (odd? 1.5))
+;(== 2.0 2 6/3 1.9999999999999999)
+
+;(println (mod 1.42563 1))
+;(println (mod 3 1))
+;(println (= 0 (mod 1 1)))
+;(even? 1.5)
+;(odd? "str")
+;(map 5)
+
+;(get-type 3)
+
+
+
+
+
 
 (odd? 9.8)
 
@@ -50,18 +69,6 @@
  ;	intro.core/-main (core.clj line 111)
 
 
- ;(println (map class [
- ;                     (cycle [1 2 3])
- ;                     (repeatedly #(rand-int 11))
- ;                     (lazy-cat [1 2 3] (range))
- ;                     (range)
- ;                     (distinct (cycle [1 2 3]))
- ;                     (remove #(= 1 (mod % 2)) (range))
- ;                     (filter even? (cycle [1 2 3]))
- ;                     (seque (range))
- ;                     ]))
-
-
  ;(nil 5)
  ;Error: Can't call nil
  ;Found in file /home/stock424/Documents/code/clojure-intro-class/src/intro/may2015.clj on line 7 at character 1.
@@ -84,27 +91,6 @@
  ;(+ 5 (repeat 5))
  ;(+ 5 (map inc (range)))
 
-
- ;number number seq => string
-
- (defn nested-lazy-preview [n1 n2 aseq]
-   (let [bad-seq? (fn [y] (or (instance? clojure.lang.LazySeq y)
-                              (instance? clojure.lang.Repeat y)
-                              (instance? clojure.lang.Iterate y)))
-         inner-seq-fn (fn [y]
-                        (if
-                          (> (count (take (inc n2) (map #(if  (bad-seq? %) '() %) y))) n2)
-
-                          (clojure.string/join [ "(" (clojure.string/join " " (seq (into [] (take n2 (map #(if  (bad-seq? %) "(...)" %) y))))) "...)"])
-
-                          (clojure.string/join [ "(" (clojure.string/join " " (seq (into [] (take n2 (map #(if  (bad-seq? %) "(...)" %) y))))) ")"])))
-         outer-seq (take (inc n1) (map (fn [x] (if (bad-seq? x) (inner-seq-fn x) x)) aseq))]
-     (if (> (count outer-seq) n1)
-       (clojure.string/join [ "(" (clojure.string/join " " (seq (into [] (take n1 outer-seq)))) "...)"])
-       (clojure.string/join [ "(" (clojure.string/join " "  (seq (into [] (take n1 outer-seq)))) "...)"]))))
-
-
-
  ;(println (nested-lazy-preview 10 3 (repeat (repeat 1))))
  ;(println (nested-lazy-preview 10 3 (repeat (range))))
  ;(println (nested-lazy-preview 10 3 (repeat (repeat (range)))))
@@ -114,15 +100,6 @@
 
 
 
- ;number number seq => seq
- (defn nested-lazy-preview1 [n1 n2 aseq]
-   (let [bad-seq? (fn [y] (or (instance? clojure.lang.LazySeq y)
-                              (instance? clojure.lang.Repeat y)
-                              (instance? clojure.lang.Iterate y)))]
-     (take n1 (map (fn [x]
-                     (if (bad-seq? x)
-                       (take n2 (map #(if  (bad-seq? %) "lazy seq" %) x))
-                       x)) aseq))))
 
 
 

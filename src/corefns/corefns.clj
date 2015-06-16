@@ -155,6 +155,18 @@
           (check-if-seqable? "take" argument2)]}
    (clojure.core/take argument1 argument2))
 
+;;(odd? n)
+;;Returns true if n is odd, throws an exception if n is not an integer
+(defn odd? [n]
+  {:pre [(check-if-integer? "odd?" n 1)]}
+  (clojure.core/odd? n))
+
+;;(even? n)
+;;Returns true if n is even, throws an exception if n is not an integer
+(defn even? [n]
+  {:pre [(check-if-integer? "even?" n 1)]}
+  (clojure.core/even? n))
+
 ;;    (< x)
 ;;    (< x y)
 ;;    (< x y & more)

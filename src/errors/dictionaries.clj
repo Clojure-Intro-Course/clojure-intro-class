@@ -175,13 +175,22 @@
 
 ;;; arg-str: number -> string
 (defn arg-str [n]
+  (let [abs (fn [m] (if (> 0 m) (- m) m))
+        n1 (mod (abs n) 100)
+        n2 (mod (abs n) 10)]
   (case n
     1 "first argument"
     2 "second argument"
     3 "third argument"
     4 "fourth argument"
     5 "fifth argument"
-    (str n "th argument")))
+   (cond
+  (or (= 11 n1) (= 12 n1) (= 13 n1)) (str n "th argument")
+   (= 1 n2) (str n "st argument")
+   (= 2 n2) (str n "nd argument")
+   (= 3 n2) (str n "rd argument")
+   :else   (str n "th argument"))
+)))
 
 (defn number-word [n]
   (case n
@@ -243,7 +252,7 @@
                         :first "one",        :empty? "one",      :join "one or two",       :string? "one",
                         :- "at least one",   :rem "two",         :mod "two",               :inc "one",
                         :dec "one",          :max "one or more", :min "one or more",       :rand "zero or one",
-                        :rand-int "one",
+                        :rand-int "one",     :odd? "one",        :even? "one",
                         })
 
 (defn lookup-arity

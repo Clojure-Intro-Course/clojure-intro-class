@@ -268,11 +268,10 @@
 
 ;; testing for arg-str
 (expect "first argument" (arg-str 1))
-(expect "21th argument" (arg-str 21))
+(expect "21st argument" (arg-str 21))
 (expect "210528th argument" (arg-str 210528))
 
 ;; testing for lookup-arity
-;6 errors here
 (expect "at least one" (lookup-arity "map"))
 (expect "one" (lookup-arity "count"))
 (expect nil (lookup-arity "concat"))

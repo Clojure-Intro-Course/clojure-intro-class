@@ -29,6 +29,6 @@
 
 (expect {} (get-compile-error-location ""))
 
-(expect "(2 3 4 5)" (eval-first-n (map inc [1 2 3 4]) 10))
-(expect "(1 2 3 4 5 6 7 8 9 10...)" (eval-first-n (map inc (range)) 10))
-(expect "a sequence that we cannot evaluate" (eval-first-n (map #(/ % 0) [1 2 3]) 10))
+;(expect "(2 3 4 5)" (eval-first-n (map inc [1 2 3 4]) 10))
+;(expect "(1 2 3 4 5 6 7 8 9 10...)" (eval-first-n (map inc (range)) 10))
+;(expect "a sequence that we cannot evaluate" (eval-first-n (map #(/ % 0) [1 2 3]) 10))
