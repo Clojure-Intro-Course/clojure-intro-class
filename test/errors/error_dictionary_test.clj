@@ -168,10 +168,13 @@
 (expect #"Parameters for loop must come in pairs, but one of them does not have a match; on line (\d+) in the file intro\.core"
         (get-text-no-location (run-and-catch-pretty-no-stacktrace 'intro.core '(defn s [s] (loop [s])))))
 
-(expect "This recur is supposed to take 0 arguments, but you are passing 1." ; this is giving NO_SOURCE_PATH
+(expect "This recur is supposed to take zero arguments, but you are passing one." ;  this is giving NO_SOURCE_PATH
         (get-text-no-location (run-and-catch-pretty-no-stacktrace 'intro.core '(recur (inc 1)))))
 
-(expect "There is an unmatched parameter in declaration of cond." ; this is giving NO_SOURCE_PATH
+(expect "This recur is supposed to take one argument, but you are passing two." ;
+        (get-text-no-location (run-and-catch-pretty-no-stacktrace 'intro.core '(loop [x 1] (recur (inc x) (dec x))))))
+
+(expect "Parameters for cond must come in pairs, but one of them does not have a match." ; this is giving NO_SOURCE_PATH
         (get-text-no-location
          (run-and-catch-pretty-no-stacktrace 'intro.core '(defn my-num [x] (cond (= 1 x))))))
 
@@ -181,7 +184,7 @@
 (expect "You cannot pass zero arguments to a function zero?."
         (get-text-no-location (run-and-catch-pretty-no-stacktrace 'intro.core '(zero?))))
 
-(expect "Recur can only occur as a tail call: no operations can be done after its return." ; this is giving NO_SOURCE_PATH
+(expect "Recur can only occur as a tail call: no operations can be done after its return."  ; this is giving NO_SOURCE_PATH
         (get-text-no-location (run-and-catch-pretty-no-stacktrace 'intro.core '(defn inc-nums [x] ((recur (inc x)) (loop [x x]))))))
 
 (expect #"def must be followed by a name." ; this is giving NO_SOURCE_PATH

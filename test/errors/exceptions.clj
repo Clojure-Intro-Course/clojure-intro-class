@@ -98,8 +98,6 @@
 (defn get-text-no-location [m]
   (nth (re-matches #"(.*)\nFound(.*)" (get-all-text m)) 1))
 
-(expect "An error occurred."
-        (get-text-no-location "An error occurred.\nFound in myfile.clj on line 10 at charcter 15"))
 
 ; 1.2 tests
 

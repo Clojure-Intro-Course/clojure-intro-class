@@ -61,7 +61,7 @@
    {:key :illegal-argument-even-number-of-forms
     :class IllegalArgumentException
     :match #"(.*) requires an even number of forms"
-    :make-msg-info-obj (fn [matches] (make-msg-info-hashes "Parameters for " (nth matches 1) :arg "must come in pairs, but one of them does not have a match"))}
+    :make-msg-info-obj (fn [matches] (make-msg-info-hashes "Parameters for " (nth matches 1) :arg " must come in pairs, but one of them does not have a match."))}
 
    {:key :illegal-argument-even-number-of-forms-in-binding-vector
     :class IllegalArgumentException
@@ -109,6 +109,21 @@
     :make-msg-info-obj (fn [matches] (make-msg-info-hashes "Cannot call "
                                                            "nil" :arg " as a function."))}
 
+
+   {:key :compiler-exception-wrong-number-of-arguments-to-recur
+    :class IllegalArgumentException
+    :match #"Mismatched argument count to recur, expected: (.*) args, got: (.*)"
+    :make-msg-info-obj (fn [matches]
+                         (let [first-arg (nth matches 1)
+                               sec-arg (nth matches 2)
+                               arg-args (if  (= "1" (nth matches 1)) " argument" " arguments")]
+                         (make-msg-info-hashes "This recur is supposed to take "
+                                               (number-word first-arg) arg-args
+                                               ", but you are passing "
+                                               (number-word sec-arg) ".")))
+    :hints "1. You are passing a wrong number of arguments to recur. Check its function or loop.\n
+    2. recur might be outside of the scope of its function or loop."}
+
    ;######################################
    ;### Index Out of Bounds Exceptions ###
    ;######################################
@@ -136,7 +151,6 @@
    ;### Arity Exceptions ###
    ;########################
 
-   ; We probably need to rewrite this, indicate what the right nubmer of args is
    {:key :arity-exception-wrong-number-of-arguments
     :class clojure.lang.ArityException
     :match #"Wrong number of args \((.*)\) passed to: (.*)"
@@ -181,6 +195,13 @@
     :make-msg-info-obj (fn [matches] (make-msg-info-hashes "Function " (nth matches 1) :arg
                                                            " does not allow " (get-type (nth matches 2)) :type " as an argument."))}
 
+   {:key :compiler-exception-must-recur-from-tail-position
+    :class java.lang.UnsupportedOperationException
+    :match #"(.*)Can only recur from tail position(.*)"
+    :make-msg-info-obj (fn [matches] (make-msg-info-hashes "Recur can only occur "
+                                                           "as a tail call: no operations can"
+                                                           " be done after its return."))}
+
    ;############################
    ;### Stack Overflow Error ###
    ;############################
@@ -212,14 +233,6 @@
     :make-msg-info-obj (fn [matches] (make-msg-info-hashes (nth matches 2)
                                                            " requires an even number of forms in binding vector."))}
 
-   {:key :compiler-exception-wrong-number-of-arguments-to-recur
-    :class clojure.lang.Compiler$CompilerException
-    :true-exception java.lang.IllegalArgumentException
-    :match #"(.*) Mismatched argument count to recur, expected: (.*) args, got: (.*), compiling:(.*)"
-    :make-msg-info-obj (fn [matches] (make-msg-info-hashes "This recur is supposed to take "
-                                                           (nth matches 2) " arguments, but you are passing " (nth matches 3) "."))
-    :hints "1. You are passing a wrong number of arguments to recur. Check its function or loop.
-    2. recur might be outside of the scope of its function or loop."}
 
    {:key :compiler-exception-even-number-of-forms-needed
     :class clojure.lang.Compiler$CompilerException
@@ -228,13 +241,6 @@
     :make-msg-info-obj (fn [matches] (make-msg-info-hashes "There is an unmatched parameter in declaration of "
                                                            (nth matches 2) :arg "."))}
 
-
-  {:key :cant-call-nil
-    :class clojure.lang.Compiler$CompilerException
-    :true-exception java.lang.IllegalArgumentException
-    :match #"(.*): Can't call nil(.*)"
-    :make-msg-info-obj (fn [matches] (make-msg-info-hashes "Cannot call "
-                                                           "nil" :arg " as a function."))}
 
    ;############################################
    ;### Compilation Errors: Arity Exceptions ###
@@ -256,13 +262,6 @@
    ;### Compilation Errors: Unsupported Operation Exceptions ###
    ;############################################################
 
-   {:key :compiler-exception-must-recur-from-tail-position
-    :class clojure.lang.Compiler$CompilerException
-    :true-exception java.lang.UnsupportedOperationException
-    :match #"(.*) Can only recur from tail position, compiling:(.*)"
-    :make-msg-info-obj (fn [matches] (make-msg-info-hashes "Recur can only occur "
-                                                           "as a tail call: no operations can"
-                                                           " be done after its return. "))}
 
    ;##############################################
    ;### Compilation Errors: Runtime Exceptions ###
