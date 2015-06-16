@@ -10,6 +10,14 @@
 
 (require '[clojure.string :as cs])
 
+(odd? 9.8)
+
+(defn holds-for-all? [f v]
+  (if (empty? (rest v)) (f (first v))
+    (and (f (first v)) (holds-for-all? f (rest v)))))
+
+
+(holds-for-all? odd? [1 3 -1])
 
 ;(println (+ (repeat (range))))
 ;(println (+ [(range)]))
