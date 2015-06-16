@@ -3,6 +3,7 @@
         [errors.messageobj]
         [corefns.failed_asserts_info]
         ))
+(require '[clojure.string :as cs])
 
 ;; A dictionary of known types and their user-friendly representations
 ;; potentially we can have multiple dictionaries, depending on the level
@@ -136,50 +137,29 @@
   "returns true if the parameter is a potentially infinite sequence"
   (or (instance? clojure.lang.LazySeq s)
       (instance? clojure.lang.Repeat s)
-      (instance? clojure.lang.Iterate s)))
+      (instance? clojure.lang.Iterate s)
+      (instance? clojure.lang.Cycle s)))
 
 
 ;;; evaluate a lazy sequence (for some reason doall doesn't do it):
-;; This needs refactoring!!!!
-(defn nested-lazy-preview [n1 n2 s]
-  "Gives a finite preview of a potentially infinite sequence s.
-  n1 is the maximum number of elements shown in the outer sequences,
-  n2 is the maximum number of elements in the inner sequence.
-  If there is an error in evaluating the preview, it returns a string
-  'a sequence that we cannot evaluate'"
-  (try
-  (let [inner-seq-fn (fn [y]
-                       (if
-                         (> (count (take (inc n2) (map #(if  (can-be-infinite? %) '() %) y))) n2)
+(defn- seq-to-str [my-seq n]
+   "turns a seq into a string, and if the seq is longer than n, ends with ...)"
+   (cs/join [ "(" (cs/join " " (seq (into [] (take n my-seq)))) (if (> (count my-seq) n) "...)" ")")]))
 
-                          (clojure.string/join ["(" (clojure.string/join " " (seq (into [] (take n2 (map #(if  (can-be-infinite? %) "(...)" %) y))))) "...)"])
+;link to sequential interface
+;http://javadox.com/org.clojure/clojure/1.7.0-alpha6/clojure/lang/class-use/Sequential.html
+(defn- map-take [f s n]
+   "maps a function onto the elements of a list who can be infinite, and prints the first n elements of the list, and outputs the result as a string"
+   (seq-to-str (take (inc n) (map #(if (sequential? %) (f %) %) s)) n))
 
-                         (clojure.string/join [ "(" (clojure.string/join " " (seq (into [] (take n2 (map #(if  (can-be-infinite? %) "(...)" %) y))))) ")"])))
-        outer-seq (take (inc n1) (map (fn [x] (if (can-be-infinite? x) (inner-seq-fn x) x)) s))]
-    (if (> (count outer-seq) n1)
-      (clojure.string/join [ "(" (clojure.string/join " " (seq (into [] (take n1 outer-seq)))) "...)"])
-      (clojure.string/join [ "(" (clojure.string/join " "  (seq (into [] (take n1 outer-seq)))) "...)"])))
-    (catch Throwable e "a sequence that we cannot evaluate")))
-
-
-;;; evaluate a lazy sequence (for some reason doall doesn't do it):
-;;; THIS IS BEING REPLACED BY THE FUNCTION ABOVE
-(defn eval-first-n
-  "evaluates the first up to n elements of a lazy sequence
-  and returns it as a string, indicating whether it was the entire sequence"
-  [s n]
-  (try
-    (let [str-seq (str (seq (into [] (take n s))))
-          length (.length str-seq)]
-      (if
-        (> (count (take (inc n) s)) n)
-        (str (.substring str-seq 0 (dec length)) "...)")
-        str-seq))
-    ;; It's possible that there is an error evaluating their sequence.
-    ;; Rather than going down the rabbit hole of reporting a secondary error,
-    ;; we report the type mismatch in the original function call
-    ;; since we can't give a reasonable location here.
-    (catch Throwable e "a sequence that we cannot evaluate")))
+(defn nested-taker [s & nums]
+   "takes possibly infinitly nested infinite sequences, and outputs the first & nums of each nest respectively"
+   (try (loop [my-fn (fn [f n] (map-take f s n))
+          num-list nums]
+     (if (empty? num-list)
+       (my-fn #(constantly '()) 0)
+       (recur (fn [f n] (my-fn (fn [nested-s] (map-take f nested-s n)) (first num-list))) (next num-list))))
+     (catch Throwable e "a sequence that we cannot evaluate")))
 
 ;;; pretty-print-value: anything, string, string -> string
 (defn pretty-print-value [value fname type]
@@ -187,7 +167,7 @@
     ; strings are printed in double quotes:
   (if (string? value) (str "\"" value "\"")
       (if (nil? value) "nil"
-        (if (can-be-infinite? value) (nested-lazy-preview 10 2 value)
+        (if (sequential? value) (nested-taker value 10 3)
           (if (= type "a function")
             ; extract a function from the class fname (easier than from value):
             (get-function-name fname)
@@ -195,13 +175,22 @@
 
 ;;; arg-str: number -> string
 (defn arg-str [n]
+  (let [abs (fn [m] (if (> 0 m) (- m) m))
+        n1 (mod (abs n) 100)
+        n2 (mod (abs n) 10)]
   (case n
     1 "first argument"
     2 "second argument"
     3 "third argument"
     4 "fourth argument"
     5 "fifth argument"
-    (str n "th argument")))
+   (cond
+  (or (= 11 n1) (= 12 n1) (= 13 n1)) (str n "th argument")
+   (= 1 n2) (str n "st argument")
+   (= 2 n2) (str n "nd argument")
+   (= 3 n2) (str n "rd argument")
+   :else   (str n "th argument"))
+)))
 
 (defn number-word [n]
   (case n
@@ -263,7 +252,7 @@
                         :first "one",        :empty? "one",      :join "one or two",       :string? "one",
                         :- "at least one",   :rem "two",         :mod "two",               :inc "one",
                         :dec "one",          :max "one or more", :min "one or more",       :rand "zero or one",
-                        :rand-int "one",
+                        :rand-int "one",     :odd? "one",        :even? "one",
                         })
 
 (defn lookup-arity
