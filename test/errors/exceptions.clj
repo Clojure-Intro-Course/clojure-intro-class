@@ -76,9 +76,9 @@
    exceptions it may throw. Returns the prettified exception without a stacktrace. If a quoted
   namespace is given, it runs the code in that namespace."
   ([code]
-   (prettify-exception-no-stacktrace (run-and-catch-raw code)))
+   (:msg-info-obj (prettify-exception (run-and-catch-raw code))))
   ([name-space code]
-   (prettify-exception-no-stacktrace (run-and-catch-raw name-space code))))
+   (:msg-info-obj (prettify-exception (run-and-catch-raw name-space code)))))
 
 ;; when giving a namespace, pass in a quoted namespace
 (defn run-and-catch-pretty-with-stacktrace
@@ -94,6 +94,12 @@
   "Converts exceptions to strings, returning a string or the original e if it
   is not an exception"
   [e] (if (instance? Throwable e) (.getMessage e) e))
+
+(defn get-text-no-location [m]
+  (nth (re-matches #"(.*)\nFound(.*)" (get-all-text m)) 1))
+
+(expect "An error occurred."
+        (get-text-no-location "An error occurred.\nFound in myfile.clj on line 10 at charcter 15"))
 
 ; 1.2 tests
 

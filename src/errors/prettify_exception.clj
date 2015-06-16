@@ -34,13 +34,13 @@
         (if lookup-hint lookup-hint "")))
 
 ;; Putting together a message (perhaps should be moved to errors.dictionaries?
-(defn get-pretty-message [e-class message]
-  (if-let [entry (first-match e-class message)]
+;(defn get-pretty-message [e-class message]
+;  (if-let [entry (first-match e-class message)]
     ;; if there's a match for the exception and the message, replace the
     ;; message according to the dictionary and make a msg-info-obj out of it
-    ((:make-msg-info-obj entry) (re-matches (:match entry) message))
+;    ((:make-msg-info-obj entry) (re-matches (:match entry) message))
     ;; else just make a msg-info-obj out the message itself
-    (make-msg-info-hashes message)))
+;    (make-msg-info-hashes message)))
 
 ;; namespaces to ignore:
 
@@ -187,10 +187,13 @@
    to process the cause, not the exception itself"
   [e]
   (let [cause (.getCause e)]
-    (if (and (= (class e) clojure.lang.Compiler$CompilerException)
-             cause ; has a non-nil cause
-             (not= (class cause) java.lang.RuntimeException))
-      cause e)))
+    (if (= (class cause) clojure.lang.Compiler$CompilerException)
+      ;recursively look for non-compiler exception cause
+      (get-cause-if-needed cause)
+      (if (and (= (class e) clojure.lang.Compiler$CompilerException)
+               cause ; has a non-nil cause
+               (not= (class cause) java.lang.RuntimeException))
+        cause e))))
 
 (defn compiler-error?
   "an ad-hoc method to determine if an exception is really a compilation error:
@@ -237,6 +240,8 @@
         msg-info-obj (into (msg-from-matched-entry entry message) (location-info location))
         hint-message (hints-for-matched-entry entry)]
     ;; create an exception object
+    ;(println (class (.getCause ex)))
+    ;(println (.getMessage e))
     {:exception-class e-class
      :compiler? compiler?
      :msg-info-obj msg-info-obj
@@ -272,8 +277,8 @@
 ;;; Elena's note: we are not using get-pretty-message anymore
 ;;; in prettify-exception, so we need to retire it, but it seems
 ;;; to be used in some tests.....
-(defn prettify-exception-no-stacktrace [e]
-  (let [e-class (class e)
-        m (.getMessage e)
-        message (if m m "")] ; converting an empty message from nil to ""
-    (get-pretty-message e-class message)))
+;(defn prettify-exception-no-stacktrace [e]
+;  (let [e-class (class e)
+;        m (.getMessage e)
+;        message (if m m "")] ; converting an empty message from nil to ""
+;    (get-pretty-message e-class message)))

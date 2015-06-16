@@ -11,9 +11,9 @@
 ;Found in file /home/stock424/Documents/code/clojure-intro-class/src/intro/may2015.clj on line 21 at character 10.
 ;	intro.core/-main (core.clj line 111)
 
-(nil 5)
+;(zero?)
 
-(println (clojure.string/splt "/home/stock424/Documents/code/clojure-intro-class/src/intro/may2015.clj" #"/"))
+;(println (clojure.string/splt "/home/stock424/Documents/code/clojure-intro-class/src/intro/may2015.clj" #"/"))
 ;Error: clojure.string.split
 ;Found in file /home/stock424/Documents/code/clojure-intro-class/src/intro/may2015.clj on line 26 at character 10.
 ;	intro.core/-main (core.clj line 111)
@@ -61,7 +61,7 @@
 
 ;(println (lazy-nested-taker (repeat (repeat [(range) (range)])) 4 7 3 5 6))
 
-<<<<<<< HEAD
+
 ;;(odd? nil)
 ;;Error: Function nth does not allow unrecognized type Boolean as an argument.
 ;;Found in file H:\Git\clojure-intro-class\src\intro\may2015.clj on line 23 at character 1.

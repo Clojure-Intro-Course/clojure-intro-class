@@ -13,13 +13,13 @@
 
 ;; testing for :class-cast-exception-cannot-cast-to-map-entry
 (expect "Attempted to create a map using a keyword, but a sequence of vectors of length 2 or a sequence of maps is needed."
-        (get-all-text
+        (get-text-no-location
          (run-and-catch-pretty-no-stacktrace 'intro.core
           '(into {} [#{:x :m} #{:q :b}]))))
 
 ;; testing for :class-cast-exception
 (expect "Attempted to use a string, but a character was expected."
-        (get-all-text
+        (get-text-no-location
          (run-and-catch-pretty-no-stacktrace 'intro.core
           '(int "banana"))))
 
@@ -134,7 +134,7 @@
 ;##########################################
 ;### Testing for Null Pointer Exceptions###
 ;##########################################
-mapcat
+
 ;; testing for :null-pointer-non-existing-object-provided
 (expect "An attempt to access a non-existing object: some message (NullPointerException)."
         (get-all-text (run-and-catch-pretty-no-stacktrace 'intro.core '(throw (new NullPointerException "some message")))))
@@ -178,7 +178,7 @@ mapcat
 ;; an inliner part
 ;;; Why doesn't it process the message?
 (expect "You cannot pass zero arguments to a function zero?."
-        (get-all-text (run-and-catch-pretty-no-stacktrace 'intro.core '(zero?))))
+        (get-all-text (run-and-catch-pretty-no-stacktrace 'intro.core '(zero? 3 4 5))))
 
 (expect #"Recur can only occur as a tail call: no operations can be done after its return." ; this is giving NO_SOURCE_PATH
         (get-all-text (run-and-catch-pretty-no-stacktrace 'intro.core '(defn inc-nums [x] ((recur (inc x)) (loop [x x]))))))
