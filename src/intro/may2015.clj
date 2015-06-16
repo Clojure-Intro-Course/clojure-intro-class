@@ -22,7 +22,7 @@
    :th h
    :dx 0
    :dy 0
-   :ds (fn [x y]
+   :ds (fn [x y pict wid hei]
          (cond (= (count args) 1)
                (f-fill (first args))
                (= (count args) 2)
@@ -31,7 +31,7 @@
                (f-fill (first args) (second args) (second (rest args)))
                (= (count args) 4)
                (f-fill (first args) (second args) (second (rest args)) (second (rest (rest args)))))
-         (f-ellipse x y w h)
+         (f-ellipse x y wid hei)
          (q/no-fill))})
 
 
@@ -42,8 +42,9 @@
    :th (.height (q/load-image pic))
    :dx 0
    :dy 0
-   :ds (fn [x y]
-         (q/image (q/load-image pic) x y))})
+   :rp (q/load-image pic)
+   :ds (fn [x y pict wid hei]
+         (q/image pict x y))})
 
 
 (defn create-rect [w h & args]
@@ -53,7 +54,7 @@
    :th h
    :dx 0
    :dy 0
-   :ds (fn [x y]
+   :ds (fn [x y pict wid hei]
          (cond (= (count args) 1)
                (f-fill (first args))
                (= (count args) 2)
@@ -62,16 +63,16 @@
                (f-fill (first args) (second args) (second (rest args)))
                (= (count args) 4)
                (f-fill (first args) (second args) (second (rest args)) (second (rest (rest args)))))
-         (f-rect x y w h)
+         (f-rect x y wid hei)
          (q/no-fill))})
 
 ;---
 (defn ds [shape x y]
   (if
     (not (vector? shape))
-    ((:ds shape) x y)
+    ((:ds shape) x y (:rp shape) (:w shape) (:h shape))
     (doseq [i (range (count shape))]
-      ((:ds (nth shape i)) (+ x (:dx (nth shape i))) (+ y (:dy (nth shape i)))))))
+      ((:ds (nth shape i)) (+ x (:dx (nth shape i))) (+ y (:dy (nth shape i))) (:rp (nth shape i)) (:w (nth shape i)) (:h (nth shape i))))))
 
 
 ;------
@@ -225,7 +226,7 @@
         (if
           (= (:th arg) max-h)
           (:dy arg)
-          (+ (- (:dy arg) (quot max-h 2)) (quot (:th arg) 2)))
+          (- (+ (:dy arg) (quot max-h 2)) (quot (:th arg) 2)))
         :else
         (throw (Exception. "The function overlay-align takes :top, :center, or :bottom as its first argument."))))
 
@@ -405,11 +406,38 @@
         :else
         (throw (Exception. "The function beside-align takes in :top or :bottom as its first argument."))))
 
+;------
+
+(defn scale-complex [shape scale-x scale-y]
+  (println "got into scale-complex"))
+
+
+(defn scale-image [shape scale-x scale-y]
+  (if (not= (:rp shape) nil)
+  (q/resize (:rp shape) (* (:w shape) scale-x) (* (:h shape) scale-y)))
+  (assoc shape
+    :w (* (:w shape) scale-x)
+    :h (* (:h shape) scale-y)
+    :tw (* (:tw shape) scale-x)
+    :th (* (:th shape) scale-y)
+    :dx (* (:dx shape) scale-x)
+    :dy (* (:dy shape) scale-y)))
+
+
+(defn scale-shape [shape scale-x scale-y]
+  (println "got into scale-shape")
+  (if (vector? shape)
+    (scale-complex shape scale-x scale-y)
+    (scale-image shape scale-x scale-y)))
+
+
+
 ;-----------------------------------------------------------
 ;                   SKETCH FUNCTIONS
 
 (defn setup []
   (try
+    (q/frame-rate 2)
 
     (def black-circle (create-ellipse 20 20 80 255 255))
 
@@ -424,7 +452,7 @@
     (def bigger-rect (create-rect 150 150 255 80 80))
 
 
-    (def sqr1 (create-rect 20 20 255 80 80))
+    (def sqr1 (scale-shape (create-rect 20 20 255 80 80) 10 10))
     (def sqr2 (create-rect 40 40 80 255 80))
     (def sqr3 (create-rect 60 60 80 80 255))
     (def sqr4 (create-rect 80 80 255 255 80))
@@ -435,27 +463,30 @@
     (def sqr9 (create-rect 180 180 255 0 0))
     (def sqr10 (create-rect 200 200 0 80 80))
 
-    (def thing (overlay-align :top :right sqr1 sqr8))
+
 
 
 
     (def light-table (create-picture "/home/mcart046/Pictures/lighttable.png"))
     (def kappa (create-picture "/home/hagen715/Desktop/images/kappa96x130.png"))
+    (def big-kappa (scale-shape (create-picture "/home/hagen715/Desktop/images/kappa96x130.png") 2 2))
+    (def bigger-kappa (create-picture "/home/hagen715/Desktop/images/kappa96x130.png"))
+    (def biggest-kappa (create-picture "/home/hagen715/Desktop/images/kappa96x130.png"))
     (def frankerz (create-picture "/home/hagen715/Desktop/images/frankerz220x200.jpg"))
 
-    (def thing5 (above grey-rect
-                      black-rect
-                      grey-rect))
+    ;(scale-shape biggest-kappa 16 16)
+    ;(scale-shape bigger-kappa 6 6)
+    ;(scale-shape biggest-kappa 1 1)
 
-    (def thing1 (overlay-align :center :center black-rect grey-rect big-rect bigger-rect))
 
-    (def thing2 (overlay-align :bottom :right kappa thing1))
 
-    {:color 0
-     :angle 0
-     :x 400
-     :y 400
-     :shape-1 black-rect}
+    (def thing (overlay-align :top :right sqr1 sqr2 sqr3 sqr4 sqr5 (overlay-align :bottom :left kappa sqr1 sqr2 sqr3 sqr4 sqr5 sqr6 sqr7 sqr8 sqr9)))
+
+
+
+    {:shape bigger-kappa
+     :scale-x 118
+     :scale-y 118}
 
     (catch Throwable e (println (.getCause e)) (display-error (prettify-exception e)))))
 
@@ -464,14 +495,17 @@
 (defn update-state [state]
   (try
     (assert (not-nil? state) "Your state is nil")
-    (assoc state :x (+ (:x state) 0.05) :y (+ (:y state) 0.05))
+
+
+    (assoc state :shape (scale-shape bigger-kappa (:scale-x state) (:scale-y state)) :scale-x (+ (:scale-x state) 1.5) :scale-y (+ (:scale-y state) 1.5))
+
+
     (catch Throwable e (println (.getCause e)) (display-error (prettify-exception e)))))
 
 ;-
 
 (defn draw-state [state]
   (try
-    ;(ds ssst (+ 400 (* 200 (q/cos (:x state)))) (+ 200 (* 200 (+ 1 (q/sin (:y state))))))
     (f-background 80 255 80)
 
     (f-stroke 255)
@@ -480,11 +514,13 @@
     (q/rect-mode :center)
     (q/image-mode :center)
 
-    (ds thing  400 400)
+
+    (ds sqr1 400 400)
+    (println (:h sqr1))
 
 
-
-    (f-fill 80 255 80)
+    (f-fill 0)
+    (q/text-size 32)
     (q/text-num (q/frame-count) 400 100)
     ;(q/line 0 400 400 400)
     ;(q/line 400 0 400 400)
