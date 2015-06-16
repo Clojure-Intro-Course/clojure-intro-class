@@ -214,36 +214,36 @@
 ;------                  ***  OVERLAY-ALIGN  ***
 
 (defn overlay-compshape-vertical [vert arg]
-  (cond (= vert "top")
+  (cond (= vert :top)
         (if
           (= (:th arg) max-h)
           (:dy arg)
           (+ (- (:dy arg) (quot max-h 2)) (quot (:th arg) 2)))
-        (= vert "center")
+        (= vert :center)
         (:dy arg)
-        (= vert "bottom")
+        (= vert :bottom)
         (if
           (= (:th arg) max-h)
           (:dy arg)
           (+ (- (:dy arg) (quot max-h 2)) (quot (:th arg) 2)))
         :else
-        (throw (Exception. "The function overlay-align takes \"top\", \"center\", or \"bottom\" as its first argument."))))
+        (throw (Exception. "The function overlay-align takes :top, :center, or :bottom as its first argument."))))
 
 (defn overlay-compshape-horizontal [hor arg]
-  (cond (= hor "left")
+  (cond (= hor :left)
         (if
           (= (:tw arg) max-w)
           (:dx arg)
           (+ (- (:dx arg) (quot max-w 2)) (quot (:tw arg) 2)))
-        (= hor "center")
+        (= hor :center)
         (:dx arg)
-        (= hor "right")
+        (= hor :right)
         (if
           (= (:tw arg) max-w)
           (:dx arg)
           (- (+ (:dx arg) (quot max-w 2)) (quot (:tw arg) 2)))
         :else
-        (throw (Exception. "The function overlay-align takes \"left\", \"center\", or \"right\" as its second argument."))))
+        (throw (Exception. "The function overlay-align takes :left, :center, or :right as its second argument."))))
 
 (defn eval-compshape-overlay-align [vert hor args]
   (conj
@@ -253,24 +253,24 @@
    (assoc (first args) :tw max-w :th max-h :dy (overlay-compshape-vertical vert (first args)) :dx (overlay-compshape-horizontal hor (first args)))))
 
 (defn overlay-vertical [vert arg]
-  (cond (= vert "top")
+  (cond (= vert :top)
         (- (quot (:th arg) 2) (quot max-h 2))
-        (= vert "center")
+        (= vert :center)
         (:dy arg)
-        (= vert "bottom")
+        (= vert :bottom)
         (- (quot max-h 2) (quot (:th arg) 2))
         :else
-        (throw (Exception. "The function overlay-align takes \"top\", \"center\", or \"bottom\" as its first argument."))))
+        (throw (Exception. "The function overlay-align takes :top, :center, or :bottom as its first argument."))))
 
 (defn overlay-horizontal [hor arg]
-  (cond (= hor "left")
+  (cond (= hor :left)
         (- (quot (:tw arg) 2) (quot max-w 2))
-        (= hor "center")
+        (= hor :center)
         (:dx arg)
-        (= hor "right")
+        (= hor :right)
         (- (quot max-w 2) (quot (:tw arg) 2))
         :else
-        (throw (Exception. "The function overlay-align takes \"left\", \"center\", or \"right\" as its second argument."))))
+        (throw (Exception. "The function overlay-align takes :left, :center, or :right as its second argument."))))
 
 (defn eval-shapes-overlay-align [vert hor args]
   (conj (if
@@ -340,12 +340,12 @@
 (defn above-align [align & args]
   (calc-tot-h args)
   (calc-max-w args)
-  (cond (= align "right")
+  (cond (= align :right)
         (vec (flatten (eval-shapes-above-align-right args 0)))
-        (= align "left")
+        (= align :left)
         (vec (flatten (eval-shapes-above-align-left args 0)))
         :else
-        (throw (Exception. "The function above-align takes in \"right\" or \"left\" as its first argument."))))
+        (throw (Exception. "The function above-align takes in :right or :left as its first argument."))))
 
 
 ;------                       *** BESIDE-ALIGN ***
@@ -398,12 +398,12 @@
 (defn beside-align [align & args]
   (calc-tot-w args)
   (calc-max-h args)
-  (cond (= align "top")
+  (cond (= align :top)
         (vec (flatten (eval-shapes-beside-align-top args 0)))
-        (= align "bottom")
+        (= align :bottom)
         (vec (flatten (eval-shapes-beside-align-bottom args 0)))
         :else
-        (throw (Exception. "The function beside-align takes in \"top\" or \"bottom\" as its first argument."))))
+        (throw (Exception. "The function beside-align takes in :top or :bottom as its first argument."))))
 
 ;-----------------------------------------------------------
 ;                   SKETCH FUNCTIONS
@@ -424,26 +424,20 @@
     (def bigger-rect (create-rect 150 150 255 80 80))
 
 
-    (def sqr1 (create-rect 10 10 255 80 80))
-    (def sqr2 (create-rect 20 20 80 255 80))
-    (def sqr3 (create-rect 30 30 80 80 255))
-    (def sqr4 (create-rect 40 40 255 255 80))
-    (def sqr5 (create-rect 50 50 255 80 255))
-    (def sqr6 (create-rect 60 60 80 255 255))
-    (def sqr7 (create-rect 70 70 80 80 80))
-    (def sqr8 (create-rect 80 80 255 255 255))
-    (def sqr9 (create-rect 90 90 255 0 0))
-    (def sqr10 (create-rect 100 100 0 80 80))
+    (def sqr1 (create-rect 20 20 255 80 80))
+    (def sqr2 (create-rect 40 40 80 255 80))
+    (def sqr3 (create-rect 60 60 80 80 255))
+    (def sqr4 (create-rect 80 80 255 255 80))
+    (def sqr5 (create-rect 100 100 255 80 255))
+    (def sqr6 (create-rect 120 120 80 255 255))
+    (def sqr7 (create-rect 140 140 80 80 80))
+    (def sqr8 (create-rect 160 160 255 255 255))
+    (def sqr9 (create-rect 180 180 255 0 0))
+    (def sqr10 (create-rect 200 200 0 80 80))
 
-    (def thing (overlay-align "top" "left" sqr1
-               (overlay-align "top" "center" sqr2
-               (overlay-align "top" "right" sqr3
-               (overlay-align "center" "left" sqr4
-               (overlay-align "center" "center" sqr5
-               (overlay-align "center" "right" sqr6
-               (overlay-align "bottom" "left" sqr7
-               (overlay-align "bottom" "center" sqr8
-               (overlay-align "bottom" "right" sqr9))))))))))
+    (def thing (overlay-align :top :right sqr1 sqr8))
+
+
 
     (def light-table (create-picture "/home/mcart046/Pictures/lighttable.png"))
     (def kappa (create-picture "/home/hagen715/Desktop/images/kappa96x130.png"))
@@ -453,9 +447,9 @@
                       black-rect
                       grey-rect))
 
-    (def thing1 (overlay-align "center" "center" black-rect grey-rect big-rect bigger-rect))
+    (def thing1 (overlay-align :center :center black-rect grey-rect big-rect bigger-rect))
 
-    (def thing2 (overlay-align "bottom" "right" kappa thing1))
+    (def thing2 (overlay-align :bottom :right kappa thing1))
 
     {:color 0
      :angle 0
