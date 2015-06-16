@@ -10,7 +10,7 @@
 ;Found in file /home/stock424/Documents/code/clojure-intro-class/src/intro/may2015.clj on line 21 at character 10.
 ;	intro.core/-main (core.clj line 111)
 
-;;(println (clojure.string.split "/home/stock424/Documents/code/clojure-intro-class/src/intro/may2015.clj" #"/"))
+(println (clojure.string/splt "/home/stock424/Documents/code/clojure-intro-class/src/intro/may2015.clj" #"/"))
 ;Error: clojure.string.split
 ;Found in file /home/stock424/Documents/code/clojure-intro-class/src/intro/may2015.clj on line 26 at character 10.
 ;	intro.core/-main (core.clj line 111)
@@ -21,7 +21,6 @@
 ;  ^
 ;Found in file core.clj on line 111 in function -main.
 ;	intro.core/-main (core.clj line 111)
-
 
 
 
@@ -248,7 +247,7 @@
 
 
 ;(let [[s e a n] [:S :e :G :+]]
-;  (println s e a n))
+;  (println s e a n))explain-defcon-level
 ;;=> :S :e :G :+
 
 ;(let [[:a :b :c :d] {:a "A" :b "B" :c "C"}]

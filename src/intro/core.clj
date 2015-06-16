@@ -107,6 +107,7 @@
 
 ;((first []) 5)
 
+    ;(clojure.string/splt "/home/stock424/Documents/code/clojure-intro-class/src/intro/may2015.clj" #"/")
     (try
       (print (load-file "src/intro/may2015.clj"))
     (catch Throwable e (print (str "itself:" (class e) ", cause: " (class (.getCause e)))) (throw e)))
