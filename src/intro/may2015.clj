@@ -5,7 +5,7 @@
             [intro.student :refer :all]))
 
 
-(def )
+(map
 ;(println (clojure.string/splt "/home/stock424/Documents/code/clojure-intro-class/src/intro/may2015.clj" #"/"))
 
 ;;(println (str/split "/home/stock424/Documents/code/clojure-intro-class/src/intro/may2015.clj" #"/"))

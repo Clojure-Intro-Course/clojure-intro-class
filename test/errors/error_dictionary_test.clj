@@ -217,6 +217,6 @@
         (get-text-no-location  (run-and-catch-pretty-no-stacktrace 'intro.core '(def))))
 
 (expect "End of file, starting at line 3.\nProbably a non-closing parenthesis or bracket.\nFound in file eof.clj on line 4 at character 1."
-        (get-text-no-location (:msg-info-obj (prettify-exception (import-from-file "exceptions/end_of_file.ser")))))
+        (get-all-text (:msg-info-obj (prettify-exception (import-from-file "exceptions/end_of_file.ser")))))
 
 ;; :compiler-exception-must-recur-to-function-or-loop

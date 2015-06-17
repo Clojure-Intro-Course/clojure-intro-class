@@ -223,13 +223,13 @@
 
    {:key :compiler-exception-cannot-take-value-of-macro
     :class java.lang.RuntimeException
-    :match #"Can't take value of a macro: (.+), compiling:\((.+)\)"
+    :match #"Can't take value of a macro: (.+)"
     :make-msg-info-obj (fn [matches] (make-msg-info-hashes
-                                                           (get-macro-name (nth matches 2)) :arg
+                                                           (get-macro-name (nth matches 1)) :arg
                                                            " is a macro, cannot be passed to a function."))}
    {:key :compiler-exception-cannot-resolve-symbol
     :class java.lang.RuntimeException
-    :match #"Unable to resolve symbol: (.+) in this context(.*)"
+    :match #"Unable to resolve symbol: (.+) in this context"
     :make-msg-info-obj (fn [matches] (make-msg-info-hashes "Name "
                                                            (nth matches 1) :arg " is undefined."))}
    {:key :compiler-exception-map-literal-even
@@ -252,6 +252,12 @@
     :match #"Too few arguments to (.+)"
     :make-msg-info-obj (fn [matches] (make-msg-info-hashes "Too few arguments to "
                                                            (nth matches 1) :arg "."))}
+
+   {:key :compiler-exception-end-of-file
+    :class java.lang.RuntimeException
+    :match #"EOF while reading, starting at line (.+)"
+    :make-msg-info-obj (fn [matches] (make-msg-info-hashes "End of file, starting at line " (nth matches 1) :arg
+                                                           ".\nProbably a non-closing parenthesis or bracket."))}
 
 
    ;############################
@@ -277,6 +283,8 @@
    ;#######################################################
    ;### Compilation Errors: Illegal Argument Exceptions ###
    ;#######################################################
+
+   ;;; These probably need to be removed, too - Elena
 
    {:key :compiler-exception-even-numbers-in-binding-vector
     :class clojure.lang.Compiler$CompilerException
@@ -310,46 +318,5 @@
                            (make-msg-info-hashes "Wrong number of arguments ("
                                                  (nth matches 2) ") passed to " funstr fstr :arg ".")))}
 
-   ;############################################################
-   ;### Compilation Errors: Unsupported Operation Exceptions ###
-   ;############################################################
-
-
-   ;##############################################
-   ;### Compilation Errors: Runtime Exceptions ###
-   ;##############################################
-
-
-   ;###########################################
-   ;### Compilation Errors: Java Exceptions ###
-   ;###########################################
-
-
-   ;###################################
-   ;### Compilation Errors: Unknown ###
-   ;###################################
-
-    {:key :compiler-exception-end-of-file
-    :class clojure.lang.Compiler$CompilerException
-    :true-exception :unknown
-    :match #"EOF while reading, starting at line (.+)"
-    :make-msg-info-obj (fn [matches] (make-msg-info-hashes "End of file, starting at line " (nth matches 1) :arg
-                                                           ".\nProbably a non-closing parenthesis or bracket."))}
-
-   {:key :compiler-exception-end-of-file-with-location
-    :class clojure.lang.Compiler$CompilerException
-    :true-exception :unknown
-    :match #"(.+): EOF while reading, starting at line (.+), compiling:(.+)"
-    :make-msg-info-obj (fn [matches] (make-msg-info-hashes "End of file, starting at line " (nth matches 2) :arg
-                                                           ".\nProbably a non-closing parenthesis or bracket."))}
    ])
 
-;; This is probably somewhat fragile: it occurs in an unbounded recur, but
-;; may occur elsewhere. We need to be careful to not catch a wider rnage of exceptions:
-; {:key :compiler-exception-must-recur-to-function-or-loop
-;  :class clojure.lang.Compiler$CompilerException
-;  :true-exception make-mock-preobj
-;  :match #"(.*): clojure.lang.Var\$Unbound cannot be cast to clojure.lang.IPersistentVector, compiling:(.*)"
-;  :make-msg-info-obj (fn [matches] (make-msg-info-hashes "recur" :arg
-;                       " does not refer to any function or loop."
-;                       " Compiling " (nth matches 2)))}
