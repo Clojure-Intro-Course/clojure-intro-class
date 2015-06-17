@@ -202,6 +202,17 @@
                                                            "as a tail call: no operations can"
                                                            " be done after its return."))}
 
+   ;##############################
+   ;### ClassNotFoundException ###
+   ;##############################
+
+   {:key :class-not-found-exception
+    :class ClassNotFoundException
+    :match #"(.*)"
+    :make-msg-info-obj (fn [matches] (make-msg-info-hashes "Name " (nth matches 1) :arg " is undefined."))
+    :hints "If you are using functions from another file, make sure you use dots for namespaces and slashes for functions, such as clojure.string/split."}
+
+
    ;############################
    ;### Stack Overflow Error ###
    ;############################

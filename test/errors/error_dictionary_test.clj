@@ -151,6 +151,18 @@
 (expect "Function nth does not allow a map as an argument."
         (get-text-no-location (run-and-catch-pretty-no-stacktrace 'intro.core '(nth {:a 10 :z 4} 20))))
 
+;###########################################
+;### Testing for ClassNotFoundException ####
+;###########################################
+
+;; We use the same message as for identfier undefined, but have a hint that is
+;; more specific to dynamic class loading
+(expect (more-> "Name clojure.string.split is undefined." get-text-no-location
+                 #"(.*)Found in (.*) on line (\d+) at character (\d+)\." get-all-text)
+              (run-and-catch-pretty-no-stacktrace 'intro.core '(clojure.string.split "a b c" " ")))
+
+
+
 ;##################################
 ;### Testing for Java Exceptions###
 ;##################################
@@ -180,7 +192,6 @@
 
 ;; the internal representation of zero? is zero?--inliner--4238 (in this particular test), i.e. it has
 ;; an inliner part
-;;; Why doesn't it process the message?
 (expect "You cannot pass zero arguments to a function zero?."
         (get-text-no-location (run-and-catch-pretty-no-stacktrace 'intro.core '(zero?))))
 

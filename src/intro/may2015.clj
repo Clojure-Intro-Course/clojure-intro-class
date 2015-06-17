@@ -5,6 +5,7 @@
             [intro.student :refer :all]))
 
 
+(println (clojure.string.split "/home/stock424/Documents/code/clojure-intro-class/src/intro/may2015.clj" #"/"))
 
 ;;(println (str/split "/home/stock424/Documents/code/clojure-intro-class/src/intro/may2015.clj" #"/"))
 ;Syntax error: java.lang.RuntimeException: No such namespace: str, compiling:(/home/stock424/Documents/code/clojure-intro-class/src/intro/may2015.clj:21:10)
