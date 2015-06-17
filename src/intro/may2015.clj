@@ -42,6 +42,7 @@
    :th (.height (q/load-image pic))
    :dx 0
    :dy 0
+   :pic pic
    :rp (q/load-image pic)
    :ds (fn [x y pict wid hei]
          (q/image pict x y))})
@@ -68,6 +69,8 @@
 
 ;---
 (defn ds [shape x y]
+  (q/rect-mode :center)
+  (q/image-mode :center)
   (if
     (not (vector? shape))
     ((:ds shape) x y (:rp shape) (:w shape) (:h shape))
@@ -408,14 +411,16 @@
 
 ;------
 
-(defn scale-complex [shape scale-x scale-y]
-  (println "got into scale-complex"))
-
+(defn create-new-image-shape [shape scale-x scale-y]
+  (def new-pic (create-picture (:pic shape)))
+  (q/resize (:rp new-pic) (* (:w shape) scale-x) (* (:h shape) scale-y))
+  new-pic)
 
 (defn scale-image [shape scale-x scale-y]
-  (if (not= (:rp shape) nil)
-  (q/resize (:rp shape) (* (:w shape) scale-x) (* (:h shape) scale-y)))
-  (assoc shape
+  (assoc
+    (if (not= (:rp shape) nil)
+        (create-new-image-shape shape scale-x scale-y)
+    shape)
     :w (* (:w shape) scale-x)
     :h (* (:h shape) scale-y)
     :tw (* (:tw shape) scale-x)
@@ -423,11 +428,17 @@
     :dx (* (:dx shape) scale-x)
     :dy (* (:dy shape) scale-y)))
 
+(defn scale-complex [shape scale-x scale-y]
+  (conj (if
+          (not= (count shape) 1)
+          (scale-complex (rest shape) scale-x scale-y))
+        (scale-image (first shape) scale-x scale-y)))
+
 
 (defn scale-shape [shape scale-x scale-y]
   (println "got into scale-shape")
   (if (vector? shape)
-    (scale-complex shape scale-x scale-y)
+    (vec (flatten (scale-complex shape scale-x scale-y)))
     (scale-image shape scale-x scale-y)))
 
 
@@ -437,7 +448,7 @@
 
 (defn setup []
   (try
-    (q/frame-rate 2)
+    (q/frame-rate 60)
 
     (def black-circle (create-ellipse 20 20 80 255 255))
 
@@ -452,7 +463,7 @@
     (def bigger-rect (create-rect 150 150 255 80 80))
 
 
-    (def sqr1 (scale-shape (create-rect 20 20 255 80 80) 10 10))
+    (def sqr1 (create-rect 20 20 255 80 80))
     (def sqr2 (create-rect 40 40 80 255 80))
     (def sqr3 (create-rect 60 60 80 80 255))
     (def sqr4 (create-rect 80 80 255 255 80))
@@ -469,14 +480,11 @@
 
     (def light-table (create-picture "/home/mcart046/Pictures/lighttable.png"))
     (def kappa (create-picture "/home/hagen715/Desktop/images/kappa96x130.png"))
-    (def big-kappa (scale-shape (create-picture "/home/hagen715/Desktop/images/kappa96x130.png") 2 2))
+   ; (def big-kappa (scale-shape (create-picture "/home/hagen715/Desktop/images/kappa96x130.png") 2 2))
     (def bigger-kappa (create-picture "/home/hagen715/Desktop/images/kappa96x130.png"))
     (def biggest-kappa (create-picture "/home/hagen715/Desktop/images/kappa96x130.png"))
     (def frankerz (create-picture "/home/hagen715/Desktop/images/frankerz220x200.jpg"))
-
-    ;(scale-shape biggest-kappa 16 16)
-    ;(scale-shape bigger-kappa 6 6)
-    ;(scale-shape biggest-kappa 1 1)
+    (def flying-thing (beside-align :bottom (scale-shape (beside sqr3 sqr4 (scale-shape kappa 0.5 0.5) (overlay-align :top :left sqr1 sqr2 sqr3 sqr4 sqr5)) 2 2) (overlay-align :bottom :right sqr1 sqr2 sqr3 sqr4 sqr5) kappa))
 
 
 
@@ -484,9 +492,11 @@
 
 
 
-    {:shape bigger-kappa
-     :scale-x 118
-     :scale-y 118}
+    {:shape flying-thing
+     :scale-x 1
+     :scale-y 1
+     :angle 0
+     :angle2 0}
 
     (catch Throwable e (println (.getCause e)) (display-error (prettify-exception e)))))
 
@@ -497,8 +507,8 @@
     (assert (not-nil? state) "Your state is nil")
 
 
-    (assoc state :shape (scale-shape bigger-kappa (:scale-x state) (:scale-y state)) :scale-x (+ (:scale-x state) 1.5) :scale-y (+ (:scale-y state) 1.5))
-
+    ;(assoc state :shape (:shape state) :scale-x (+ (:scale-x state) 1) :scale-y (+ (:scale-y state) 1))
+    (assoc state :angle (mod (+ (:angle state) 0.01) q/TWO-PI) :angle2 (mod (+ (:angle2 state) 0.05) q/TWO-PI))
 
     (catch Throwable e (println (.getCause e)) (display-error (prettify-exception e)))))
 
@@ -508,22 +518,38 @@
   (try
     (f-background 80 255 80)
 
+
     (f-stroke 255)
     (f-fill 255)
     (f-text-size 20)
-    (q/rect-mode :center)
-    (q/image-mode :center)
+
+    (q/text-align :center)
+
+    ;(q/line 0 400 800 400)
+
+    (q/with-translation [(/ (q/width) 2)
+                         (/ (q/height) 2)]
+    (ds (scale-shape flying-thing (+ 1.1 (q/cos (:angle2 state))) (+ 1.1 (q/cos (:angle2 state)))) (* 300 (q/cos (:angle state))) (* 150 (q/sin (:angle state)))))
 
 
-    (ds sqr1 400 400)
-    (println (:h sqr1))
+
+
+
+
+
+
+
+    ;(ds (overlay-align :top :right sqr1 sqr2 sqr3 sqr4 sqr5) 100 100)
+
+
+
 
 
     (f-fill 0)
     (q/text-size 32)
     (q/text-num (q/frame-count) 400 100)
-    ;(q/line 0 400 400 400)
-    ;(q/line 400 0 400 400)
+
+    ;(q/line 400 0 400 800)
 
 
     (catch Throwable e (println (.getCause e)) (display-error (prettify-exception e)))))
@@ -532,7 +558,7 @@
 
 (q/defsketch my
   :title "My sketch"
-  :size [800 800]
+  :size [1500 1000]
   ; Setup function called only once, during sketch initialization.
   :setup setup
   ; Update-state is called on each iteration before draw-state.
