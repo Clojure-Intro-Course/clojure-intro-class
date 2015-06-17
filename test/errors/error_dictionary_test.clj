@@ -199,24 +199,24 @@
         (get-text-no-location (run-and-catch-pretty-no-stacktrace 'intro.core '(defn inc-nums [x] ((recur (inc x)) (loop [x x]))))))
 
 (expect #"def must be followed by a name." ; this is giving NO_SOURCE_PATH
-        (get-all-text (run-and-catch-pretty-no-stacktrace 'intro.core '(def 4 (+ 2 2)))))
+        (get-text-no-location  (run-and-catch-pretty-no-stacktrace 'intro.core '(def 4 (+ 2 2)))))
 
 (expect #"loop is a macro, cannot be passed to a function." ; this is giving NO_SOURCE_PATH
-        (get-all-text (run-and-catch-pretty-no-stacktrace 'intro.core '(defn my-happy [x] loop [x x]))))
+        (get-text-no-location  (run-and-catch-pretty-no-stacktrace 'intro.core '(defn my-happy [x] loop [x x]))))
 
 (expect #"Name banana is undefined." ; this is giving NO_SOURCE_PATH
-        (get-all-text (run-and-catch-pretty-no-stacktrace 'intro.core '(banana 5 6))))
+        (get-text-no-location  (run-and-catch-pretty-no-stacktrace 'intro.core '(banana 5 6))))
 
 (expect "There is an unmatched delimiter ).\nFound in file unmatched_delimiter.clj on line 3 at character 20."
-        (get-all-text (:msg-info-obj (prettify-exception (import-from-file "exceptions/unmatched_delimiter.ser")))))
+        (get-all-text  (:msg-info-obj (prettify-exception (import-from-file "exceptions/unmatched_delimiter.ser")))))
 
-(expect #"Too many arguments to def." ; this is giving NO_SOURCE_PATH
-        (get-all-text (run-and-catch-pretty-no-stacktrace 'intro.core '(def my-var 5 6))))
+(expect "Too many arguments to def." ; this is giving NO_SOURCE_PATH
+        (get-text-no-location  (run-and-catch-pretty-no-stacktrace 'intro.core '(def my-var 5 6))))
 
-(expect #"Too few arguments to def." ; this is giving NO_SOURCE_PATH
-        (get-all-text (run-and-catch-pretty-no-stacktrace 'intro.core '(def))))
+(expect "Too few arguments to def." ; this is giving NO_SOURCE_PATH
+        (get-text-no-location  (run-and-catch-pretty-no-stacktrace 'intro.core '(def))))
 
 (expect "End of file, starting at line 3.\nProbably a non-closing parenthesis or bracket.\nFound in file eof.clj on line 4 at character 1."
-        (get-all-text (:msg-info-obj (prettify-exception (import-from-file "exceptions/end_of_file.ser")))))
+        (get-text-no-location (:msg-info-obj (prettify-exception (import-from-file "exceptions/end_of_file.ser")))))
 
 ;; :compiler-exception-must-recur-to-function-or-loop

@@ -191,8 +191,7 @@
       ;recursively look for non-compiler exception cause
       (get-cause-if-needed cause)
       (if (and (= (class e) clojure.lang.Compiler$CompilerException)
-               cause ; has a non-nil cause
-               (not= (class cause) java.lang.RuntimeException))
+               cause) ; has a non-nil cause
         cause e))))
 
 (defn compiler-error?

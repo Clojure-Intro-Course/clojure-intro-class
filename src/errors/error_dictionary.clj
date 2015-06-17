@@ -212,6 +212,47 @@
     :make-msg-info-obj (fn [matches] (make-msg-info-hashes "Name " (nth matches 1) :arg " is undefined."))
     :hints "If you are using functions from another file, make sure you use dots for namespaces and slashes for functions, such as clojure.string/split."}
 
+   ;##############################################
+   ;### Runtime Exceptions ###
+   ;##############################################
+
+   {:key :compiler-exception-first-argument-must-be-symbol
+    :class java.lang.RuntimeException
+    :match #"First argument to (.*) must be a Symbol(.*)"
+    :make-msg-info-obj (fn [matches] (make-msg-info-hashes (nth matches 1) :arg " must be followed by a name."))}
+
+   {:key :compiler-exception-cannot-take-value-of-macro
+    :class java.lang.RuntimeException
+    :match #"Can't take value of a macro: (.+), compiling:\((.+)\)"
+    :make-msg-info-obj (fn [matches] (make-msg-info-hashes
+                                                           (get-macro-name (nth matches 2)) :arg
+                                                           " is a macro, cannot be passed to a function."))}
+   {:key :compiler-exception-cannot-resolve-symbol
+    :class java.lang.RuntimeException
+    :match #"Unable to resolve symbol: (.+) in this context(.*)"
+    :make-msg-info-obj (fn [matches] (make-msg-info-hashes "Name "
+                                                           (nth matches 1) :arg " is undefined."))}
+   {:key :compiler-exception-map-literal-even
+    :class java.lang.RuntimeException
+    :match #"Map literal must contain an even number of forms"
+    :make-msg-info-obj (fn [matches] (make-msg-info-hashes "A hash map must consist of key/value pairs; you have a key that's missing a value."))}
+
+   {:key :compiler-exception-unmatched-delimiter
+    :class java.lang.RuntimeException
+    :match #"Unmatched delimiter: (.+)"
+    :make-msg-info-obj (fn [matches] (make-msg-info-hashes "There is an unmatched delimiter " (nth matches 1) :arg "."))}
+
+   {:key :compiler-exception-too-many-arguments
+    :class java.lang.RuntimeException
+    :match #"Too many arguments to (.+)"
+    :make-msg-info-obj (fn [matches] (make-msg-info-hashes "Too many arguments to "
+                                                           (nth matches 1) :arg "."))}
+   {:key :compiler-exception-too-few-arguments
+    :class java.lang.RuntimeException
+    :match #"Too few arguments to (.+)"
+    :make-msg-info-obj (fn [matches] (make-msg-info-hashes "Too few arguments to "
+                                                           (nth matches 1) :arg "."))}
+
 
    ;############################
    ;### Stack Overflow Error ###
@@ -278,53 +319,11 @@
    ;### Compilation Errors: Runtime Exceptions ###
    ;##############################################
 
-   {:key :compiler-exception-first-argument-must-be-symbol
-    :class clojure.lang.Compiler$CompilerException
-    :true-exception java.lang.RuntimeException
-    :match #"(.*) First argument to (.*) must be a Symbol, compiling:\((.+)\)"
-    :make-msg-info-obj (fn [matches] (make-msg-info-hashes (nth matches 2) :arg " must be followed by a name."))}
-
-   {:key :compiler-exception-cannot-take-value-of-macro
-    :class clojure.lang.Compiler$CompilerException
-    :true-exception java.lang.RuntimeException
-    :match #"(.+): Can't take value of a macro: (.+), compiling:\((.+)\)"
-    :make-msg-info-obj (fn [matches] (make-msg-info-hashes
-                                                           (get-macro-name (nth matches 2)) :arg
-                                                           " is a macro, cannot be passed to a function."))}
-   {:key :compiler-exception-cannot-resolve-symbol
-    :class clojure.lang.Compiler$CompilerException
-    :true-exception java.lang.RuntimeException
-    :match #"(.+): Unable to resolve symbol: (.+) in this context, compiling:\((.+)\)"
-    :make-msg-info-obj (fn [matches] (make-msg-info-hashes "Name "
-                                                           (nth matches 2) :arg " is undefined."))}
-   {:key :compiler-exception-map-literal-even
-    :class clojure.lang.Compiler$CompilerException
-    :true-exception java.lang.RuntimeException
-    :match #"(.+): Map literal must contain an even number of forms, compiling:\((.+)\)"
-    :make-msg-info-obj (fn [matches] (make-msg-info-hashes "A hash map must consist of key/value pairs; you have a key that's missing a value."))}
 
    ;###########################################
    ;### Compilation Errors: Java Exceptions ###
    ;###########################################
 
-   {:key :compiler-exception-unmatched-delimiter
-    :class clojure.lang.Compiler$CompilerException
-    :true-exception java.lang.Exception
-    :match #"(.+): Unmatched delimiter: (.+), compiling:\((.+)\)"
-    :make-msg-info-obj (fn [matches] (make-msg-info-hashes "There is an unmatched delimiter " (nth matches 2) :arg "."))}
-
-   {:key :compiler-exception-too-many-arguments
-    :class clojure.lang.Compiler$CompilerException
-    :true-exception java.lang.Exception
-    :match #"(.+): Too many arguments to (.+), compiling:(.+)"
-    :make-msg-info-obj (fn [matches] (make-msg-info-hashes "Too many arguments to "
-                                                           (nth matches 2) :arg "."))}
-   {:key :compiler-exception-too-few-arguments
-    :class clojure.lang.Compiler$CompilerException
-    :true-exception java.lang.Exception
-    :match #"(.+): Too few arguments to (.+), compiling:(.+)"
-    :make-msg-info-obj (fn [matches] (make-msg-info-hashes "Too few arguments to "
-                                                           (nth matches 2) :arg "."))}
 
    ;###################################
    ;### Compilation Errors: Unknown ###
