@@ -22,7 +22,8 @@
    :th h
    :dx 0
    :dy 0
-   :ds (fn [x y pict wid hei]
+   :angle 0
+   :ds (fn [x y pict wid hei cs angle]
          (cond (= (count args) 1)
                (f-fill (first args))
                (= (count args) 2)
@@ -31,9 +32,60 @@
                (f-fill (first args) (second args) (second (rest args)))
                (= (count args) 4)
                (f-fill (first args) (second args) (second (rest args)) (second (rest (rest args)))))
-         (f-ellipse x y wid hei)
+         (q/with-translation [x y]
+         (q/with-rotation [(/ (* q/PI angle) 180)]
+         (f-ellipse 0 0 wid hei)))
          (q/no-fill))})
 
+(defn create-line [x2 y2 & args]
+  {:w x2
+   :h y2
+   :tw x2
+   :th y2
+   :dx 0
+   :dy 0
+   :angle 0
+   :ds (fn [x y pict wid hei cs angle]
+         (cond (= (count args) 1)
+               (f-stroke (first args))
+               (= (count args) 2)
+               (f-stroke (first args) (second args))
+               (= (count args) 3)
+               (f-stroke (first args) (second args) (second (rest args)))
+               (= (count args) 4)
+               (f-stroke (first args) (second args) (second (rest args)) (second (rest (rest args))))
+               :else (f-stroke 0))
+         (q/with-translation [x y]
+         (q/with-rotation [(/ (* q/PI angle) 180)]
+         (f-line (- 0 (quot wid 2)) (- 0 (quot hei 2)) (+ 0 (quot wid 2)) (+ 0 (quot hei 2)))))
+         (f-stroke cs))})
+
+
+(defn create-triangle [x2 y2 x3 y3 & args]
+  {:w (+ (q/abs(max 0 x2 x3))  (q/abs(min 0 x2 x3)))
+   :h (+ (q/abs(max 0 y2 y3))  (q/abs(min 0 y2 y3)))
+   :tw (+ (q/abs(max 0 x2 x3))  (q/abs(min 0 x2 x3)))
+   :th (+ (q/abs(max 0 y2 y3))  (q/abs(min 0 y2 y3)))
+   :dx 0
+   :dy 0
+   :angle 0
+   :ds (fn [x y pict wid hei cs angle]
+         (cond (= (count args) 1)
+               (f-fill (first args))
+               (= (count args) 2)
+               (f-fill (first args) (second args))
+               (= (count args) 3)
+               (f-fill (first args) (second args) (second (rest args)))
+               (= (count args) 4)
+               (f-fill (first args) (second args) (second (rest args)) (second (rest (rest args)))))
+         (q/with-translation [x y]
+         (q/with-rotation [(/ (* q/PI angle) 180)]
+         (let [mid-x (quot (+ (max 0 x2 x3)  (min 0 x2 x3)) 2)
+               mid-y (quot (+ (max 0 y2 y3)  (min 0 y2 y3)) 2)]
+         (f-triangle (+ 0 (- 0 mid-x)) (+ 0 (- 0 mid-y))
+                     (+ 0 (- x2 mid-x)) (+ 0 (- y2 mid-y))
+                     (+ 0 (- x3 mid-x)) (+ 0 (- y3 mid-y))))))
+         (q/no-fill))})
 
 (defn create-picture [pic]
   {:w (.width (q/load-image pic))
@@ -43,9 +95,11 @@
    :dx 0
    :dy 0
    :pic pic
+   :angle 0
    :rp (q/load-image pic)
-   :ds (fn [x y pict wid hei]
-         (q/image pict x y))})
+   :ds (fn [x y pict wid hei cs angle]
+         (q/with-translation [x y]
+         (q/with-rotation [(/ (* q/PI angle) 180)] (q/image pict 0 0))))})
 
 
 (defn create-rect [w h & args]
@@ -55,7 +109,8 @@
    :th h
    :dx 0
    :dy 0
-   :ds (fn [x y pict wid hei]
+   :angle 0
+   :ds (fn [x y pict wid hei cs angle]
          (cond (= (count args) 1)
                (f-fill (first args))
                (= (count args) 2)
@@ -64,7 +119,8 @@
                (f-fill (first args) (second args) (second (rest args)))
                (= (count args) 4)
                (f-fill (first args) (second args) (second (rest args)) (second (rest (rest args)))))
-         (f-rect x y wid hei)
+         (q/with-translation [x y]
+         (q/with-rotation [(/ (* q/PI angle) 180)] (f-rect 0 0 wid hei)))
          (q/no-fill))})
 
 ;---
@@ -73,9 +129,16 @@
   (q/image-mode :center)
   (if
     (not (vector? shape))
-    ((:ds shape) x y (:rp shape) (:w shape) (:h shape))
+    ((:ds shape) x y (:rp shape) (:w shape) (:h shape) (q/current-stroke) (:angle shape))
     (doseq [i (range (count shape))]
-      ((:ds (nth shape i)) (+ x (:dx (nth shape i))) (+ y (:dy (nth shape i))) (:rp (nth shape i)) (:w (nth shape i)) (:h (nth shape i))))))
+      ((:ds (nth shape i))
+       (+ x (:dx (nth shape i)))
+       (+ y (:dy (nth shape i)))
+       (:rp (nth shape i))
+       (:w (nth shape i))
+       (:h (nth shape i))
+       (q/current-stroke)
+       (:angle (nth shape i))))))
 
 
 ;------
@@ -419,14 +482,15 @@
 (defn scale-image [shape scale-x scale-y]
   (assoc
     (if (not= (:rp shape) nil)
-        (create-new-image-shape shape scale-x scale-y)
-    shape)
+      (create-new-image-shape shape scale-x scale-y)
+      shape)
     :w (* (:w shape) scale-x)
     :h (* (:h shape) scale-y)
     :tw (* (:tw shape) scale-x)
     :th (* (:th shape) scale-y)
     :dx (* (:dx shape) scale-x)
-    :dy (* (:dy shape) scale-y)))
+    :dy (* (:dy shape) scale-y)
+    :angle (:angle shape)))
 
 (defn scale-complex [shape scale-x scale-y]
   (conj (if
@@ -436,10 +500,35 @@
 
 
 (defn scale-shape [shape scale-x scale-y]
-  (println "got into scale-shape")
   (if (vector? shape)
     (vec (flatten (scale-complex shape scale-x scale-y)))
     (scale-image shape scale-x scale-y)))
+
+;------
+(defn rotate-compshape [shape angle]
+  (conj (if
+          (not= (count shape) 1)
+          (rotate-compshape (rest shape) angle))
+
+        ;(println "you wanted" (:dy (first shape)) "m'lord")
+        ;(println)
+        ;(println "dx is being changed to" (* (q/cos (/ (* angle q/PI) 180)) (q/sqrt (+ (q/sq (:dx (first shape))) (q/sq (:dy (first shape)))))))
+        ;(println "dy is being changed to" (* (q/sin (/ (* angle q/PI) 180)) (q/sqrt (+ (q/sq (:dx (first shape))) (q/sq (:dy (first shape)))))))
+        ;(println)
+
+        (let [new-dx (* (q/cos (/ (* angle q/PI) 180)) (q/sqrt (+ (q/sq (:dx (first shape))) (q/sq (:dy (first shape))))))
+              new-dy (* (q/sin (/ (* angle q/PI) 180)) (q/sqrt (+ (q/sq (:dx (first shape))) (q/sq (:dy (first shape))))))]
+        (assoc (first shape)
+          :angle angle
+          :dx (if (< (:dx (first shape)) 0) (* new-dx -1))
+          :dy (if (< (:dy (first shape)) 0) (* new-dy -1))))))
+
+
+(defn rotate-shape [shape angle]
+  ;(if
+   ; (vector? shape)
+   ; (vec (flatten (rotate-compshape (reverse shape) angle)))
+    (assoc shape :angle angle))
 
 
 
@@ -448,7 +537,7 @@
 
 (defn setup []
   (try
-    (q/frame-rate 60)
+    (q/frame-rate 5)
 
     (def black-circle (create-ellipse 20 20 80 255 255))
 
@@ -473,6 +562,9 @@
     (def sqr8 (create-rect 160 160 255 255 255))
     (def sqr9 (create-rect 180 180 255 0 0))
     (def sqr10 (create-rect 200 200 0 80 80))
+    (def sweet-line (create-line 0 200 0))
+    (def long-box (create-rect 100 40 80 255 255))
+    (def tall-box (create-rect 40 100 80 80 255))
 
 
 
@@ -480,23 +572,46 @@
 
     (def light-table (create-picture "/home/mcart046/Pictures/lighttable.png"))
     (def kappa (create-picture "/home/hagen715/Desktop/images/kappa96x130.png"))
-   ; (def big-kappa (scale-shape (create-picture "/home/hagen715/Desktop/images/kappa96x130.png") 2 2))
+    ; (def big-kappa (scale-shape (create-picture "/home/hagen715/Desktop/images/kappa96x130.png") 2 2))
     (def bigger-kappa (create-picture "/home/hagen715/Desktop/images/kappa96x130.png"))
     (def biggest-kappa (create-picture "/home/hagen715/Desktop/images/kappa96x130.png"))
     (def frankerz (create-picture "/home/hagen715/Desktop/images/frankerz220x200.jpg"))
-    (def flying-thing (beside-align :bottom (scale-shape (beside sqr3 sqr4 (scale-shape kappa 0.5 0.5) (overlay-align :top :left sqr1 sqr2 sqr3 sqr4 sqr5)) 2 2) (overlay-align :bottom :right sqr1 sqr2 sqr3 sqr4 sqr5) kappa))
+    (def flying-thing (beside-align :bottom
+                                    sweet-line
+                                    (scale-shape (beside
+                                                  sqr3
+                                                  sqr4
+                                                  sweet-line
+                                                  (scale-shape kappa 0.5 0.5)
+                                                  (overlay-align :top :left
+                                                                 sweet-line
+                                                                 sqr1
+                                                                 sqr2
+                                                                 sqr3
+                                                                 sqr4
+                                                                 sqr5)) 2 2)
+                                    (overlay-align :bottom :right
+                                                   sqr1
+                                                   sqr2
+                                                   sqr3
+                                                   sqr4
+                                                   sqr5)
+                                    kappa))
 
-
-
-    (def thing (overlay-align :top :right sqr1 sqr2 sqr3 sqr4 sqr5 (overlay-align :bottom :left kappa sqr1 sqr2 sqr3 sqr4 sqr5 sqr6 sqr7 sqr8 sqr9)))
-
+    (def thing (overlay-align :top :right sweet-line sqr1 sqr2 sqr3 sqr4 sqr5 (overlay-align :bottom :left kappa sqr1 sqr2 sqr3 sqr4 sqr5 sqr6 sqr7 sqr8 sqr9)))
+    (def tri (create-triangle 0 300 300 0 80 255 255))
+    ;(def not-rotated-kappa (rotate-shape thing 90))
+    (def kappa2 (beside-align :top (above (create-rect 96 170 80 255 80) kappa) (above (create-rect 96 70 80 255 80) kappa)))
+    (def blokz (above tall-box
+                      long-box))
 
 
     {:shape flying-thing
      :scale-x 1
      :scale-y 1
      :angle 0
-     :angle2 0}
+     :angle2 0
+     :number 0}
 
     (catch Throwable e (println (.getCause e)) (display-error (prettify-exception e)))))
 
@@ -508,7 +623,9 @@
 
 
     ;(assoc state :shape (:shape state) :scale-x (+ (:scale-x state) 1) :scale-y (+ (:scale-y state) 1))
-    (assoc state :angle (mod (+ (:angle state) 0.01) q/TWO-PI) :angle2 (mod (+ (:angle2 state) 0.05) q/TWO-PI))
+    (assoc state :angle (mod (+ (:angle state) 15) 360) :angle2 (+ (:angle2 state) 0.3) :number (if (= (:number state) 255)
+                                                                                                       0
+                                                                                                       255))
 
     (catch Throwable e (println (.getCause e)) (display-error (prettify-exception e)))))
 
@@ -518,47 +635,26 @@
   (try
     (f-background 80 255 80)
 
-
-    (f-stroke 255)
-    (f-fill 255)
+    (f-stroke 255 80 255)
+    ;(q/stroke-weight 100)
     (f-text-size 20)
-
     (q/text-align :center)
 
-    ;(q/line 0 400 800 400)
 
-    (q/with-translation [(/ (q/width) 2)
-                         (/ (q/height) 2)]
-    (ds (scale-shape flying-thing (+ 1.1 (q/cos (:angle2 state))) (+ 1.1 (q/cos (:angle2 state)))) (* 300 (q/cos (:angle state))) (* 150 (q/sin (:angle state)))))
+    ;(q/with-translation [500 500] (q/with-rotation [q/PI] (ds flying-thing 100 100)))
+    ;(ds flying-thing (+ 500 (* 150 (q/cos (:angle state)))) (+ 500 (* 150 (q/sin (:angle state)))))
+    (f-fill 80 80 255)
+    (q/arc 500 500 200 100 0 5 :open)
 
-
-
-
-
-
-
-
-
-    ;(ds (overlay-align :top :right sqr1 sqr2 sqr3 sqr4 sqr5) 100 100)
-
-
-
-
-
-    (f-fill 0)
-    (q/text-size 32)
-    (q/text-num (q/frame-count) 400 100)
-
-    ;(q/line 400 0 400 800)
-
-
+    (ds (create-line 1000 0 0) 500 500)
+    (ds (create-line 0 1000 0) 500 500)
     (catch Throwable e (println (.getCause e)) (display-error (prettify-exception e)))))
 
 ;-
 
 (q/defsketch my
   :title "My sketch"
-  :size [1500 1000]
+  :size [1000 1000]
   ; Setup function called only once, during sketch initialization.
   :setup setup
   ; Update-state is called on each iteration before draw-state.
