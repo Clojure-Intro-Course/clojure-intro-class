@@ -37,6 +37,28 @@
          (f-ellipse 0 0 wid hei)))
          (q/no-fill))})
 
+(defn create-arc [w h start stop & args]
+  {:w w
+   :h h
+   :tw w
+   :th h
+   :dx 0
+   :dy 0
+   :angle 0
+   :ds (fn [x y pict wid hei cs angle]
+         (cond (= (count args) 1)
+               (f-fill (first args))
+               (= (count args) 2)
+               (f-fill (first args) (second args))
+               (= (count args) 3)
+               (f-fill (first args) (second args) (second (rest args)))
+               (= (count args) 4)
+               (f-fill (first args) (second args) (second (rest args)) (second (rest (rest args)))))
+         (q/with-translation [x y]
+         (q/with-rotation [(/ (* q/PI angle) 180)]
+         (q/arc 0 0 wid hei start stop :pie)))
+         (q/no-fill))})
+
 (defn create-line [x2 y2 & args]
   {:w x2
    :h y2
@@ -86,6 +108,34 @@
                      (+ 0 (- x2 mid-x)) (+ 0 (- y2 mid-y))
                      (+ 0 (- x3 mid-x)) (+ 0 (- y3 mid-y))))))
          (q/no-fill))})
+
+(defn create-quad [x2 y2 x3 y3 x4 y4 & args]
+  {:w (+ (q/abs(max 0 x2 x3 x4))  (q/abs(min 0 x2 x3 x4)))
+   :h (+ (q/abs(max 0 y2 y3 y4))  (q/abs(min 0 y2 y3 y4)))
+   :tw (+ (q/abs(max 0 x2 x3 x4))  (q/abs(min 0 x2 x3 x4)))
+   :th (+ (q/abs(max 0 y2 y3 y4))  (q/abs(min 0 y2 y3 y4)))
+   :dx 0
+   :dy 0
+   :angle 0
+   :ds (fn [x y pict wid hei cs angle]
+         (cond (= (count args) 1)
+               (f-fill (first args))
+               (= (count args) 2)
+               (f-fill (first args) (second args))
+               (= (count args) 3)
+               (f-fill (first args) (second args) (second (rest args)))
+               (= (count args) 4)
+               (f-fill (first args) (second args) (second (rest args)) (second (rest (rest args)))))
+         (q/with-translation [x y]
+         (q/with-rotation [(/ (* q/PI angle) 180)]
+         (let [mid-x (quot (+ (max 0 x2 x3 x4)  (min 0 x2 x3 x4)) 2)
+               mid-y (quot (+ (max 0 y2 y3 y4)  (min 0 y2 y3 y4)) 2)]
+         (f-quad (+ 0 (- 0 mid-x)) (+ 0 (- 0 mid-y))
+                 (+ 0 (- x2 mid-x)) (+ 0 (- y2 mid-y))
+                 (+ 0 (- x3 mid-x)) (+ 0 (- y3 mid-y))
+                 (+ 0 (- x4 mid-x)) (+ 0 (- y4 mid-y))))))
+         (q/no-fill))})
+
 
 (defn create-picture [pic]
   {:w (.width (q/load-image pic))
@@ -604,6 +654,9 @@
     (def kappa2 (beside-align :top (above (create-rect 96 170 80 255 80) kappa) (above (create-rect 96 70 80 255 80) kappa)))
     (def blokz (above tall-box
                       long-box))
+    (def arc (create-arc 200 150 q/PI 6 255 80 255))
+    (def arc-above (overlay-align :bottom :center arc sqr6))
+    (def quadz (create-quad 100 0 100 100 0 100 80 255 255))
 
 
     {:shape flying-thing
@@ -645,6 +698,10 @@
     ;(ds flying-thing (+ 500 (* 150 (q/cos (:angle state)))) (+ 500 (* 150 (q/sin (:angle state)))))
     (f-fill 80 80 255)
     (q/arc 500 500 200 100 0 5 :open)
+
+    (ds arc 500 200)
+    (ds arc-above 500 700)
+    (ds quadz 700 700)
 
     (ds (create-line 1000 0 0) 500 500)
     (ds (create-line 0 1000 0) 500 500)
