@@ -281,13 +281,13 @@
 
 ;; testing for the first precondition of map
 (expect "In function map, the first argument :not-a-function must be a function but is a keyword."
-        (get-all-text
+        (get-text-no-location
          (run-and-catch-pretty-no-stacktrace 'intro.core
                                              '(doall (map :not-a-function [1 2 3])))))
 
 ;; testing for the second precondition of map
 (expect "In function map, the second argument :not-a-collection must be a sequence but is a keyword."
-        (get-all-text
+        (get-text-no-location
          (run-and-catch-pretty-no-stacktrace 'intro.core
                                              '(doall (map + :not-a-collection)))))
 
@@ -295,7 +295,7 @@
 
 ;; testing for the precondition of count
 (expect "In function count, the first argument :not-a-collection must be a sequence but is a keyword."
-        (get-all-text
+        (get-text-no-location
          (run-and-catch-pretty-no-stacktrace 'intro.core
                                              '(count :not-a-collection))))
 
@@ -303,7 +303,7 @@
 
 ;; testing for the precondition of conj
 (expect "In function conj, the first argument :not-a-collection must be a sequence but is a keyword."
-        (get-all-text
+        (get-text-no-location
          (run-and-catch-pretty-no-stacktrace 'intro.core
                                              '(conj :not-a-collection))))
 
@@ -311,13 +311,13 @@
 
 ;; testing for the first precondition of into
 (expect "In function into, the first argument :not-a-collection must be a sequence but is a keyword."
-        (get-all-text
+        (get-text-no-location
          (run-and-catch-pretty-no-stacktrace 'intro.core
                                              '(into :not-a-collection [1 2 3]))))
 
 ;; testing for the second precondition of into
 (expect "In function into, the second argument :not-a-collection must be a sequence but is a keyword."
-        (get-all-text
+        (get-text-no-location
          (run-and-catch-pretty-no-stacktrace 'intro.core
                                              '(into #{} :not-a-collection))))
 
@@ -325,19 +325,19 @@
 
 ;; testing for the first precondition of reduce
 (expect "In function reduce, the first argument :not-a-function must be a function but is a keyword."
-        (get-all-text
+        (get-text-no-location
          (run-and-catch-pretty-no-stacktrace 'intro.core
                                              '(reduce :not-a-function [1 2 3]))))
 
 ;; testing for the second precondition of reduce
 (expect "In function reduce, the second argument :not-a-collection must be a sequence but is a keyword."
-        (get-all-text
+        (get-text-no-location
          (run-and-catch-pretty-no-stacktrace 'intro.core
                                              '(reduce + :not-a-collection))))
 
 ;; testing for the third precondition of reduce
 (expect "In function reduce, the third argument :not-a-collection must be a sequence but is a keyword."
-        (get-all-text
+        (get-text-no-location
          (run-and-catch-pretty-no-stacktrace 'intro.core
                                              '(reduce + 2 :not-a-collection))))
 
@@ -345,25 +345,25 @@
 
 ;; testing for the first precondition of nth, with two args
 (expect "In function nth, the first argument :not-a-collection must be a sequence but is a keyword."
-        (get-all-text
+        (get-text-no-location
          (run-and-catch-pretty-no-stacktrace 'intro.core
                                              '(nth :not-a-collection 10))))
 
 ;; testing for the second precondition of nth, with two args
 (expect "In function nth, the second argument :not-a-number must be a number but is a keyword."
-        (get-all-text
+        (get-text-no-location
          (run-and-catch-pretty-no-stacktrace 'intro.core
                                              '(nth [0 1 2 3 4] :not-a-number))))
 
 ;; testing for the second precondition of nth, with three args
 (expect "In function nth, the first argument :not-a-collection must be a sequence but is a keyword."
-        (get-all-text
+        (get-text-no-location
          (run-and-catch-pretty-no-stacktrace 'intro.core
                                              '(nth :not-a-collection 8 "nothing found"))))
 
 ;; testing for the second precondition of nth, with three args
 (expect "In function nth, the second argument :not-a-number must be a number but is a keyword."
-        (get-all-text
+        (get-text-no-location
          (run-and-catch-pretty-no-stacktrace 'intro.core
                                              '(nth [0 1 2 3 4] :not-a-number ""))))
 
@@ -371,13 +371,13 @@
 
 ;; testing for the first precondition of filter
 (expect "In function filter, the first argument :not-a-function must be a function but is a keyword."
-        (get-all-text
+        (get-text-no-location
          (run-and-catch-pretty-no-stacktrace 'intro.core
                                              '(filter :not-a-function [1 2 3]))))
 
 ;; testing for the second precondition of filter
 (expect "In function filter, the second argument :not-a-collection must be a sequence but is a keyword."
-        (get-all-text
+        (get-text-no-location
          (run-and-catch-pretty-no-stacktrace 'intro.core
                                              '(filter odd? :not-a-collection))))
 
@@ -385,19 +385,19 @@
 
 ;; testing for the first precondition of mapcat
 (expect "In function mapcat, the first argument :not-a-function must be a function but is a keyword."
-        (get-all-text
+        (get-text-no-location
          (run-and-catch-pretty-no-stacktrace 'intro.core
                                              '(mapcat :not-a-function [1 2 3] [8 9 10]))))
 
 ;; testing for the second precondition of mapcat
 (expect "In function mapcat, the second argument :not-a-collection must be a sequence but is a keyword."
-        (get-all-text
+        (get-text-no-location
          (run-and-catch-pretty-no-stacktrace 'intro.core
                                              '(mapcat reverse :not-a-collection [8 9 10]))))
 
 ;; testing for the second precondition of mapcat with multiple collections
 (expect "In function mapcat, the third argument :not-a-collection must be a sequence but is a keyword."
-        (get-all-text
+        (get-text-no-location
          (run-and-catch-pretty-no-stacktrace 'intro.core
                                              '(mapcat reverse [1 2 3] :not-a-collection))))
 
@@ -405,13 +405,13 @@
 
 ;; testing for the precondition of concat with one arg
 (expect "In function concat, the first argument :not-a-collection must be a sequence but is a keyword."
-        (get-all-text
+        (get-text-no-location
          (run-and-catch-pretty-no-stacktrace 'intro.core
                                              '(concat :not-a-collection))))
 
 ;; testing for the precondition of concat with multiple args
 (expect "In function concat, the fourth argument :not-a-collection must be a sequence but is a keyword."
-        (get-all-text
+        (get-text-no-location
          (run-and-catch-pretty-no-stacktrace 'intro.core
                                              '(concat [1 2] [3 4] [18 22] :not-a-collection))))
 
@@ -419,13 +419,13 @@
 
 ;; testing if the precondition of < works on first arg
 (expect "In function <, the first argument :not-a-number must be a number but is a keyword."
-        (get-all-text
+        (get-text-no-location
          (run-and-catch-pretty-no-stacktrace 'intro.core
                                              '(< :not-a-number 31))))
 
 ;; testing if the precondition of < works on second arg
 (expect "In function <, the second argument :not-a-number must be a number but is a keyword."
-        (get-all-text
+        (get-text-no-location
          (run-and-catch-pretty-no-stacktrace 'intro.core
                                              '(< 4 :not-a-number))))
 
@@ -433,13 +433,13 @@
 
 ;; testing if the precondition of > works on first arg
 (expect "In function >, the first argument :not-a-number must be a number but is a keyword."
-        (get-all-text
+        (get-text-no-location
          (run-and-catch-pretty-no-stacktrace 'intro.core
                                              '(> :not-a-number 31))))
 
 ;; testing if the precondition of > works on second arg
 (expect "In function >, the second argument :not-a-number must be a number but is a keyword."
-        (get-all-text
+        (get-text-no-location
          (run-and-catch-pretty-no-stacktrace 'intro.core
                                              '(> 4 :not-a-number))))
 
@@ -447,13 +447,13 @@
 
 ;; testing if the precondition of >= works on first arg
 (expect "In function >=, the first argument :not-a-number must be a number but is a keyword."
-        (get-all-text
+        (get-text-no-location
          (run-and-catch-pretty-no-stacktrace 'intro.core
                                              '(>= :not-a-number 31))))
 
 ;; testing if the precondition of >= works on second arg
 (expect "In function >=, the second argument :not-a-number must be a number but is a keyword."
-        (get-all-text
+        (get-text-no-location
          (run-and-catch-pretty-no-stacktrace 'intro.core
                                              '(>= 4 :not-a-number))))
 
@@ -461,13 +461,13 @@
 
 ;; testing if the precondition of <= works on first arg
 (expect "In function <=, the first argument :not-a-number must be a number but is a keyword."
-        (get-all-text
+        (get-text-no-location
          (run-and-catch-pretty-no-stacktrace 'intro.core
                                              '(<= :not-a-number 31))))
 
 ;; testing if the precondition of <= works on second arg
 (expect "In function <=, the second argument :not-a-number must be a number but is a keyword."
-        (get-all-text
+        (get-text-no-location
          (run-and-catch-pretty-no-stacktrace 'intro.core
                                              '(<= 4 :not-a-number))))
 
@@ -475,105 +475,105 @@
 
 ;; testing if the precondition of + works
 (expect "In function +, the first argument :not-a-number must be a number but is a keyword."
-        (get-all-text (run-and-catch-pretty-no-stacktrace 'intro.core
+        (get-text-no-location (run-and-catch-pretty-no-stacktrace 'intro.core
                                                           '(+ :not-a-number 5))))
 (expect "In function +, the fourth argument :not-a-number must be a number but is a keyword."
-        (get-all-text (run-and-catch-pretty-no-stacktrace 'intro.core
+        (get-text-no-location (run-and-catch-pretty-no-stacktrace 'intro.core
                                                           '(+ 8 9 1 :not-a-number 5))))
 
 ;~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 ;; testing if the precondition of - works
 (expect "In function -, the first argument :not-a-number must be a number but is a keyword."
-        (get-all-text (run-and-catch-pretty-no-stacktrace 'intro.core
+        (get-text-no-location (run-and-catch-pretty-no-stacktrace 'intro.core
                                                           '(- :not-a-number 5))))
 (expect "In function -, the fourth argument :not-a-number must be a number but is a keyword."
-        (get-all-text (run-and-catch-pretty-no-stacktrace 'intro.core
+        (get-text-no-location (run-and-catch-pretty-no-stacktrace 'intro.core
                                                           '(- 20 9 1 :not-a-number 5))))
 
 ;~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 ;; testing if the precondition of * works
 (expect "In function *, the first argument :not-a-number must be a number but is a keyword."
-        (get-all-text (run-and-catch-pretty-no-stacktrace 'intro.core
+        (get-text-no-location (run-and-catch-pretty-no-stacktrace 'intro.core
                                                           '(* :not-a-number 5))))
 (expect "In function *, the fourth argument :not-a-number must be a number but is a keyword."
-        (get-all-text (run-and-catch-pretty-no-stacktrace 'intro.core
+        (get-text-no-location (run-and-catch-pretty-no-stacktrace 'intro.core
                                                           '(* 20 9 1 :not-a-number 5))))
 
 ;~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 ;; testing if the precondition of / works
 (expect "In function /, the first argument :not-a-number must be a number but is a keyword."
-        (get-all-text (run-and-catch-pretty-no-stacktrace 'intro.core
+        (get-text-no-location (run-and-catch-pretty-no-stacktrace 'intro.core
                                                           '(/ :not-a-number 5))))
 (expect "In function /, the third argument :not-a-number must be a number but is a keyword."
-        (get-all-text (run-and-catch-pretty-no-stacktrace 'intro.core
+        (get-text-no-location (run-and-catch-pretty-no-stacktrace 'intro.core
                                                           '(/ 12 3 :not-a-number))))
 
 ;~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 ;; testing if the precondition of quot works
 (expect "In function quot, the first argument :not-a-number must be a number but is a keyword."
-        (get-all-text (run-and-catch-pretty-no-stacktrace 'intro.core
+        (get-text-no-location (run-and-catch-pretty-no-stacktrace 'intro.core
                                                           '(quot :not-a-number 5))))
 (expect "In function quot, the second argument :not-a-number must be a number but is a keyword."
-        (get-all-text (run-and-catch-pretty-no-stacktrace 'intro.core
+        (get-text-no-location (run-and-catch-pretty-no-stacktrace 'intro.core
                                                           '(quot 12 :not-a-number))))
 
 ;~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 ;; testing if the precondition of rem works
 (expect "In function rem, the first argument :not-a-number must be a number but is a keyword."
-        (get-all-text (run-and-catch-pretty-no-stacktrace 'intro.core
+        (get-text-no-location (run-and-catch-pretty-no-stacktrace 'intro.core
                                                           '(rem :not-a-number 5))))
 (expect "In function rem, the second argument :not-a-number must be a number but is a keyword."
-        (get-all-text (run-and-catch-pretty-no-stacktrace 'intro.core
+        (get-text-no-location (run-and-catch-pretty-no-stacktrace 'intro.core
                                                           '(rem 12 :not-a-number))))
 
 ;~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 ;; testing if the precondition of mod works
 (expect "In function mod, the first argument :not-a-number must be a number but is a keyword."
-        (get-all-text (run-and-catch-pretty-no-stacktrace 'intro.core
+        (get-text-no-location (run-and-catch-pretty-no-stacktrace 'intro.core
                                                           '(mod :not-a-number 5))))
 (expect "In function mod, the second argument :not-a-number must be a number but is a keyword."
-        (get-all-text (run-and-catch-pretty-no-stacktrace 'intro.core
+        (get-text-no-location (run-and-catch-pretty-no-stacktrace 'intro.core
                                                           '(mod 12 :not-a-number))))
 
 ;~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 ;; testing if the precondition of inc works
 (expect "In function inc, the first argument :not-a-number must be a number but is a keyword."
-        (get-all-text (run-and-catch-pretty-no-stacktrace 'intro.core
+        (get-text-no-location (run-and-catch-pretty-no-stacktrace 'intro.core
                                                           '(inc :not-a-number))))
 
 ;~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 ;; testing if the precondition of dec works
 (expect "In function dec, the first argument :not-a-number must be a number but is a keyword."
-        (get-all-text (run-and-catch-pretty-no-stacktrace
+        (get-text-no-location (run-and-catch-pretty-no-stacktrace
                        'intro.core '(dec :not-a-number))))
 
 ;~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 ;; testing if the precondition of max works
 (expect "In function max, the first argument :not-a-number must be a number but is a keyword."
-        (get-all-text (run-and-catch-pretty-no-stacktrace 'intro.core
+        (get-text-no-location (run-and-catch-pretty-no-stacktrace 'intro.core
                                                           '(max :not-a-number))))
 
 ;~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 ;; testing if the precondition of min works
 (expect "In function min, the first argument :not-a-number must be a number but is a keyword."
-        (get-all-text (run-and-catch-pretty-no-stacktrace 'intro.core
+        (get-text-no-location (run-and-catch-pretty-no-stacktrace 'intro.core
                                                           '(min :not-a-number))))
 
 ;~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 ;; testing for the precondition of add-first
 (expect "In function add-first, the first argument :not-a-collection must be a sequence but is a keyword."
-        (get-all-text
+        (get-text-no-location
          (run-and-catch-pretty-no-stacktrace 'intro.core
                                              '(add-first :not-a-collection [1 2 3]))))
 
@@ -581,7 +581,7 @@
 
 ;; testing for the precondition of add-last
 (expect "In function add-last, the first argument :not-a-collection must be a sequence but is a keyword."
-        (get-all-text
+        (get-text-no-location
          (run-and-catch-pretty-no-stacktrace 'intro.core
                                              '(add-last :not-a-collection [1 2 3]))))
 
@@ -589,7 +589,7 @@
 
 ;; testing for contains-value?
 (expect "In function contains-value?, the first argument :not-a-collection must be a sequence but is a keyword."
-        (get-all-text
+        (get-text-no-location
          (run-and-catch-pretty-no-stacktrace 'intro.core
                                              '(contains-value? :not-a-collection 2))))
 
@@ -597,7 +597,7 @@
 
 ;; testing for contains-key?    (println "matched: "matched)
 (expect "In function contains-key?, the first argument :not-a-collection must be a sequence but is a keyword."
-        (get-all-text
+        (get-text-no-location
          (run-and-catch-pretty-no-stacktrace 'intro.core
                                              '(contains-key? :not-a-collection 2))))
 
@@ -605,12 +605,12 @@
 
 ;; testing for any?
 (expect "In function any?, the first argument :not-a-predicate must be a function but is a keyword."
-        (get-all-text
+        (get-text-no-location
          (run-and-catch-pretty-no-stacktrace 'intro.core
                                              '(any? :not-a-predicate [1 2 3]))))
 
 ;; testing for any?
 (expect "In function any?, the second argument :not-a-collection must be a sequence but is a keyword."
-        (get-all-text
+        (get-text-no-location
          (run-and-catch-pretty-no-stacktrace 'intro.core
                                              '(any? odd? :not-a-collection))))

@@ -61,7 +61,7 @@
    {:key :illegal-argument-even-number-of-forms
     :class IllegalArgumentException
     :match #"(.*) requires an even number of forms"
-    :make-msg-info-obj (fn [matches] (make-msg-info-hashes "Parameters for " (nth matches 1) :arg "must come in pairs, but one of them does not have a match"))}
+    :make-msg-info-obj (fn [matches] (make-msg-info-hashes "Parameters for " (nth matches 1) :arg " must come in pairs, but one of them does not have a match."))}
 
    {:key :illegal-argument-even-number-of-forms-in-binding-vector
     :class IllegalArgumentException
@@ -109,6 +109,21 @@
     :make-msg-info-obj (fn [matches] (make-msg-info-hashes "Cannot call "
                                                            "nil" :arg " as a function."))}
 
+
+   {:key :compiler-exception-wrong-number-of-arguments-to-recur
+    :class IllegalArgumentException
+    :match #"Mismatched argument count to recur, expected: (.*) args, got: (.*)"
+    :make-msg-info-obj (fn [matches]
+                         (let [first-arg (nth matches 1)
+                               sec-arg (nth matches 2)
+                               arg-args (if  (= "1" (nth matches 1)) " argument" " arguments")]
+                         (make-msg-info-hashes "This recur is supposed to take "
+                                               (number-word first-arg) arg-args
+                                               ", but you are passing "
+                                               (number-word sec-arg) ".")))
+    :hints "1. You are passing a wrong number of arguments to recur. Check its function or loop.\n
+    2. recur might be outside of the scope of its function or loop."}
+
    ;######################################
    ;### Index Out of Bounds Exceptions ###
    ;######################################
@@ -136,7 +151,6 @@
    ;### Arity Exceptions ###
    ;########################
 
-   ; We probably need to rewrite this, indicate what the right nubmer of args is
    {:key :arity-exception-wrong-number-of-arguments
     :class clojure.lang.ArityException
     :match #"Wrong number of args \((.*)\) passed to: (.*)"
@@ -181,6 +195,71 @@
     :make-msg-info-obj (fn [matches] (make-msg-info-hashes "Function " (nth matches 1) :arg
                                                            " does not allow " (get-type (nth matches 2)) :type " as an argument."))}
 
+   {:key :compiler-exception-must-recur-from-tail-position
+    :class java.lang.UnsupportedOperationException
+    :match #"(.*)Can only recur from tail position(.*)"
+    :make-msg-info-obj (fn [matches] (make-msg-info-hashes "Recur can only occur "
+                                                           "as a tail call: no operations can"
+                                                           " be done after its return."))}
+
+   ;##############################
+   ;### ClassNotFoundException ###
+   ;##############################
+
+   {:key :class-not-found-exception
+    :class ClassNotFoundException
+    :match #"(.*)"
+    :make-msg-info-obj (fn [matches] (make-msg-info-hashes "Name " (nth matches 1) :arg " is undefined."))
+    :hints "If you are using functions from another file, make sure you use dots for namespaces and slashes for functions, such as clojure.string/split."}
+
+   ;##############################################
+   ;### Runtime Exceptions ###
+   ;##############################################
+
+   {:key :compiler-exception-first-argument-must-be-symbol
+    :class java.lang.RuntimeException
+    :match #"First argument to (.*) must be a Symbol(.*)"
+    :make-msg-info-obj (fn [matches] (make-msg-info-hashes (nth matches 1) :arg " must be followed by a name."))}
+
+   {:key :compiler-exception-cannot-take-value-of-macro
+    :class java.lang.RuntimeException
+    :match #"Can't take value of a macro: (.+)"
+    :make-msg-info-obj (fn [matches] (make-msg-info-hashes
+                                                           (get-macro-name (nth matches 1)) :arg
+                                                           " is a macro, cannot be passed to a function."))}
+   {:key :compiler-exception-cannot-resolve-symbol
+    :class java.lang.RuntimeException
+    :match #"Unable to resolve symbol: (.+) in this context"
+    :make-msg-info-obj (fn [matches] (make-msg-info-hashes "Name "
+                                                           (nth matches 1) :arg " is undefined."))}
+   {:key :compiler-exception-map-literal-even
+    :class java.lang.RuntimeException
+    :match #"Map literal must contain an even number of forms"
+    :make-msg-info-obj (fn [matches] (make-msg-info-hashes "A hash map must consist of key/value pairs; you have a key that's missing a value."))}
+
+   {:key :compiler-exception-unmatched-delimiter
+    :class java.lang.RuntimeException
+    :match #"Unmatched delimiter: (.+)"
+    :make-msg-info-obj (fn [matches] (make-msg-info-hashes "There is an unmatched delimiter " (nth matches 1) :arg "."))}
+
+   {:key :compiler-exception-too-many-arguments
+    :class java.lang.RuntimeException
+    :match #"Too many arguments to (.+)"
+    :make-msg-info-obj (fn [matches] (make-msg-info-hashes "Too many arguments to "
+                                                           (nth matches 1) :arg "."))}
+   {:key :compiler-exception-too-few-arguments
+    :class java.lang.RuntimeException
+    :match #"Too few arguments to (.+)"
+    :make-msg-info-obj (fn [matches] (make-msg-info-hashes "Too few arguments to "
+                                                           (nth matches 1) :arg "."))}
+
+   {:key :compiler-exception-end-of-file
+    :class java.lang.RuntimeException
+    :match #"EOF while reading, starting at line (.+)"
+    :make-msg-info-obj (fn [matches] (make-msg-info-hashes "End of file, starting at line " (nth matches 1) :arg
+                                                           ".\nProbably a non-closing parenthesis or bracket."))}
+
+
    ;############################
    ;### Stack Overflow Error ###
    ;############################
@@ -205,6 +284,8 @@
    ;### Compilation Errors: Illegal Argument Exceptions ###
    ;#######################################################
 
+   ;;; These probably need to be removed, too - Elena
+
    {:key :compiler-exception-even-numbers-in-binding-vector
     :class clojure.lang.Compiler$CompilerException
     :true-exception java.lang.IllegalArgumentException
@@ -212,14 +293,6 @@
     :make-msg-info-obj (fn [matches] (make-msg-info-hashes (nth matches 2)
                                                            " requires an even number of forms in binding vector."))}
 
-   {:key :compiler-exception-wrong-number-of-arguments-to-recur
-    :class clojure.lang.Compiler$CompilerException
-    :true-exception java.lang.IllegalArgumentException
-    :match #"(.*) Mismatched argument count to recur, expected: (.*) args, got: (.*), compiling:(.*)"
-    :make-msg-info-obj (fn [matches] (make-msg-info-hashes "This recur is supposed to take "
-                                                           (nth matches 2) " arguments, but you are passing " (nth matches 3) "."))
-    :hints "1. You are passing a wrong number of arguments to recur. Check its function or loop.
-    2. recur might be outside of the scope of its function or loop."}
 
    {:key :compiler-exception-even-number-of-forms-needed
     :class clojure.lang.Compiler$CompilerException
@@ -227,6 +300,7 @@
     :match #"(.*): (.*) requires an even number of forms, compiling:\((.+)\)"
     :make-msg-info-obj (fn [matches] (make-msg-info-hashes "There is an unmatched parameter in declaration of "
                                                            (nth matches 2) :arg "."))}
+
 
    ;############################################
    ;### Compilation Errors: Arity Exceptions ###
@@ -244,95 +318,5 @@
                            (make-msg-info-hashes "Wrong number of arguments ("
                                                  (nth matches 2) ") passed to " funstr fstr :arg ".")))}
 
-   ;############################################################
-   ;### Compilation Errors: Unsupported Operation Exceptions ###
-   ;############################################################
-
-   {:key :compiler-exception-must-recur-from-tail-position
-    :class clojure.lang.Compiler$CompilerException
-    :true-exception java.lang.UnsupportedOperationException
-    :match #"(.*) Can only recur from tail position, compiling:(.*)"
-    :make-msg-info-obj (fn [matches] (make-msg-info-hashes "Recur can only occur "
-                                                           "as a tail call: no operations can"
-                                                           " be done after its return. "))}
-
-   ;##############################################
-   ;### Compilation Errors: Runtime Exceptions ###
-   ;##############################################
-
-   {:key :compiler-exception-first-argument-must-be-symbol
-    :class clojure.lang.Compiler$CompilerException
-    :true-exception java.lang.RuntimeException
-    :match #"(.*) First argument to (.*) must be a Symbol, compiling:\((.+)\)"
-    :make-msg-info-obj (fn [matches] (make-msg-info-hashes (nth matches 2) :arg " must be followed by a name."))}
-
-   {:key :compiler-exception-cannot-take-value-of-macro
-    :class clojure.lang.Compiler$CompilerException
-    :true-exception java.lang.RuntimeException
-    :match #"(.+): Can't take value of a macro: (.+), compiling:\((.+)\)"
-    :make-msg-info-obj (fn [matches] (make-msg-info-hashes
-                                                           (get-macro-name (nth matches 2)) :arg
-                                                           " is a macro, cannot be passed to a function."))}
-   {:key :compiler-exception-cannot-resolve-symbol
-    :class clojure.lang.Compiler$CompilerException
-    :true-exception java.lang.RuntimeException
-    :match #"(.+): Unable to resolve symbol: (.+) in this context, compiling:\((.+)\)"
-    :make-msg-info-obj (fn [matches] (make-msg-info-hashes "Name "
-                                                           (nth matches 2) :arg " is undefined."))}
-   {:key :compiler-exception-map-literal-even
-    :class clojure.lang.Compiler$CompilerException
-    :true-exception java.lang.RuntimeException
-    :match #"(.+): Map literal must contain an even number of forms, compiling:\((.+)\)"
-    :make-msg-info-obj (fn [matches] (make-msg-info-hashes "A hash map must consist of key/value pairs; you have a key that's missing a value."))}
-
-   ;###########################################
-   ;### Compilation Errors: Java Exceptions ###
-   ;###########################################
-
-   {:key :compiler-exception-unmatched-delimiter
-    :class clojure.lang.Compiler$CompilerException
-    :true-exception java.lang.Exception
-    :match #"(.+): Unmatched delimiter: (.+), compiling:\((.+)\)"
-    :make-msg-info-obj (fn [matches] (make-msg-info-hashes "There is an unmatched delimiter " (nth matches 2) :arg "."))}
-
-   {:key :compiler-exception-too-many-arguments
-    :class clojure.lang.Compiler$CompilerException
-    :true-exception java.lang.Exception
-    :match #"(.+): Too many arguments to (.+), compiling:(.+)"
-    :make-msg-info-obj (fn [matches] (make-msg-info-hashes "Too many arguments to "
-                                                           (nth matches 2) :arg "."))}
-   {:key :compiler-exception-too-few-arguments
-    :class clojure.lang.Compiler$CompilerException
-    :true-exception java.lang.Exception
-    :match #"(.+): Too few arguments to (.+), compiling:(.+)"
-    :make-msg-info-obj (fn [matches] (make-msg-info-hashes "Too few arguments to "
-                                                           (nth matches 2) :arg "."))}
-
-   ;###################################
-   ;### Compilation Errors: Unknown ###
-   ;###################################
-
-    {:key :compiler-exception-end-of-file
-    :class clojure.lang.Compiler$CompilerException
-    :true-exception :unknown
-    :match #"EOF while reading, starting at line (.+)"
-    :make-msg-info-obj (fn [matches] (make-msg-info-hashes "End of file, starting at line " (nth matches 1) :arg
-                                                           ".\nProbably a non-closing parenthesis or bracket."))}
-
-   {:key :compiler-exception-end-of-file-with-location
-    :class clojure.lang.Compiler$CompilerException
-    :true-exception :unknown
-    :match #"(.+): EOF while reading, starting at line (.+), compiling:(.+)"
-    :make-msg-info-obj (fn [matches] (make-msg-info-hashes "End of file, starting at line " (nth matches 2) :arg
-                                                           ".\nProbably a non-closing parenthesis or bracket."))}
    ])
 
-;; This is probably somewhat fragile: it occurs in an unbounded recur, but
-;; may occur elsewhere. We need to be careful to not catch a wider rnage of exceptions:
-; {:key :compiler-exception-must-recur-to-function-or-loop
-;  :class clojure.lang.Compiler$CompilerException
-;  :true-exception make-mock-preobj
-;  :match #"(.*): clojure.lang.Var\$Unbound cannot be cast to clojure.lang.IPersistentVector, compiling:(.*)"
-;  :make-msg-info-obj (fn [matches] (make-msg-info-hashes "recur" :arg
-;                       " does not refer to any function or loop."
-;                       " Compiling " (nth matches 2)))}

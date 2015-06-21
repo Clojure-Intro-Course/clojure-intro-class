@@ -5,6 +5,32 @@
             [intro.student :refer :all]))
 
 
+(map
+;(println (clojure.string/splt "/home/stock424/Documents/code/clojure-intro-class/src/intro/may2015.clj" #"/"))
+
+;;(println (str/split "/home/stock424/Documents/code/clojure-intro-class/src/intro/may2015.clj" #"/"))
+;Syntax error: java.lang.RuntimeException: No such namespace: str, compiling:(/home/stock424/Documents/code/clojure-intro-class/src/intro/may2015.clj:21:10)
+;Found in file /home/stock424/Documents/code/clojure-intro-class/src/intro/may2015.clj on line 21 at character 10.
+;	intro.core/-main (core.clj line 111)
+
+;(zero?)
+
+;(println (clojure.string/splt "/home/stock424/Documents/code/clojure-intro-class/src/intro/may2015.clj" #"/"))
+;Error: clojure.string.split
+;Found in file /home/stock424/Documents/code/clojure-intro-class/src/intro/may2015.clj on line 26 at character 10.
+;	intro.core/-main (core.clj line 111)
+
+;;(println (replace #"\p*[/]" "/home/stock424/Documents/code/clojure-intro-class/src/intro/may2015.clj" ""))
+;Error: Unknown character property name {*} near index 2
+;\p*[/]
+;  ^
+;Found in file core.clj on line 111 in function -main.
+;	intro.core/-main (core.clj line 111)
+
+
+
+
+
 
 
 
@@ -44,6 +70,172 @@
 
 
 ;(println (lazy-nested-taker (repeat (repeat [(range) (range)])) 4 7 3 5 6))
+
+
+;;(odd? nil)
+;;Error: Function nth does not allow unrecognized type Boolean as an argument.
+;;Found in file H:\Git\clojure-intro-class\src\intro\may2015.clj on line 23 at character 1.
+;;	intro.may2015/eval8632 (may2015.clj line 252)
+;;	intro.core/-main (core.clj line 111)
+
+;(+ 5 (map #(repeat %) (range)))
+
+
+;(let [x] (+ x 2))
+
+;(hash-map 1)
+
+;{"a" 1 "a"}
+
+;(map #(+ %1 %2) [1 2 3])
+
+;(
+
+;(= ((fn [x] (for [y x :when odd? y] y)) #{1 2 3 4 5}) '(1 3 5)-
+
+;(def stuff (reduce #(+ % 1) [1 2 3]))
+
+;(print stuff)
+
+;(defn 4 5)
+
+;(+ 2 "banana")
+
+;(reduce inc [1 2 3])
+
+;(take 5)
+;(drop "not a number" '(1 2 3 4 5 6 7 8 9))
+
+;;#######################
+;;##DESTRUCTURING TESTS##
+;;#######################
+;;the first several are from the link you sent me
+;;https://gist.github.com/john2x/e1dca953548bfdfb9844
+
+;(def my-vector [:a :b :c :d])
+;(def my-nested-vector [:a :b :c :d [:x :y :z]])
+
+;(let [[a b c d] my-vector]
+;  (println a b c d))
+;; => :a :b :c :d
+;(let [[a _ _ d [x y z]] my-nested-vector]
+;  (println a d x y z))
+;; => :a :d :x :y :z
+;(let [[a b c] my-vector]
+;  (println a b c))
+;; => :a :b :c
+;(let [[a b & the-rest] my-vector]
+;  (println a b the-rest))
+;; => :a :b (:c :d)
+;(let [[a b c d e f g] my-vector]
+;  (println a b c d e f g))
+;; => :a :b :c :d nil nil nil
+;(let [[:as all] my-vector]
+;  (println all))
+;; => [:a :b :c :d]
+;(let [[a :as all] my-vector]
+;  (println a all))
+;; => :a [:a :b :c :d]
+;(let [[a _ _ _ [x y z :as nested] :as all] my-nested-vector]
+;  (println a x y z nested all))
+;; => :a :x :y :z [:x :y :z] [:a :b :c :d [:x :y :z]]
+;(let [[a b & the-rest :as all] my-vector]
+;  (println a b the-rest all))
+;; => :a :b (:c :d) [:a :b :c :d]
+
+;(defn foo [a b & more-args]
+;  (println a b more-args))
+
+;(foo :a :b) ;; => :a :b nil
+;(foo :a :b :x) ;; => :a :b (:x)
+;(foo :a :b :x :y :z) ;; => :a :b (:x :y :z)
+;(defn foo [a b & [x y z]]
+;  (println a b x y z))
+;(foo :a :b) ;; => :a :b nil nil nil
+;(foo :a :b :x) ;; => :a :b :x nil nil
+;(foo :a :b :x :y :z) ;; => :a :b :x :y :z
+
+;(def my-hashmap {:a "A" :b "B" :c "C" :d "D"})
+;(def my-nested-hashmap {:a "A" :b "B" :c "C" :d "D" :q {:x "X" :y "Y" :z "Z"}})
+
+;(let [{a :a d :d} my-hashmap]
+;  (println a d))
+;=> A D
+;(let [{a :a, b :b, {x :x, y :y} :q} my-nested-hashmap]
+;  (println a b x y))
+;=> A B X Y
+;(let [{a :a, not-found :not-found, b :b} my-hashmap]
+;  (println a not-found b))
+;; => A nil B
+;(let [{a :a, not-found :not-found, b :b, :or {not-found ":)"}} my-hashmap]
+;  (println a not-found b))
+;; => A :) B
+;(let [{a :a, b :b, :as all} my-hashmap]
+;  (println a b all))
+;; => A B {:a A :b B :c C :d D}
+;(let [{a :a, b :b, not-found :not-found, :or {not-found ":)"}, :as all} my-hashmap]
+;  (println a b not-found all))
+;; => A B :) {:a A :b B :c C :d D}
+;(let [{:keys [a d]} my-hashmap]
+;  (println a d))
+;; => A D
+;(let [{:keys [a b], {:keys [x y]} :q} my-nested-hashmap]
+;  (println a b x y))
+;; => A B X Y
+;(let [{:keys [a not-found b]} my-hashmap]
+;  (println a not-found b))
+;; => A nil B
+;(let [{:keys [a not-found b], :or {not-found ":)"}} my-hashmap]
+;  (println a not-found b))
+;; => A :) B
+;(let [{:keys [a b], :as all} my-hashmap]
+;  (println a b all))
+;; => A B {:a A :b B :c C :d D}
+;(let [{:keys [a b not-found], :or {not-found ":)"}, :as all} my-hashmap]
+;  (println a b not-found all))
+;; => A B :) {:a A :b B :c C :d D}
+;(let [{:strs [a d]} {"a" "A", "b" "B", "c" "C", "d" "D"}]
+;  (println a d))
+;; => A D
+;(let [{:syms [a d]} {'a "A", 'b "B", 'c "C", 'd "D"}]
+;  (println a d))
+;; => A D
+;(let [{:keys [a b]} '("X", "Y", :a "A", :b "B")]
+;(println a b))
+;; => A B
+
+;(defn foo [a b & {:keys [x y]}]
+;  (println a b x y))
+;(foo "A" "B")  ;; => A B nil nil
+;(foo "A" "B" :x "X")  ;; => A B X nil
+;(foo "A" "B" :x "X" :y "Y")  ;; => A B X Y
+
+;;All the examples from the link passed without any errors.
+
+
+
+
+
+
+;(let [[s e a n] [:S :e :G :+]]
+;  (println s e a n))explain-defcon-level
+;;=> :S :e :G :+
+
+;(let [[:a :b :c :d] {:a "A" :b "B" :c "C"}]
+;  (println :a :b :c))
+;;=> Error: Function nth does not allow a map as an argument.
+;;Found in file H:\Git\clojure-intro-class\src\intro\may2015.clj on line 57 at character 1.
+;;	intro.may2015/eval8641 (may2015.clj line 57)
+;;	intro.core/-main (core.clj line 111)
+
+;(let [[:a :b :c] ["A" "B" "C"]]
+;  (println :a :b :c :p))
+;=> :a :b :c
+
+;(let [[:a :b :c] [A B D]]
+;  (println a b c))
+;Syntax error: Name A is undefined.
+;Found in file H:\Git\clojure-intro-class\src\intro\may2015.clj on line 95 at character 1.
 
 ;i had a (defn take/str ........)
 ;Syntax error: java.lang.RuntimeException: Can't refer to qualified var that doesn't exist, compiling:(/home/stock424/Documents/code/clojure-intro-class/src/intro/may2015.clj:88:1)
