@@ -210,7 +210,7 @@
     :class ClassNotFoundException
     :match #"(.*)"
     :make-msg-info-obj (fn [matches] (make-msg-info-hashes "Name " (nth matches 1) :arg " is undefined."))
-    :hints "If you are using functions from another file, make sure you use dots for namespaces and slashes for functions, such as clojure.string/split."}
+    :hint "If you are using functions from another file, make sure you use dots for namespaces and slashes for functions, such as clojure.string/split."}
 
    ;##############################################
    ;### Runtime Exceptions ###
@@ -276,8 +276,10 @@
     :class java.lang.RuntimeException
     :match #"No such namespace: (.+)"
     :make-msg-info-obj (fn [matches] (make-msg-info-hashes "The namespace " (nth matches 1) :arg " does not exist or is not accessible in your program."))
-    :hints "1. Check the spelling of namespaces you might be using, such as clojure.string\n
-    2. Make sure that your namespace uses dots, and the function in the namespaces is separated by a slash: clojure.string/split,
+    ;; We might also need to include a hint for accidentally using a dot or a slash
+    :hint "1. If you are using functions from other namespaces, make sure you use 'refer' in the beginning of your file to include the namespace.\n
+    2. Check the spelling of namespaces you might be using, such as clojure.string\n
+    3. Make sure that your namespace uses dots, and the function in the namespaces is separated by a slash: clojure.string/split,
     where clojure.string is the namespace, and split is the function."}
 
 
