@@ -59,11 +59,6 @@
         (get-text-no-location
          (run-and-catch-pretty-no-stacktrace 'intro.core '(cons 1 2))))
 
-;; testing for :illegal-argument-cannot-convert-type
-(expect "In function cons, the second argument \"cdef\" must be a sequence but is a string."
-        (get-text-no-location
-         (run-and-catch-pretty-no-stacktrace 'intro.core '(cons "ab" "cdef"))))
-
 ;; testing for :illegal-argument-even-number-of-forms
 ;; Elena: this is a compilation error in clojure 1.7, so we can't test it like this
 ;; testing for :illegal-argument-even-number-of-forms-in-binding-vector
@@ -134,8 +129,8 @@
 (expect "You cannot pass three arguments to a function even?, need one."
         (get-text-no-location (run-and-catch-pretty-no-stacktrace 'intro.core '(even? 3 6 1))))
 
-(expect "You cannot pass zero arguments to a function , need one."
-        (get-text-no-location (run-and-catch-pretty-no-stacktrace 'intro.core '())))
+;(expect "You cannot pass zero arguments to a function , need one."
+;        (get-text-no-location (run-and-catch-pretty-no-stacktrace 'intro.core '())))
 
 (expect "You cannot pass one argument to this anonymous function."
         (get-text-no-location (run-and-catch-pretty-no-stacktrace 'intro.core '(#(+ %1 %2) 1))))

@@ -71,8 +71,8 @@
 ;; Returns a new seq where x is the first element and seq is
 ;;  the rest.
 (defn cons [argument1 argument2]
-  {:pre [(check-if-sequential? "cons" argument2)]}
-  (apply clojure.core/cons argument1 argument2))
+  {:pre [(check-if-seqable? "cons" argument2)]}
+  (clojure.core/cons argument1 argument2))
 
 ;; (reduce f coll)
 ;; (reduce f val coll)
