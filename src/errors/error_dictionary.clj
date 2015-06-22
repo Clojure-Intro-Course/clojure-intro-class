@@ -258,7 +258,19 @@
     :match #"EOF while reading, starting at line (.+)"
     :make-msg-info-obj (fn [matches] (make-msg-info-hashes "End of file, starting at line " (nth matches 1) :arg
                                                            ".\nProbably a non-closing parenthesis or bracket."))}
+   ;; Order mattters: do not re-order this one and :compiler-exception-no-such-var-no-namespace
+   {:key :compiler-exception-no-such-var-with-namespace
+    :class java.lang.RuntimeException
+    :match #"No such var: (.+)/(.+)"
+    :make-msg-info-obj (fn [matches] (make-msg-info-hashes "Name " (nth matches 2) :arg " does not exist in the namespace "
+                                                           (nth matches 1) :arg "."))}
 
+   ;; Order mattters: do not re-order this one and :compiler-exception-no-such-var-with-namespace
+   ;; I don't knwo a case for this, but it's here in case a no-such-var error happens with no namespace info
+   {:key :compiler-exception-no-such-var-no-namespace
+    :class java.lang.RuntimeException
+    :match #"No such var: (.+)"
+    :make-msg-info-obj (fn [matches] (make-msg-info-hashes "Name " (nth matches 1) :arg " is undefined."))}
 
    ;############################
    ;### Stack Overflow Error ###

@@ -5,8 +5,8 @@
             [intro.student :refer :all]))
 
 
-(map
-;(println (clojure.string/splt "/home/stock424/Documents/code/clojure-intro-class/src/intro/may2015.clj" #"/"))
+
+(println (splt "/home/stock424/Documents/code/clojure-intro-class/src/intro/may2015.clj" #"/"))
 
 ;;(println (str/split "/home/stock424/Documents/code/clojure-intro-class/src/intro/may2015.clj" #"/"))
 ;Syntax error: java.lang.RuntimeException: No such namespace: str, compiling:(/home/stock424/Documents/code/clojure-intro-class/src/intro/may2015.clj:21:10)

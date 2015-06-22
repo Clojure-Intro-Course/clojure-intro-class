@@ -219,4 +219,7 @@
 (expect "End of file, starting at line 3.\nProbably a non-closing parenthesis or bracket.\nFound in file eof.clj on line 4 at character 1."
         (get-all-text (:msg-info-obj (prettify-exception (import-from-file "exceptions/end_of_file.ser")))))
 
+(expect #"Name splt does not exist in the namespace clojure\.string\.\nFound(.+)"
+        (get-all-text (run-and-catch-pretty-no-stacktrace 'intro.core '(clojure.string/splt "pattern" #"/"))))
+
 ;; :compiler-exception-must-recur-to-function-or-loop
