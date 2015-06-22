@@ -266,11 +266,21 @@
                                                            (nth matches 1) :arg "."))}
 
    ;; Order mattters: do not re-order this one and :compiler-exception-no-such-var-with-namespace
-   ;; I don't knwo a case for this, but it's here in case a no-such-var error happens with no namespace info
+   ;; I don't know a case for this, but it's here in case a no-such-var error happens with no namespace info
    {:key :compiler-exception-no-such-var-no-namespace
     :class java.lang.RuntimeException
     :match #"No such var: (.+)"
     :make-msg-info-obj (fn [matches] (make-msg-info-hashes "Name " (nth matches 1) :arg " is undefined."))}
+
+   {:key :compiler-exception-no-such-namespace
+    :class java.lang.RuntimeException
+    :match #"No such namespace: (.+)"
+    :make-msg-info-obj (fn [matches] (make-msg-info-hashes "The namespace " (nth matches 1) :arg " does not exist or is not accessible in your program."))
+    :hints "1. Check the spelling of namespaces you might be using, such as clojure.string\n
+    2. Make sure that your namespace uses dots, and the function in the namespaces is separated by a slash: clojure.string/split,
+    where clojure.string is the namespace, and split is the function."}
+
+
 
    ;############################
    ;### Stack Overflow Error ###

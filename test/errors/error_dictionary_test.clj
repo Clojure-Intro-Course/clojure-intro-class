@@ -222,4 +222,7 @@
 (expect #"Name splt does not exist in the namespace clojure\.string\.\nFound(.+)"
         (get-all-text (run-and-catch-pretty-no-stacktrace 'intro.core '(clojure.string/splt "pattern" #"/"))))
 
+(expect #"The namespace clojure does not exist or is not accessible in your program\.\n(.+)"
+        (get-all-text (run-and-catch-pretty-no-stacktrace 'intro.core '(clojure/string/splt "pattern" #"/"))))
+
 ;; :compiler-exception-must-recur-to-function-or-loop
