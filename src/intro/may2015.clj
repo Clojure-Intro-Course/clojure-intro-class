@@ -66,7 +66,7 @@
 
 
 
-(cons "abc" "def")
+(cons "ab" "cdef")
 
 
 
