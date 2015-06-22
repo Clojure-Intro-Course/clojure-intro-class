@@ -67,7 +67,7 @@
 ;(filter #(odd? (int %)) "42356432543sdfgjhygdf.,/;l)_(&*^%$#@")
 ;(first "1324")
 
-
+(odd? nil)
 
 
 ;(cons "ab" "cdef")
