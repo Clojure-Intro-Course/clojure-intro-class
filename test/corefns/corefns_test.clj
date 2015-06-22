@@ -275,6 +275,9 @@
 (expect false (any? even? [1 3 5 7 9 11]))
 (expect true (any? #(= :a %) [:a :b :c :d :e]))
 
+;; testing for odd? and even?
+;(expect (odd? nil))
+
 ;#################################################
 ;### Testing if the corefns preconditions work ###
 ;#################################################

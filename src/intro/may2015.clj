@@ -25,12 +25,52 @@
 ;Found in file /home/stock424/Documents/code/clojure-intro-class/src/intro/may2015.clj on line 26 at character 10.
 ;	intro.core/-main (core.clj line 111)
 
-;;(println (replace #"\p*[/]" "/home/stock424/Documents/code/clojure-intro-class/src/intro/may2015.clj" ""))
+;(println (replace #"\p*[/]" "/home/stock424/Documents/code/clojure-intro-class/src/intro/may2015.clj" ""))
 ;Error: Unknown character property name {*} near index 2
 ;\p*[/]
 ;  ^
 ;Found in file core.clj on line 111 in function -main.
 ;	intro.core/-main (core.clj line 111)
+
+;(replace #"[a-z!]":g)
+;Error: Don't know how to create a sequence from a keyword.
+;Found in file core.clj on line 114 in function -main.
+;	clojure.core/seq (core.clj line 135)
+;	clojure.core/map (core.clj line 2614)
+;	clojure.core/seq (core.clj line 135)
+;	clojure.core/fn (core_print.clj line 155)
+;	clojure.core/apply (core.clj line 628)
+;	clojure.core/print (core.clj line 3603)
+;	intro.core/-main (core.clj line 114)
+
+
+;(cons "adsf" "dasfs")
+;Error: You cannot pass six arguments to a function cons, need two.
+;Found in file may2015.clj on line 8 at character 1.
+;	clojure.core/apply (core.clj line 630)
+;	corefns.corefns/cons (corefns.clj line 75)
+;	intro.may2015/eval8659 (may2015.clj line 32)
+;	intro.core/-main (core.clj line 114)
+
+;;this is just how filter works I guess, no errors here..
+;(filter odd? "fdasgfg")
+;Error: In function odd?, the first argument f must be an integer number but is a character.
+;Found in file core.clj on line 114 in function -main.
+;	corefns.corefns/odd? (corefns.clj line 160)
+;	clojure.core/filter (core.clj line 2688)
+;	clojure.core/seq (core.clj line 135)
+;	clojure.core/fn (core_print.clj line 155)
+;	clojure.core/apply (core.clj line 628)
+;	clojure.core/print (core.clj line 3603)
+;	intro.core/-main (core.clj line 114)
+
+;(filter #(odd? (int %)) "42356432543sdfgjhygdf.,/;l)_(&*^%$#@")
+;(first "1324")
+
+
+
+
+;(cons "ab" "cdef")
 
 
 
