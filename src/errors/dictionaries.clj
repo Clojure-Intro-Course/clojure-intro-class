@@ -221,9 +221,13 @@
         v-print (pretty-print-value v c c-type)
         arg (arg-str (if n (Integer. n) (:arg-num @seen-failed-asserts)))]
     (empty-seen) ; empty the seen-failed-asserts hashmap
-    (make-msg-info-hashes
+    (if (not (= "nil" v-print))
+      (make-msg-info-hashes
      "In function " fname :arg ", the " arg " " v-print :arg
-     " must be " t :type " but is " c-type :type ".")))
+     " must be " t :type " but is " c-type :type ".")
+      (make-msg-info-hashes
+     "In function " fname :arg ", the " arg
+     " must be " t :type " but is " v-print :arg "."))))
 
 (defn process-assert-obj-with-extra-arg
   "Returns a msg-info-obj generated for an assert failure based on the

@@ -95,11 +95,11 @@
          (run-and-catch-pretty-no-stacktrace 'intro.core '(nil 5))))
 
 ;; testing for odd? and even?
-(expect "In function even?, the first argument nil must be an integer number but is nil."
+(expect "In function even?, the first argument must be an integer number but is nil."
         (get-text-no-location
          (run-and-catch-pretty-no-stacktrace 'intro.core '(even? nil))))
 
-(expect "In function odd?, the first argument nil must be an integer number but is nil."
+(expect "In function odd?, the first argument must be an integer number but is nil."
         (get-text-no-location
          (run-and-catch-pretty-no-stacktrace 'intro.core '(odd? nil))))
 
