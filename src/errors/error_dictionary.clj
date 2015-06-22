@@ -258,6 +258,12 @@
     :match #"EOF while reading, starting at line (.+)"
     :make-msg-info-obj (fn [matches] (make-msg-info-hashes "End of file, starting at line " (nth matches 1) :arg
                                                            ".\nProbably a non-closing parenthesis or bracket."))}
+
+   {:key :compiler-exception-end-of-file-string
+    :class java.lang.RuntimeException
+    :match #"EOF while reading string"
+    :make-msg-info-obj (fn [matches] (make-msg-info-hashes "An opened " "\"" :arg " does not have a matching closing one."))}
+
    ;; Order mattters: do not re-order this one and :compiler-exception-no-such-var-no-namespace
    {:key :compiler-exception-no-such-var-with-namespace
     :class java.lang.RuntimeException

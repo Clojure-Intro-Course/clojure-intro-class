@@ -10,7 +10,8 @@
 ;(println (clojure.string/ "/home/stock424/Documents/code/clojure-intro-class/src/intro/may2015.clj" #"/"))
 ;(println ")
 
-(println #)
+;(println #2)
+;(map #2 [1 2 3])
 
 ;;(println (str/split "/home/stock424/Documents/code/clojure-intro-class/src/intro/may2015.clj" #"/"))
 ;Syntax error: java.lang.RuntimeException: No such namespace: str, compiling:(/home/stock424/Documents/code/clojure-intro-class/src/intro/may2015.clj:21:10)
@@ -613,6 +614,9 @@
 
  ;(let [[x y _ d m] ["1" "2" "3"]]
  ;  (println x y d))
+
+
+ "Non-closing string here
 
 
 
