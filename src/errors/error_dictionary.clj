@@ -212,9 +212,9 @@
     :make-msg-info-obj (fn [matches] (make-msg-info-hashes "Name " (nth matches 1) :arg " is undefined."))
     :hint "If you are using functions from another file, make sure you use dots for namespaces and slashes for functions, such as clojure.string/split."}
 
-   ;##############################################
-   ;### Runtime Exceptions ###
-   ;##############################################
+   ;#####################################################################
+   ;### Runtime Exceptions or clojure.lang.LispReader$ReaderException ###
+   ;#####################################################################
 
    {:key :compiler-exception-first-argument-must-be-symbol
     :class java.lang.RuntimeException
@@ -239,8 +239,8 @@
 
    {:key :compiler-exception-unmatched-delimiter
     :class java.lang.RuntimeException
-    :match #"Unmatched delimiter: (.+)"
-    :make-msg-info-obj (fn [matches] (make-msg-info-hashes "There is an unmatched delimiter " (nth matches 1) :arg "."))}
+    :match #"(.*)Unmatched delimiter: (.+)"
+    :make-msg-info-obj (fn [matches] (make-msg-info-hashes "There is an unmatched delimiter " (nth matches 2) :arg "."))}
 
    {:key :compiler-exception-too-many-arguments
     :class java.lang.RuntimeException
@@ -287,18 +287,6 @@
     2. Check the spelling of namespaces you might be using, such as clojure.string\n
     3. Make sure that your namespace uses dots, and the function in the namespaces is separated by a slash: clojure.string/split,
     where clojure.string is the namespace, and split is the function."}
-
-   ;################################################
-   ;### clojure.lang.LispReader$ReaderException ####
-   ;################################################
-
-   ;; Apparently the cause of an unmatched delimeter may be clojure.lang.LispReader$ReaderException
-
-   {:key :lisp-reader-exception-unmatched-delimiter
-    :class clojure.lang.LispReader$ReaderException
-    :match #"(.*)Unmatched delimiter: (.+)"
-    :make-msg-info-obj (fn [matches] (make-msg-info-hashes "There is an unmatched delimiter " (nth matches 2) :arg "."))}
-
 
 
    ;############################

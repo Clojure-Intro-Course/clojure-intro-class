@@ -228,7 +228,10 @@
 (defn prettify-exception [ex]
   (let [compiler? (compiler-error? ex)
         e (get-cause-if-needed ex)
-        e-class (class e)
+        ;; replacing clojure.lang.LispReader$ReaderException by RuntimeException
+        ;; to avoid code duplication in error handling since their errors
+        ;; overlap.
+        e-class (if (= (class e) clojure.lang.LispReader$ReaderException) RuntimeException (class e))
         message (get-exc-message e) ; converting an empty message from nil to ""
         exc (stacktrace/parse-exception e)
         stacktrace (:trace-elems exc)
