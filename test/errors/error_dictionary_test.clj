@@ -94,6 +94,19 @@
         (get-text-no-location
          (run-and-catch-pretty-no-stacktrace 'intro.core '(nil 5))))
 
+;; testing for odd? and even?
+(expect "In function even?, the first argument nil must be an integer number but is nil."
+        (get-text-no-location
+         (run-and-catch-pretty-no-stacktrace 'intro.core '(even? nil))))
+
+(expect "In function odd?, the first argument nil must be an integer number but is nil."
+        (get-text-no-location
+         (run-and-catch-pretty-no-stacktrace 'intro.core '(odd? nil))))
+
+(expect "In function even?, the first argument ((0 1 2...) (0 1 2...)) must be an integer number but is a vector."
+        (get-text-no-location
+         (run-and-catch-pretty-no-stacktrace 'intro.core '(even? [(range) (range)]))))
+
 ;##################################################
 ;### Testing for Index Out of Bounds Exceptions ###
 ;##################################################
@@ -116,8 +129,8 @@
 (expect "You cannot pass three arguments to a function even?, need one."
         (get-text-no-location (run-and-catch-pretty-no-stacktrace 'intro.core '(even? 3 6 1))))
 
-(expect "You cannot pass zero arguments to a function odd?, need one."
-        (get-text-no-location (run-and-catch-pretty-no-stacktrace 'intro.core '(odd?))))
+(expect "You cannot pass zero arguments to a function , need one."
+        (get-text-no-location (run-and-catch-pretty-no-stacktrace 'intro.core '())))
 
 (expect "You cannot pass one argument to this anonymous function."
         (get-text-no-location (run-and-catch-pretty-no-stacktrace 'intro.core '(#(+ %1 %2) 1))))
