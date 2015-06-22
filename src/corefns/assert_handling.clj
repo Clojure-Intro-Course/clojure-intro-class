@@ -24,6 +24,7 @@
     ;      (if (string? n) (add-to-seen {:number-of-args (read-string n)})))
     ;  (if q (add-to-seen {:number-of-args (read-string n)}))
 
+;this is currently unused
 (defn check-if-sequential?
   "returns true if x is sequential and false otherwise, sets data
   in seen-failed-asserts. If the second argument is present, it's added

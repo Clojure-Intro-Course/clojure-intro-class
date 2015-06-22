@@ -10,8 +10,17 @@
 ;(println (clojure.string/ "/home/stock424/Documents/code/clojure-intro-class/src/intro/may2015.clj" #"/"))
 ;(println ")
 
+;good: clojure.lang.LispReader$ReaderException
+;java.lang.RuntimeException
+;bad: everythign else
+
 ;(println #2)
-;(map #2 [1 2 3])
+(map #(+ %a 1) [1 2 3])
+
+
+
+
+
 
 ;;(println (str/split "/home/stock424/Documents/code/clojure-intro-class/src/intro/may2015.clj" #"/"))
 ;Syntax error: java.lang.RuntimeException: No such namespace: str, compiling:(/home/stock424/Documents/code/clojure-intro-class/src/intro/may2015.clj:21:10)
@@ -67,7 +76,7 @@
 ;(filter #(odd? (int %)) "42356432543sdfgjhygdf.,/;l)_(&*^%$#@")
 ;(first "1324")
 
-(odd? nil)
+;(odd? nil)
 
 
 ;(cons "ab" "cdef")
@@ -656,7 +665,7 @@
  ;  (println x y d))
 
 
- "Non-closing string here
+ "Non-closing string here"
 
 
 
