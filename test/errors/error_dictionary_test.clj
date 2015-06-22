@@ -225,4 +225,8 @@
 (expect #"The namespace clojure does not exist or is not accessible in your program\.\n(.+)"
         (get-all-text (run-and-catch-pretty-no-stacktrace 'intro.core '(clojure/string/splt "pattern" #"/"))))
 
+(expect #"There is an unmatched delimiter \)\."
+       (get-text-no-location (:msg-info-obj (try (load-file "exceptions/compilation_errors/unmatched_delim_re.clj")
+                       (catch Throwable e (prettify-exception e))))))
+
 ;; :compiler-exception-must-recur-to-function-or-loop

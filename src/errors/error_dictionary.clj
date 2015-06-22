@@ -282,6 +282,17 @@
     3. Make sure that your namespace uses dots, and the function in the namespaces is separated by a slash: clojure.string/split,
     where clojure.string is the namespace, and split is the function."}
 
+   ;################################################
+   ;### clojure.lang.LispReader$ReaderException ####
+   ;################################################
+
+   ;; Apparently the cause of an unmatched delimeter may be clojure.lang.LispReader$ReaderException
+
+   {:key :lisp-reader-exception-unmatched-delimiter
+    :class clojure.lang.LispReader$ReaderException
+    :match #"(.*)Unmatched delimiter: (.+)"
+    :make-msg-info-obj (fn [matches] (make-msg-info-hashes "There is an unmatched delimiter " (nth matches 2) :arg "."))}
+
 
 
    ;############################

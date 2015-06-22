@@ -5,9 +5,12 @@
             [intro.student :refer :all]))
 
 
-(println (clojure/string/splt "/home/stock424/Documents/code/clojure-intro-class/src/intro/may2015.clj" #"/"))
+;(println (clojure/string/splt "/home/stock424/Documents/code/clojure-intro-class/src/intro/may2015.clj" #"/"))
 ;(println (/string "/home/stock424/Documents/code/clojure-intro-class/src/intro/may2015.clj" #"/"))
 ;(println (clojure.string/ "/home/stock424/Documents/code/clojure-intro-class/src/intro/may2015.clj" #"/"))
+;(println ")
+
+(println #)
 
 ;;(println (str/split "/home/stock424/Documents/code/clojure-intro-class/src/intro/may2015.clj" #"/"))
 ;Syntax error: java.lang.RuntimeException: No such namespace: str, compiling:(/home/stock424/Documents/code/clojure-intro-class/src/intro/may2015.clj:21:10)
@@ -610,6 +613,8 @@
 
  ;(let [[x y _ d m] ["1" "2" "3"]]
  ;  (println x y d))
+
+
 
 
 
