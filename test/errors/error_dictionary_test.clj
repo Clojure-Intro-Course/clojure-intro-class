@@ -59,6 +59,10 @@
         (get-text-no-location
          (run-and-catch-pretty-no-stacktrace 'intro.core '(cons 1 2))))
 
+;(expect "In function cons, the second argument 2 must be a sequence but is a number."
+;        (get-text-no-location
+;         (run-and-catch-pretty-no-stacktrace 'intro.core '(cons "abc" "def"))))
+
 ;; testing for :illegal-argument-even-number-of-forms
 ;; Elena: this is a compilation error in clojure 1.7, so we can't test it like this
 ;; testing for :illegal-argument-even-number-of-forms-in-binding-vector

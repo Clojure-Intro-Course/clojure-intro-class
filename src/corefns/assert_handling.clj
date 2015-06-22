@@ -25,7 +25,7 @@
     ;  (if q (add-to-seen {:number-of-args (read-string n)}))
 
 (defn check-if-sequential?
-  "returns true if x is seqable and false otherwise, sets data
+  "returns true if x is sequential and false otherwise, sets data
   in seen-failed-asserts. If the second argument is present, it's added
   to the seen-failed-asserts as the number of the argument"
   [fname x & [n]]

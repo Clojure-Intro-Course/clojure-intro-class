@@ -40,7 +40,7 @@
 ;	intro.core/-main (core.clj line 114)
 
 
-(cons "adsf" "dasfs")
+;(cons "adsf" "dasfs")
 ;Error: You cannot pass six arguments to a function cons, need two.
 ;Found in file may2015.clj on line 8 at character 1.
 ;	clojure.core/apply (core.clj line 630)
@@ -66,7 +66,7 @@
 
 
 
-
+(cons "abc" "def")
 
 
 
