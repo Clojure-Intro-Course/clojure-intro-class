@@ -17,8 +17,7 @@
 ;(println #2)
 ;(map #(+ %3.14 1) [1 2 3])
 
-;1/2/3
-(clojure/string/splt "pattern" #"/")
+(#(+ % 1) 2 3)
 
 
 
