@@ -28,10 +28,11 @@
   (if entry ((:make-msg-info-obj entry) (re-matches (:match entry) message))
             (make-msg-info-hashes message)))
 
-(defn hints-for-matched-entry [entry]
-  (let [key-for-hints (:key entry)
-        lookup-hint (if key-for-hints (key-for-hints hints) "")]
-        (if lookup-hint lookup-hint "")))
+(defn hints-for-matched-entry
+  "Returns all hints found for an exception key, as one string."
+  [entry-key]
+  (reduce str "" (vals (filter #((first %) entry-key) hints))))
+
 
 ;; Putting together a message (perhaps should be moved to errors.dictionaries?
 ;(defn get-pretty-message [e-class message]
@@ -240,7 +241,7 @@
         location (if (empty? comp-location) (get-location-info filtered-trace) comp-location)
         entry (first-match e-class message)
         msg-info-obj (into (msg-from-matched-entry entry message) (location-info location))
-        hint-message (hints-for-matched-entry entry)]
+        hint-message (hints-for-matched-entry (:key entry))]
     ;; create an exception object
     ;(println (class (.getCause ex)))
     ;(println (.getMessage e))
