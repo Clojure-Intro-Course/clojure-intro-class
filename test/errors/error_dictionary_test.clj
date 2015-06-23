@@ -107,6 +107,15 @@
         (get-text-no-location
          (run-and-catch-pretty-no-stacktrace 'intro.core '(even? [(range) (range)]))))
 
+;############################################
+;### Testing for Illegal State Exceptions ###
+;############################################
+
+;;I am having trouble getting this test to work.
+;(expect "% must be either on its own or followed by a number or &."
+;        (get-text-no-location
+;         (run-and-catch-pretty-no-stacktrace 'intro.core '(map #(+ %a 1) [1 2 3]))))
+
 ;##################################################
 ;### Testing for Index Out of Bounds Exceptions ###
 ;##################################################

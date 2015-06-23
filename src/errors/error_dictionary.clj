@@ -122,6 +122,15 @@
                                                ", but you are passing "
                                                (number-word sec-arg) ".")))}
 
+   ;################################
+   ;### Illegal State Exceptions ###
+   ;################################
+
+    {:key :compiler-exception-on-improper-use-of-arg-literal
+    :class IllegalStateException
+    :match #"arg literal must be %, %\& or %integer"
+    :make-msg-info-obj (fn [matches] (make-msg-info-hashes "% must be either on its own or followed by a number or &."))}
+
    ;######################################
    ;### Index Out of Bounds Exceptions ###
    ;######################################
