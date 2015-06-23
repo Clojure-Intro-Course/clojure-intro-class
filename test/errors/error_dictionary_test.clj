@@ -112,9 +112,9 @@
 ;############################################
 
 ;;I am having trouble getting this test to work.
-;(expect "% must be either on its own or followed by a number or &."
-;        (get-text-no-location
-;         (run-and-catch-pretty-no-stacktrace 'intro.core '(map #(+ %a 1) [1 2 3]))))
+(expect "% must be either on its own or followed by a number or &."
+       (get-text-no-location (:msg-info-obj (try (load-file "exceptions/compilation_errors/percent_followed_by_letter.clj")
+                       (catch Throwable e (prettify-exception e))))))
 
 ;##################################################
 ;### Testing for Index Out of Bounds Exceptions ###
