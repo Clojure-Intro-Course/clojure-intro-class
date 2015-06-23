@@ -18,7 +18,7 @@
 ;(map #(+ %3.14 1) [1 2 3])
 
 ;(#(+ % 1) 2 3)
-(map #(+ %a 1) [1 2 3])
+
 
 
 ;;(println (str/split "/home/stock424/Documents/code/clojure-intro-class/src/intro/may2015.clj" #"/"))

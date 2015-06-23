@@ -111,7 +111,6 @@
 ;### Testing for Illegal State Exceptions ###
 ;############################################
 
-;;I am having trouble getting this test to work.
 (expect "% must be either on its own or followed by a number or &."
        (get-text-no-location (:msg-info-obj (try (load-file "exceptions/compilation_errors/percent_followed_by_letter.clj")
                        (catch Throwable e (prettify-exception e))))))
@@ -138,8 +137,8 @@
 (expect "You cannot pass three arguments to a function even?, need one."
         (get-text-no-location (run-and-catch-pretty-no-stacktrace 'intro.core '(even? 3 6 1))))
 
-;(expect "You cannot pass zero arguments to a function , need one."
-;        (get-text-no-location (run-and-catch-pretty-no-stacktrace 'intro.core '())))
+(expect "You cannot pass zero arguments to a function even?, need one."
+        (get-text-no-location (run-and-catch-pretty-no-stacktrace 'intro.core '(even?))))
 
 (expect "You cannot pass one argument to this anonymous function."
         (get-text-no-location (run-and-catch-pretty-no-stacktrace 'intro.core '(#(+ %1 %2) 1))))
