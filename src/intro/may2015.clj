@@ -62,7 +62,7 @@
           (f-fill (first args) (second args) (second (rest args)) (second (rest (rest args)))))
          (q/with-translation [x y]
            (q/with-rotation [(/ (* q/PI angle) 180)]
-             (q/arc 0 0 wid hei start stop :pie)))
+             (f-arc 0 0 wid hei start stop :pie)))
          (q/no-fill))})
 
 (defn create-line
@@ -230,12 +230,13 @@
 (defn w-recur
   "Helper function for calc-max-w that goes through and grabs all the :tw within each shape or image."
   [args]
-  (conj
-   (if (not= (count args) 1)
-     (w-recur (rest args)))
-   (if (vector? (first args))
-     (:tw (first (first args)))
-     (:tw (first args)))))
+  (loop [args args
+         vect []]
+    (if (not= (count args) 0)
+      (if (vector? (first args))
+        (recur (rest args) (conj vect (:tw (first (first args)))))
+        (recur (rest args) (conj vect (:tw (first args)))))
+      vect)))
 
 (defn calc-max-w
   "Calculates the max width by finding the maximum :tw of all of the shapes.
@@ -255,12 +256,13 @@
 (defn h-recur
   "Helper function for calc-max-h that goes through and grabs all the :th within each shape or image."
   [args]
-  (conj
-   (if (not= (count args) 1)
-     (h-recur (rest args)))
-   (if (vector? (first args))
-     (:th (first (first args)))
-     (:th (first args)))))
+  (loop [args args
+         vect []]
+    (if (not= (count args) 0)
+      (if (vector? (first args))
+        (recur (rest args) (conj vect (:th (first (first args)))))
+        (recur (rest args) (conj vect (:th (first args)))))
+      vect)))
 
 (defn calc-max-h
   "Calculates the max height by finding the maximum :th of all of the shapes.
@@ -420,10 +422,11 @@
 (defn eval-compshape-overlay-align
   "Helper function for eval-shapes-overlay-align that deals with complex shapes."
   [vert hor args]
-  (conj
-   (if (not= (count args) 1)
-     (eval-compshape-overlay-align vert hor (rest args)))
-   (assoc (first args) :tw max-w :th max-h :dy (overlay-compshape-vertical vert (first args)) :dx (overlay-compshape-horizontal hor (first args)))))
+  (loop [args args
+         vect []]
+    (if (not= (count args) 0)
+      (recur (rest args) (conj vect (assoc (first args) :tw max-w :th max-h :dy (overlay-compshape-vertical vert (first args)) :dx (overlay-compshape-horizontal hor (first args)))))
+      vect)))
 
 (defn overlay-vertical
   "Helper function for eval-shapes-overlay-align that decides what the :dy needs to be changed to."
@@ -454,12 +457,13 @@
 (defn eval-shapes-overlay-align
   "Helper function for overlay-align that decides which information needs to be changed and to what."
   [vert hor args]
-  (conj (if (not= (count args) 1)
-          (eval-shapes-overlay-align vert hor (rest args)))
-
-        (if (vector? (first args))
-          (eval-compshape-overlay-align vert hor (first args))
-          (assoc (first args) :tw max-w :th max-h :dy (overlay-vertical vert (first args)) :dx (overlay-horizontal hor (first args))))))
+  (loop [args args
+         vect []]
+    (if (not= (count args) 0)
+      (if (vector? (first args))
+        (recur (rest args) (conj vect (eval-compshape-overlay-align vert hor (first args))))
+        (recur (rest args) (conj vect (assoc (first args) :tw max-w :th max-h :dy (overlay-vertical vert (first args)) :dx (overlay-horizontal hor (first args))))))
+      vect)))
 
 (defn overlay-align
   "Takes in a first argument of :top :center or :bottom for the vertical orientation, a second argument of :left :center or :right for the horizontal orientation,
@@ -479,49 +483,64 @@
 (defn eval-compshape-above-align-right
   "Helper function for eval-shapes-above-align-right that deals with complex shapes."
   [args numb th]
-  (conj
-   (if (not= (count args) 1)
-     (eval-compshape-above-align-right (rest args) numb th))
-   (assoc (first args) :dy (+ (:dy (first args)) (- (+ (quot th 2) numb) (quot tot-h 2))) :tw max-w :th tot-h :dx (if
-                                                                                                                    (= (:tw (first args)) max-w)
-                                                                                                                    (:dx (first args))
-                                                                                                                    (- (+ (:dx (first args)) (quot max-w 2)) (quot (:tw (first args)) 2))))))
+  (loop [args args
+         vect []]
+    (if (not= (count args) 0)
+      (recur (rest args) (conj vect (assoc (first args)
+                                      :dy (+ (:dy (first args)) (- (+ (quot th 2) numb) (quot tot-h 2)))
+                                      :tw max-w
+                                      :th tot-h
+                                      :dx (if (= (:tw (first args)) max-w)
+                                            (:dx (first args))
+                                            (- (+ (:dx (first args)) (quot max-w 2)) (quot (:tw (first args)) 2))))))
+      vect)))
 
 (defn eval-shapes-above-align-right
   "Helper function for above-align that decides what changes to make in the hashmap for :right alignment."
   [args numb]
-  (conj (if (not= (count args) 1)
-          (if (vector? (first args))
-            (eval-shapes-above-align-right (rest args) (+ (:th (first (first args))) numb))
-            (eval-shapes-above-align-right (rest args) (+ (:th (first args)) numb))))
-
-        (if (vector? (first args))
-          (eval-compshape-above-align-right (first args) numb (:th (first (first args))))
-          (assoc (first args) :dy (- (+ (quot (:th (first args)) 2) numb) (quot tot-h 2)) :dx (- (quot max-w 2) (quot (:tw (first args)) 2)) :tw max-w :th tot-h))))
+  (loop [args args
+         numb numb
+         vect []]
+    (if (not= (count args) 0)
+      (if (vector? (first args))
+        (recur (rest args) (+ (:th (first (first args))) numb) (conj vect (eval-compshape-above-align-right (first args) numb (:th (first (first args))))))
+        (recur (rest args) (+ (:th (first args)) numb) (conj vect (assoc (first args)
+                                                                    :dy (- (+ (quot (:th (first args)) 2) numb) (quot tot-h 2))
+                                                                    :dx (- (quot max-w 2) (quot (:tw (first args)) 2))
+                                                                    :tw max-w
+                                                                    :th tot-h))))
+      vect)))
 
 (defn eval-compshape-above-align-left
   "Helper function for eval-shapes-above-align-left that deals with complex shapes."
   [args numb th]
-  (conj
-   (if (not= (count args) 1)
-     (eval-compshape-above-align-left (rest args) numb th))
-   (assoc (first args) :dy (+ (:dy (first args)) (- (+ (quot th 2) numb) (quot tot-h 2))) :tw max-w :th tot-h :dx (if
-                                                                                                                    (= (:tw (first args)) max-w)
-                                                                                                                    (:dx (first args))
-                                                                                                                    (+ (- (:dx (first args)) (quot max-w 2)) (quot (:tw (first args)) 2))))))
+  (loop [args args
+         vect []]
+    (if (not= (count args) 0)
+      (recur (rest args) (conj vect (assoc (first args)
+                                      :dy (+ (:dy (first args)) (- (+ (quot th 2) numb) (quot tot-h 2)))
+                                      :tw max-w
+                                      :th tot-h
+                                      :dx (if (= (:tw (first args)) max-w)
+                                            (:dx (first args))
+                                            (+ (- (:dx (first args)) (quot max-w 2)) (quot (:tw (first args)) 2))))))
+      vect)))
 
 (defn eval-shapes-above-align-left
   "Helper function for above-align that decides what changes to make in the hashmap for :left alignment."
   [args numb]
-  (conj (if (not= (count args) 1)
-          (if (vector? (first args))
-            (eval-shapes-above-align-left (rest args) (+ (:th (first (first args))) numb))
-            (eval-shapes-above-align-left (rest args) (+ (:th (first args)) numb))))
-
-        (if (vector? (first args))
-          (eval-compshape-above-align-left (first args) numb (:th (first (first args))))
-          (assoc (first args) :dy (- (+ (quot (:th (first args)) 2) numb) (quot tot-h 2)) :dx (- (quot (:tw (first args)) 2) (quot max-w 2)) :tw max-w :th tot-h))))
-
+  (loop [args args
+         numb numb
+         vect []]
+    (if (not= (count args) 0)
+      (if (vector? (first args))
+        (recur (rest args) (+ (:th (first (first args))) numb) (conj vect (eval-compshape-above-align-left (first args) numb (:th (first (first args))))))
+        (recur (rest args) (+ (:th (first args)) numb) (conj vect (assoc (first args)
+                                                                    :dy (- (+ (quot (:th (first args)) 2) numb) (quot tot-h 2))
+                                                                    :dx (- (quot (:tw (first args)) 2) (quot max-w 2))
+                                                                    :tw max-w
+                                                                    :th tot-h))))
+      vect)))
 
 (defn above-align
   "Takes in a first argument of :right :left for the vertical orientation,
@@ -545,50 +564,64 @@
 (defn eval-compshape-beside-align-top
   "Helper function for eval-shapes-beside-align-top that deals with complex shapes."
   [args numb tw]
-  (conj
-   (if (not= (count args) 1)
-     (eval-compshape-beside-align-top (rest args) numb tw))
-   (assoc (first args) :dx (+ (:dx (first args)) (- (+ (quot tw 2) numb) (quot tot-w 2))) :tw tot-w :th max-h :dy (if
-                                                                                                                    (= (:th (first args)) max-h)
-                                                                                                                    (:dy (first args))
-                                                                                                                    (+ (- (:dy (first args)) (quot max-h 2)) (quot (:th (first args)) 2))))))
-
+  (loop [args args
+         vect []]
+    (if (not= (count args) 0)
+      (recur (rest args) (conj vect (assoc (first args)
+                                      :dx (+ (:dx (first args)) (- (+ (quot tw 2) numb) (quot tot-w 2)))
+                                      :tw tot-w
+                                      :th max-h
+                                      :dy (if (= (:th (first args)) max-h)
+                                            (:dy (first args))
+                                            (+ (- (:dy (first args)) (quot max-h 2)) (quot (:th (first args)) 2))))))
+      vect)))
 
 (defn eval-shapes-beside-align-top
   "Helper function for beside-align that decides what changes to make in the hashmap for :top alignment."
   [args numb]
-  (conj (if (not= (count args) 1)
-          (if (vector? (first args))
-            (eval-shapes-beside-align-top (rest args) (+ (:tw (first (first args))) numb))
-            (eval-shapes-beside-align-top (rest args) (+ (:tw (first args)) numb))))
-
-        (if (vector? (first args))
-          (eval-compshape-beside-align-top (first args) numb (:tw (first (first args))))
-          (assoc (first args) :dx (- (+ (quot (:tw (first args)) 2) numb) (quot tot-w 2)) :tw tot-w :th max-h :dy (- (quot (:th (first args)) 2) (quot max-h 2))))))
+  (loop [args args
+         numb numb
+         vect []]
+    (if (not= (count args) 0)
+      (if (vector? (first args))
+        (recur (rest args) (+ (:tw (first (first args))) numb) (conj vect (eval-compshape-beside-align-top (first args) numb (:tw (first (first args))))))
+        (recur (rest args) (+ (:tw (first args)) numb) (conj vect (assoc (first args)
+                                                                    :dx (- (+ (quot (:tw (first args)) 2) numb) (quot tot-w 2))
+                                                                    :tw tot-w
+                                                                    :th max-h
+                                                                    :dy (- (quot (:th (first args)) 2) (quot max-h 2))))))
+      vect)))
 
 (defn eval-compshape-beside-align-bottom
   "Helper function for eval-shapes-beside-align-bottom that deals with complex shapes."
   [args numb tw]
-  (conj
-   (if (not= (count args) 1)
-     (eval-compshape-beside-align-bottom (rest args) numb tw))
-   (assoc (first args) :dx (+ (:dx (first args)) (- (+ (quot tw 2) numb) (quot tot-w 2))) :tw tot-w :th max-h :dy (if
-                                                                                                                    (= (:th (first args)) max-h)
-                                                                                                                    (:dy (first args))
-                                                                                                                    (- (+ (:dy (first args)) (quot max-h 2)) (quot (:th (first args)) 2))))))
+  (loop [args args
+         vect []]
+    (if (not= (count args) 0)
+      (recur (rest args) (conj vect (assoc (first args)
+                                      :dx (+ (:dx (first args)) (- (+ (quot tw 2) numb) (quot tot-w 2)))
+                                      :tw tot-w
+                                      :th max-h
+                                      :dy (if (= (:th (first args)) max-h)
+                                            (:dy (first args))
+                                            (- (+ (:dy (first args)) (quot max-h 2)) (quot (:th (first args)) 2))))))
+      vect)))
 
 (defn eval-shapes-beside-align-bottom
   "Helper function for beside-align that decides what changes to make in the hashmap for :bottom alignment."
   [args numb]
-  (conj (if (not= (count args) 1)
-          (if (vector? (first args))
-            (eval-shapes-beside-align-bottom (rest args) (+ (:tw (first (first args))) numb))
-            (eval-shapes-beside-align-bottom (rest args) (+ (:tw (first args)) numb))))
-
-        (if (vector? (first args))
-          (eval-compshape-beside-align-bottom (first args) numb (:tw (first (first args))))
-          (assoc (first args) :dx (- (+ (quot (:tw (first args)) 2) numb) (quot tot-w 2)) :tw tot-w :th max-h :dy (- (quot max-h 2) (quot (:th (first args)) 2))))))
-
+  (loop [args args
+         numb numb
+         vect []]
+    (if (not= (count args) 0)
+      (if (vector? (first args))
+        (recur (rest args) (+ (:tw (first (first args))) numb) (conj vect (eval-compshape-beside-align-bottom (first args) numb (:tw (first (first args))))))
+        (recur (rest args) (+ (:tw (first args)) numb) (conj vect (assoc (first args)
+                                                                    :dx (- (+ (quot (:tw (first args)) 2) numb) (quot tot-w 2))
+                                                                    :tw tot-w
+                                                                    :th max-h
+                                                                    :dy (- (quot max-h 2) (quot (:th (first args)) 2))))))
+      vect)))
 
 (defn beside-align
   "Takes in a first argument of :top :bottom for the vertical orientation,
@@ -633,15 +666,16 @@
 (defn scale-complex
   "Helper function for scale-shape that breaks a complex shape into simple shapes."
   [shape scale-x scale-y]
-  (conj (if (not= (count shape) 1)
-          (scale-complex (rest shape) scale-x scale-y))
-        (scale-image (first shape) scale-x scale-y)))
-
+  (loop [shape shape
+         vect []]
+    (if (not= (count shape) 0)
+      (recur (rest shape) (conj vect (scale-image (first shape) scale-x scale-y)))
+      vect)))
 
 (defn scale-shape
   "Takes in a shape or image, x-axis scale, and y-axis scale.
   Scales the shape based off the values input.
-  This returns a new complex shape.
+  This returns a new complex shape if given a complex shape otherwise returns a new simple shape.
   Look at quil's scale function for more information."
   [shape scale-x scale-y]
   (if (vector? shape)
@@ -658,16 +692,6 @@
   Look at quil's rotate function for more information."
   [shape angle]
   (assoc shape :angle angle))
-
-
-(defn grow [arg]
-  (above (beside arg
-                 arg)
-         (beside arg
-                 arg)))
-
-
-
 
 ;-----------------------------------------------------------
 ;                   SKETCH FUNCTIONS
@@ -692,8 +716,8 @@
 
     (def sqr1 (create-rect 20 20 255 80 80))
     (def sqr2 (create-rect 40 40 80 255 80))
-    (def sqr3 (create-rect 60 60 80 80 255))
-    (def sqr4 (create-rect 80 80 255 255 80))
+    (def sqr3 (create-rect 60 60 :orange))
+    (def sqr4 (create-rect 80 80 :blue))
     (def sqr5 (create-rect 100 100 255 80 255))
     (def sqr6 (create-rect 120 120 80 255 255))
     (def sqr7 (create-rect 140 140 80 80 80))
@@ -725,25 +749,21 @@
     (def quad1 (create-quad 50 0 50 50 0 50 80 255 80))
     (def rot-quad1 (rotate-shape quad1 315))
 
+    (def kappa (create-picture "/home/hagen715/Desktop/images/kappa96x130.png"))
+
     (def test-sqrs (above
                     (above sqr6
-                           (beside sqr4
+                           (beside (scale-shape sqr4 2 2)
                                    sqr3))
                     (above sqr6
-                           (beside tall-box
-                                   (overlay sqr1
-                                            sqr2
-                                            sqr3)))))
+                           (beside-align :bottom tall-box
+                                         (scale-shape kappa 0.5 0.5)
+                                         (overlay-align :top :left
+                                                        sqr4
+                                                        sqr3
+                                                        (scale-shape (beside sqr4 sqr4) 2 2))))))
 
 
-
-
-
-    (def light-table (create-picture "/home/mcart046/Pictures/lighttable.png"))
-    (def kappa (create-picture "/home/hagen715/Desktop/images/kappa96x130.png"))
-    ; (def big-kappa (scale-shape (create-picture "/home/hagen715/Desktop/images/kappa96x130.png") 2 2))
-    (def bigger-kappa (create-picture "/home/hagen715/Desktop/images/kappa96x130.png"))
-    (def biggest-kappa (create-picture "/home/hagen715/Desktop/images/kappa96x130.png"))
     (def frankerz (create-picture "/home/hagen715/Desktop/images/frankerz220x200.jpg"))
     (def flying-thing (beside-align :bottom
                                     sweet-line
@@ -769,7 +789,6 @@
 
     (def thing (overlay-align :top :right sweet-line sqr1 sqr2 sqr3 sqr4 sqr5 (overlay-align :bottom :left kappa sqr1 sqr2 sqr3 sqr4 sqr5 sqr6 sqr7 sqr8 sqr9)))
     (def tri (create-triangle 0 300 300 0 80 255 255))
-    ;(def not-rotated-kappa (rotate-shape thing 90))
     (def kappa2 (beside-align :top (above (create-rect 96 170 80 255 80) kappa) (above (create-rect 96 70 80 255 80) kappa)))
     (def blokz (above tall-box
                       long-box))
@@ -801,8 +820,7 @@
       :angle2 (+ (:angle2 state) 0.7)
       :number (if (= (:number state) 255)
                 0
-                255)
-    :shape (grow (:shape state)))
+                255))
 
     (catch Throwable e (println (.getCause e)) (display-error (prettify-exception e)))))
 
@@ -810,23 +828,23 @@
 
 (defn draw-state [state]
   (try
-    (f-background 0 0 255)
-
-    (f-stroke 80 255 80)
+    (f-background :lime)
+    (q/stroke-weight 5)
+    ;(f-stroke :magenta)
     (f-text-size 40)
     (q/text-align :center)
-    (q/text-num (q/pow (q/frame-count) 4) 500 100)
 
     ;(q/with-translation [500 500] (q/with-rotation [q/PI] (ds flying-thing 100 100)))
     ;(ds flying-thing (+ 500 (* 150 (q/cos (:angle state)))) (+ 500 (* 150 (q/sin (:angle state)))))
     (f-fill 255 80 255)
-    (f-stroke 255 80 255)
 
+    (ds arc1 500 500)
 
     ;(ds test-sqrs 500 500)
-    (ds (:shape state) 500 500)
-
-    (q/text-num (q/pow (q/frame-count) 4) 500 100)
+    (q/no-fill)
+    ;(q/no-stroke)
+    (q/text-num 500 500 100)
+    ;(q/text "hello" 500 200)
     ;(ds (create-line 0 1000 255) 500 500)
     ;(ds (create-line 1000 0 255) 500 500)
     (catch Throwable e (println (.getCause e)) (display-error (prettify-exception e)))))
@@ -835,7 +853,7 @@
 
 (q/defsketch my
   :title "My sketch"
-  :size [1000 1000]
+  :size [1920 1000]
   ; Setup function called only once, during sketch initialization.
   :setup setup
   ; Update-state is called on each iteration before draw-state.
