@@ -120,9 +120,7 @@
                          (make-msg-info-hashes "This recur is supposed to take "
                                                (number-word first-arg) arg-args
                                                ", but you are passing "
-                                               (number-word sec-arg) ".")))
-    :hints "1. You are passing a wrong number of arguments to recur. Check its function or loop.\n
-    2. recur might be outside of the scope of its function or loop."}
+                                               (number-word sec-arg) ".")))}
 
    ;######################################
    ;### Index Out of Bounds Exceptions ###
@@ -137,10 +135,7 @@
    {:key :string-index-out-of-bounds
     :class StringIndexOutOfBoundsException
     :match #"String index out of range: (\d+)"
-    :make-msg-info-obj (fn [matches] (make-msg-info-hashes "Position " (nth matches 1) :arg " is outside of the string."))
-    :hint "String positions start at zero, so there is no character at a position equal to the string length.
-    Example: a string \"hi\" does not have a character at position 2. \n
-    Also the string may be empty, in this case accessing any position in it gives this error."}
+    :make-msg-info-obj (fn [matches] (make-msg-info-hashes "Position " (nth matches 1) :arg " is outside of the string."))}
 
    {:key :index-out-of-bounds-index-not-provided
     :class IndexOutOfBoundsException
@@ -209,8 +204,7 @@
    {:key :class-not-found-exception
     :class ClassNotFoundException
     :match #"(.*)"
-    :make-msg-info-obj (fn [matches] (make-msg-info-hashes "Name " (nth matches 1) :arg " is undefined."))
-    :hint "If you are using functions from another file, make sure you use dots for namespaces and slashes for functions, such as clojure.string/split."}
+    :make-msg-info-obj (fn [matches] (make-msg-info-hashes "Name " (nth matches 1) :arg " is undefined."))}
 
    ;#####################################################################
    ;### Runtime Exceptions or clojure.lang.LispReader$ReaderException ###
@@ -281,12 +275,7 @@
    {:key :compiler-exception-no-such-namespace
     :class java.lang.RuntimeException
     :match #"No such namespace: (.+)"
-    :make-msg-info-obj (fn [matches] (make-msg-info-hashes "The namespace " (nth matches 1) :arg " does not exist or is not accessible in your program."))
-    ;; We might also need to include a hint for accidentally using a dot or a slash
-    :hint "1. If you are using functions from other namespaces, make sure you use 'refer' in the beginning of your file to include the namespace.\n
-    2. Check the spelling of namespaces you might be using, such as clojure.string\n
-    3. Make sure that your namespace uses dots, and the function in the namespaces is separated by a slash: clojure.string/split,
-    where clojure.string is the namespace, and split is the function."}
+    :make-msg-info-obj (fn [matches] (make-msg-info-hashes "The namespace " (nth matches 1) :arg " does not exist or is not accessible in your program."))}
 
 
    ;############################
@@ -346,6 +335,7 @@
                                         (str "a function "))]
                            (make-msg-info-hashes "Wrong number of arguments ("
                                                  (nth matches 2) ") passed to " funstr fstr :arg ".")))}
+
 
    ])
 

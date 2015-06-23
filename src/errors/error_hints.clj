@@ -40,6 +40,22 @@
                                                 \t \t :hello instead of hello
 	                                              \t -you mistyped a higher-order function
                                                 \t \t Look back at your code for spelling errors:(first [2 3]) instead of (firST [2 3])"
+
+  ;; We might also need to include a hint for accidentally using a dot or a slash
+   :compiler-exception-no-such-namespace "1. If you are using functions from other namespaces, make sure you use 'refer' in the beginning of your file to include the namespace.\n
+    2. Check the spelling of namespaces you might be using, such as clojure.string\n
+    3. Make sure that your namespace uses dots, and the function in the namespaces is separated by a slash: clojure.string/split,
+    where clojure.string is the namespace, and split is the function."
+
+   :class-not-found-exception "If you are using functions from another file, make sure you use dots for namespaces and slashes for functions, such as clojure.string/split."
+
+   :string-index-out-of-bounds "String positions start at zero, so there is no character at a position equal to the string length.
+    Example: a string \"hi\" does not have a character at position 2. \n
+    Also the string may be empty, in this case accessing any position in it gives this error."
+
+   :compiler-exception-wrong-number-of-arguments-to-recur "1. You are passing a wrong number of arguments to recur. Check its function or loop.\n
+    2. recur might be outside of the scope of its function or loop."
+
    :null-pointer-non-existing-object-provided "Put hint here"
   }
 )

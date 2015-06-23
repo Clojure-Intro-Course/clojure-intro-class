@@ -15,10 +15,10 @@
 ;bad: everythign else
 
 ;(println #2)
-(map #(+ %a 1) [1 2 3])
+;(map #(+ %3.14 1) [1 2 3])
 
-
-
+;1/2/3
+1.2.2
 
 
 
@@ -665,7 +665,7 @@
  ;  (println x y d))
 
 
- "Non-closing string here"
+; "Non-closing string here"
 
 
 
