@@ -1,0 +1,87 @@
+(defn create-ellipse
+  "Takes in width height and any RGB value for color that quil allows, look at quil's fill function for exact input parameters.
+  Creates a hashmap of the information relevant to the shape and its draw position and values needed by the ds function.
+  Look at quil's ellipse function for more information."
+ 
+(defn create-arc
+  "Takes in a width height start stop and any RGB value for color that quil allows, look at quil's fill function for exact input parameters.
+  The start and stop are measured in radians.
+  Creates a hashmap of the information relevant to the shape and its draw position and the values needed by the ds function.
+  Look at quil's arc function for more information."
+ 
+(defn create-line
+  "Takes in one x and y position and any RGB value for color that quil allows, look at quil's stroke function for exact input parameters.
+  The first position is atomatically (0,0) so draw your line based off of that.
+  Creates a hashmap of the information relevant to the shape and its draw position and the values needed by the ds function.
+  Look at quil's line function for more information."
+
+(defn create-triangle
+  "Takes in two x and y positions and any RGB value for color that quil allows, look at quil's fill function for exact input parameters.
+  The first position is atomatically (0,0) so draw your shape based off of that.
+  Creates a hashmap of the information relevant to the shape and its draw position and the values needed by the ds function.
+  Look at quil's triangle function for more information."
+ 
+(defn create-quad
+  "Takes in three x and y positions and any RGB value for color that quil allows, look at quil's fill function for exact input parameters.
+  The first position is atomatically (0,0) so draw your shape based off of that.
+  Creates a hashmap of the information relevant to the shape and its draw position and the values needed by the ds function.
+  Look at quil's quad function for more information."
+ 
+(defn create-picture
+  "Takes in a string of the image location.
+  Creates a hashmap of the information relevant to the shape and its draw position and values needed by the ds function.
+  Look at quil's load-image function for more information."
+  
+(defn create-rect
+  "Takes in width height and any RGB value for color that quil allows, look at quil's fill function for exact input parameters.
+  Creates a hashmap of the information relevant to the shape and its draw position and values needed by the ds function.
+  Look at quil's rect function for more information."
+  
+(defn ds
+  "Calls the internal function :ds of the shape or image hashmap with the input variables passed to it."
+  
+(defn above
+  "Takes 1 or more shapes and puts them above each other.
+  The first argument will be on the top, the last argument will be on the bottom.
+  This returns a new complex shape."
+
+(defn beside
+  "Takes 1 or more shapes and puts them beside each other.
+  The first argument will be on the left, the last argument will be on the right.
+  This returns a new complex shape."
+
+(defn overlay
+  "Takes 1 or more shapes and overlays them on each other.
+  The first argument will be on the front of the shape, the last argument will be the back of the shape.
+  This returns a new complex shape."
+  
+(defn overlay-align
+  "Takes in a first argument of :top :center or :bottom for the vertical orientation, a second argument of :left :center or :right for the horizontal orientation,
+  and 1 or more shapes and overlays them on each other with the specified orientation.
+  The first argument will be on the front of the shape, the last argument will be the back of the shape.
+  This returns a new complex shape."
+  
+(defn above-align
+  "Takes in a first argument of :right :left for the vertical orientation,
+  and 1 or more shapes and puts them above each other with the specified orientation.
+  The first argument will be on top, the last argument will be on bottom.
+  This returns a new complex shape."
+
+(defn beside-align
+  "Takes in a first argument of :top :bottom for the vertical orientation,
+  and 1 or more shapes and puts them beside each other with the specified orientation.
+  The first argument will be on the left, the last argument will be on the right.
+  This returns a new complex shape."
+
+(defn scale-shape
+  "Takes in a shape or image, x-axis scale, and y-axis scale.
+  Scales the shape based off the values input.
+  This returns a new complex shape if given a complex shape otherwise returns a new simple shape.
+  Look at quil's scale function for more information."
+
+(defn rotate-shape
+  "Function that takes in a shape or image and an angle in degrees.
+  It then rotates the shape or image.
+  This function returns a new shape.
+  This function cannot be used on complex shapes.
+  Look at quil's rotate function for more information."
