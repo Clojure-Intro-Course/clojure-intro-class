@@ -201,7 +201,9 @@
   [e]
   (let [cause (.getCause e)]
     (and (= (class e) clojure.lang.Compiler$CompilerException)
-         (or (nil? cause) (= (class cause) java.lang.RuntimeException)))))
+         (or (nil? cause)
+             (= (class cause) java.lang.RuntimeException)
+             (= (class cause) clojure.lang.LispReader$ReaderException)))))
 
 (defn location-info
   "Takes the location hashmap (possibly empty) and returns a message info
@@ -237,7 +239,7 @@
         exc (stacktrace/parse-exception e)
         stacktrace (:trace-elems exc)
         filtered-trace (filter-stacktrace stacktrace)
-        comp-location (get-compile-error-location (get-exc-message ex))
+        comp-location (if compiler? (get-compile-error-location (get-exc-message ex)) {})
         location (if (empty? comp-location) (get-location-info filtered-trace) comp-location)
         entry (first-match e-class message)
         msg-info-obj (into (msg-from-matched-entry entry message) (location-info location))

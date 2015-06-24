@@ -99,15 +99,8 @@
 
 (defn -main [& args]
   (try
-    ;(map 2 3)
-    ;(print (map #(+ %1 %2) [1 2 3 4]))
-    ;(map)
+       ;(reduce 1 2 3 4)
 
-    ;(exercise3 "hello" 12)
-   ; (zero?)
-
-    ;  (nil 5)
-;((first []) 5)
 
     ;(clojure.string/splt "/home/stock424/Documents/code/clojure-intro-class/src/intro/may2015.clj" #"/")
     (try
