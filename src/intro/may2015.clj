@@ -29,9 +29,9 @@
           (= (count args) 2)
           (f-fill (first args) (second args))
           (= (count args) 3)
-          (f-fill (first args) (second args) (second (rest args)))
+          (f-fill (first args) (second args) (nth args 2))
           (= (count args) 4)
-          (f-fill (first args) (second args) (second (rest args)) (second (rest (rest args)))))
+          (f-fill (first args) (second args) (nth args 2)) (nth args 3)))
          (q/with-translation [x y]
            (q/with-rotation [(/ (* q/PI angle) 180)]
              (f-ellipse 0 0 wid hei)))
@@ -57,9 +57,9 @@
           (= (count args) 2)
           (f-fill (first args) (second args))
           (= (count args) 3)
-          (f-fill (first args) (second args) (second (rest args)))
+          (f-fill (first args) (second args) (nth args 2))
           (= (count args) 4)
-          (f-fill (first args) (second args) (second (rest args)) (second (rest (rest args)))))
+          (f-fill (first args) (second args) (nth args 2) (nth args 3)))
          (q/with-translation [x y]
            (q/with-rotation [(/ (* q/PI angle) 180)]
              (f-arc 0 0 wid hei start stop :pie)))
@@ -85,9 +85,9 @@
           (= (count args) 2)
           (f-stroke (first args) (second args))
           (= (count args) 3)
-          (f-stroke (first args) (second args) (second (rest args)))
+          (f-stroke (first args) (second args) (nth args 2))
           (= (count args) 4)
-          (f-stroke (first args) (second args) (second (rest args)) (second (rest (rest args))))
+          (f-stroke (first args) (second args) (nth args 2) (nth args 3))
           :else (f-stroke 0))
          (q/with-translation [x y]
            (q/with-rotation [(/ (* q/PI angle) 180)]
@@ -115,9 +115,9 @@
           (= (count args) 2)
           (f-fill (first args) (second args))
           (= (count args) 3)
-          (f-fill (first args) (second args) (second (rest args)))
+          (f-fill (first args) (second args) (nth args 2))
           (= (count args) 4)
-          (f-fill (first args) (second args) (second (rest args)) (second (rest (rest args)))))
+          (f-fill (first args) (second args) (nth args 2) (nth args 3)))
          (q/with-translation [x y]
            (q/with-rotation [(/ (* q/PI angle) 180)]
              (let [mid-x (quot (+ (max 0 x2 x3)  (min 0 x2 x3)) 2)
@@ -147,9 +147,9 @@
           (= (count args) 2)
           (f-fill (first args) (second args))
           (= (count args) 3)
-          (f-fill (first args) (second args) (second (rest args)))
+          (f-fill (first args) (second args) (nth args 2))
           (= (count args) 4)
-          (f-fill (first args) (second args) (second (rest args)) (second (rest (rest args)))))
+          (f-fill (first args) (second args) (nth args 2) (nth args 3)))
          (q/with-translation [x y]
            (q/with-rotation [(/ (* q/PI angle) 180)]
              (let [mid-x (quot (+ (max 0 x2 x3 x4)  (min 0 x2 x3 x4)) 2)
@@ -199,9 +199,9 @@
           (= (count args) 2)
           (f-fill (first args) (second args))
           (= (count args) 3)
-          (f-fill (first args) (second args) (second (rest args)))
+          (f-fill (first args) (second args) (nth args 2))
           (= (count args) 4)
-          (f-fill (first args) (second args) (second (rest args)) (second (rest (rest args))))
+          (f-fill (first args) (second args) (nth args 2) (nth args 3))
           :else
           (q/no-fill))
          (q/with-translation [x y]
