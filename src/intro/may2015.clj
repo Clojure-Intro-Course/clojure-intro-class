@@ -91,7 +91,7 @@
           :else (f-stroke 0))
          (q/with-translation [x y]
            (q/with-rotation [(/ (* q/PI angle) 180)]
-             (f-line (- 0 (quot wid 2)) (- 0 (quot hei 2)) (+ 0 (quot wid 2)) (+ 0 (quot hei 2)))))
+             (f-line (- 0 (/ wid 2)) (- 0 (/ hei 2)) (+ 0 (/ wid 2)) (+ 0 (/ hei 2)))))
          (f-stroke cs))})
 
 
@@ -201,7 +201,9 @@
           (= (count args) 3)
           (f-fill (first args) (second args) (second (rest args)))
           (= (count args) 4)
-          (f-fill (first args) (second args) (second (rest args)) (second (rest (rest args)))))
+          (f-fill (first args) (second args) (second (rest args)) (second (rest (rest args))))
+          :else
+          (q/no-fill))
          (q/with-translation [x y]
            (q/with-rotation [(/ (* q/PI angle) 180)] (f-rect 0 0 wid hei)))
          (q/no-fill))})
@@ -322,7 +324,7 @@
   (loop [args args
          vect []]
     (if (not= (count args) 0)
-      (recur (rest args) (conj vect (assoc (first args) :dx (+ (:dx (first args)) (- (+ (quot tw 2) numb) (quot tot-w 2))) :tw tot-w :th max-h)))
+      (recur (rest args) (conj vect (assoc (first args) :dx (+ (:dx (first args)) (- (+ (/ tw 2) numb) (/ tot-w 2))) :tw tot-w :th max-h)))
       vect)))
 
 
@@ -336,7 +338,7 @@
     (if (not= (count args) 0)
       (if (vector? (first args))
         (recur (rest args) (+ (:tw (first (first args))) numb) (conj vect (eval-compshape-horizontal (first args) numb (:tw (first (first args))))))
-        (recur (rest args) (+ (:tw (first args)) numb) (conj vect (assoc (first args) :dx (- (+ (quot (:tw (first args)) 2) numb) (quot tot-w 2)) :tw tot-w :th max-h))))
+        (recur (rest args) (+ (:tw (first args)) numb) (conj vect (assoc (first args) :dx (- (+ (/ (:tw (first args)) 2) numb) (/ tot-w 2)) :tw tot-w :th max-h))))
       vect)))
 
 
@@ -698,7 +700,7 @@
 
 (defn setup []
   (try
-    (q/frame-rate 1)
+    (q/frame-rate 30)
     (q/color-mode :rgb)
 
     (def black-circle (create-ellipse 1 1 80 255 255))
@@ -798,65 +800,90 @@
 
 
 
-    {:shape black-circle
-     :scale-x 1
-     :scale-y 1
-     :angle 0
-     :angle2 0
-     :number 0}
 
+
+
+;;     ;-----------------------------------------------------------
+;;     (let [line-length 800
+;;           box-length 800]
+
+;;     (def diag-line (create-line (dec line-length) (dec line-length) 255 100))
+
+;;     (def inviz-block (create-rect box-length box-length)))
+
+;;     (def block-line (above diag-line
+;;                            inviz-block))
+
+;;     (def row (loop [w (/ (+ 200 (q/width)) (:tw (first block-line)))
+;;                     shape block-line]
+;;                (if (>= w 0)
+;;                  (recur (dec w) (beside shape block-line))
+;;                  shape)))
+
+;;      (def lines (loop [h (/ (+ 200 (q/height)) (:th (first row)))
+;;                     shape row]
+;;                (if (>= h 0)
+;;                  (recur (dec h) (above shape row))
+;;                  shape)))
+;;   {:angle 0
+;;   :angle2 0}
+    ;-----------------------------------------------------------
+
+
+
+
+
+
+
+    {:angle 0
+     :angle2 0}
     (catch Throwable e (println (.getCause e)) (display-error (prettify-exception e)))))
 
 ;-
-
 (defn update-state [state]
   (try
     (assert (not-nil? state) "Your state is nil")
-
-
-    ;(assoc state :shape (:shape state) :scale-x (+ (:scale-x state) 1) :scale-y (+ (:scale-y state) 1))
     (assoc state
       :angle (- (:angle state) 0.01)
-      :angle2 (+ (:angle2 state) 0.7)
-      :number (if (= (:number state) 255)
-                0
-                255))
-
+      :angle2 (+ (:angle2 state) 0.01))
     (catch Throwable e (println (.getCause e)) (display-error (prettify-exception e)))))
 
 ;-
-
 (defn draw-state [state]
   (try
-    (f-background :lime)
-    (q/stroke-weight 5)
-    ;(f-stroke :magenta)
-    (f-text-size 40)
-    (q/text-align :center)
+    (f-background 25 25 25 25)
+;;     (f-stroke 255 80)
+;;     (let [half-w (/ (q/width) 2)
+;;           half-h (/ (q/height) 2)
+;;           move-dist (:tw (first block-line))
+;;           quarter-row (/ (:th (first row)) 4)]
 
-    ;(q/with-translation [500 500] (q/with-rotation [q/PI] (ds flying-thing 100 100)))
-    ;(ds flying-thing (+ 500 (* 150 (q/cos (:angle state)))) (+ 500 (* 150 (q/sin (:angle state)))))
-    (f-fill 255 80 255)
+;;     (ds lines (+ half-w (* (q/sin (:angle state)) move-dist)) (- half-h quarter-row))
+;;     (ds lines (+ half-w (* (q/sin (:angle2 state)) move-dist)) (+ half-h quarter-row)))
 
-    (ds arc1 500 500)
 
-    ;(ds test-sqrs 500 500)
-    (q/no-fill)
-    ;(q/no-stroke)
-    (q/text-num 500 500 100)
-    ;(q/text "hello" 500 200)
-    ;(ds (create-line 0 1000 255) 500 500)
-    ;(ds (create-line 1000 0 255) 500 500)
+
+
+
+
+
+
+
+
+
+
+
+
+
     (catch Throwable e (println (.getCause e)) (display-error (prettify-exception e)))))
 
-;-
 
+;-
 (q/defsketch my
   :title "My sketch"
-  :size [1920 1000]
-  ; Setup function called only once, during sketch initialization.
+  :size [1000 1000]
   :setup setup
-  ; Update-state is called on each iteration before draw-state.
   :update update-state
   :draw draw-state
+  :mouse
   :middleware [m/fun-mode])

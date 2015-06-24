@@ -143,7 +143,7 @@
   (catch Throwable e (println (.getCause e)) (display-error (prettify-exception e)))))
 
 
-(defn f-stroke [color & args]
+(defn f-stroke [& args]
   (try
      (if (< 4 (count args))
       (throw (Exception. "f-stroke expects either 1, 2, 3, or 4 arguments.")))
