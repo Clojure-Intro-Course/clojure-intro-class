@@ -113,7 +113,7 @@
     (def pole-1 (create-line 0 500 100))
 
 
-    ;(def beach (create-picture "/home/hagen715/Desktop/images/beach.jpg"))
+    (def beach (create-picture "/home/hagen715/Desktop/images/beach.jpg"))
 
 
 
@@ -178,11 +178,11 @@
 ;;     (ds other-shape 500 500)
     ;-----------------------------------------------------------
     (q/stroke 0)
-    ;(ds beach 500 500)
+    (ds beach 500 500)
 
 
      (q/stroke 255)
-    (ds (scale-shape player-1 0.8 (* 0.8(* 2 (q/sin (+ q/HALF-PI (:angle2 state))))))
+    (ds (scale-shape player-1 0.8 (* 0.8 (* 2 (q/sin (+ q/HALF-PI (:angle2 state))))))
         150 (+ 630 (* 75 (q/sin (+ q/PI (:angle state))))))
 
     (ds (scale-shape player-2 1 (* 2 (q/sin (:angle2 state))))
@@ -192,7 +192,7 @@
     (ds pole-1 500 750)
     (q/stroke-weight 1)
 
-    (ds volley-ball (+ 500 (* 350 (q/cos (:angle state))))
+    (ds (vec (map #(rotate-shape % (* 40 (:angle state))) volley-ball)) (+ 500 (* 350 (q/cos (:angle state))))
 
         (if (> (+ 500 (* 350 (q/cos (:angle state))))  500)
           (- 700 (* 500 (q/sin (mod (:angle state) q/PI))))
