@@ -38,6 +38,25 @@
       (if n (add-to-seen {:arg-num n}))
             false)))
 
+;i just added this, needs tests, used in assoc pre-conditions
+(defn check-if-map-or-vector? [fname x & [n]]
+  (if (or (vector? x) (map? x)) true
+    (do (add-to-seen {:check "a map or a vector"
+                      :class (class x)
+                      :value x
+                      :fname fname})
+      (if n (add-to-seen {:arg-num n}))
+      false)))
+
+(defn check-if-map? [fname x & [n]]
+  (if (or (vector? x) (map? x)) true
+    (do (add-to-seen {:check "a map"
+                      :class (class x)
+                      :value x
+                      :fname fname})
+      (if n (add-to-seen {:arg-num n}))
+      false)))
+
 (defn check-if-function? [fname x & [n]]
   (if (fn? x) true
     (do (add-to-seen {:check "a function"

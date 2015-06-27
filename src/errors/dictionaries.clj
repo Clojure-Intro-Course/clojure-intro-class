@@ -256,7 +256,8 @@
                         :first "one",        :empty? "one",      :join "one or two",       :string? "one",
                         :- "at least one",   :rem "two",         :mod "two",               :inc "one",
                         :dec "one",          :max "one or more", :min "one or more",       :rand "zero or one",
-                        :rand-int "one",     :odd? "one",        :even? "one",
+                        :rand-int "one",     :odd? "one",        :even? "one",             :assoc "an odd number greater than or equal to three",
+                        :dissoc "at least one",
                         })
 
 (defn lookup-arity
