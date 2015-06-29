@@ -5,22 +5,6 @@
             [intro.student :refer :all]))
 
 
-;added assoc and disoc to arity dictionary
-;added preconditions for disoc and assoc
-;will add tests.
-;3440 1440
-;(println (dissoc {:a 1 :b 2 :c 3 :d 4 :e 5 :f 6 :g 7} :a :c :e :g))
-;(println (dissoc [:a 1 :b 2 :c 3 :d 4 :e 5 :f 6 :g 7] :a :c :e :g))
-;(assoc {:a 1 :b 2 :c 3 :d 4 :e 5} :a "dog" :c "cat")
-;(assoc [:a 1 :b 2 :c 3 :d 4 :e 5] 5 "dog" 1 "cat" 10 "cats")
-
-;(assoc "this is a string" :key1 "val1" :key2 "val2")
-
-;(assoc [:a 1 :b 2 :c 3 :d 4 :e 5] 5 "dog" 1 "cat" 10 "cats")
-
-;(assoc "this is a string" :key1 "val1" :key2 "val2")
-
-(dissoc ["this" "is" "a" "vector"] :key1 "val1" :key2 "val2")
 
 
 
