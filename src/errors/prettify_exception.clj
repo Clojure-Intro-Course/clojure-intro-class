@@ -31,7 +31,7 @@
 (defn hints-for-matched-entry
   "Returns all hints found for an exception key, as one string."
   [entry-key]
-  (reduce str "" (vals (filter #((first %) entry-key) hints))))
+  (apply str (vals (filter #((first %) entry-key) hints))))
 
 
 ;; Putting together a message (perhaps should be moved to errors.dictionaries?
