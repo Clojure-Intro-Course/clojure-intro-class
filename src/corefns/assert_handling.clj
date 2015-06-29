@@ -41,7 +41,7 @@
 ;i just added this, needs tests, used in assoc pre-conditions
 (defn check-if-map-or-vector? [fname x & [n]]
   (if (or (vector? x) (map? x)) true
-    (do (add-to-seen {:check "a map or a vector"
+    (do (add-to-seen {:check "a map or vector"
                       :class (class x)
                       :value x
                       :fname fname})
@@ -49,7 +49,7 @@
       false)))
 
 (defn check-if-map? [fname x & [n]]
-  (if (or (vector? x) (map? x)) true
+  (if (map? x) true
     (do (add-to-seen {:check "a map"
                       :class (class x)
                       :value x

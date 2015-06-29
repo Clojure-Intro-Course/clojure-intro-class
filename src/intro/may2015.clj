@@ -18,9 +18,9 @@
 
 ;(assoc [:a 1 :b 2 :c 3 :d 4 :e 5] 5 "dog" 1 "cat" 10 "cats")
 
+;(assoc "this is a string" :key1 "val1" :key2 "val2")
 
-
-
+(dissoc ["this" "is" "a" "vector"] :key1 "val1" :key2 "val2")
 
 
 

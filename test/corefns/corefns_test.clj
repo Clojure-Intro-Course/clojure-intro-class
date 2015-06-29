@@ -18,7 +18,7 @@
         (assoc {:a 1 :b 2 :c 3 :d 4 :e 5} :a "dog" :e "cat" :c "cats"))
 
 ;;testing for dissoc
-(expect {:a 1, :b 2, :d 4, :f 6}
+(expect {:b 2, :d 4, :f 6}
         (dissoc {:a 1 :b 2 :c 3 :d 4 :e 5 :f 6 :g 7} :a :c :e :g))
 
 ;; testing for map
@@ -292,14 +292,23 @@
 ;### Testing if the corefns preconditions work ###
 ;#################################################
 
-;; testing for the preconditions on assoc
-;(expect "In function assoc, the first argument \"this is a string\" must be a map or a vector but is a string."
-;        (get-test-no-location
-;         (ruc-and-catch-pretty-no-stacktrace 'intro.core
-;                                             '(assoc "this is a string" :key1 "val1" :key2 "val2"))))
-
+;; testing for the preconditions on assoc, it is a compuler exception
+(expect "In function assoc, the first argument \"this is a string\" must be a map or vector but is a string."
+        (get-text-no-location
+         (run-and-catch-pretty-no-stacktrace 'intro.core
+                                             '(assoc "this is a string" :key1 "val1" :key2 "val2"))))
 
 ;; testing for the preconditions on dissoc
+(expect "In function dissoc, the first argument \"this is a string\" must be a map but is a string."
+        (get-text-no-location
+         (run-and-catch-pretty-no-stacktrace 'intro.core
+                                             '(dissoc "this is a string" :key1 :key2))))
+
+(expect "In function dissoc, the first argument (this is a vector) must be a map but is a vector."
+        (get-text-no-location
+         (run-and-catch-pretty-no-stacktrace 'intro.core
+                                             '(dissoc ["this" "is" "a" "vector"]))))
+
 
 ;~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 

@@ -152,7 +152,7 @@
   ([mymap];check-if-seqable? is not restrictive enough
    {:pre [(check-if-map? "dissoc" mymap 1)]}
    (clojure.core/dissoc mymap))
-  ([mymap key & keys]
+  ([mymap & keys]
    {:pre [(check-if-map? "dissoc" mymap 1)]}
    (apply clojure.core/dissoc (into [mymap] keys))))
 
