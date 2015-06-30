@@ -63,13 +63,9 @@
 ;; Elena: this is a compilation error in clojure 1.7, so we can't test it like this
 ;; testing for :illegal-argument-even-number-of-forms-in-binding-vector
 ;(expect #"Parameters for let must come in pairs, but one of them does not have a match; on line (.*) in the file intro.core"
-         ;(run-and-catch-pretty-no-stacktrace 'intro.core '(let [x] (+ x 2)))))
+;         (run-and-catch-pretty-no-stacktrace 'intro.core '(let [x] (+ x 2))))
 
 ;; testing for :illegal-argument-needs-vector-when-binding.
-;; This is a compiler error as of clojue 1.7, need load-file to test.
-;; Note: using "compile" is tricky to get to work because of classpath issues:
-;; we don't want the error to happen before we run this test.
-;; Need to check for the location as well: currently incomplete.
 (expect #"When declaring a let, you need to pass it a vector of arguments.(.*)"
        (get-text-no-location (:msg-info-obj (try (load-file "exceptions/compilation_errors/let-odd-number-bindings.clj")
                        (catch Throwable e (prettify-exception e))))))
@@ -79,16 +75,26 @@
         (get-text-no-location
          (run-and-catch-pretty-no-stacktrace 'intro.core '(contains? (seq [1 3 6]) 2))))
 
-;; Elena: this is a compilation error in clojure 1.7, so we can't test it like this
 ;; testing for :illegal-argument-parameters-must-be-in-vector
-;(expect "Parameters in defn should be a vector, but is my-argument"
-;        (get-all-text
-;         (run-and-catch-pretty-no-stacktrace 'intro.core '(defn my-function my-argument))))
+(expect #"Parameters for defn must be a vector, but my-argument was found instead\.(.*)"
+        (get-all-text
+        (run-and-catch-pretty-no-stacktrace 'intro.core '(defn my-function my-argument))))
 
-;; Elena: this is a compilation error in clojure 1.7, so we can't test it like this
+(expect #"Parameters for defn must be a vector, but 5 was found instead\.(.*)"
+        (get-all-text
+        (run-and-catch-pretty-no-stacktrace 'intro.core '(defn my-function 5))))
+
+(expect #"Parameters for defn must be a vector, but \+ was found instead\.(.*)"
+        (get-all-text
+        (run-and-catch-pretty-no-stacktrace 'intro.core '(defn my-function (+ x y)))))
+
+(expect #"Parameters for defn must be a vector, but \+ was found instead\.(.*)"
+        (get-all-text
+        (run-and-catch-pretty-no-stacktrace 'intro.core '(defn my-function + x y))))
+
 ;; testing for :illegal-argument-exactly-2-forms
-;(expect #"The function when-let requires exactly 2 forms in binding vector. Line (.*) in the file intro.core"
-;        (get-all-text (run-and-catch-pretty-no-stacktrace 'intro.core '(when-let [num1 1 num2 2] "hello"))))
+(expect #"The function when-let requires exactly 2 forms in binding vector. Line (.*) in the file intro.core"
+        (get-all-text (run-and-catch-pretty-no-stacktrace 'intro.core '(when-let [num1 1 num2 2] "hello"))))
 
 (expect "Cannot call nil as a function."
         (get-text-no-location
