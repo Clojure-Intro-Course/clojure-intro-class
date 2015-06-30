@@ -85,9 +85,9 @@
                                                            " does not allow " (get-type (nth matches 2)) :type " as an argument."))}
    {:key :illegal-argument-parameters-must-be-in-vector
     :class IllegalArgumentException
-    :match #"Parameter declaration (.*) should be a vector"
-    :make-msg-info-obj (fn [matches] (make-msg-info-hashes "Parameters in " "defn" :arg
-                                                           " should be a vector, but is " (nth matches 1) :arg "."))}
+    :match #"Parameter declaration \"(.*)\" should be a vector"
+    :make-msg-info-obj (fn [matches] (make-msg-info-hashes "Parameters for " "defn" :arg
+                                                           " must be a vector, but " (nth matches 1) :arg " was found instead."))}
    {:key :illegal-argument-exactly-2-forms
     :class IllegalArgumentException
     :match #"(.*) requires exactly 2 forms in binding vector in (.*):(.*)"

@@ -81,9 +81,21 @@
 
 ;; Elena: this is a compilation error in clojure 1.7, so we can't test it like this
 ;; testing for :illegal-argument-parameters-must-be-in-vector
-;(expect "Parameters in defn should be a vector, but is my-argument"
-;        (get-all-text
-;         (run-and-catch-pretty-no-stacktrace 'intro.core '(defn my-function my-argument))))
+(expect #"Parameters for defn must be a vector, but my-argument was found instead\.(.*)"
+        (get-all-text
+        (run-and-catch-pretty-no-stacktrace 'intro.core '(defn my-function my-argument))))
+
+(expect #"Parameters for defn must be a vector, but 5 was found instead\.(.*)"
+        (get-all-text
+        (run-and-catch-pretty-no-stacktrace 'intro.core '(defn my-function 5))))
+
+(expect #"Parameters for defn must be a vector, but \+ was found instead\.(.*)"
+        (get-all-text
+        (run-and-catch-pretty-no-stacktrace 'intro.core '(defn my-function (+ x y)))))
+
+(expect #"Parameters for defn must be a vector, but \+ was found instead\.(.*)"
+        (get-all-text
+        (run-and-catch-pretty-no-stacktrace 'intro.core '(defn my-function + x y))))
 
 ;; Elena: this is a compilation error in clojure 1.7, so we can't test it like this
 ;; testing for :illegal-argument-exactly-2-forms
