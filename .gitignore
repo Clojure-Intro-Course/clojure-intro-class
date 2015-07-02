@@ -12,6 +12,7 @@ target/
 .lein-plugins
 .gitignore.swp
 *.silly
+*.tmp
 .lein-repl-history
 
 ### Latex ###

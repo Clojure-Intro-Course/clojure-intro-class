@@ -1,11 +1,5 @@
 (ns utilities.file_IO
-  (:require [expectations :refer :all]
-            ;[clj-stacktrace.core :as stacktrace]
-            ;[errors.prettify_exception :refer :all]
-            ;[errors.messageobj :refer :all]
-            ;[utilities.stacktrace_functions :refer :all]
-            ;[corefns.collection_fns :refer :all]
-            )
+  (:require [expectations :refer :all])
   (:import [java.io.FileInputStream]
            [java.io.ObjectInputStream]
            [java.io.FileOutputStream]
@@ -16,15 +10,11 @@
 ;##   Writing/Reading to file  ##
 ;################################
 
-;## global vars ##
-;(def path "exceptions/")
-
 ; 1.1 functions
 
 ;## NOTE ##
 ;;The second part of let is a series of expressions that evaluate in /order/, returning the last expression.
-;;This is Important:
-;;The following two functions are dependent on events occurring in chronological order.
+;;This is Important: the following two functions are dependent on events occurring in chronological order.
 
 (defn export-to-file
   "Uses Java's Serializable to write a (java) object to a file"
