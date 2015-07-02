@@ -14,7 +14,8 @@
 ;(assoc {:a 1 :b 2 :c 3 :d 4 :e 5} :a "dog" :c "cat")
 ;(assoc [:a 1 :b 2 :c 3 :d 4 :e 5] 5 "dog" 1 "cat" 10 "cats")
 
-(defn myf 5)
+(* [true 4 2] 9)
+
 
 ;(merge {:a 1 :b 2 :c 3} '(5 6 7))
 

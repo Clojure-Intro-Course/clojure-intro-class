@@ -40,9 +40,31 @@
         (get-text-no-location
          (run-and-catch-pretty-no-stacktrace 'intro.core '(inc (cycle [(range) [1 (repeat 1) (range) 4 5 6 7 8 9 245 4235 5423] (cycle [1 2])])))))
 
-(expect "In function +, the second argument (1 2 3 4 5 6 76 (0 1 2...) 756 354...) must be a number but is a vector."
+(expect "In function +, the second argument [1 2 3 4 5 6 76 (0 1 2...) 756 354...] must be a number but is a vector."
         (get-text-no-location
          (run-and-catch-pretty-no-stacktrace 'intro.core '(+ 1 [1 2 3 4 5 6 76 (range) 756 354 6 645]))))
+
+;; testing for pretty-print-value for functions within sequences and for vectors
+
+(expect "In function +, the first argument [1 2] must be a number but is a vector."
+        (get-text-no-location
+         (run-and-catch-pretty-no-stacktrace 'intro.core '(+ [1 2]))))
+
+(expect "In function +, the first argument [+] must be a number but is a vector."
+        (get-text-no-location
+         (run-and-catch-pretty-no-stacktrace 'intro.core '(+ [+]))))
+
+(expect "In function +, the first argument [map] must be a number but is a vector."
+        (get-text-no-location
+         (run-and-catch-pretty-no-stacktrace 'intro.core '(+ [map]))))
+
+(expect "In function +, the first argument (\"a\" \"b\") must be a number but is a sequence."
+        (get-text-no-location
+         (run-and-catch-pretty-no-stacktrace 'intro.core '(+ '("a" "b")))))
+
+(expect "In function +, the first argument (anonymous function) must be a number but is a sequence."
+        (get-text-no-location
+         (run-and-catch-pretty-no-stacktrace 'intro.core '(+ '(#(+ % 2))))))
 
 ;; testing for :illegal-argument-no-val-supplied-for-key
 (expect "No value found for key d. Every key for a hash-map must be followed by a value."
