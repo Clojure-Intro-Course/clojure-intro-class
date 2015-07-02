@@ -66,6 +66,14 @@
         (get-text-no-location
          (run-and-catch-pretty-no-stacktrace 'intro.core '(+ '(#(+ % 2))))))
 
+(expect "In function +, the first argument #{+} must be a number but is a set."
+        (get-text-no-location
+         (run-and-catch-pretty-no-stacktrace 'intro.core '(+ #{+}))))
+
+(expect "In function +, the first argument {:a +} must be a number but is a map."
+        (get-text-no-location
+         (run-and-catch-pretty-no-stacktrace 'intro.core '(+ {:a +}))))
+
 ;; testing for :illegal-argument-no-val-supplied-for-key
 (expect "No value found for key d. Every key for a hash-map must be followed by a value."
         (get-text-no-location
