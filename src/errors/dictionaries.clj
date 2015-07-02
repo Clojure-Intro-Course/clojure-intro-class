@@ -146,32 +146,43 @@
    "turns a seq into a string, and if the seq is longer than n, ends with ...)"
    (cs/join [ "(" (cs/join " " (seq (into [] (take n my-seq)))) (if (> (count my-seq) n) "...)" ")")]))
 
+
+(defn pretty-print-single-value
+  "returns a pretty-printed value that is not sequential"
+  [value fname type]
+    (if (string? value) (str "\"" value "\"")
+      (if (nil? value) "nil"
+        (if (= type "a function")
+          ; extract a function from the class fname (easier than from value):
+          (get-function-name fname)
+          (str value)))))
+
 ;link to sequential interface
 ;http://javadox.com/org.clojure/clojure/1.7.0-alpha6/clojure/lang/class-use/Sequential.html
-(defn- map-take [f s n]
-   "maps a function onto the elements of a list who can be infinite, and prints the first n elements of the list, and outputs the result as a string"
-   (seq-to-str (take (inc n) (map #(if (sequential? %) (f %) %) s)) n))
+(defn- map-take
+  "maps a function onto the elements of a list who can be infinite, and prints the first n elements of the list, and outputs the result as a string"
+  [f s n fname type]
+   (seq-to-str (take (inc n) (map #(if (sequential? %) (f %) %) (pretty-print-single-value s))) n))
 
-(defn nested-taker [s & nums]
-   "takes possibly infinitly nested infinite sequences, and outputs the first & nums of each nest respectively"
-   (try (loop [my-fn (fn [f n] (map-take f s n))
+(defn nested-taker
+  "takes possibly infinitly nested infinite sequences, and outputs the first & nums of each nest respectively"
+  [s fname type & nums]
+   (try (loop [my-fn (fn [f n] (map-take f s n fname type))
           num-list nums]
      (if (empty? num-list)
        (my-fn #(constantly '()) 0)
-       (recur (fn [f n] (my-fn (fn [nested-s] (map-take f nested-s n)) (first num-list))) (next num-list))))
+       (recur (fn [f n] (my-fn (fn [nested-s] (map-take f nested-s n) fname type) (first num-list))) (next num-list))))
      (catch Throwable e "a sequence that we cannot evaluate")))
 
 ;;; pretty-print-value: anything, string, string -> string
-(defn pretty-print-value [value fname type]
+(defn pretty-print-value
   "returns a pretty-printed value based on its class, handles various messy cases"
-    ; strings are printed in double quotes:
-  (if (string? value) (str "\"" value "\"")
-      (if (nil? value) "nil"
-        (if (sequential? value) (nested-taker value 10 3)
-          (if (= type "a function")
-            ; extract a function from the class fname (easier than from value):
-            (get-function-name fname)
-            (str value))))))
+  [value fname type]
+  ; strings are printed in double quotes:
+  (if (sequential? value)
+    (nested-taker value fname type 10 3)
+    (pretty-print-single-value value fname type)))
+
 
 ;;; arg-str: number -> string
 (defn arg-str [n]
