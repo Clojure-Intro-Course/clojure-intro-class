@@ -40,6 +40,11 @@
    ;### Illegal Argument Exceptions ###
    ;###################################
 
+   {:key :wrong-number-of-args-passed-to-a-keyword
+    :class IllegalArgumentException
+    :match #"Wrong number of args passed to keyword: (.*)"
+    :make-msg-info-obj (fn [matches] (make-msg-info-hashes "A keyword: " (nth matches 1) :arg " can only take one or two arguments."))}
+
    {:key :illegal-argument-no-val-supplied-for-key
     :class IllegalArgumentException
     :match #"No value supplied for key: (.*)"

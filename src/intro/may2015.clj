@@ -17,8 +17,9 @@
 ;(* [true 4 2] 9)
 ;change wording, a keyword can take one or two arguments, test both
 
+(:a)
 
-(#(+ %22222 1) 2 3) ;and test
+;(#(+ %22222 1) 2 3) ;and test
 
 ;(merge {:a 1 :b 2 :c 3} '(5 6 7))
 

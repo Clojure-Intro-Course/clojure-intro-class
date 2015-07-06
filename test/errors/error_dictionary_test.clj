@@ -95,6 +95,15 @@
 ;(expect #"Parameters for let must come in pairs, but one of them does not have a match; on line (.*) in the file intro.core"
 ;         (run-and-catch-pretty-no-stacktrace 'intro.core '(let [x] (+ x 2))))
 
+;; testing for wrong number of args to a keyword
+(expect #"A keyword: :a can only take one or two arguments."
+       (get-text-no-location (:msg-info-obj (try (load-file "exceptions/compilation_errors/keyword_wrong_number_of_args.clj")
+                       (catch Throwable e (prettify-exception e))))))
+
+(expect #"A keyword: :a can only take one or two arguments."
+       (get-text-no-location (:msg-info-obj (try (load-file "exceptions/compilation_errors/keyword_wrong_number_of_args2.clj")
+                       (catch Throwable e (prettify-exception e))))))
+
 ;; testing for greater than 20 arguments
 (expect #"A function may not take more than more than 20 parameters."
        (get-text-no-location (:msg-info-obj (try (load-file "exceptions/compilation_errors/greater_than_20_parameters.clj")
