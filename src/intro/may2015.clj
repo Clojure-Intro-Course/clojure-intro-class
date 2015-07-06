@@ -14,8 +14,11 @@
 ;(assoc {:a 1 :b 2 :c 3 :d 4 :e 5} :a "dog" :c "cat")
 ;(assoc [:a 1 :b 2 :c 3 :d 4 :e 5] 5 "dog" 1 "cat" 10 "cats")
 
-(* [true 4 2] 9)
+;(* [true 4 2] 9)
+;change wording, a keyword can take one or two arguments, test both
 
+
+(#(+ %22222 1) 2 3) ;and test
 
 ;(merge {:a 1 :b 2 :c 3} '(5 6 7))
 

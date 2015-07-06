@@ -219,6 +219,11 @@
    ;### Runtime Exceptions or clojure.lang.LispReader$ReaderException ###
    ;#####################################################################
 
+    {:key :syntax-error-cant-specifiy-over-20-args
+    :class java.lang.RuntimeException
+    :match #"Can't specify more than 20 params"
+    :make-msg-info-obj (fn [matches] (make-msg-info-hashes "A function may not take more than more than 20 parameters." ))}
+
    {:key :compiler-exception-first-argument-must-be-symbol
     :class java.lang.RuntimeException
     :match #"First argument to (.*) must be a Symbol(.*)"
