@@ -261,10 +261,11 @@
 (expect "and" (get-macro-name "clojure.core/and"))
 
 ;; testing for pretty-print-value
-(expect "\"happy\"" (pretty-print-value "happy" '"clojure.core$_STAR_" "a function"))
-(expect "*" (pretty-print-value 2 "clojure.core$_STAR_" "a function"))
-(expect "nil" (pretty-print-value nil "clojure.core$_STAR_" "a function"))
-(expect "2" (pretty-print-value 2 "clojure.core$_STAR_" "foo_bang"))
+(expect "\"happy\"" (pretty-print-value "happy" '"clojure.core$_STAR_"))
+(expect "*" (pretty-print-value 2 "clojure.core$_STAR_"))
+(expect "nil" (pretty-print-value nil "clojure.core$_STAR_"))
+;; shouldn't need to pass the type, the function can figure it out
+;(expect "2" (pretty-print-value 2 "clojure.core$_STAR_" "something else"))
 
 ;; testing for arg-str
 (expect "first argument" (arg-str 1))
