@@ -12,7 +12,7 @@
                       :java.lang.Number "a number"
                       :clojure.lang.Keyword "a keyword"
                       :java.lang.Boolean "a boolean"
-		                  ;; I think this is better for new students to lump all numbers together(defn drop [argument1 argument2]
+		                  ;; I think this is better for new students to lump all numbers together
 		                  :java.lang.Long "a number"
 		                  :java.lang.Integer "a number"
 		                  :java.lang.Double "a number"
@@ -78,9 +78,10 @@
     (if matched-type (second matched-type) (str "unrecognized type " t))))
 
 ;;; get-type: type -> string
-(defn get-type [t]
+(defn get-type
   "returns a user-friendly representation of a type if it exists in the type-dictionary,
 	or its default representation as an unknown type"
+  [t]
   ((keyword t) type-dictionary (best-approximation t)))
 
 ;; hashmap of internal function names and their user-friendly versions
@@ -140,49 +141,48 @@
       (instance? clojure.lang.Iterate s)
       (instance? clojure.lang.Cycle s)))
 
-
-;;; evaluate a lazy sequence (for some reason doall doesn't do it):
-(defn- seq-to-str [my-seq n]
-   "turns a seq into a string, and if the seq is longer than n, ends with ...)"
-   (cs/join [ "(" (cs/join " " (seq (into [] (take n my-seq)))) (if (> (count my-seq) n) "...)" ")")]))
-
-
 (defn pretty-print-single-value
-  "returns a pretty-printed value that is not sequential"
-  [value fname]
-  ; strings are printed in double quotes:
+  "returns a pretty-printed value that is not a collection"
+  [value]
+  (let [fname (.getName (type value))]
+    ; strings are printed in double quotes:
     (if (string? value) (str "\"" value "\"")
       (if (nil? value) "nil"
         (if (= (get-type fname) "a function")
           ; extract a function from the class fname (easier than from value):
           (get-function-name fname)
-          (str value)))))
+          (str value))))))
+
+
+;;; evaluate a lazy sequence (for some reason doall doesn't do it):
+(defn- seq-to-str [my-seq n]
+   "turns a seq into a string, and if the seq is longer than n, ends with ...)"
+   (cs/join [ "(" (cs/join " " (seq (into [] (take n (map pretty-print-single-value my-seq))))) (if (> (count my-seq) n) "...)" ")")]))
 
 ;link to sequential interface
 ;http://javadox.com/org.clojure/clojure/1.7.0-alpha6/clojure/lang/class-use/Sequential.html
 (defn- map-take
   "maps a function onto the elements of a list who can be infinite, and prints the first n elements of the list, and outputs the result as a string"
   [f s n]
-   (seq-to-str (take (inc n) (map #(if (sequential? %) (f %) %) (pretty-print-single-value s nil))) n))
+   (seq-to-str (take (inc n) (map #(if (coll? %) (f %) %) s)) n))
 
 (defn nested-taker
   "takes possibly infinitly nested infinite sequences, and outputs the first & nums of each nest respectively"
-  [s & nums]
-   (try (loop [my-fn (fn [f n] (map-take f s n))
+  [value & nums]
+   (try (loop [my-fn (fn [f n] (map-take f value n))
           num-list nums]
      (if (empty? num-list)
-       (my-fn #(constantly '()) 0)
+       (my-fn #(constantly '()) 0) ; probably should rewrite this
        (recur (fn [f n] (my-fn (fn [nested-s] (map-take f nested-s n)) (first num-list))) (next num-list))))
-     (catch Throwable e (println (.getMessage e))"a sequence that we cannot evaluate")))
+     (catch Throwable e (println e)"a sequence that we cannot evaluate")))
 
 ;;; pretty-print-value: anything, string, string -> string
 (defn pretty-print-value
   "returns a pretty-printed value based on its class, handles various messy cases"
   [value fname]
   (if (or (coll? value))
-    ;(nested-taker value 10 3)
-    "collection"
-    (pretty-print-single-value value fname)))
+    (nested-taker value 10 3)
+    (pretty-print-single-value value)))
 
 
 ;;; arg-str: number -> string
