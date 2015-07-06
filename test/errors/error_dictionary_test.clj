@@ -95,6 +95,15 @@
 ;(expect #"Parameters for let must come in pairs, but one of them does not have a match; on line (.*) in the file intro.core"
 ;         (run-and-catch-pretty-no-stacktrace 'intro.core '(let [x] (+ x 2))))
 
+;; testing for invalid token error
+(expect #"You cannot use : in this position."
+       (get-text-no-location (:msg-info-obj (try (load-file "exceptions/compilation_errors/invalid_token_error2.clj")
+                       (catch Throwable e (prettify-exception e))))))
+
+(expect #"You cannot use /string in this position."
+       (get-text-no-location (:msg-info-obj (try (load-file "exceptions/compilation_errors/invalid_token_error1.clj")
+                       (catch Throwable e (prettify-exception e))))))
+
 ;; testing for invalid number exception
 (expect #"Invalid number: 1.2.2."
        (get-text-no-location (:msg-info-obj (try (load-file "exceptions/compilation_errors/invalid_number.clj")

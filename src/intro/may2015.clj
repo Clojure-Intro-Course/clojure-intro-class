@@ -16,14 +16,15 @@
 
 ;(* [true 4 2] 9)
 ;change wording, a keyword can take one or two arguments, test both
-
+;(map : [1 2 3])
+;(/string "abcd")
 ;(:a)
-
+;(map #: [1 2 3])
 ;(print 1.2.2)
 ;(assoc [1 2 3] 0 10 2 20)
 ;(assoc [:a 1 :b 2 :c 3 :d 4 :e 5] 5 "dog" 1 "cat" 10 "cats")
 ;(assoc nil :a 5 :v 12)
-
+(defn # :)
 
 ;(dissoc {:a 1 :b 2 :c 3})
 ;(dissoc nil)

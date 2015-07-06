@@ -233,7 +233,17 @@
    ;### Runtime Exceptions or clojure.lang.LispReader$ReaderException ###
    ;#####################################################################
 
-    {:key :syntax-error-cant-specifiy-over-20-args
+   {:key :invalid-tolken-error
+    :class java.lang.RuntimeException
+    :match #"java.lang.RuntimeException: Invalid token: (.*)"
+    :make-msg-info-obj (fn [matches] (make-msg-info-hashes "You cannot use " (nth matches 1) :arg " in this position."))}
+
+   {:key :invalid-tolken-error
+    :class java.lang.RuntimeException
+    :match #"Invalid token: (.*)"
+    :make-msg-info-obj (fn [matches] (make-msg-info-hashes "You cannot use " (nth matches 1) :arg " in this position."))}
+
+   {:key :syntax-error-cant-specifiy-over-20-args
     :class java.lang.RuntimeException
     :match #"Can't specify more than 20 params"
     :make-msg-info-obj (fn [matches] (make-msg-info-hashes "A function may not take more than more than 20 parameters." ))}
