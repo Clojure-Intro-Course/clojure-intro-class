@@ -19,7 +19,7 @@
 
 ;(:a)
 
-
+;(print 1.2.2)
 ;(assoc [1 2 3] 0 10 2 20)
 ;(assoc [:a 1 :b 2 :c 3 :d 4 :e 5] 5 "dog" 1 "cat" 10 "cats")
 ;(assoc nil :a 5 :v 12)

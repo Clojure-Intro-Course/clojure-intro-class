@@ -220,6 +220,15 @@
     :match #"(.*)"
     :make-msg-info-obj (fn [matches] (make-msg-info-hashes "Name " (nth matches 1) :arg " is undefined."))}
 
+   ;###############################
+   ;### Number Format Exception ###
+   ;###############################
+
+   {:key :number-format-exception
+    :class NumberFormatException
+    :match #"Invalid number: (.*)"
+    :make-msg-info-obj (fn [matches] (make-msg-info-hashes "Invalid number: " (nth matches 1) :arg "."))}
+
    ;#####################################################################
    ;### Runtime Exceptions or clojure.lang.LispReader$ReaderException ###
    ;#####################################################################
