@@ -16,10 +16,18 @@
         (assoc [:a 1 :b 2 :c 3 :d 4 :e 5] 5 "dog" 1 "cat" 10 "cats"))
 (expect {:a "dog" :b 2 :c "cats" :d 4 :e "cat"}
         (assoc {:a 1 :b 2 :c 3 :d 4 :e 5} :a "dog" :e "cat" :c "cats"))
+(expect [10 2 20]
+        (assoc [1 2 3] 0 10 2 20))
+(expect {:a 5 :v 12}
+        (assoc nil :a 5 :v 12))
 
 ;;testing for dissoc
 (expect {:b 2, :d 4, :f 6}
         (dissoc {:a 1 :b 2 :c 3 :d 4 :e 5 :f 6 :g 7} :a :c :e :g))
+(expect {:a 1 :b 2 :c 3}
+        (dissoc {:a 1 :b 2 :c 3}))
+(expect nil
+        (dissoc nil :a))
 
 ;; testing for map
 (expect '(2 3 4 5 6)

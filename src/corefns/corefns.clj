@@ -138,12 +138,12 @@
 ;; val(s). When applied to a vector, returns a new vector that
 ;; contains val at index. Note - index must be <= (count vector).
 (defn assoc
-  ([mymap key val];check-if-seqable? is not restrictive enough
+  [mymap & key-values];check-if-seqable? is not restrictive enough
    {:pre [(check-if-map-or-vector? "assoc" mymap 1)]}
-   (clojure.core/assoc map key val))
-  ([mymap key val & kvs]
-   {:pre [(check-if-map-or-vector? "assoc" mymap 1)]}
-   (apply clojure.core/assoc (into [mymap key val] kvs))))
+   (apply clojure.core/assoc (into [mymap] key-values)))
+;  ([mymap key val & kvs]
+;   {:pre [(check-if-map-or-vector? "assoc" mymap 1)]}
+;   (apply clojure.core/assoc (into [mymap key val] kvs))))
 
 ;; (dissoc map)(dissoc map key)(dissoc map key & ks)
 ;; dissoc[iate]. Returns a new map of the same (hashed/sorted) type,

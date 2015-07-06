@@ -17,7 +17,24 @@
 ;(* [true 4 2] 9)
 ;change wording, a keyword can take one or two arguments, test both
 
-(:a)
+;(:a)
+
+
+;(assoc [1 2 3] 0 10 2 20)
+;(assoc [:a 1 :b 2 :c 3 :d 4 :e 5] 5 "dog" 1 "cat" 10 "cats")
+;(assoc nil :a 5 :v 12)
+
+
+;(dissoc {:a 1 :b 2 :c 3})
+;(dissoc nil)
+
+;(assoc [1 2 3] 10 10)
+
+
+
+
+
+
 
 ;(#(+ %22222 1) 2 3) ;and test
 
