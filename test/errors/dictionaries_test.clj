@@ -37,3 +37,9 @@
 (expect ["{" "}"] (delimeters (assoc {} :a 1)))
 (expect ["#{" "}"] (delimeters (set [2 3 2 3])))
 (expect ["(" ")"] (delimeters (range)))
+
+;;
+(expect "2" (pretty-print-value-nested 2 10 3))
+(expect "\"hi\"" (pretty-print-value-nested "hi" 10 3))
+(expect "[2 3]" (pretty-print-value-nested [2 3] 10 3))
+(expect "(2 3)" (pretty-print-value-nested '(2 3) 10 3))

@@ -141,9 +141,12 @@
       (instance? clojure.lang.Iterate s)
       (instance? clojure.lang.Cycle s)))
 
+;; NEED TO REFORMAT AND REFACTOR
 (defn pretty-print-single-value
   "returns a pretty-printed value that is not a collection"
   [value]
+  ;; need to check for nil first because .getName fails otherwise
+  (if (nil? value) "nil"
   (let [fname (.getName (type value))]
     ; strings are printed in double quotes:
     (if (string? value) (str "\"" value "\"")
@@ -151,7 +154,7 @@
         (if (= (get-type fname) "a function")
           ; extract a function from the class fname (easier than from value):
           (get-function-name fname)
-          (str value))))))
+          (if (coll? value) "..." (str value))))))))
 
 
 ;;; evaluate a lazy sequence (for some reason doall doesn't do it):
@@ -193,7 +196,19 @@
     (nested-taker value 10 3)
     (pretty-print-single-value value)))
 
+(defn nested-values
+  "returns a vector of pretty-printed values. If it's a collection, uses the first limit
+  number as the number of elements it prints, passes the rest of the limit numbers
+  to the call that prints the nested elements. If no limits passed, returns ..."
+  [value & limits]
+  (if (or (empty? limits) (not (coll? value))) [(pretty-print-single-value value)]
+    (let [[open close] (delimeters value)]
+      (conj (into [open] (take (first limits) (map #(nested-values % (rest limits)) value))) close))))
 
+(defn pretty-print-value-nested
+  "returns a pretty-printed value of an arbitrary collection or value"
+  [value & limits]
+  (apply str (apply nested-values (into [value] limits))))
 
 
 ;;; arg-str: number -> string
