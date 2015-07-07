@@ -176,13 +176,24 @@
        (recur (fn [f n] (my-fn (fn [nested-s] (map-take f nested-s n)) (first num-list))) (next num-list))))
      (catch Throwable e (println e)"a sequence that we cannot evaluate")))
 
+(defn delimeters
+  "takes a collection and returns a vector of its delimeters as a vector of two strings"
+  [coll]
+  (cond
+   (vector? coll) ["[" "]"]
+   (set? coll) ["#{" "}"]
+   (map? coll) ["{" "}"]
+   :else ["(" ")"]))
+
 ;;; pretty-print-value: anything, string, string -> string
 (defn pretty-print-value
   "returns a pretty-printed value based on its class, handles various messy cases"
-  [value fname]
+  [value]
   (if (or (coll? value))
     (nested-taker value 10 3)
     (pretty-print-single-value value)))
+
+
 
 
 ;;; arg-str: number -> string
@@ -226,11 +237,11 @@
   ;; and perhaps need manual error handling, in case the seen-object is empty
   (let [t (:check @seen-failed-asserts)
         cl (:class @seen-failed-asserts)
-        c (if cl (.getName cl) nil)
+        c (if cl (.getName cl) nil) ;; MIGHT NOT NEED THIS
         fname (:fname @seen-failed-asserts)
         c-type (if c (get-type c) "nil") ; perhaps want to rewrite this
         v (:value @seen-failed-asserts)
-        v-print (pretty-print-value v c)
+        v-print (pretty-print-value v)
         arg (arg-str (if n (Integer. n) (:arg-num @seen-failed-asserts)))]
     (empty-seen) ; empty the seen-failed-asserts hashmap
     (if (not (= "nil" v-print))
