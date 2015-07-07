@@ -277,11 +277,11 @@
          (no-fill))})
 
 (defn create-line
-  "Takes in one x and y position and any RGB value for color that quil allows, look at quil's stroke function for exact input parameters.
+  "Takes in one x and y position, a stroke weight, and any RGB value for color that quil allows, look at quil's stroke function for exact input parameters.
   The first position is atomatically (0,0) so draw your line based off of that.
   Creates a hashmap of the information relevant to the shape and its draw position and the values needed by the ds function.
   Look at quil's line function for more information."
-  [x2 y2 & args]
+  [x2 y2 stroke & args]
   {:w x2
    :h y2
    :tw x2
@@ -300,10 +300,12 @@
           (= (count args) 4)
           (f-stroke (first args) (second args) (second (rest args)) (second (rest (rest args))))
           :else (f-stroke 0))
+         (stroke-weight stroke)
          (with-translation [x y]
            (with-rotation [(/ (* PI angle) 180)]
              (f-line (- 0 (/ wid 2)) (- 0 (/ hei 2)) (+ 0 (/ wid 2)) (+ 0 (/ hei 2)))))
-         (f-stroke cs))})
+         (f-stroke cs)
+         (stroke-weight 1))})
 
 
 (defn create-triangle

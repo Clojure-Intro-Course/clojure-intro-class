@@ -99,20 +99,14 @@
 
 (defn -main [& args]
   (try
-
-
-    ;(map 2 3)
-    ;(print (map #(+ %1 %2) [1 2 3 4]))
-    ;(map)
-
-    ;(exercise3 "hello" 12)
-
-    ;(throw (Exception. "my custom message"))
-
-
-    (try
-      (print (load-file "src/intro/may2015.clj"))
-    (catch Throwable e (print (str "itself:" (class e) ", cause: " (class (.getCause e)))) (throw e)))
-
-    (catch Throwable e (display-error (prettify-exception e)))))
-
+    (cond (or (= (first args) "tracking") (= (first args) "1"))
+          (load-file "src/intro/tracking.clj")
+          (or (= (first args) "lines") (= (first args) "2"))
+          (load-file "src/intro/lines.clj")
+          (or (= (first args) "beach") (= (first args) "3"))
+          (load-file "src/intro/beach.clj")
+          (or (= (first args) "rings") (= (first args) "4"))
+          (load-file "src/intro/rings.clj")
+          :else
+          (println "Got through cond"))
+    (catch Throwable e (print (str "itself:" (class e) ", cause: " (class (.getCause e)))) (throw e))))
