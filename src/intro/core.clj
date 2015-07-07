@@ -107,6 +107,8 @@
           (load-file "src/intro/beach.clj")
           (or (= (first args) "rings") (= (first args) "4"))
           (load-file "src/intro/rings.clj")
+          (or (= (first args) "scaling") (= (first args) "5"))
+          (load-file "src/intro/scaling.clj")
           :else
-          (println "Got through cond"))
+          (load-file "src/intro/may2015.clj"))
     (catch Throwable e (print (str "itself:" (class e) ", cause: " (class (.getCause e)))) (throw e))))
