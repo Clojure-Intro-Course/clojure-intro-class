@@ -40,6 +40,11 @@
    ;### Illegal Argument Exceptions ###
    ;###################################
 
+   {:key :wrong-number-of-args-passed-to-a-keyword
+    :class IllegalArgumentException
+    :match #"Wrong number of args passed to keyword: (.*)"
+    :make-msg-info-obj (fn [matches] (make-msg-info-hashes "A keyword: " (nth matches 1) :arg " can only take one or two arguments."))}
+
    {:key :illegal-argument-no-val-supplied-for-key
     :class IllegalArgumentException
     :match #"No value supplied for key: (.*)"
@@ -215,9 +220,33 @@
     :match #"(.*)"
     :make-msg-info-obj (fn [matches] (make-msg-info-hashes "Name " (nth matches 1) :arg " is undefined."))}
 
+   ;###############################
+   ;### Number Format Exception ###
+   ;###############################
+
+   {:key :number-format-exception
+    :class NumberFormatException
+    :match #"Invalid number: (.*)"
+    :make-msg-info-obj (fn [matches] (make-msg-info-hashes "Invalid number: " (nth matches 1) :arg "."))}
+
    ;#####################################################################
    ;### Runtime Exceptions or clojure.lang.LispReader$ReaderException ###
    ;#####################################################################
+
+   {:key :invalid-tolken-error
+    :class java.lang.RuntimeException
+    :match #"java.lang.RuntimeException: Invalid token: (.*)"
+    :make-msg-info-obj (fn [matches] (make-msg-info-hashes "You cannot use " (nth matches 1) :arg " in this position."))}
+
+   {:key :invalid-tolken-error
+    :class java.lang.RuntimeException
+    :match #"Invalid token: (.*)"
+    :make-msg-info-obj (fn [matches] (make-msg-info-hashes "You cannot use " (nth matches 1) :arg " in this position."))}
+
+   {:key :syntax-error-cant-specifiy-over-20-args
+    :class java.lang.RuntimeException
+    :match #"Can't specify more than 20 params"
+    :make-msg-info-obj (fn [matches] (make-msg-info-hashes "A function may not take more than more than 20 parameters." ))}
 
    {:key :compiler-exception-first-argument-must-be-symbol
     :class java.lang.RuntimeException
