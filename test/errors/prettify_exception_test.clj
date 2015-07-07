@@ -260,11 +260,6 @@
 (expect "cond" (get-macro-name "clojure.core/cond"))
 (expect "and" (get-macro-name "clojure.core/and"))
 
-;; testing for pretty-print-value
-(expect "\"happy\"" (pretty-print-value "happy"))
-(expect "*" (pretty-print-value *))
-(expect "nil" (pretty-print-value nil))
-
 ;; testing for arg-str
 (expect "first argument" (arg-str 1))
 (expect "21st argument" (arg-str 21))

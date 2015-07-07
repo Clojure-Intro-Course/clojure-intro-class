@@ -129,55 +129,19 @@
   "extract a macro name from a qualified name"
     (nth (re-matches #"(.*)/(.*)" mname) 2))
 
-(defn safe-into
-  "partially evaluates a lazy sequence that may contain lazy sequences"
-  [s n]
-  (into [] (take n s)))
 
-(defn- can-be-infinite? [s]
-  "returns true if the parameter is a potentially infinite sequence"
-  (or (instance? clojure.lang.LazySeq s)
-      (instance? clojure.lang.Repeat s)
-      (instance? clojure.lang.Iterate s)
-      (instance? clojure.lang.Cycle s)))
-
-;; NEED TO REFORMAT AND REFACTOR
 (defn pretty-print-single-value
   "returns a pretty-printed value that is not a collection"
   [value]
+  (println "passed to single value: " (class value))
   ;; need to check for nil first because .getName fails otherwise
   (if (nil? value) "nil"
-  (let [fname (.getName (type value))]
-    ; strings are printed in double quotes:
-    (if (string? value) (str "\"" value "\"")
-      (if (nil? value) "nil"
-        (if (= (get-type fname) "a function")
-          ; extract a function from the class fname (easier than from value):
-          (get-function-name fname)
-          (if (coll? value) "..." (str value))))))))
-
-
-;;; evaluate a lazy sequence (for some reason doall doesn't do it):
-(defn- seq-to-str [my-seq n]
-   "turns a seq into a string, and if the seq is longer than n, ends with ...)"
-   (cs/join [ "(" (cs/join " " (seq (into [] (take n (map pretty-print-single-value my-seq))))) (if (> (count my-seq) n) "...)" ")")]))
-
-;link to sequential interface
-;http://javadox.com/org.clojure/clojure/1.7.0-alpha6/clojure/lang/class-use/Sequential.html
-(defn- map-take
-  "maps a function onto the elements of a list who can be infinite, and prints the first n elements of the list, and outputs the result as a string"
-  [f s n]
-   (seq-to-str (take (inc n) (map #(if (coll? %) (f %) %) s)) n))
-
-(defn nested-taker
-  "takes possibly infinitly nested infinite sequences, and outputs the first & nums of each nest respectively"
-  [value & nums]
-   (try (loop [my-fn (fn [f n] (map-take f value n))
-          num-list nums]
-     (if (empty? num-list)
-       (my-fn #(constantly '()) 0) ; probably should rewrite this
-       (recur (fn [f n] (my-fn (fn [nested-s] (map-take f nested-s n)) (first num-list))) (next num-list))))
-     (catch Throwable e (println e)"a sequence that we cannot evaluate")))
+    (let [fname (.getName (type value))]
+      (cond (string? value) (str "\"" value "\"")  ; strings are printed in double quotes:
+            ; extract a function from the class fname (easier than from value):
+            (= (get-type fname) "a function") (get-function-name fname)
+            (coll? value) "..."
+            :else value))))
 
 (defn delimeters
   "takes a collection and returns a vector of its delimeters as a vector of two strings"
@@ -188,27 +152,22 @@
    (map? coll) ["{" "}"]
    :else ["(" ")"]))
 
-;;; pretty-print-value: anything, string, string -> string
-(defn pretty-print-value
-  "returns a pretty-printed value based on its class, handles various messy cases"
-  [value]
-  (if (or (coll? value))
-    (nested-taker value 10 3)
-    (pretty-print-single-value value)))
-
 (defn nested-values
   "returns a vector of pretty-printed values. If it's a collection, uses the first limit
   number as the number of elements it prints, passes the rest of the limit numbers
   to the call that prints the nested elements. If no limits passed, returns ..."
   [value & limits]
-  (if (or (empty? limits) (not (coll? value))) [(pretty-print-single-value value)]
+  (println "value = " (class value) " limits = " limits)
+  (if (or (not limits) (not (coll? value))) (pretty-print-single-value value)
     (let [[open close] (delimeters value)]
-      (conj (into [open] (take (first limits) (map #(nested-values % (rest limits)) value))) close))))
+      (conj (into [open] (interpose " " (take (first limits) (map #(apply nested-values (into [%] (rest limits))) value)))) close))))
 
 (defn pretty-print-value-nested
   "returns a pretty-printed value of an arbitrary collection or value"
-  [value & limits]
-  (apply str (apply nested-values (into [value] limits))))
+  [& params]
+  (println (apply nested-values params))
+  (let [pretty-val (apply nested-values params)]
+    (if (seq? pretty-val) (apply str pretty-val) (str pretty-val))))
 
 
 ;;; arg-str: number -> string
@@ -256,7 +215,7 @@
         fname (:fname @seen-failed-asserts)
         c-type (if c (get-type c) "nil") ; perhaps want to rewrite this
         v (:value @seen-failed-asserts)
-        v-print (pretty-print-value v)
+        v-print (pretty-print-value-nested v 10 3)
         arg (arg-str (if n (Integer. n) (:arg-num @seen-failed-asserts)))]
     (empty-seen) ; empty the seen-failed-asserts hashmap
     (if (not (= "nil" v-print))
