@@ -165,8 +165,8 @@
 (defn pretty-print-value-nested
   "returns a pretty-printed value of an arbitrary collection or value"
   [& params]
-  (println (apply nested-values params))
   (let [pretty-val (apply nested-values params)]
+    (println pretty-val)
     (if (seq? pretty-val) (apply str pretty-val) (str pretty-val))))
 
 
