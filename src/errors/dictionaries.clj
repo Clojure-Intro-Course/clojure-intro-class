@@ -152,6 +152,12 @@
    (map? coll) ["{" "}"]
    :else ["(" ")"]))
 
+(defn add-spaces-etc
+  ""
+  [s n]
+  (println "n = " n "count s" (count s))
+  (if (> (count s) n)  (concat (interpose " " s) '("...")) (interpose " " s)))
+
 (defn nested-values
   "returns a vector of pretty-printed values. If it's a collection, uses the first limit
   number as the number of elements it prints, passes the rest of the limit numbers
@@ -160,7 +166,10 @@
   (println "value = " (class value) " limits = " limits)
   (if (or (not limits) (not (coll? value))) (pretty-print-single-value value)
     (let [[open close] (delimeters value)]
-      (conj (into [open] (interpose " " (take (first limits) (map #(apply nested-values (into [%] (rest limits))) value)))) close))))
+      (conj (into [open] (add-spaces-etc
+                          (take (inc (first limits)) (map #(apply nested-values (into [%] (rest limits))) value))
+                          (first limits)))
+            close))))
 
 (defn pretty-print-value-nested
   "returns a pretty-printed value of an arbitrary collection or value"
