@@ -20,8 +20,9 @@
 
 ;-
 (defn draw-state [state]
-  (draw-shape (create-rect 200 200 80 255 80) 400 400))
-
+  (draw-shape
+   (create-rect 200 200 80 255 80)
+   400 400))
 
 
 
