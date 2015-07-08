@@ -167,7 +167,7 @@
   [& params]
   (let [pretty-val (apply nested-values params)]
     (println pretty-val)
-    (if (seq? pretty-val) (apply str pretty-val) (str pretty-val))))
+    (if (coll? pretty-val) (cs/join pretty-val) (str pretty-val))))
 
 
 ;;; arg-str: number -> string
