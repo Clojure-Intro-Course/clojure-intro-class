@@ -157,7 +157,7 @@
   and with ... at the end if s is longer than n"
   [s n]
   (println "n = " n "count s" (count s))
-  (if (> (count s) n)  (concat (interpose " " s) '("...")) (interpose " " s)))
+  (if (> (count s) n)  (concat (interpose " " (take n s)) '("...")) (interpose " " (take n s))))
 
 (defn nested-values
   "returns a vector of pretty-printed values. If it's a collection, uses the first limit
@@ -177,7 +177,7 @@
   [& params]
   (let [pretty-val (apply nested-values params)]
     (println pretty-val)
-    (if (coll? pretty-val) (cs/join pretty-val) (str pretty-val))))
+    (if (coll? pretty-val) (cs/join (flatten pretty-val)) (str pretty-val))))
 
 
 ;;; arg-str: number -> string

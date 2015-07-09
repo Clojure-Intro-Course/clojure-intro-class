@@ -312,7 +312,7 @@
          (run-and-catch-pretty-no-stacktrace 'intro.core
                                              '(dissoc "this is a string" :key1 :key2))))
 
-(expect "In function dissoc, the first argument (this is a vector) must be a map but is a vector."
+(expect "In function dissoc, the first argument [this is a vector] must be a map but is a vector."
         (get-text-no-location
          (run-and-catch-pretty-no-stacktrace 'intro.core
                                              '(dissoc ["this" "is" "a" "vector"]))))

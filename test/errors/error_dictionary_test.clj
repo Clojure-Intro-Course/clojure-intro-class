@@ -171,7 +171,7 @@
         (get-text-no-location
          (run-and-catch-pretty-no-stacktrace 'intro.core '(odd? nil))))
 
-(expect "In function even?, the first argument ((0 1 2...) (0 1 2...)) must be an integer number but is a vector."
+(expect "In function even?, the first argument [(0 1 2...) (0 1 2...)] must be an integer number but is a vector."
         (get-text-no-location
          (run-and-catch-pretty-no-stacktrace 'intro.core '(even? [(range) (range)]))))
 
