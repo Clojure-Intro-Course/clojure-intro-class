@@ -14,7 +14,7 @@
 ;(assoc {:a 1 :b 2 :c 3 :d 4 :e 5} :a "dog" :c "cat")
 ;(assoc [:a 1 :b 2 :c 3 :d 4 :e 5] 5 "dog" 1 "cat" 10 "cats")
 
-(map (range) 6)
+(map (range) inc)
 
 ;(* [:a 4 2] 9)
 ;change wording, a keyword can take one or two arguments, test both

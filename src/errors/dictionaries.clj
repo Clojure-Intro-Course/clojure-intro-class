@@ -153,7 +153,8 @@
    :else ["(" ")"]))
 
 (defn add-spaces-etc
-  ""
+  "takes a sequence s and a limit n and returns the elements of s with spaces in-between
+  and with ... at the end if s is longer than n"
   [s n]
   (println "n = " n "count s" (count s))
   (if (> (count s) n)  (concat (interpose " " s) '("...")) (interpose " " s)))
@@ -163,7 +164,7 @@
   number as the number of elements it prints, passes the rest of the limit numbers
   to the call that prints the nested elements. If no limits passed, returns ..."
   [value & limits]
-  (println "value = " (class value) " limits = " limits)
+  ;(println "value = " (class value) " limits = " limits)
   (if (or (not limits) (not (coll? value))) (pretty-print-single-value value)
     (let [[open close] (delimeters value)]
       (conj (into [open] (add-spaces-etc
