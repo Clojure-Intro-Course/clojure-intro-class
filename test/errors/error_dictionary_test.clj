@@ -36,7 +36,7 @@
         (get-text-no-location
          (run-and-catch-pretty-no-stacktrace 'intro.core '(+ 1 (repeat (repeat (range)))))))
 
-(expect "In function inc, the first argument ((0 1 2...) (1 (...) (...)...) (1 2 1...) (0 1 2...) (1 (...) (...)...) (1 2 1...) (0 1 2...) (1 (...) (...)...) (1 2 1...) (0 1 2...)...) must be a number but is a sequence."
+(expect "In function inc, the first argument ((0 1 2...) [1 (...) (...)...] (1 2 1...) (0 1 2...) [1 (...) (...)...] (1 2 1...) (0 1 2...) [1 (...) (...)...] (1 2 1...) (0 1 2...)...) must be a number but is a sequence."
         (get-text-no-location
          (run-and-catch-pretty-no-stacktrace 'intro.core '(inc (cycle [(range) [1 (repeat 1) (range) 4 5 6 7 8 9 245 4235 5423] (cycle [1 2])])))))
 
@@ -58,13 +58,13 @@
         (get-text-no-location
          (run-and-catch-pretty-no-stacktrace 'intro.core '(+ [map]))))
 
-(expect "In function +, the first argument (\"a\" \"b\") must be a number but is a sequence."
+(expect "In function +, the first argument (\"a\" \"b\") must be a number but is a list."
         (get-text-no-location
          (run-and-catch-pretty-no-stacktrace 'intro.core '(+ '("a" "b")))))
 
-(expect "In function +, the first argument (anonymous function) must be a number but is a sequence."
+(expect "In function +, the first argument #{anonymous function} must be a number but is a set."
         (get-text-no-location
-         (run-and-catch-pretty-no-stacktrace 'intro.core '(+ '(#(+ % 2))))))
+         (run-and-catch-pretty-no-stacktrace 'intro.core '(+ #{#(+ % 2)}))))
 
 (expect "In function +, the first argument #{+} must be a number but is a set."
         (get-text-no-location

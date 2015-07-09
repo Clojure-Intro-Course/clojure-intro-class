@@ -133,14 +133,14 @@
 (defn pretty-print-single-value
   "returns a pretty-printed value that is not a collection"
   [value]
-  (println "passed to single value: " (class value))
+  ;(println "passed to single value: " (class value))
   ;; need to check for nil first because .getName fails otherwise
   (if (nil? value) "nil"
     (let [fname (.getName (type value))]
       (cond (string? value) (str "\"" value "\"")  ; strings are printed in double quotes:
             ; extract a function from the class fname (easier than from value):
             (= (get-type fname) "a function") (get-function-name fname)
-            (coll? value) "..."
+            (coll? value) "(...)"
             :else value))))
 
 (defn delimeters
@@ -156,8 +156,8 @@
   "takes a sequence s and a limit n and returns the elements of s with spaces in-between
   and with ... at the end if s is longer than n"
   [s n]
-  (println "n = " n "count s" (count s))
-  (if (> (count s) n)  (concat (interpose " " (take n s)) '("...")) (interpose " " (take n s))))
+  (let [seq-with-spaces (interpose " " (take n s))]
+    (if (> (count s) n)  (concat seq-with-spaces '("...")) seq-with-spaces)))
 
 (defn nested-values
   "returns a vector of pretty-printed values. If it's a collection, uses the first limit
@@ -176,7 +176,7 @@
   "returns a pretty-printed value of an arbitrary collection or value"
   [& params]
   (let [pretty-val (apply nested-values params)]
-    (println pretty-val)
+    ;(println pretty-val)
     (if (coll? pretty-val) (cs/join (flatten pretty-val)) (str pretty-val))))
 
 
