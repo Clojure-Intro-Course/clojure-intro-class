@@ -167,10 +167,14 @@
   ;(println "value = " (class value) " limits = " limits)
   (if (or (not limits) (not (coll? value))) (pretty-print-single-value value)
     (let [[open close] (delimeters value)]
-      (conj (into [open] (add-spaces-etc
+      (cond (map? value) (conj (into [open] (add-spaces-etc
+                                  (take (inc (first limits)) (map #(apply nested-values (into [%] (rest limits))) (vec (flatten (seq value)))))
+                          (first limits)))
+            close)
+            :else  (conj (into [open] (add-spaces-etc
                           (take (inc (first limits)) (map #(apply nested-values (into [%] (rest limits))) value))
                           (first limits)))
-            close))))
+            close)))))
 
 (defn pretty-print-value-nested
   "returns a pretty-printed value of an arbitrary collection or value"
