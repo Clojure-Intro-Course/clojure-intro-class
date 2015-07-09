@@ -40,6 +40,11 @@
    ;### Illegal Argument Exceptions ###
    ;###################################
 
+   {:key :wrong-number-of-args-passed-to-a-keyword
+    :class IllegalArgumentException
+    :match #"Wrong number of args passed to keyword: (.*)"
+    :make-msg-info-obj (fn [matches] (make-msg-info-hashes "A keyword: " (nth matches 1) :arg " can only take one or two arguments."))}
+
    {:key :illegal-argument-no-val-supplied-for-key
     :class IllegalArgumentException
     :match #"No value supplied for key: (.*)"
@@ -85,9 +90,9 @@
                                                            " does not allow " (get-type (nth matches 2)) :type " as an argument."))}
    {:key :illegal-argument-parameters-must-be-in-vector
     :class IllegalArgumentException
-    :match #"Parameter declaration (.*) should be a vector"
-    :make-msg-info-obj (fn [matches] (make-msg-info-hashes "Parameters in " "defn" :arg
-                                                           " should be a vector, but is " (nth matches 1) :arg "."))}
+    :match #"Parameter declaration \"(.*)\" should be a vector"
+    :make-msg-info-obj (fn [matches] (make-msg-info-hashes "Parameters for " "defn" :arg
+                                                           " must be a vector, but " (nth matches 1) :arg " was found instead."))}
    {:key :illegal-argument-exactly-2-forms
     :class IllegalArgumentException
     :match #"(.*) requires exactly 2 forms in binding vector in (.*):(.*)"
@@ -120,9 +125,16 @@
                          (make-msg-info-hashes "This recur is supposed to take "
                                                (number-word first-arg) arg-args
                                                ", but you are passing "
-                                               (number-word sec-arg) ".")))
-    :hints "1. You are passing a wrong number of arguments to recur. Check its function or loop.\n
-    2. recur might be outside of the scope of its function or loop."}
+                                               (number-word sec-arg) ".")))}
+
+   ;################################
+   ;### Illegal State Exceptions ###
+   ;################################
+
+    {:key :compiler-exception-on-improper-use-of-arg-literal
+    :class IllegalStateException
+    :match #"arg literal must be %, %\& or %integer"
+    :make-msg-info-obj (fn [matches] (make-msg-info-hashes "% must be either on its own or followed by a number or &."))}
 
    ;######################################
    ;### Index Out of Bounds Exceptions ###
@@ -137,10 +149,7 @@
    {:key :string-index-out-of-bounds
     :class StringIndexOutOfBoundsException
     :match #"String index out of range: (\d+)"
-    :make-msg-info-obj (fn [matches] (make-msg-info-hashes "Position " (nth matches 1) :arg " is outside of the string."))
-    :hint "String positions start at zero, so there is no character at a position equal to the string length.
-    Example: a string \"hi\" does not have a character at position 2. \n
-    Also the string may be empty, in this case accessing any position in it gives this error."}
+    :make-msg-info-obj (fn [matches] (make-msg-info-hashes "Position " (nth matches 1) :arg " is outside of the string."))}
 
    {:key :index-out-of-bounds-index-not-provided
     :class IndexOutOfBoundsException
@@ -209,12 +218,35 @@
    {:key :class-not-found-exception
     :class ClassNotFoundException
     :match #"(.*)"
-    :make-msg-info-obj (fn [matches] (make-msg-info-hashes "Name " (nth matches 1) :arg " is undefined."))
-    :hints "If you are using functions from another file, make sure you use dots for namespaces and slashes for functions, such as clojure.string/split."}
+    :make-msg-info-obj (fn [matches] (make-msg-info-hashes "Name " (nth matches 1) :arg " is undefined."))}
 
-   ;##############################################
-   ;### Runtime Exceptions ###
-   ;##############################################
+   ;###############################
+   ;### Number Format Exception ###
+   ;###############################
+
+   {:key :number-format-exception
+    :class NumberFormatException
+    :match #"Invalid number: (.*)"
+    :make-msg-info-obj (fn [matches] (make-msg-info-hashes "Invalid number: " (nth matches 1) :arg "."))}
+
+   ;#####################################################################
+   ;### Runtime Exceptions or clojure.lang.LispReader$ReaderException ###
+   ;#####################################################################
+
+   {:key :invalid-tolken-error
+    :class java.lang.RuntimeException
+    :match #"java.lang.RuntimeException: Invalid token: (.*)"
+    :make-msg-info-obj (fn [matches] (make-msg-info-hashes "You cannot use " (nth matches 1) :arg " in this position."))}
+
+   {:key :invalid-tolken-error
+    :class java.lang.RuntimeException
+    :match #"Invalid token: (.*)"
+    :make-msg-info-obj (fn [matches] (make-msg-info-hashes "You cannot use " (nth matches 1) :arg " in this position."))}
+
+   {:key :syntax-error-cant-specifiy-over-20-args
+    :class java.lang.RuntimeException
+    :match #"Can't specify more than 20 params"
+    :make-msg-info-obj (fn [matches] (make-msg-info-hashes "A function may not take more than more than 20 parameters." ))}
 
    {:key :compiler-exception-first-argument-must-be-symbol
     :class java.lang.RuntimeException
@@ -239,8 +271,8 @@
 
    {:key :compiler-exception-unmatched-delimiter
     :class java.lang.RuntimeException
-    :match #"Unmatched delimiter: (.+)"
-    :make-msg-info-obj (fn [matches] (make-msg-info-hashes "There is an unmatched delimiter " (nth matches 1) :arg "."))}
+    :match #"(.*)Unmatched delimiter: (.+)"
+    :make-msg-info-obj (fn [matches] (make-msg-info-hashes "There is an unmatched delimiter " (nth matches 2) :arg "."))}
 
    {:key :compiler-exception-too-many-arguments
     :class java.lang.RuntimeException
@@ -258,6 +290,30 @@
     :match #"EOF while reading, starting at line (.+)"
     :make-msg-info-obj (fn [matches] (make-msg-info-hashes "End of file, starting at line " (nth matches 1) :arg
                                                            ".\nProbably a non-closing parenthesis or bracket."))}
+
+   {:key :compiler-exception-end-of-file-string
+    :class java.lang.RuntimeException
+    :match #"EOF while reading string"
+    :make-msg-info-obj (fn [matches] (make-msg-info-hashes "An opened " "\"" :arg " does not have a matching closing one."))}
+
+   ;; Order mattters: do not re-order this one and :compiler-exception-no-such-var-no-namespace
+   {:key :compiler-exception-no-such-var-with-namespace
+    :class java.lang.RuntimeException
+    :match #"No such var: (.+)/(.+)"
+    :make-msg-info-obj (fn [matches] (make-msg-info-hashes "Name " (nth matches 2) :arg " does not exist in the namespace "
+                                                           (nth matches 1) :arg "."))}
+
+   ;; Order mattters: do not re-order this one and :compiler-exception-no-such-var-with-namespace
+   ;; I don't know a case for this, but it's here in case a no-such-var error happens with no namespace info
+   {:key :compiler-exception-no-such-var-no-namespace
+    :class java.lang.RuntimeException
+    :match #"No such var: (.+)"
+    :make-msg-info-obj (fn [matches] (make-msg-info-hashes "Name " (nth matches 1) :arg " is undefined."))}
+
+   {:key :compiler-exception-no-such-namespace
+    :class java.lang.RuntimeException
+    :match #"No such namespace: (.+)"
+    :make-msg-info-obj (fn [matches] (make-msg-info-hashes "The namespace " (nth matches 1) :arg " does not exist or is not accessible in your program."))}
 
 
    ;############################
@@ -317,6 +373,7 @@
                                         (str "a function "))]
                            (make-msg-info-hashes "Wrong number of arguments ("
                                                  (nth matches 2) ") passed to " funstr fstr :arg ".")))}
+
 
    ])
 

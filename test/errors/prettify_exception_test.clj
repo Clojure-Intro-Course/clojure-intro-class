@@ -260,12 +260,6 @@
 (expect "cond" (get-macro-name "clojure.core/cond"))
 (expect "and" (get-macro-name "clojure.core/and"))
 
-;; testing for pretty-print-value
-(expect "\"happy\"" (pretty-print-value "happy" '"clojure.core$_STAR_" "a function"))
-(expect "*" (pretty-print-value 2 "clojure.core$_STAR_" "a function"))
-(expect "nil" (pretty-print-value nil "clojure.core$_STAR_" "a function"))
-(expect "2" (pretty-print-value 2 "clojure.core$_STAR_" "foo_bang"))
-
 ;; testing for arg-str
 (expect "first argument" (arg-str 1))
 (expect "21st argument" (arg-str 21))
@@ -278,6 +272,8 @@
 (expect "two or three" (lookup-arity "reduce"))
 (expect nil (lookup-arity "anonymous function"))
 (expect nil (lookup-arity "not a function"))
+
+
 
 
 

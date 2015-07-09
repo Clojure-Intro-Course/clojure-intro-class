@@ -32,3 +32,14 @@
 ;(expect "(2 3 4 5)" (eval-first-n (map inc [1 2 3 4]) 10))
 ;(expect "(1 2 3 4 5 6 7 8 9 10...)" (eval-first-n (map inc (range)) 10))
 ;(expect "a sequence that we cannot evaluate" (eval-first-n (map #(/ % 0) [1 2 3]) 10))
+
+(expect ["[" "]"] (delimeters [6 7]))
+(expect ["{" "}"] (delimeters (assoc {} :a 1)))
+(expect ["#{" "}"] (delimeters (set [2 3 2 3])))
+(expect ["(" ")"] (delimeters (range)))
+
+;;
+(expect "2" (pretty-print-value-nested 2 10 3))
+(expect "\"hi\"" (pretty-print-value-nested "hi" 10 3))
+(expect "[2 3]" (pretty-print-value-nested [2 3] 10 3))
+(expect "(2 3)" (pretty-print-value-nested '(2 3) 10 3))

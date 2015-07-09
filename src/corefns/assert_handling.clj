@@ -24,6 +24,39 @@
     ;      (if (string? n) (add-to-seen {:number-of-args (read-string n)})))
     ;  (if q (add-to-seen {:number-of-args (read-string n)}))
 
+;this is currently unused
+(defn check-if-sequential?
+  "returns true if x is sequential and false otherwise, sets data
+  in seen-failed-asserts. If the second argument is present, it's added
+  to the seen-failed-asserts as the number of the argument"
+  [fname x & [n]]
+  (if (sequential? x) true
+    (do (add-to-seen {:check "a sequence"
+                      :class (class x)
+                      :value x
+                      :fname fname})
+      (if n (add-to-seen {:arg-num n}))
+            false)))
+
+;i just added this, needs tests, used in assoc pre-conditions
+(defn check-if-map-or-vector? [fname x & [n]]
+  (if (or (vector? x) (map? x) (nil? x)) true
+    (do (add-to-seen {:check "a map or vector"
+                      :class (class x)
+                      :value x
+                      :fname fname})
+      (if n (add-to-seen {:arg-num n}))
+      false)))
+
+(defn check-if-map? [fname x & [n]]
+  (if (or (map? x) (nil? x)) true
+    (do (add-to-seen {:check "a map"
+                      :class (class x)
+                      :value x
+                      :fname fname})
+      (if n (add-to-seen {:arg-num n}))
+      false)))
+
 (defn check-if-function? [fname x & [n]]
   (if (fn? x) true
     (do (add-to-seen {:check "a function"

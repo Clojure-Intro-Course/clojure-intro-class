@@ -5,8 +5,71 @@
             [intro.student :refer :all]))
 
 
-(map
-;(println (clojure.string/splt "/home/stock424/Documents/code/clojure-intro-class/src/intro/may2015.clj" #"/"))
+;added assoc and disoc to arity dictionary
+;added preconditions for disoc and assoc
+;will add tests.
+;3440 1440
+;(println (dissoc {:a 1 :b 2 :c 3 :d 4 :e 5 :f 6 :g 7} :a :c :e :g))
+;(println (dissoc [:a 1 :b 2 :c 3 :d 4 :e 5 :f 6 :g 7] :a :c :e :g))
+;(assoc {:a 1 :b 2 :c 3 :d 4 :e 5} :a "dog" :c "cat")
+;(assoc [:a 1 :b 2 :c 3 :d 4 :e 5] 5 "dog" 1 "cat" 10 "cats")
+
+(map (range) 6)
+
+;(* [:a 4 2] 9)
+;change wording, a keyword can take one or two arguments, test both
+;(map : [1 2 3])
+;(/string "abcd")
+;(:a)
+;(map #: [1 2 3])
+;(print 1.2.2)
+;(assoc [1 2 3] 0 10 2 20)
+;(assoc [:a 1 :b 2 :c 3 :d 4 :e 5] 5 "dog" 1 "cat" 10 "cats")
+;(assoc nil :a 5 :v 12)
+;(defn # :)
+
+;(dissoc {:a 1 :b 2 :c 3})
+;(dissoc nil)
+
+;(assoc [1 2 3] 10 10)
+
+
+
+
+
+
+
+;(#(+ %22222 1) 2 3) ;and test
+
+;(merge {:a 1 :b 2 :c 3} '(5 6 7))
+
+;(merge {:a 1 :b 2 :c 3} [[5 6] [7 8]])
+
+;(merge {:a 1 :b 2 :c 3} '([5 6] [7 8]))
+
+;(assoc [:a 1 :b 2 :c 3 :d 4 :e 5] 5 "dog" 1 "cat" 10 "cats")
+
+;(assoc "this is a string" :key1 "val1" :key2 "val2")
+
+;(dissoc ["this" "is" "a" "vector"] :key1 "val1" :key2 "val2")
+
+
+
+;(println (clojure/string/splt "/home/stock424/Documents/code/clojure-intro-class/src/intro/may2015.clj" #"/"))
+;(println (/string "/home/stock424/Documents/code/clojure-intro-class/src/intro/may2015.clj" #"/"))
+;(println (clojure.string/ "/home/stock424/Documents/code/clojure-intro-class/src/intro/may2015.clj" #"/"))
+;(println ")
+
+;good: clojure.lang.LispReader$ReaderException
+;java.lang.RuntimeException
+;bad: everythign else
+
+;(println #2)
+;(map #(+ %3.14 1) [1 2 3])
+
+;(#(+ % 1) 2 3)
+
+
 
 ;;(println (str/split "/home/stock424/Documents/code/clojure-intro-class/src/intro/may2015.clj" #"/"))
 ;Syntax error: java.lang.RuntimeException: No such namespace: str, compiling:(/home/stock424/Documents/code/clojure-intro-class/src/intro/may2015.clj:21:10)
@@ -20,12 +83,52 @@
 ;Found in file /home/stock424/Documents/code/clojure-intro-class/src/intro/may2015.clj on line 26 at character 10.
 ;	intro.core/-main (core.clj line 111)
 
-;;(println (replace #"\p*[/]" "/home/stock424/Documents/code/clojure-intro-class/src/intro/may2015.clj" ""))
+;(println (replace #"\p*[/]" "/home/stock424/Documents/code/clojure-intro-class/src/intro/may2015.clj" ""))
 ;Error: Unknown character property name {*} near index 2
 ;\p*[/]
 ;  ^
 ;Found in file core.clj on line 111 in function -main.
 ;	intro.core/-main (core.clj line 111)
+
+;(replace #"[a-z!]":g)
+;Error: Don't know how to create a sequence from a keyword.
+;Found in file core.clj on line 114 in function -main.
+;	clojure.core/seq (core.clj line 135)
+;	clojure.core/map (core.clj line 2614)
+;	clojure.core/seq (core.clj line 135)
+;	clojure.core/fn (core_print.clj line 155)
+;	clojure.core/apply (core.clj line 628)
+;	clojure.core/print (core.clj line 3603)
+;	intro.core/-main (core.clj line 114)
+
+
+;(cons "adsf" "dasfs")
+;Error: You cannot pass six arguments to a function cons, need two.
+;Found in file may2015.clj on line 8 at character 1.
+;	clojure.core/apply (core.clj line 630)
+;	corefns.corefns/cons (corefns.clj line 75)
+;	intro.may2015/eval8659 (may2015.clj line 32)
+;	intro.core/-main (core.clj line 114)
+
+;;this is just how filter works I guess, no errors here..
+;(filter odd? "fdasgfg")
+;Error: In function odd?, the first argument f must be an integer number but is a character.
+;Found in file core.clj on line 114 in function -main.
+;	corefns.corefns/odd? (corefns.clj line 160)
+;	clojure.core/filter (core.clj line 2688)
+;	clojure.core/seq (core.clj line 135)
+;	clojure.core/fn (core_print.clj line 155)
+;	clojure.core/apply (core.clj line 628)
+;	clojure.core/print (core.clj line 3603)
+;	intro.core/-main (core.clj line 114)
+
+;(filter #(odd? (int %)) "42356432543sdfgjhygdf.,/;l)_(&*^%$#@")
+;(first "1324")
+
+;(odd? nil)
+
+
+;(cons "ab" "cdef")
 
 
 
@@ -617,6 +720,11 @@
 
  ;(let [[x y _ d m] ["1" "2" "3"]]
  ;  (println x y d))
+
+
+; "Non-closing string here"
+
+
 
 
 
