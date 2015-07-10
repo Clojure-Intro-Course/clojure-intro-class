@@ -152,12 +152,21 @@
    (map? coll) ["{" "}"]
    :else ["(" ")"]))
 
+(defn add-commas
+  "takes a sequence with spaces inserted after every element and inserts commas after
+  every second non-space element"
+  [s]
+  ;; the sequence corresponding to a map doesn't have a space after the last element,
+  ;; so dropping the last comma works
+  (butlast (flatten (map #(concat (take 3 %) [","] (drop 3 %)) (partition-all 4 s)))))
+
 (defn add-spaces-etc
   "takes a sequence s and a limit n and returns the elements of s with spaces in-between
   and with ... at the end if s is longer than n"
-  [s n]
-  (let [seq-with-spaces (interpose " " (take n s))]
-    (if (> (count s) n)  (concat seq-with-spaces '("...")) seq-with-spaces)))
+  [s n is-map]
+  (let [seq-with-spaces (interpose " " (take n s))
+        seq-done (if is-map (add-commas seq-with-spaces) seq-with-spaces)]
+    (if (> (count s) n)  (concat seq-done '("...")) seq-done)))
 
 (defn nested-values
   "returns a vector of pretty-printed values. If it's a collection, uses the first limit
@@ -171,7 +180,8 @@
           flat-seq (if (map? value) (flatten (seq value)) value)]
       (conj (into [open] (add-spaces-etc
                           (take (inc (first limits)) (map #(apply nested-values (into [%] (rest limits))) flat-seq))
-                          (first limits)))
+                          (first limits)
+                          (map? value)))
             close))))
 
 (defn pretty-print-value-nested
@@ -227,7 +237,7 @@
         fname (:fname @seen-failed-asserts)
         c-type (if c (get-type c) "nil") ; perhaps want to rewrite this
         v (:value @seen-failed-asserts)
-        v-print (pretty-print-value-nested v 10 3)
+        v-print (pretty-print-value-nested v 10 4)
         arg (arg-str (if n (Integer. n) (:arg-num @seen-failed-asserts)))]
     (empty-seen) ; empty the seen-failed-asserts hashmap
     (if (not (= "nil" v-print))

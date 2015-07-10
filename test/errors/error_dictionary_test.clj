@@ -28,19 +28,19 @@
 ;###############################################
 
 ;; testing for :pretty-print-value
-(expect "In function +, the second argument ((0 1 2...) (0 1 2...) (0 1 2...) (0 1 2...) (0 1 2...) (0 1 2...) (0 1 2...) (0 1 2...) (0 1 2...) (0 1 2...)...) must be a number but is a sequence."
+(expect "In function +, the second argument ((0 1 2 3...) (0 1 2 3...) (0 1 2 3...) (0 1 2 3...) (0 1 2 3...) (0 1 2 3...) (0 1 2 3...) (0 1 2 3...) (0 1 2 3...) (0 1 2 3...)...) must be a number but is a sequence."
         (get-text-no-location
          (run-and-catch-pretty-no-stacktrace 'intro.core '(+ 1 (repeat (range))))))
 
-(expect "In function +, the second argument (((...) (...) (...)...) ((...) (...) (...)...) ((...) (...) (...)...) ((...) (...) (...)...) ((...) (...) (...)...) ((...) (...) (...)...) ((...) (...) (...)...) ((...) (...) (...)...) ((...) (...) (...)...) ((...) (...) (...)...)...) must be a number but is a sequence."
+(expect "In function +, the second argument (((...) (...) (...) (...)...) ((...) (...) (...) (...)...) ((...) (...) (...) (...)...) ((...) (...) (...) (...)...) ((...) (...) (...) (...)...) ((...) (...) (...) (...)...) ((...) (...) (...) (...)...) ((...) (...) (...) (...)...) ((...) (...) (...) (...)...) ((...) (...) (...) (...)...)...) must be a number but is a sequence."
         (get-text-no-location
          (run-and-catch-pretty-no-stacktrace 'intro.core '(+ 1 (repeat (repeat (range)))))))
 
-(expect "In function inc, the first argument ((0 1 2...) [1 (...) (...)...] (1 2 1...) (0 1 2...) [1 (...) (...)...] (1 2 1...) (0 1 2...) [1 (...) (...)...] (1 2 1...) (0 1 2...)...) must be a number but is a sequence."
+(expect "In function inc, the first argument ((0 1 2 3...) [1 (...) (...) 4...] (1 2 1 2...) (0 1 2 3...) [1 (...) (...) 4...] (1 2 1 2...) (0 1 2 3...) [1 (...) (...) 4...] (1 2 1 2...) (0 1 2 3...)...) must be a number but is a sequence."
         (get-text-no-location
          (run-and-catch-pretty-no-stacktrace 'intro.core '(inc (cycle [(range) [1 (repeat 1) (range) 4 5 6 7 8 9 245 4235 5423] (cycle [1 2])])))))
 
-(expect "In function +, the second argument [1 2 3 4 5 6 76 (0 1 2...) 756 354...] must be a number but is a vector."
+(expect "In function +, the second argument [1 2 3 4 5 6 76 (0 1 2 3...) 756 354...] must be a number but is a vector."
         (get-text-no-location
          (run-and-catch-pretty-no-stacktrace 'intro.core '(+ 1 [1 2 3 4 5 6 76 (range) 756 354 6 645]))))
 
@@ -74,12 +74,12 @@
         (get-text-no-location
          (run-and-catch-pretty-no-stacktrace 'intro.core '(+ {:a +}))))
 
-(expect "In function +, the first argument {:a {6 \"a\"} :b 4 :c +} must be a number but is a map."
+(expect "In function +, the first argument {:a {6 \"a\", 7 true}, :b 4, :c +} must be a number but is a map."
         (get-text-no-location
-         (run-and-catch-pretty-no-stacktrace 'intro.core '(+ {:a {6 "a"} :b 4 :c +}))))
+         (run-and-catch-pretty-no-stacktrace 'intro.core '(+ {:a {6 "a" 7 true} :b 4 :c +}))))
 
 ;; Note: the order of elements in a hashmap is not guaranteed, so the actual elements amy be different
-(expect "In function +, the first argument {:a 6 :k \"a\" :b 4 :c + :l 6...} must be a number but is a map."
+(expect "In function +, the first argument {:a 6, :k \"a\", :b 4, :c +, :l 6...} must be a number but is a map."
         (get-text-no-location
          (run-and-catch-pretty-no-stacktrace 'intro.core '(+ {:a 6 :k "a" :b 4 :c + :l 6 :m 7}))))
 
@@ -180,7 +180,7 @@
         (get-text-no-location
          (run-and-catch-pretty-no-stacktrace 'intro.core '(odd? nil))))
 
-(expect "In function even?, the first argument [(0 1 2...) (0 1 2...)] must be an integer number but is a vector."
+(expect "In function even?, the first argument [(0 1 2 3...) (0 1 2 3...)] must be an integer number but is a vector."
         (get-text-no-location
          (run-and-catch-pretty-no-stacktrace 'intro.core '(even? [(range) (range)]))))
 
