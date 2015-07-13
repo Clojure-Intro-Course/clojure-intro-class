@@ -40,6 +40,11 @@
    ;### Illegal Argument Exceptions ###
    ;###################################
 
+   {:key :assoc-parity-error
+    :class IllegalArgumentException
+    :match #"assoc expects even number of arguments after map/vector, found odd number"
+    :make-msg-info-obj (fn [matches] (make-msg-info-hashes "The arguments following the map or vector in assoc must come in pairs, but one of them does not have a match."))}
+
    {:key :wrong-number-of-args-passed-to-a-keyword
     :class IllegalArgumentException
     :match #"Wrong number of args passed to keyword: (.*)"

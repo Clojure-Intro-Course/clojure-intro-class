@@ -141,9 +141,6 @@
   [mymap & key-values];check-if-seqable? is not restrictive enough
    {:pre [(check-if-map-or-vector? "assoc" mymap 1)]}
    (apply clojure.core/assoc (into [mymap] key-values)))
-;  ([mymap key val & kvs]
-;   {:pre [(check-if-map-or-vector? "assoc" mymap 1)]}
-;   (apply clojure.core/assoc (into [mymap key val] kvs))))
 
 ;; (dissoc map)(dissoc map key)(dissoc map key & ks)
 ;; dissoc[iate]. Returns a new map of the same (hashed/sorted) type,

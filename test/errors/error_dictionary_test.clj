@@ -279,6 +279,9 @@
 ;### Testing for compilation errors ###
 ;######################################
 
+(expect #"The arguments following the map or vector in assoc must come in pairs, but one of them does not have a match."
+        (get-text-no-location (run-and-catch-pretty-no-stacktrace 'intro.core '(assoc {:a 3 :b 5} :key1 "val1" :key2))))
+
 ;;;; Elena: we might want to revisit this one
 (expect #"Parameters for loop must come in pairs, but one of them does not have a match; on line (\d+) in the file intro\.core"
         (get-text-no-location (run-and-catch-pretty-no-stacktrace 'intro.core '(defn s [s] (loop [s])))))

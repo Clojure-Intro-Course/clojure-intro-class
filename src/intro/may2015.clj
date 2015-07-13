@@ -6,15 +6,16 @@
 
 
 
+;(defn PersistantArrayMap [x] (+ x 1))
+
+;({:a 7})
+
+;({:a 7} )
 
 
 
-;#3
 
-
-
-
-
+(assoc {:a 3 :b 5} :key1 "val1" :key2)
 
 
 
