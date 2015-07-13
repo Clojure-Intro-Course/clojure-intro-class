@@ -109,7 +109,7 @@
        (get-text-no-location (:msg-info-obj (try (load-file "exceptions/compilation_errors/invalid_token_error2.clj")
                        (catch Throwable e (prettify-exception e))))))
 
-(expect #"You cannot use /string in this position."
+(expect #"You cannot use / in this position."
        (get-text-no-location (:msg-info-obj (try (load-file "exceptions/compilation_errors/invalid_token_error1.clj")
                        (catch Throwable e (prettify-exception e))))))
 
