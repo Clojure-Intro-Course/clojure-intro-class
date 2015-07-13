@@ -39,9 +39,9 @@
 (expect ["(" ")"] (delimeters (range)))
 
 ;;
-(expect "2" (pretty-print-value-nested 2 10 3))
-(expect "\"hi\"" (pretty-print-value-nested "hi" 10 3))
-(expect "[2 3]" (pretty-print-value-nested [2 3] 10 3))
-(expect "(2 3)" (pretty-print-value-nested '(2 3) 10 3))
+(expect "2" (preview-arg 2 10 3))
+(expect "\"hi\"" (preview-arg "hi" 10 3))
+(expect "[2 3]" (preview-arg [2 3] 10 3))
+(expect "(2 3)" (preview-arg '(2 3) 10 3))
 
 (expect '(2 " " 3 "," " " 4 " " 5) (add-commas '(2 " " 3 " " 4 " " 5)))

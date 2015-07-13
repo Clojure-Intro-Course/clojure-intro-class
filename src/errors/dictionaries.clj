@@ -133,7 +133,6 @@
 (defn pretty-print-single-value
   "returns a pretty-printed value that is not a collection"
   [value]
-  ;(println "passed to single value: " (class value))
   ;; need to check for nil first because .getName fails otherwise
   (if (nil? value) "nil"
     (let [fname (.getName (type value))]
@@ -168,27 +167,29 @@
         seq-done (if is-map (add-commas seq-with-spaces) seq-with-spaces)]
     (if (> (count s) n)  (concat seq-done '("...")) seq-done)))
 
-(defn nested-values
+(defn pretty-print-nested-values
   "returns a vector of pretty-printed values. If it's a collection, uses the first limit
   number as the number of elements it prints, passes the rest of the limit numbers
-  to the call that prints the nested elements. If no limits passed, returns ..."
+  to the call that prints the nested elements. If no limits passed, returns (...)
+  for a collection and teh string of a value for a single value"
   [value & limits]
-  ;(println "value = " (class value) " limits = " limits)
   (if (or (not limits) (not (coll? value))) (pretty-print-single-value value)
     (let [[open close] (delimeters value)
-          ;; needed because a sequence of a map is a sequence of vectors:
+          ;; a sequence of a map is a sequence of vectors, turning it into a flat sequence:
           flat-seq (if (map? value) (flatten (seq value)) value)]
       (conj (into [open] (add-spaces-etc
-                          (take (inc (first limits)) (map #(apply nested-values (into [%] (rest limits))) flat-seq))
+                          (take (inc (first limits)) (map #(apply pretty-print-nested-values (into [%] (rest limits))) flat-seq))
                           (first limits)
                           (map? value)))
             close))))
 
-(defn pretty-print-value-nested
-  "returns a pretty-printed value of an arbitrary collection or value"
+(defn preview-arg
+  "returns a pretty-printed value of a preview of an arbitrary collection or value.
+  The input consists of a value and a variable number of integers that indicate
+  how many elements of a collection are displayed at each level. The rest of the
+  sequence is truncated, ... is included to indicate truncated sequences."
   [& params]
-  (let [pretty-val (apply nested-values params)]
-    ;(println pretty-val)
+  (let [pretty-val (apply pretty-print-nested-values params)]
     (if (coll? pretty-val) (cs/join (flatten pretty-val)) (str pretty-val))))
 
 
@@ -237,7 +238,7 @@
         fname (:fname @seen-failed-asserts)
         c-type (if c (get-type c) "nil") ; perhaps want to rewrite this
         v (:value @seen-failed-asserts)
-        v-print (pretty-print-value-nested v 10 4)
+        v-print (preview-arg v 10 4)
         arg (arg-str (if n (Integer. n) (:arg-num @seen-failed-asserts)))]
     (empty-seen) ; empty the seen-failed-asserts hashmap
     (if (not (= "nil" v-print))
