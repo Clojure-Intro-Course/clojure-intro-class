@@ -136,7 +136,7 @@
   ;; need to check for nil first because .getName fails otherwise
   (if (nil? value) "nil"
     (let [fname (.getName (type value))]
-      (cond (string? value) (str "\"" value "\"")  ; strings are printed in double quotes:
+      (cond (string? value) (str "\"" value "\"")  ; strings are printed in double quotes
             ; extract a function from the class fname (easier than from value):
             (= (get-type fname) "a function") (get-function-name fname)
             (coll? value) "(...)"
@@ -234,20 +234,19 @@
   ;; and perhaps need manual error handling, in case the seen-object is empty
   (let [t (:check @seen-failed-asserts)
         cl (:class @seen-failed-asserts)
-        c (if cl (.getName cl) nil) ;; MIGHT NOT NEED THIS
+        c-type (if cl (get-type (.getName cl)) "nil")
         fname (:fname @seen-failed-asserts)
-        c-type (if c (get-type c) "nil") ; perhaps want to rewrite this
         v (:value @seen-failed-asserts)
         v-print (preview-arg v 10 4)
-        arg (arg-str (if n (Integer. n) (:arg-num @seen-failed-asserts)))]
+        arg-num (arg-str (if n (Integer. n) (:arg-num @seen-failed-asserts)))]
     (empty-seen) ; empty the seen-failed-asserts hashmap
     (if (not (= "nil" v-print))
       (make-msg-info-hashes
-     "In function " fname :arg ", the " arg " " v-print :arg
+     "In function " fname :arg ", the " arg-num " " v-print :arg
      " must be " t :type " but is " c-type :type ".")
       (make-msg-info-hashes
-     "In function " fname :arg ", the " arg
-     " must be " t :type " but is " v-print :arg "."))))
+     "In function " fname :arg ", the " arg-num
+     " must be " t :type " but is " "nil" :arg "."))))
 
 (defn process-assert-obj-with-extra-arg
   "Returns a msg-info-obj generated for an assert failure based on the
