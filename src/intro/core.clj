@@ -114,5 +114,5 @@
       (print (load-file "src/intro/may2015.clj"))
     (catch Throwable e (print (str "itself:" (class e) ", cause: " (class (.getCause e)))) (throw e)))
 
-    (catch Throwable e (display-error (prettify-exception e)))))
+    (catch Throwable e (print (str "itself:" (class e) ", cause: " (class (.getCause e)))) (display-error (prettify-exception e)))))
 

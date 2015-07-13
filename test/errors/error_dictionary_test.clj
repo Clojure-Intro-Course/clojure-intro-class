@@ -89,9 +89,17 @@
          (run-and-catch-pretty-no-stacktrace 'intro.core '(hash-map "c" :d "d"))))
 
 ;; testing for :illegal-argument-vector-arg-to-map-conj
-(expect "Each inner vector must be a pair: a key followed by a value."
+(expect "Vectors added to a map must consist of two elements: a key and a value."
         (get-text-no-location
          (run-and-catch-pretty-no-stacktrace 'intro.core '(into {} [[1 2] [3]]))))
+
+(expect "Vectors added to a map must consist of two elements: a key and a value."
+        (get-text-no-location
+         (run-and-catch-pretty-no-stacktrace 'intro.core '(merge {:a 1 :b 2} [1 2 3] [1 2] [1 5]))))
+
+(expect "Vectors added to a map must consist of two elements: a key and a value."
+        (get-text-no-location
+         (run-and-catch-pretty-no-stacktrace 'intro.core '(conj {:a 1 :b 2} [1 2 3 4]))))
 
 ;; testing for :illegal-argument-cannot-convert-type
 (expect "In function cons, the second argument 2 must be a sequence but is a number."

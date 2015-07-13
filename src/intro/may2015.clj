@@ -11,26 +11,26 @@
 ;({:a 7})
 
 ;({:a 7} )
+;(:a)
+;(println (conj {:a 1 :b 2} [1 2 3 4]))
+;(println (merge {:a 1 :b 2} [1 2 3] [1 2] [1 5]))
+;(merge {:a 1 :b 2 :c 3} [5 6 7])
+
+;(assoc {:a 3 :b 5} :key1 "val1" :key2)
 
 
 
-
-(assoc {:a 3 :b 5} :key1 "val1" :key2)
-
+;(merge "string" "alsoastring")
 
 
 
+;(into {} [[1 2] [3]]))
 
+;(count "clojure.lang.LispReader$ReaderException: ")
 
+;#####
 
-
-
-
-
-
-
-
-
+(map ####(+ % 1) [1 2 3 4])
 
 
 

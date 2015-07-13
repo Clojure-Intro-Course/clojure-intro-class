@@ -60,7 +60,7 @@
    {:key :illegal-argument-vector-arg-to-map-conj
     :class IllegalArgumentException
     :match #"Vector arg to map conj must be a pair(.*)"
-    :make-msg-info-obj (fn [matches] (make-msg-info-hashes "Each inner vector must be a pair: a key followed by a value."))}
+    :make-msg-info-obj (fn [matches] (make-msg-info-hashes "Vectors added to a map must consist of two elements: a key and a value."))}
 
    {:key :illegal-argument-cannot-convert-type
     :class IllegalArgumentException
@@ -238,7 +238,13 @@
    ;### Runtime Exceptions or clojure.lang.LispReader$ReaderException ###
    ;#####################################################################
 
-    {:key :reader-tag-must-be-symbol
+   ;"You have done something strange " (/ (count (nth matches 1) 41)) " times, and also " (nth matches 2)
+   {:key :lisp-reader-exception-long-error-error
+    :class java.lang.RuntimeException
+    :match #"(?:clojure\.lang\.LispReader\$ReaderException\:\s)+.*"
+    :make-msg-info-obj (fn [matches] (make-msg-info-hashes "# must be followed by a non-# symbol."))}
+
+   {:key :reader-tag-must-be-symbol
     :class java.lang.RuntimeException
     :match #"Reader tag must be a symbol"
     :make-msg-info-obj (fn [matches] (make-msg-info-hashes "# must be followed by a symbol."))}
