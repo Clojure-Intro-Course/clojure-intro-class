@@ -113,6 +113,11 @@
        (get-text-no-location (:msg-info-obj (try (load-file "exceptions/compilation_errors/invalid_token_error1.clj")
                        (catch Throwable e (prettify-exception e))))))
 
+;; testing for # must be followed by a symbol error
+(expect #"# must be followed by a symbol."
+       (get-text-no-location (:msg-info-obj (try (load-file "exceptions/compilation_errors/#_must_be_followed_by_symbol.clj")
+                       (catch Throwable e (prettify-exception e))))))
+
 ;; testing for invalid number exception
 (expect #"Invalid number: 1.2.2."
        (get-text-no-location (:msg-info-obj (try (load-file "exceptions/compilation_errors/invalid_number.clj")

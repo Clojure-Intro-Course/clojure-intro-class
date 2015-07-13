@@ -233,6 +233,11 @@
    ;### Runtime Exceptions or clojure.lang.LispReader$ReaderException ###
    ;#####################################################################
 
+    {:key :reader-tag-must-be-symbol
+    :class java.lang.RuntimeException
+    :match #"Reader tag must be a symbol"
+    :make-msg-info-obj (fn [matches] (make-msg-info-hashes "# must be followed by a symbol."))}
+
    {:key :invalid-tolken-error
     :class java.lang.RuntimeException
     :match #"java.lang.RuntimeException: Invalid token: (.*)"
