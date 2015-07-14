@@ -6,46 +6,30 @@
             [quil.middleware :as m]
             [quil.q_functions :refer :all]
             [errors.errorgui :refer :all]
-            [errors.prettify_exception :refer :all]))
+            [errors.prettify_exception :refer :all])
+  (use [overtone.core]
+      ; [overtone.inst.piano]
+       ))
 
-(defn setup []
-  (q/frame-rate 60)
-  (q/color-mode :rgb)
+(boot-external-server)
 
-  {})
-
-;-
-(defn update-state [state])
+(definst bar [freq 220] (saw freq))
 
 
-;-
-(defn draw-state [state]
-  (draw-shape
-   (create-rect 200 200 80 255 80)
-   400 400))
+(defn p-bar [freq x dur pitch]
+  (at (+ (* x dur) (now)) (bar (+ freq (* (/ 110 12) pitch))))
+  (at (+ (* (+ 0.95 x) dur) (now)) (kill bar)))
 
 
+;; (defn play-octave [start-freq dur]
+;;   (loop [i 0]
+;;     (p-bar start-freq i dur)
+;;     (if (< i 13)
+;;      (recur (inc i)))))
+
+(defn play-octave [start-freq dur]
+  (doseq [i (range 13)]
+    (p-bar start-freq i dur i)))
 
 
-
-
-
-
-
-;-
-
-(q/defsketch start
-  :title ""
-  :size [(- (min (q/screen-width) (q/screen-height)) 100) (- (min (q/screen-width) (q/screen-height)) 100)]
-  :setup setup
-  :update update-state
-  :draw draw-state
-  :middleware [m/fun-mode])
-
-
-
-
-
-
-
-
+(play-octave 110 500)
