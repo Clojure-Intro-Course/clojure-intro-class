@@ -5,6 +5,40 @@
             [intro.student :refer :all]))
 
 
+
+;(defn PersistantArrayMap [x] (+ x 1))
+
+;({:a 7})
+
+;({:a 7} )
+;(:a)
+;(println (conj {:a 1 :b 2} [1 2 3 4]))
+;(println (merge {:a 1 :b 2} [1 2 3] [1 2] [1 5]))
+;(merge {:a 1 :b 2 :c 3} [5 6 7])
+
+;(assoc {:a 3 :b 5} :key1 "val1" :key2)
+
+
+
+;(merge "string" "alsoastring")
+
+
+
+;(into {} [[1 2] [3]]))
+
+;(count "clojure.lang.LispReader$ReaderException: ")
+
+;#####
+
+(map ####(+ % 1) [1 2 3 4])
+
+
+
+
+
+
+
+
 ;added assoc and disoc to arity dictionary
 ;added preconditions for disoc and assoc
 ;will add tests.
@@ -16,7 +50,40 @@
 
 ;(dissoc ["this" "is" "a" "vector"])
 ;(string/ "hi")
-(map #hi/ [1 2 3])
+
+;#1
+;["hi" ## [ ]
+;(map #/ [1 2 3])
+
+;(defmacro m [] `(let [x 1] x))
+;(m)
+;(def foo 5)
+;(# :foo 1 2 3)
+;(:f.fds {:f.fds 5 :b. 6})
+;(map $(* 3) mylist)
+;(map #(rgb %1 255 %&) )
+;(defn hello [a#] "hi")
+;(hello 1)
+
+;(get # 'map 10)
+;(symbol-function '+)
+
+;(map defn [a b c d e] [1 2 3 4 5])
+
+
+
+
+
+
+;#?(:clj Double/NaN)
+; Syntax error: Conditional read not allowed
+;Found in file may2015.clj on line 32 at character 3.
+;	intro.core/-main (core.clj line 114)
+;#=(java.util.HashMap. {:b 2, :a 1})
+
+
+
+
 
 ;(* [:a 4 2] 9)
 ;change wording, a keyword can take one or two arguments, test both
@@ -160,14 +227,14 @@
 
 
 
-(odd? 9.8)
+;(odd? 9.8)
 
-(defn holds-for-all? [f v]
-  (if (empty? (rest v)) (f (first v))
-    (and (f (first v)) (holds-for-all? f (rest v)))))
+;(defn holds-for-all? [f v]
+;  (if (empty? (rest v)) (f (first v))
+;    (and (f (first v)) (holds-for-all? f (rest v)))))
 
 
-(holds-for-all? odd? [1 3 -1])
+;(holds-for-all? odd? [1 3 -1])
 
 ;(println (+ (repeat (range))))
 ;(println (+ [(range)]))

@@ -89,9 +89,17 @@
          (run-and-catch-pretty-no-stacktrace 'intro.core '(hash-map "c" :d "d"))))
 
 ;; testing for :illegal-argument-vector-arg-to-map-conj
-(expect "Each inner vector must be a pair: a key followed by a value."
+(expect "Vectors added to a map must consist of two elements: a key and a value."
         (get-text-no-location
          (run-and-catch-pretty-no-stacktrace 'intro.core '(into {} [[1 2] [3]]))))
+
+(expect "Vectors added to a map must consist of two elements: a key and a value."
+        (get-text-no-location
+         (run-and-catch-pretty-no-stacktrace 'intro.core '(merge {:a 1 :b 2} [1 2 3] [1 2] [1 5]))))
+
+(expect "Vectors added to a map must consist of two elements: a key and a value."
+        (get-text-no-location
+         (run-and-catch-pretty-no-stacktrace 'intro.core '(conj {:a 1 :b 2} [1 2 3 4]))))
 
 ;; testing for :illegal-argument-cannot-convert-type
 (expect "In function cons, the second argument 2 must be a sequence but is a number."
@@ -111,6 +119,11 @@
 
 (expect #"You cannot use / in this position."
        (get-text-no-location (:msg-info-obj (try (load-file "exceptions/compilation_errors/invalid_token_error1.clj")
+                       (catch Throwable e (prettify-exception e))))))
+
+;; testing for # must be followed by a symbol error
+(expect #"# must be followed by a symbol."
+       (get-text-no-location (:msg-info-obj (try (load-file "exceptions/compilation_errors/#_must_be_followed_by_symbol.clj")
                        (catch Throwable e (prettify-exception e))))))
 
 ;; testing for invalid number exception
@@ -273,6 +286,9 @@
 ;######################################
 ;### Testing for compilation errors ###
 ;######################################
+
+(expect #"The arguments following the map or vector in assoc must come in pairs, but one of them does not have a match."
+        (get-text-no-location (run-and-catch-pretty-no-stacktrace 'intro.core '(assoc {:a 3 :b 5} :key1 "val1" :key2))))
 
 ;;;; Elena: we might want to revisit this one
 (expect #"Parameters for loop must come in pairs, but one of them does not have a match; on line (\d+) in the file intro\.core"

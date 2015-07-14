@@ -40,6 +40,11 @@
    ;### Illegal Argument Exceptions ###
    ;###################################
 
+   {:key :assoc-parity-error
+    :class IllegalArgumentException
+    :match #"assoc expects even number of arguments after map/vector, found odd number"
+    :make-msg-info-obj (fn [matches] (make-msg-info-hashes "The arguments following the map or vector in assoc must come in pairs, but one of them does not have a match."))}
+
    {:key :wrong-number-of-args-passed-to-a-keyword
     :class IllegalArgumentException
     :match #"Wrong number of args passed to keyword: (.*)"
@@ -55,7 +60,7 @@
    {:key :illegal-argument-vector-arg-to-map-conj
     :class IllegalArgumentException
     :match #"Vector arg to map conj must be a pair(.*)"
-    :make-msg-info-obj (fn [matches] (make-msg-info-hashes "Each inner vector must be a pair: a key followed by a value."))}
+    :make-msg-info-obj (fn [matches] (make-msg-info-hashes "Vectors added to a map must consist of two elements: a key and a value."))}
 
    {:key :illegal-argument-cannot-convert-type
     :class IllegalArgumentException
@@ -232,6 +237,17 @@
    ;#####################################################################
    ;### Runtime Exceptions or clojure.lang.LispReader$ReaderException ###
    ;#####################################################################
+
+   ;"You have done something strange " (/ (count (nth matches 1) 41)) " times, and also " (nth matches 2)
+   {:key :lisp-reader-exception-long-error-error
+    :class java.lang.RuntimeException
+    :match #"(?:clojure\.lang\.LispReader\$ReaderException\:\s)+.*"
+    :make-msg-info-obj (fn [matches] (make-msg-info-hashes "# must be followed by a non-# symbol."))}
+
+   {:key :reader-tag-must-be-symbol
+    :class java.lang.RuntimeException
+    :match #"Reader tag must be a symbol"
+    :make-msg-info-obj (fn [matches] (make-msg-info-hashes "# must be followed by a symbol."))}
 
    {:key :invalid-tolken-error
     :class java.lang.RuntimeException
