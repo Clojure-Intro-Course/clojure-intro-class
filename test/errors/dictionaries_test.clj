@@ -45,3 +45,5 @@
 (expect "(2 3)" (preview-arg '(2 3) 10 3))
 
 (expect '(2 " " 3 "," " " 4 " " 5) (add-commas '(2 " " 3 " " 4 " " 5)))
+
+(expect '(1 2 3 "," 4 5 6 7 "," 8 9 10 11 ",") (combine-with-commas '((1 2 3 4) (5 6 7 8) (9 10 11))))

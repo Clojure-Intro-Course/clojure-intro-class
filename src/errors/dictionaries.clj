@@ -151,13 +151,23 @@
    (map? coll) ["{" "}"]
    :else ["(" ")"]))
 
+(defn combine-with-commas
+  "takes a sequence of 4-element vectors and returns a vector of all of the elements, in
+  order, with commas inserted in each vector after the third element"
+  [seqs-of-4]
+  (loop [result [] seqs seqs-of-4]
+    (if (empty? seqs) result
+      (let [[first-3 last-or-nil] (split-at 3 (first seqs))]
+        (recur (reduce into [result first-3 [","] last-or-nil])
+               (rest seqs))))))
+
 (defn add-commas
   "takes a sequence with spaces inserted after every element and inserts commas after
   every second non-space element"
   [s]
   ;; the sequence corresponding to a map doesn't have a space after the last element,
   ;; so dropping the last comma works
-  (butlast (flatten (map #(concat (take 3 %) [","] (drop 3 %)) (partition-all 4 s)))))
+  (butlast (combine-with-commas (partition-all 4 s))))
 
 (defn add-spaces-etc
   "takes a sequence s and a limit n and returns the elements of s with spaces in-between
