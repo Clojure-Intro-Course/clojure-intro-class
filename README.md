@@ -55,11 +55,13 @@ Scaling a picture
 ```
  (with-translation [100 100]
                    (with-rotation (/ 2 (/ q/PI 3))
-                                  (image (load-image "/src/images/SquidwardsEmbarrasingPhoto.jpg") 0 0)))
+                                  (image (load-image "/src/images/SquidwardsEmbarrasingPhoto.jpg")
+                                                     0 0)))
 
 ```
 * Our super-fun-mode:
 ```
-(def squid-photo (rotate-shape (create-picture "/src/images/SquidwardsEmbarrasingPhoto.jpg) 120))
+(def squid-photo (rotate-shape (create-picture "/src/images/SquidwardsEmbarrasingPhoto.jpg) 
+                                               120))
 (ds squid-photo 100 100)
 ```
