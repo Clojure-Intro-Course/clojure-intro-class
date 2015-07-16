@@ -1,4 +1,4 @@
-(ns intro.may2015
+(ns intro.tracking
   (:require [expectations :refer :all]
             [corefns.corefns :refer :all]
             [corefns.collection_fns :refer :all]
@@ -6,30 +6,38 @@
             [quil.middleware :as m]
             [quil.q_functions :refer :all]
             [errors.errorgui :refer :all]
-            [errors.prettify_exception :refer :all])
-  (use [overtone.core]
-      ; [overtone.inst.piano]
-       ))
-
-(boot-external-server)
-
-(definst bar [freq 220] (saw freq))
+            [errors.prettify_exception :refer :all]))
 
 
-(defn p-bar [freq x dur pitch]
-  (at (+ (* x dur) (now)) (bar (+ freq (* (/ 110 12) pitch))))
-  (at (+ (* (+ 0.95 x) dur) (now)) (kill bar)))
+(def shape (scale-shape (above (create-rect 100 100 80 255 80)
+                               (create-rect 100 100 80 255 80))
+                        2 2))
 
 
-;; (defn play-octave [start-freq dur]
-;;   (loop [i 0]
-;;     (p-bar start-freq i dur)
-;;     (if (< i 13)
-;;      (recur (inc i)))))
-
-(defn play-octave [start-freq dur]
-  (doseq [i (range 13)]
-    (p-bar start-freq i dur i)))
+(defn setup []
+  (q/frame-rate 1)
+  (q/color-mode :rgb)
 
 
-(play-octave 110 500)
+  {:shape shape})
+
+;-
+
+(defn update-state [state]
+  state)
+
+;-
+
+(defn draw-state [state]
+  (f-background 25 25 25 25)
+  (ds shape (/ (q/width) 2) (/ (q/height) 2)))
+
+;-
+
+(q/defsketch start
+  :title "Tracking"
+  :size [(- (min (q/screen-width) (q/screen-height)) 100) (- (min (q/screen-width) (q/screen-height)) 100)]
+  :setup setup
+  :update update-state
+  :draw draw-state
+  :middleware [m/fun-mode])

@@ -7,6 +7,7 @@
                  [expectations "2.1.1"]
                  [quil "2.2.5"]
                  [overtone "0.9.1"]
+                 [inflections "0.9.14"]
                  ]
   :plugins [[lein-autoexpect "1.0"]
             [lein-pprint "1.1.2"]]
