@@ -9,10 +9,7 @@
             [errors.prettify_exception :refer :all]))
 
 
-(def shape (scale-shape (above (create-rect 100 100 80 255 80)
-                               (create-rect 100 100 80 255 80))
-                        2 2))
-
+(def shape (rotate-shape (create-rect 100 100 80 255 80) 45)
 
 (defn setup []
   (q/frame-rate 1)

@@ -12,7 +12,8 @@
              :pink [255 192 203] :black [0 0 0] :brown [165 42 42]
              :white [255 255 255] :grey [128 128 128] :silver [192 192 192]
              :gold [255 215 0] :cyan [0 255 255] :magenta [255 0 255]
-             :maroon [128 0 0] :navy [0 0 128] :lime [0 255 0] :teal [0 128 128]})
+             :maroon [128 0 0] :navy [0 0 128] :lime [0 255 0]
+             :teal [0 128 128]})
 
 (defn eval-color [color]
   (if (not-nil? (color colors))
@@ -31,7 +32,9 @@
 
 
 
-(defn f-background [& args]
+(defn f-background
+  "Takes in one through four RBG values (look at quil's fill function for exact RGB parameters) and sets the background of the drawn screen to that."
+  [& args]
   (if (< 4 (count args))
     (throw (Exception. "f-background expects either 1, 2, 3, or 4 arguments.")))
 
@@ -91,19 +94,25 @@
   (stroke-weight weight))
 
 
-(defn f-text [& args]
+(defn f-text
+  "Draws the given text at the given x y position."
+  [& args]
   {:pre [(not (assert (:boolean (check-if-not-nil? args))
                       (str "f-text expects a number but got nil as its "(ordinalize (:arg-num (check-if-not-nil? args)))" argument")))]}
   (apply text args))
 
 
-(defn f-text-num [& args]
+(defn f-text-num
+  "Draws the given number at the given x y position."
+  [& args]
   {:pre [(not (assert (:boolean (check-if-not-nil? args))
                       (str "f-text-num expects a number but got nil as its "(ordinalize (:arg-num (check-if-not-nil? args)))" argument")))]}
   (apply text-num args))
 
 
-(defn f-text-size [size]
+(defn f-text-size
+  "Changes the size of all following text to the given size. The default text size is 12."
+  [size]
   {:pre [(assert (not-nil? size) "f-text-size expects a number but got nil as its first argument")
          (assert (pos? size) "f-text-size expects a positive number but got a negative number as its first argument")]}
   (text-size size))
@@ -784,4 +793,4 @@
   [shape angle]
   {:pre [(not (assert (:boolean (check-if-not-nil? [shape angle]))
                       (str "rotate-shape expects a number but got nil as its "(ordinalize (:arg-num (check-if-not-nil? [shape angle])))" argument")))]}
-  (assoc shape :angle angle))
+  (map (assoc % :angle angle) shape)
