@@ -54,9 +54,9 @@ Scaling a picture
 * Quil's fun-mode:
 ```
  (with-translation [100 100]
-                   (with-rotation (/ 2 (/ q/PI 3))
-                                  (image (load-image "/src/images/SquidwardsEmbarrasingPhoto.jpg")
-                                                     0 0)))
+                 (with-rotation (/ 2 (/ q/PI 3))
+                                (image (load-image "/src/images/SquidwardsEmbarrasingPhoto.jpg")
+                                                   0 0)))
 
 ```
 * Our super-fun-mode:
