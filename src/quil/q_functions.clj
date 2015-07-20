@@ -45,10 +45,12 @@
     (apply background args)))
 
 
+
 (defn f-ellipse [& args]
   {:pre [(not (assert (:boolean (check-if-not-nil? args))
                       (str "f-ellipse expects a number but got nil as its "(ordinalize (- (:arg-num (check-if-not-nil? args)) 2))" argument")))]}
   (apply ellipse args))
+
 
 
 (defn f-fill [& args]
@@ -61,10 +63,12 @@
     (apply fill args)))
 
 
+
 (defn f-line [& args]
   {:pre [(not (assert (:boolean (check-if-not-nil? args))
                       (str "f-line expects a number but got nil as its "(ordinalize (- (:arg-num (check-if-not-nil? args)) 2))" argument")))]}
   (apply line args))
+
 
 
 (defn f-quad [& args]
@@ -73,10 +77,12 @@
   (apply quad args))
 
 
+
 (defn f-rect [& args]
   {:pre [(not (assert (:boolean (check-if-not-nil? args))
                       (str "f-rect expects a number but got nil as its "(ordinalize (- (:arg-num (check-if-not-nil? args)) 2))" argument")))]}
   (apply rect args))
+
 
 
 (defn f-stroke [& args]
@@ -89,9 +95,11 @@
     (apply stroke args)))
 
 
+
 (defn f-stroke-weight [weight]
   {:pre [(assert (not-nil? weight) "f-stroke-weight expects a number but got nil as its first argument")]}
   (stroke-weight weight))
+
 
 
 (defn f-text
@@ -102,12 +110,14 @@
   (apply text args))
 
 
+
 (defn f-text-num
   "Draws the given number at the given x y position."
   [& args]
   {:pre [(not (assert (:boolean (check-if-not-nil? args))
                       (str "f-text-num expects a number but got nil as its "(ordinalize (:arg-num (check-if-not-nil? args)))" argument")))]}
   (apply text-num args))
+
 
 
 (defn f-text-size
@@ -118,10 +128,12 @@
   (text-size size))
 
 
+
 (defn f-triangle [& args]
   {:pre [(not (assert (:boolean (check-if-not-nil? args))
                       (str "f-ellipse expects a number but got nil as its "(ordinalize (:arg-num (check-if-not-nil? args)))" argument")))]}
   (apply triangle args))
+
 
 ;------------------------------------------------------------------------------------------------------------------------------*** SHAPE FUNCTIONS ***
 
@@ -793,4 +805,6 @@
   [shape angle]
   {:pre [(not (assert (:boolean (check-if-not-nil? [shape angle]))
                       (str "rotate-shape expects a number but got nil as its "(ordinalize (:arg-num (check-if-not-nil? [shape angle])))" argument")))]}
-  (map (assoc % :angle angle) shape)
+  (if (not (vector? shape))
+    (assoc shape :angle angle)
+    (vec (map #(assoc % :angle angle) shape))))
