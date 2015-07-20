@@ -1,9 +1,7 @@
 (ns quil.q_functions
   (:use [quil.core]
         [inflections.core])
-  (:require [errors.errorgui :refer :all]
-            [errors.prettify_exception :refer :all]
-            [quil.q_checks :refer :all]))
+  (:require [quil.q_checks :refer :all]))
 
 
 
