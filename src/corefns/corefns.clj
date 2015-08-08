@@ -62,10 +62,16 @@
 ;; (into to from)
 ;; Returns a new coll consisting of to-coll with all of the items of
 ;; from-coll conjoined.
-(defn into [argument1 argument2]
+(defn into
+  ([argument1 argument2]
    {:pre [(check-if-seqable? "into" argument1)
           (check-if-seqable? "into" argument2)]}
    (clojure.core/into argument1 argument2))
+  ([argument1 argument2 argument3]
+   {:pre [(check-if-seqable? "into" argument1)
+          (check-if-function? "into" argument2)
+          (check-if-seqable? "into" argument3)]}
+   (clojure.core/into argument1 argument2 argument3)))
 
 ;; (cons x seq)
 ;; Returns a new seq where x is the first element and seq is

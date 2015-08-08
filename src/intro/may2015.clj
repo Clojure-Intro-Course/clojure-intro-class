@@ -5,6 +5,93 @@
             [intro.student :refer :all]))
 
 
+;##################################
+;### sean's transducer practice ###
+;##################################
+
+;transduce will immediately (not lazily) reduce over coll with the
+;transducer xform applied to the reducing function f, using init as
+;the initial value if supplied or (f) otherwise. f supplies the
+;knowledge of how to accumulate the result, which occurs in the
+;(potentially stateful) context of the reduce.
+
+;These produce transducers
+;map
+;cat
+;mapcat
+;filter
+;remove
+;take
+;take-while
+;take-nth
+;drop
+;drop-while
+;replace
+;partition-by
+;partition-all
+;keep
+;keep-indexed
+;map-indexed
+;distinct
+;interpose
+;dedupe
+;random-sample
+
+;(eduction xform* coll)
+;Returns a reducible/iterable application of the transducers
+;to the items in coll. Transducers are applied in order as if
+;combined with comp. Note that these applications will be
+;performed every time reduce/iterator is called.
+
+(def xf (comp (filter odd?) (map inc)))
+(println (transduce xf + [1 2 3 4 5 6 7 8 9]))
+
+(println (into [] xf (range 10)))
+
+
+(println (class xf))
+
+(println "###############")
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+;###############################
+;### end transducer practice ###
+;###############################
+
+
+
+
 
 ;(defn PersistantArrayMap [x] (+ x 1))
 
@@ -30,14 +117,7 @@
 
 ;#####
 
-(map ####(+ % 1) [1 2 3 4])
-
-
-
-
-
-
-
+;(map ####(+ % 1) [1 2 3 4])
 
 ;added assoc and disoc to arity dictionary
 ;added preconditions for disoc and assoc
