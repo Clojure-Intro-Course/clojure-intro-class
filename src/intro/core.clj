@@ -99,13 +99,6 @@
 
 (defn -main [& args]
   (try
-       ;(reduce 1 2 3 4)
-
-
-    ;(clojure.string/splt "/home/stock424/Documents/code/clojure-intro-class/src/intro/may2015.clj" #"/")
-    (try
-      (print (load-file "src/intro/may2015.clj"))
-    (catch Throwable e (print (str "itself:" (class e) ", cause: " (class (.getCause e)))) (throw e)))
-
+    (println "I shouldn't break things.")
     (catch Throwable e (display-error (prettify-exception e)))))
 
