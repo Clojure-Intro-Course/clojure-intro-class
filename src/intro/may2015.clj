@@ -37,21 +37,49 @@
 ;dedupe
 ;random-sample
 
+(first 3)
+
+(defn select-larger [elements n]
+  (cond
+    (empty? elements) elements
+    (> (first elements) n) (cons (first elements) (select-larger (rest elements)))
+    :else (select-larger (rest elements))))
+
+(= (select-larger '() 5) '())
+(= (select-larger '(2 6 7 4 10) 5) '(6 7 10))
+(= (select-larger '(2 6 7 4 10) 0) '(2 6 7 4 10))
+
+;(defn count-odd [numbers]
+;  (if (empty? numbers) 0
+;    (if (odd? (first number))
+;      (+  1 (count-odd (rest numbers) n))
+ ;     (count-odd (rest numbers) n))))
+
+;(count-odd '(3 4 6 5 9))
+
+;(defn select-larger [elements n]
+;  (cond
+;    (empty? elements) elements
+;    (> (first elements) n) (cons (first elements) (select-larger (rest elements)))
+;    :else (select-larger (rest elements))))
+
+;(select-larger '(2 6 7 4 10) 5)
+
 ;(eduction xform* coll)
 ;Returns a reducible/iterable application of the transducers
 ;to the items in coll. Transducers are applied in order as if
 ;combined with comp. Note that these applications will be
 ;performed every time reduce/iterator is called.
 
-(def xf (comp (filter odd?) (map inc)))
-(println (transduce xf + [1 2 3 4 5 6 7 8 9]))
+;(def xf (comp (filter odd?) (map inc)))
+;(println (transduce xf + [1 2 3 4 5 6 7 8 9]))
 
-(println (into [] xf (range 10)))
+;(println (into [] xf (range 10)))
 
 
-(println (class xf))
+;(println (class xf))
 
-(println "###############")
+;(println "###############")
 
 
 
