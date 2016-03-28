@@ -24,10 +24,10 @@
 ;; Including the standard Clojure documentation to make sure that asserts
 ;; and cases are consistent with the standard Clojure.
 
-;;; ABSOLUTELY NEED TO ADD COMMENTS
-(defn first [coll]
- {:pre [(check-if-seqable? "first" coll)]}
-  (apply clojure.core/first coll))
+;;; ABSOLUTELY NEED TO ADD COMMENTS and tests
+(defn first [argument1]
+ {:pre [(check-if-seqable? "first" argument1)]}
+  (clojure.core/first argument1))
 
 ;; As of clojure 1.7 allows (map f)
 ;; (map f coll)
