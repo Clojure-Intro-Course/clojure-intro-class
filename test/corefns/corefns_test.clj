@@ -11,6 +11,42 @@
 ;### Testing the functionality of corefns ###
 ;############################################
 
+;;testing for first
+(expect 1
+  (first [1 2 3 4 5]))
+
+(expect 1
+  (first '(1 2 3 4 5)))
+
+(expect nil
+  (first '()))
+;;testing for rest
+(expect [2 3 4 5]
+  (rest [1 2 3 4 5]))
+
+(expect '(2 3 4 5)
+  (rest '(1 2 3 4 5)))
+
+(expect '()
+  (rest nil))
+
+(expect '()
+  (rest '()))
+
+(expect '()
+  (rest '(1)))
+;;testing for next
+(expect [2 3 4 5]
+  (next [1 2 3 4 5]))
+
+(expect '(2 3 4 5)
+  (next '(1 2 3 4 5)))
+
+(expect nil
+  (next '()))
+;;testing for seq
+(expect true
+  (every? seq ["1" [1] '(1) {:1 1} #{1}]))
 ;;testing for assoc
 (expect [:a "cat" :b 2 :c "dog" :d 4 :e 5 "cats"]
         (assoc [:a 1 :b 2 :c 3 :d 4 :e 5] 5 "dog" 1 "cat" 10 "cats"))

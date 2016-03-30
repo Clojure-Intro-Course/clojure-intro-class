@@ -24,10 +24,45 @@
 ;; Including the standard Clojure documentation to make sure that asserts
 ;; and cases are consistent with the standard Clojure.
 
+;; count, into, conj, nth, drop, take, concat, filter, reduce
+;; Maps and the like: key, val, keys, vals - careful with pre-conds for key!
+;; odd?, even?, etc - check for numbers!
+
 ;;; ABSOLUTELY NEED TO ADD COMMENTS and tests
+
+
+
+;;(first coll)
+;;Returns the first item in the collectio
+;;Calls seq on its argument. If coll is nil, returns nil.
 (defn first [argument1]
  {:pre [(check-if-seqable? "first" argument1)]}
   (clojure.core/first argument1))
+
+;;(rest coll)
+;;Returns a possibly empty seq of the items after the first.
+;; Calls seq on its argument.
+(defn rest [argument1]
+  {:pre [(check-if-seqable? "rest" argument1)]}
+  (clojure.core/rest argument1))
+
+;;(next coll)
+;:Returns a seq of the items after the first.
+;;Calls seq on its argument.
+;;If there are no more items, returns nil.
+(defn next [argument1]
+  {:pre [(check-if-seqable? "next" argument1)]}
+  (clojure.core/next argument1))
+
+;;(seq coll)
+;;Returns a seq on the collection. If the collection is empty, returns nil.
+;;(seq nil) returns nil. seq also works on Strings, native Java arrays
+;;(of reference types) and any objects that implement Iterable. Note that seqs
+;;cache values, thus seq should not be used on any Iterable whose iterator
+;;repeatedly returns the same mutable object.
+(defn seq [argument1]
+  {:pre [(check-if-seqable? "seq" argument1)]}
+  (clojure.core/seq argument1))
 
 ;; As of clojure 1.7 allows (map f)
 ;; (map f coll)
@@ -43,10 +78,6 @@
  {:pre [(check-if-function? "map" argument1)
         (check-if-seqables? "map" args 2)]}
   (apply clojure.core/map argument1 args))
-
-;; count, into, conj, nth, drop, take, concat, filter, reduce
-;; Maps and the like: key, val, keys, vals - careful with pre-conds for key!
-;; odd?, even?, etc - check for numbers!
 
 ;; (count coll)
 ;; Returns the number of items in the collection. (count nil) returns

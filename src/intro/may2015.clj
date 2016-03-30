@@ -39,15 +39,15 @@
 
 (first 3)
 
-(defn select-larger [elements n]
-  (cond
-    (empty? elements) elements
-    (> (first elements) n) (cons (first elements) (select-larger (rest elements)))
-    :else (select-larger (rest elements))))
+;(defn select-larger [elements n]
+  ;(cond
+  ;  (empty? elements) elements
+  ;  (> (first elements) n) (cons (first elements) (select-larger (rest elements)))
+  ;  :else (select-larger (rest elements))))
 
-(= (select-larger '() 5) '())
-(= (select-larger '(2 6 7 4 10) 5) '(6 7 10))
-(= (select-larger '(2 6 7 4 10) 0) '(2 6 7 4 10))
+;(= (select-larger '() 5) '())
+;(= (select-larger '(2 6 7 4 10) 5) '(6 7 10))
+; (select-larger '(2 6 7 4 10) 0) '(2 6 7 4 10))
 
 ;(defn count-odd [numbers]
 ;  (if (empty? numbers) 0
@@ -900,12 +900,3 @@
 
 
 ; "Non-closing string here"
-
-
-
-
-
-
-
-
-
