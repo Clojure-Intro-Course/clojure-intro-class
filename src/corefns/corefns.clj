@@ -32,7 +32,7 @@
 
 
 ;; (empty? coll)
-;; TO-DO: fill in the description
+;; Returns true if coll has no items.
 (defn empty? [argument1]
   {:pre [(check-if-seqable? "empty?" argument1)]}
   (clojure.core/empty? argument1))
