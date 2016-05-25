@@ -255,8 +255,7 @@
   as an exception object"
   [ex]
   ;; create an exception object
-  (let [compiler? (compiler-error? ex)
-         e (get-cause-if-needed ex)
+  (let [e (get-cause-if-needed ex)
         ;; replacing clojure.lang.LispReader$ReaderException by RuntimeException
         ;; to avoid code duplication in error handling since their errors
         ;; overlap.
@@ -265,8 +264,8 @@
         exc (stacktrace/parse-exception e)
         stacktrace (:trace-elems exc)]
     {:exception-class e-class
-     :compiler? compiler?
-     :msg-info-obj [{:msg (.getMessage e) :stylekey :reg :length (count (.getMessage e))}]
+     :compiler? false
+     :msg-info-obj (make-msg-info-hashes (str (.getName e-class)) ": " (.getMessage e))
      :stacktrace stacktrace
      :filtered-stacktrace stacktrace
      :hints ""}))

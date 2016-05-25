@@ -6,7 +6,7 @@
             [strings.beginner_string_library :refer :all]
             [errors.errorgui :refer :all]
             [intro.student :refer :all]
-            [corefns.collection_fns :refer :all]
+            ;[corefns.collection_fns :refer :all]
             [utilities.file_IO :refer :all]
             [errors.prettify_exception :refer :all]
             [clojure.pprint :refer :all]
