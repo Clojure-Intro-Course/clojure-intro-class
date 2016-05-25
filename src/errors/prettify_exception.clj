@@ -210,11 +210,12 @@
   (if (empty? location) ""
     (let [file (:file location)
           line (:line location)
-          character (:char location)
+          ;character (:char location)
           fn-name (:fn location)
-          character-msg (if character (make-msg-info-hashes " at character " character :loc) nil)
+          ;character-msg (if character (make-msg-info-hashes " at character " character :loc) nil)
+          character-msg nil ; Removed character info since it seems to confuse people
           fn-msg (if fn-name (make-msg-info-hashes " in function " fn-name :loc) nil)]
-      (reduce into [(make-msg-info-hashes "\nFound in file " (clojure.string/replace file #".*\/" "") :loc " on line " line :loc)
+      (reduce into [(make-msg-info-hashes "\nFound in file " (clojure.string/replace file #".*\/" "") :loc " on, or before, line " line :loc)
             character-msg
             fn-msg
             (make-msg-info-hashes ".")]))))
