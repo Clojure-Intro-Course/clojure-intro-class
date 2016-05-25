@@ -31,9 +31,14 @@
 ;;; ABSOLUTELY NEED TO ADD COMMENTS and tests
 
 
+;; (empty? coll)
+;; Returns true if coll has no items.
+(defn empty? [argument1]
+  {:pre [(check-if-seqable? "empty?" argument1)]}
+  (clojure.core/empty? argument1))
 
 ;;(first coll)
-;;Returns the first item in the collectio
+;;Returns the first item in the collection
 ;;Calls seq on its argument. If coll is nil, returns nil.
 (defn first [argument1]
  {:pre [(check-if-seqable? "first" argument1)]}
