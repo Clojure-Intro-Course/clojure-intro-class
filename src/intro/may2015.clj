@@ -37,7 +37,45 @@
 ;dedupe
 ;random-sample
 
-(first 3)
+(defn short? [s]
+  (<= (count s) 5))
+
+(filter short? '("apple" "avocado" "kiwi" "banana")) ; results in the list ("apple" "kiwi")
+
+(def numbers '(3 5 4))
+(reduce + 0 numbers) ; results in 12
+
+(reduce str "" '("Hi " "there," " " "how " "are " "you?"))
+
+(map (fn [x] (+ x 2))  '(2 3 1))
+
+(filter (fn [x] (>= x 5)) '(5 2 6 7 1 8)) ; results in (list 5 6 7 8)
+
+(reduce (fn [x y] (+ x (count y))) 0 '("hi" "bye" "hello"))
+
+(filter (fn [x] (>= x 5)) (filter even? '(1 2 3 4 -7 8 9 -5)))
+
+(defn large-evens [numbers bound]
+  (filter (fn [x] (>= x bound))
+          (map even? numbers)))
+
+(large-evens '(22 23 5 3 27 30) 5)
+
+(defn merge [list1 list2]
+  (cond
+    (empty? list1) list2
+    (empty? list2) list1
+    (< (first list1) (first list2)) (cons (first list1) (merge (rest list1) list2))
+    (>= (first list2) (first list1)) (cons (first list2) (merge list1 (rest list2)))))
+
+(println (merge '(1 2 3) '()))
+(println (merge '(1) '(3 4 5)))
+(println (merge '(1 3 4) '(5)))
+(println (merge '(1 4 5) '(2 3 6)))
+
+
+
+;(first 3)
 
 ;(defn select-larger [elements n]
   ;(cond

@@ -243,14 +243,33 @@
         msg-info-obj (into (msg-from-matched-entry entry message) (location-info location))
         hint-message (hints-for-matched-entry (:key entry))]
     ;; create an exception object
-    ;(println (class (.getCause ex)))
-    ;(println (.getMessage e))
     {:exception-class e-class
      :compiler? compiler?
      :msg-info-obj msg-info-obj
      :stacktrace stacktrace
      :filtered-stacktrace filtered-trace
      :hints hint-message}))
+
+(defn standard
+  "returns a non-transformed error message with the non-filtered stack trace
+  as an exception object"
+  [ex]
+  ;; create an exception object
+  (let [compiler? (compiler-error? ex)
+         e (get-cause-if-needed ex)
+        ;; replacing clojure.lang.LispReader$ReaderException by RuntimeException
+        ;; to avoid code duplication in error handling since their errors
+        ;; overlap.
+        e-class (if (= (class e) clojure.lang.LispReader$ReaderException) RuntimeException (class e))
+        message (.getMessage e)
+        exc (stacktrace/parse-exception e)
+        stacktrace (:trace-elems exc)]
+    {:exception-class e-class
+     :compiler? compiler?
+     :msg-info-obj [{:msg (.getMessage e) :stylekey :reg :length (count (.getMessage e))}]
+     :stacktrace stacktrace
+     :filtered-stacktrace stacktrace
+     :hints ""}))
 
 (defn trace-hashmap-to-StackTraceElement
   "Converts a clojure stacktrace element (hashmap) to a java StackTraceElement"
