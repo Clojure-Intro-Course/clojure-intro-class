@@ -37,7 +37,21 @@
 ;dedupe
 ;random-sample
 
-(first 3)
+(println "\n*******************************************************\n")
+
+(defn my-length [numbers]
+  (if (empty? numbers)
+    0
+    (+ 1 (my-length (first numbers)))))
+
+(println (= (my-length '(5 4 3 2 1)) 5))
+(println (= (my-length '()) 0))
+(println (= (my-length '(1 3 5 7 9 11)) 6))
+
+
+
+
+"Done"
 
 ;(defn select-larger [elements n]
   ;(cond
