@@ -225,6 +225,10 @@
   (let [m (.getMessage e)]
     (if m m "")))
 
+(defn- cut-stack-trace
+  [stacktrace limit]
+  (if (> (count stacktrace) limit) (conj (vec (take limit stacktrace)) {:file "" :line nil :clojure true :ns "and more..."}) stacktrace))
+
 ;; All together:
 (defn prettify-exception [ex]
   (let [compiler? (compiler-error? ex)
@@ -265,9 +269,9 @@
         stacktrace (:trace-elems exc)]
     {:exception-class e-class
      :compiler? false
-     :msg-info-obj (make-msg-info-hashes (str (.getName e-class)) ": " (.getMessage e))
-     :stacktrace stacktrace
-     :filtered-stacktrace stacktrace
+     :msg-info-obj (make-msg-info-hashes (str (.getName e-class)) ": " (if (> (count message) 40) (str "\n\t" message) message))
+     :stacktrace stacktrace  ;(cut-stack-trace stacktrace 45)
+     :filtered-stacktrace (cut-stack-trace stacktrace 40)
      :hints ""}))
 
 (defn trace-hashmap-to-StackTraceElement
