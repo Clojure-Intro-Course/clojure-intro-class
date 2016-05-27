@@ -6,6 +6,7 @@
                  [org.clojure/core.incubator "0.1.2"] ;;No updates for over a year
                  [seesaw "1.4.5"]
                  [expectations "2.1.1"]]
-  :plugins [[lein-autoexpect "1.0"]
+  :plugins [[lein-expectations "0.0.7"]
+            [lein-autoexpect "1.0"]
             [lein-pprint "1.1.2"]]
   :main intro.core)
