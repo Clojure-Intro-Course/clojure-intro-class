@@ -99,7 +99,7 @@
 ;; happen at different 'places' depending on the concrete type.
 (defn conj [argument1 argument2 & args]
   {:pre [(check-if-seqable? "conj" argument1)]}
-  (apply clojure.core/conj argument1 args))
+  (apply clojure.core/conj argument1 argument2 args))
 
 ;; (into to from)
 ;; Returns a new coll consisting of to-coll with all of the items of
