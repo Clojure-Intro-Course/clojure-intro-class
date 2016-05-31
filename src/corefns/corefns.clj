@@ -34,21 +34,21 @@
 ;; (empty? coll)
 ;; Returns true if coll has no items.
 (defn empty? [argument1]
-  {:pre [only-arg (check-if-seqable? "empty?" argument1)]}
+  {:pre [(only-arg (check-if-seqable? "empty?" argument1))]}
   (clojure.core/empty? argument1))
 
 ;;(first coll)
 ;;Returns the first item in the collection
 ;;Calls seq on its argument. If coll is nil, returns nil.
 (defn first [argument1]
- {:pre [(check-if-seqable? "first" argument1)]}
+ {:pre [(only-arg (check-if-seqable? "first" argument1))]}
   (clojure.core/first argument1))
 
 ;;(rest coll)
 ;;Returns a possibly empty seq of the items after the first.
 ;; Calls seq on its argument.
 (defn rest [argument1]
-  {:pre [(check-if-seqable? "rest" argument1)]}
+  {:pre [(only-arg (check-if-seqable? "rest" argument1))]}
   (clojure.core/rest argument1))
 
 ;;(next coll)
@@ -56,7 +56,7 @@
 ;;Calls seq on its argument.
 ;;If there are no more items, returns nil.
 (defn next [argument1]
-  {:pre [(check-if-seqable? "next" argument1)]}
+  {:pre [(only-arg (check-if-seqable? "next" argument1))]}
   (clojure.core/next argument1))
 
 ;;(seq coll)
@@ -66,7 +66,7 @@
 ;;cache values, thus seq should not be used on any Iterable whose iterator
 ;;repeatedly returns the same mutable object.
 (defn seq [argument1]
-  {:pre [(check-if-seqable? "seq" argument1)]}
+  {:pre [(only-arg (check-if-seqable? "seq" argument1))]}
   (clojure.core/seq argument1))
 
 ;; As of clojure 1.7 allows (map f)
@@ -89,7 +89,7 @@
 ;; Returns the number of items in the collection. (count nil) returns
 ;; 0. Also works on strings, arrays, and Java Collections and Maps
 (defn count [argument1]
-  {:pre [(check-if-seqable? "count" argument1)]}
+  {:pre [(only-arg (check-if-seqable? "count" argument1))]}
   (clojure.core/count argument1))
 
 ;; (conj coll x)
@@ -195,7 +195,7 @@
 ;; that does not contain a mapping for key(s).
 (defn dissoc
   ([mymap];check-if-seqable? is not restrictive enough
-   {:pre [(check-if-map? "dissoc" mymap 1)]}
+   {:pre [(only-arg (check-if-map? "dissoc" mymap 1))]}
    (clojure.core/dissoc mymap))
   ([mymap & keys]
    {:pre [(check-if-map? "dissoc" mymap 1)]}
@@ -227,13 +227,13 @@
 ;;(odd? n)
 ;;Returns true if n is odd, throws an exception if n is not an integer
 (defn odd? [n]
-  {:pre [(check-if-integer? "odd?" n 1)]}
+  {:pre [(only-arg (check-if-integer? "odd?" n 1))]}
   (clojure.core/odd? n))
 
 ;;(even? n)
 ;;Returns true if n is even, throws an exception if n is not an integer
 (defn even? [n]
-  {:pre [(check-if-integer? "even?" n 1)]}
+  {:pre [(only-arg (check-if-integer? "even?" n 1))]}
   (clojure.core/even? n))
 
 ;;    (< x)
@@ -339,13 +339,13 @@
 ;;    (inc x)
 ;; Returns a number one greater than num.
 (defn inc [x]
-  {:pre [(check-if-number? "inc" x 1)]}
+  {:pre [(only-arg (check-if-number? "inc" x 1))]}
   (clojure.core/inc x))
 
 ;;    (dec x)
 ;; Returns a number one less than num.
 (defn dec [x]
-  {:pre [(check-if-number? "dec" x 1)]}
+  {:pre [(only-arg (check-if-number? "dec" x 1))]}
   (clojure.core/dec x))
 
 ;;    (max x)

@@ -139,7 +139,7 @@
         (recur (rest args) (inc n))))))
 
 ;; allows for us to not say nth arg when there is only one arg
-(def only-arg (add-to-seen {:only-arg true}))
+(defn only-arg [arg] (if arg arg (when-not arg (add-to-seen {:only-arg true}) arg)))
 
 ;~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
