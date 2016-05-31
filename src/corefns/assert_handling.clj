@@ -138,6 +138,9 @@
         false
         (recur (rest args) (inc n))))))
 
+;; allows for us to not say nth arg when there is only one arg
+(def only-arg (add-to-seen {:only-arg true}))
+
 ;~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 ;(defn all-elems-are-map-or-vector? [coll]

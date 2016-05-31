@@ -240,7 +240,7 @@
         fname (:fname @seen-failed-asserts)
         v (:value @seen-failed-asserts)
         v-print (preview-arg v 10 4)
-        arg-num (arg-str (if n (Integer. n) (:arg-num @seen-failed-asserts)))]
+        arg-num (if (:only-arg @seen-failed-asserts) "argument" (arg-str (if n (Integer. n) (:arg-num @seen-failed-asserts))))]
     (empty-seen) ; empty the seen-failed-asserts hashmap
     (if (not (= "nil" v-print))
       (make-msg-info-hashes
