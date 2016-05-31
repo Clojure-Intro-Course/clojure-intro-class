@@ -58,7 +58,7 @@
       false)))
 
 (defn check-if-function? [fname x & [n]]
-  (if (fn? x) true
+  (if (ifn? x) true
     (do (add-to-seen {:check "a function"
                       :class (class x)
                       :value x
