@@ -79,9 +79,10 @@
 ;; of second items in each coll, until any one of the colls is
 ;; exhausted. Any remaining items in other colls are ignored. Function
 ;; f should accept number-of-colls arguments.
-(defn map [argument1 & args]
+(defn map [argument1 argument2 & args]
  {:pre [(check-if-function? "map" argument1)
-        (check-if-seqables? "map" args 2)]}
+        (check-if-seqable? "map" argument2)
+        (check-if-seqables? "map" args 3)]}
   (apply clojure.core/map argument1 args))
 
 ;; (count coll)
@@ -96,7 +97,7 @@
 ;; conj[oin]. Returns a new collection with the xs
 ;;'added'. (conj nil item) returns (item). The 'addition' may
 ;; happen at different 'places' depending on the concrete type.
-(defn conj [argument1 & args]
+(defn conj [argument1 argument2 & args]
   {:pre [(check-if-seqable? "conj" argument1)]}
   (apply clojure.core/conj argument1 args))
 
@@ -163,9 +164,9 @@
 ;; Returns a lazy sequence of the items in coll for which
 ;; (pred item) returns true. pred must be free of side-effects.
 (defn filter
-  ([argument1]
-   {:pre [(check-if-function? "filter" argument1)]}
-   (clojure.core/filter argument1))
+ ; ([argument1]
+  ; {:pre [(check-if-function? "filter" argument1)]}
+   ;(clojure.core/filter argument1))
   ([argument1 argument2]
    {:pre [(check-if-function? "filter" argument1)
          (check-if-seqable? "filter" argument2)]}

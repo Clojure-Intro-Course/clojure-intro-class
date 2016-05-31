@@ -266,7 +266,7 @@
   (zipmap [:file :line :char] (rest (rest (re-matches #"(.*), compiling:\((.+):(.+):(.+)\)" m)))))
 
 ;; do we want to move this to corefns?
-(def known-args-number {:map "at least one", :count "one",       :conj "at least one",     :rand-nth "one",
+(def known-args-number {:map "at least two", :count "one",       :conj "at least two",     :rand-nth "one",
                         :into "two",         :cons "two",        :nth "two or three",      :drop "two",
                         :take "two",         :filter "two",      :reduce "two or three",   :mapcat "at least one",
                         :reverse "one",      :sort "one or two", :sort-by "two or three",  :ffirst "one",
