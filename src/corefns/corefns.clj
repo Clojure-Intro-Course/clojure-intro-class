@@ -83,7 +83,7 @@
  {:pre [(check-if-function? "map" argument1)
         (check-if-seqable? "map" argument2)
         (check-if-seqables? "map" args 3)]}
-  (apply clojure.core/map argument1 args))
+  (apply clojure.core/map argument1 argument2 args))
 
 ;; (count coll)
 ;; Returns the number of items in the collection. (count nil) returns
