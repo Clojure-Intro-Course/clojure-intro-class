@@ -184,7 +184,7 @@
 ;; testing for error-in-map-inc
 (expect (more-of x
                  java.lang.AssertionError (:exception-class x)
-                 #"In function inc, the first argument \"hi\" must be a number but is a string\.(.*)" (get-all-text (:msg-info-obj x))
+                 #"In function inc, the argument \"hi\" must be a number but is a string\.(.*)" (get-all-text (:msg-info-obj x))
                  location-regex (get-all-text (:msg-info-obj x))
                  (trace-has-all-pairs? {:fn "error-in-map-inc" :anon-fn false :ns "intro.student"}) (:filtered-stacktrace x))
         (run-and-catch-pretty-with-stacktrace 'intro.student
