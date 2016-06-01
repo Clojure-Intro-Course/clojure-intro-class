@@ -197,6 +197,40 @@
         (get-text-no-location
          (run-and-catch-pretty-no-stacktrace 'intro.student '(even? [(range) (range)]))))
 
+;; testing for empty?, first, rest, next, seq, count, dissoc, and dec
+
+(expect "In function empty?, the argument :s must be a sequence but is a keyword."
+        (get-text-no-location
+         (run-and-catch-pretty-no-stacktrace 'intro.student '(empty? :s))))
+
+(expect "In function first, the argument :e must be a sequence but is a keyword."
+        (get-text-no-location
+         (run-and-catch-pretty-no-stacktrace 'intro.student '(first :e))))
+
+(expect "In function rest, the argument :a must be a sequence but is a keyword."
+        (get-text-no-location
+         (run-and-catch-pretty-no-stacktrace 'intro.student '(rest :a))))
+
+(expect "In function next, the argument :n must be a sequence but is a keyword."
+        (get-text-no-location
+         (run-and-catch-pretty-no-stacktrace 'intro.student '(next :n))))
+
+(expect "In function seq, the argument :w must be a sequence but is a keyword."
+        (get-text-no-location
+         (run-and-catch-pretty-no-stacktrace 'intro.student '(seq :w))))
+
+(expect "In function count, the argument :a must be a sequence but is a keyword."
+        (get-text-no-location
+         (run-and-catch-pretty-no-stacktrace 'intro.student '(count :a))))
+
+(expect "In function dissoc, the argument :s must be a map but is a keyword."
+        (get-text-no-location
+         (run-and-catch-pretty-no-stacktrace 'intro.student '(dissoc :s))))
+
+(expect "In function dec, the argument :r must be a number but is a keyword."
+        (get-text-no-location
+         (run-and-catch-pretty-no-stacktrace 'intro.student '(dec :r))))
+
 ;############################################
 ;### Testing for Illegal State Exceptions ###
 ;############################################
