@@ -36,7 +36,7 @@
         (get-text-no-location
          (run-and-catch-pretty-no-stacktrace 'intro.student '(+ 1 (repeat (repeat (range)))))))
 
-(expect "In function inc, the first argument ((0 1 2 3...) [1 (...) (...) 4...] (1 2 1 2...) (0 1 2 3...) [1 (...) (...) 4...] (1 2 1 2...) (0 1 2 3...) [1 (...) (...) 4...] (1 2 1 2...) (0 1 2 3...)...) must be a number but is a sequence."
+(expect "In function inc, the argument ((0 1 2 3...) [1 (...) (...) 4...] (1 2 1 2...) (0 1 2 3...) [1 (...) (...) 4...] (1 2 1 2...) (0 1 2 3...) [1 (...) (...) 4...] (1 2 1 2...) (0 1 2 3...)...) must be a number but is a sequence."
         (get-text-no-location
          (run-and-catch-pretty-no-stacktrace 'intro.student '(inc (cycle [(range) [1 (repeat 1) (range) 4 5 6 7 8 9 245 4235 5423] (cycle [1 2])])))))
 
@@ -157,24 +157,24 @@
 ;; testing for :illegal-argument-type-not-supported
 (expect "Function contains? does not allow a sequence as an argument."
         (get-text-no-location
-         (run-and-catch-pretty-no-stacktrace 'intro.core '(contains? (seq [1 3 6]) 2))))
+         (run-and-catch-pretty-no-stacktrace 'intro.student '(contains? (seq [1 3 6]) 2))))
 
 ;; testing for :illegal-argument-parameters-must-be-in-vector
 (expect #"Parameters for defn must be a vector, but my-argument was found instead\.(.*)"
         (get-all-text
-        (run-and-catch-pretty-no-stacktrace 'intro.core '(defn my-function my-argument))))
+        (run-and-catch-pretty-no-stacktrace 'intro.student '(defn my-function my-argument))))
 
 (expect #"Parameters for defn must be a vector, but 5 was found instead\.(.*)"
         (get-all-text
-        (run-and-catch-pretty-no-stacktrace 'intro.core '(defn my-function 5))))
+        (run-and-catch-pretty-no-stacktrace 'intro.student '(defn my-function 5))))
 
 (expect #"Parameters for defn must be a vector, but \+ was found instead\.(.*)"
         (get-all-text
-        (run-and-catch-pretty-no-stacktrace 'intro.core '(defn my-function (+ x y)))))
+        (run-and-catch-pretty-no-stacktrace 'intro.student '(defn my-function (+ x y)))))
 
 (expect #"Parameters for defn must be a vector, but \+ was found instead\.(.*)"
         (get-all-text
-        (run-and-catch-pretty-no-stacktrace 'intro.core '(defn my-function + x y))))
+        (run-and-catch-pretty-no-stacktrace 'intro.student '(defn my-function + x y))))
 
 ;; testing for :illegal-argument-exactly-2-forms
 (expect #"The function when-let requires exactly 2 forms in binding vector. Line (.*) in the file intro.core"
@@ -182,20 +182,20 @@
 
 (expect "Cannot call nil as a function."
         (get-text-no-location
-         (run-and-catch-pretty-no-stacktrace 'intro.core '(nil 5))))
+         (run-and-catch-pretty-no-stacktrace 'intro.student '(nil 5))))
 
 ;; testing for odd? and even?
-(expect "In function even?, the first argument must be an integer number but is nil."
+(expect "In function even?, the argument must be an integer number but is nil."
         (get-text-no-location
-         (run-and-catch-pretty-no-stacktrace 'intro.core '(even? nil))))
+         (run-and-catch-pretty-no-stacktrace 'intro.student '(even? nil))))
 
-(expect "In function odd?, the first argument must be an integer number but is nil."
+(expect "In function odd?, the argument must be an integer number but is nil."
         (get-text-no-location
-         (run-and-catch-pretty-no-stacktrace 'intro.core '(odd? nil))))
+         (run-and-catch-pretty-no-stacktrace 'intro.student '(odd? nil))))
 
-(expect "In function even?, the first argument [(0 1 2 3...) (0 1 2 3...)] must be an integer number but is a vector."
+(expect "In function even?, the argument [(0 1 2 3...) (0 1 2 3...)] must be an integer number but is a vector."
         (get-text-no-location
-         (run-and-catch-pretty-no-stacktrace 'intro.core '(even? [(range) (range)]))))
+         (run-and-catch-pretty-no-stacktrace 'intro.student '(even? [(range) (range)]))))
 
 ;############################################
 ;### Testing for Illegal State Exceptions ###
