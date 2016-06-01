@@ -30,81 +30,81 @@
 ;; testing for :pretty-print-value
 (expect "In function +, the second argument ((0 1 2 3...) (0 1 2 3...) (0 1 2 3...) (0 1 2 3...) (0 1 2 3...) (0 1 2 3...) (0 1 2 3...) (0 1 2 3...) (0 1 2 3...) (0 1 2 3...)...) must be a number but is a sequence."
         (get-text-no-location
-         (run-and-catch-pretty-no-stacktrace 'intro.testing '(+ 1 (repeat (range))))))
+         (run-and-catch-pretty-no-stacktrace 'intro.student '(+ 1 (repeat (range))))))
 
 (expect "In function +, the second argument (((...) (...) (...) (...)...) ((...) (...) (...) (...)...) ((...) (...) (...) (...)...) ((...) (...) (...) (...)...) ((...) (...) (...) (...)...) ((...) (...) (...) (...)...) ((...) (...) (...) (...)...) ((...) (...) (...) (...)...) ((...) (...) (...) (...)...) ((...) (...) (...) (...)...)...) must be a number but is a sequence."
         (get-text-no-location
-         (run-and-catch-pretty-no-stacktrace 'intro.core '(+ 1 (repeat (repeat (range)))))))
+         (run-and-catch-pretty-no-stacktrace 'intro.student '(+ 1 (repeat (repeat (range)))))))
 
 (expect "In function inc, the first argument ((0 1 2 3...) [1 (...) (...) 4...] (1 2 1 2...) (0 1 2 3...) [1 (...) (...) 4...] (1 2 1 2...) (0 1 2 3...) [1 (...) (...) 4...] (1 2 1 2...) (0 1 2 3...)...) must be a number but is a sequence."
         (get-text-no-location
-         (run-and-catch-pretty-no-stacktrace 'intro.core '(inc (cycle [(range) [1 (repeat 1) (range) 4 5 6 7 8 9 245 4235 5423] (cycle [1 2])])))))
+         (run-and-catch-pretty-no-stacktrace 'intro.student '(inc (cycle [(range) [1 (repeat 1) (range) 4 5 6 7 8 9 245 4235 5423] (cycle [1 2])])))))
 
 (expect "In function +, the second argument [1 2 3 4 5 6 76 (0 1 2 3...) 756 354...] must be a number but is a vector."
         (get-text-no-location
-         (run-and-catch-pretty-no-stacktrace 'intro.core '(+ 1 [1 2 3 4 5 6 76 (range) 756 354 6 645]))))
+         (run-and-catch-pretty-no-stacktrace 'intro.student '(+ 1 [1 2 3 4 5 6 76 (range) 756 354 6 645]))))
 
 ;; testing for pretty-print-value for functions within sequences and for vectors
 
 (expect "In function +, the first argument [1 2] must be a number but is a vector."
         (get-text-no-location
-         (run-and-catch-pretty-no-stacktrace 'intro.core '(+ [1 2]))))
+         (run-and-catch-pretty-no-stacktrace 'intro.student '(+ [1 2]))))
 
 (expect "In function +, the first argument [+] must be a number but is a vector."
         (get-text-no-location
-         (run-and-catch-pretty-no-stacktrace 'intro.core '(+ [+]))))
+         (run-and-catch-pretty-no-stacktrace 'intro.student '(+ [+]))))
 
 (expect "In function +, the first argument [map] must be a number but is a vector."
         (get-text-no-location
-         (run-and-catch-pretty-no-stacktrace 'intro.core '(+ [map]))))
+         (run-and-catch-pretty-no-stacktrace 'intro.student '(+ [map]))))
 
 (expect "In function +, the first argument (\"a\" \"b\") must be a number but is a list."
         (get-text-no-location
-         (run-and-catch-pretty-no-stacktrace 'intro.core '(+ '("a" "b")))))
+         (run-and-catch-pretty-no-stacktrace 'intro.student '(+ '("a" "b")))))
 
 (expect "In function +, the first argument #{anonymous function} must be a number but is a set."
         (get-text-no-location
-         (run-and-catch-pretty-no-stacktrace 'intro.core '(+ #{#(+ % 2)}))))
+         (run-and-catch-pretty-no-stacktrace 'intro.student '(+ #{#(+ % 2)}))))
 
 (expect "In function +, the first argument #{+} must be a number but is a set."
         (get-text-no-location
-         (run-and-catch-pretty-no-stacktrace 'intro.core '(+ #{+}))))
+         (run-and-catch-pretty-no-stacktrace 'intro.student '(+ #{+}))))
 
 (expect "In function +, the first argument {:a +} must be a number but is a map."
         (get-text-no-location
-         (run-and-catch-pretty-no-stacktrace 'intro.core '(+ {:a +}))))
+         (run-and-catch-pretty-no-stacktrace 'intro.student '(+ {:a +}))))
 
 (expect "In function +, the first argument {:a {6 \"a\", 7 true}, :b 4, :c +} must be a number but is a map."
         (get-text-no-location
-         (run-and-catch-pretty-no-stacktrace 'intro.core '(+ {:a {6 "a" 7 true} :b 4 :c +}))))
+         (run-and-catch-pretty-no-stacktrace 'intro.student '(+ {:a {6 "a" 7 true} :b 4 :c +}))))
 
 ;; Note: the order of elements in a hashmap is not guaranteed, so the actual elements amy be different
 (expect "In function +, the first argument {:a 6, :k \"a\", :b 4, :c +, :l 6...} must be a number but is a map."
         (get-text-no-location
-         (run-and-catch-pretty-no-stacktrace 'intro.core '(+ {:a 6 :k "a" :b 4 :c + :l 6 :m 7}))))
+         (run-and-catch-pretty-no-stacktrace 'intro.student '(+ {:a 6 :k "a" :b 4 :c + :l 6 :m 7}))))
 
 ;; testing for :illegal-argument-no-val-supplied-for-key
 (expect "No value found for key d. Every key for a hash-map must be followed by a value."
         (get-text-no-location
-         (run-and-catch-pretty-no-stacktrace 'intro.core '(hash-map "c" :d "d"))))
+         (run-and-catch-pretty-no-stacktrace 'intro.student '(hash-map "c" :d "d"))))
 
 ;; testing for :illegal-argument-vector-arg-to-map-conj
 (expect "Vectors added to a map must consist of two elements: a key and a value."
         (get-text-no-location
-         (run-and-catch-pretty-no-stacktrace 'intro.core '(into {} [[1 2] [3]]))))
+         (run-and-catch-pretty-no-stacktrace 'intro.student '(into {} [[1 2] [3]]))))
 
 (expect "Vectors added to a map must consist of two elements: a key and a value."
         (get-text-no-location
-         (run-and-catch-pretty-no-stacktrace 'intro.core '(merge {:a 1 :b 2} [1 2 3] [1 2] [1 5]))))
+         (run-and-catch-pretty-no-stacktrace 'intro.student '(merge {:a 1 :b 2} [1 2 3] [1 2] [1 5]))))
 
 (expect "Vectors added to a map must consist of two elements: a key and a value."
         (get-text-no-location
-         (run-and-catch-pretty-no-stacktrace 'intro.core '(conj {:a 1 :b 2} [1 2 3 4]))))
+         (run-and-catch-pretty-no-stacktrace 'intro.student '(conj {:a 1 :b 2} [1 2 3 4]))))
 
 ;; testing for :illegal-argument-cannot-convert-type
 (expect "In function cons, the second argument 2 must be a sequence but is a number."
         (get-text-no-location
-         (run-and-catch-pretty-no-stacktrace 'intro.core '(cons 1 2))))
+         (run-and-catch-pretty-no-stacktrace 'intro.student '(cons 1 2))))
 
 ;; testing for :illegal-argument-even-number-of-forms
 ;; Elena: this is a compilation error in clojure 1.7, so we can't test it like this
