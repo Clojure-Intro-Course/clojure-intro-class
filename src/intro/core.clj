@@ -14,7 +14,6 @@
 
 (defn -main [& args]
   (try
-    ;(clojure.string/splt "/home/stock424/Documents/code/clojure-intro-class/src/intro/may2015.clj" #"/")
    ; (try
     (if (= (first args) "s")
       (print (load-file "src/intro/test_standard.clj"))

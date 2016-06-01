@@ -4,23 +4,6 @@
   (:require [corefns.assert_handling :refer :all]
             [corefns.failed_asserts_info :refer :all]))
 
-;; to-do:
-;; 1. remove references to contracts, trammel (from project.clj as well) - Done
-;; 2. modify our type-checking functions to record the type (or the arg? or the message?) - Done
-;; 3. modify error-handling for asserts to check the recorded info - Done
-;; 4. rewrite messages similar to the standard ones (perhaps abstract over?) - maybe?
-;; 5. don't forget to clear the queue at the end (post-cond? or the end of pre-cond? or finally?) --
-;;    not in post-cond since if we got to post-cond, there were no errors. Perhaps after we
-;;    process the queue? We aren't going to handle nested errors. finally may be the place - Done
-;; 6. Handle multiple-args functions - Done
-;; 7. Process function names - Done
-;; 8. Change the messsage for only one arg
-;; 9. Handle anonymous functions - Done?
-;; 10. Add a function name to the error message - Done
-;; inf. why didn't I think of this earlier?
-
-;; CONS - look at documentation
-
 ;; Including the standard Clojure documentation to make sure that asserts
 ;; and cases are consistent with the standard Clojure.
 
@@ -108,12 +91,13 @@
   ([argument1 argument2]
    {:pre [(check-if-seqable? "into" argument1)
           (check-if-seqable? "into" argument2)]}
-   (clojure.core/into argument1 argument2))
-  ([argument1 argument2 argument3]
-   {:pre [(check-if-seqable? "into" argument1)
-          (check-if-function? "into" argument2)
-          (check-if-seqable? "into" argument3)]}
-   (clojure.core/into argument1 argument2 argument3)))
+   (clojure.core/into argument1 argument2)))
+;; commented out the transducer case for now Elena June 1st 2016
+  ;([argument1 argument2 argument3]
+  ; {:pre [(check-if-seqable? "into" argument1)
+  ;        (check-if-function? "into" argument2)
+  ;        (check-if-seqable? "into" argument3)]}
+  ; (clojure.core/into argument1 argument2 argument3)))
 
 ;; (cons x seq)
 ;; Returns a new seq where x is the first element and seq is

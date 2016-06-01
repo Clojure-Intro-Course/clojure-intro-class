@@ -30,7 +30,7 @@
 ;; testing for :pretty-print-value
 (expect "In function +, the second argument ((0 1 2 3...) (0 1 2 3...) (0 1 2 3...) (0 1 2 3...) (0 1 2 3...) (0 1 2 3...) (0 1 2 3...) (0 1 2 3...) (0 1 2 3...) (0 1 2 3...)...) must be a number but is a sequence."
         (get-text-no-location
-         (run-and-catch-pretty-no-stacktrace 'intro.core '(+ 1 (repeat (range))))))
+         (run-and-catch-pretty-no-stacktrace 'intro.testing '(+ 1 (repeat (range))))))
 
 (expect "In function +, the second argument (((...) (...) (...) (...)...) ((...) (...) (...) (...)...) ((...) (...) (...) (...)...) ((...) (...) (...) (...)...) ((...) (...) (...) (...)...) ((...) (...) (...) (...)...) ((...) (...) (...) (...)...) ((...) (...) (...) (...)...) ((...) (...) (...) (...)...) ((...) (...) (...) (...)...)...) must be a number but is a sequence."
         (get-text-no-location
