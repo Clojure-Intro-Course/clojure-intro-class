@@ -336,9 +336,16 @@
 (expect '("x" "x" "x" "x" "x") (take 5 (repeat "x")))
 (expect '("x" "x" "x" "x" "x") (repeat 5.23 "x"))
 
-;;testing for repeatedly
+;; testing for repeatedly
 (expect '("x" "x" "x" "x" "x") (take 5 (repeatedly (constantly "x"))))
 (expect '("x" "x" "x" "x" "x") (repeatedly 4.23 (constantly "x")))
+
+;; testing for distinct
+(expect '(1 2 3 4 5) (distinct [1 2 2 2 3 2 4 4 5 4]))
+;doesn't work for a weird reason?
+;(expect '("h" "e" "l" "o" "w" "r" "d") (distinct "helloworld"))
+
+
 
 ;; testing for odd? and even?
 ;(expect (odd? nil))
@@ -346,6 +353,15 @@
 ;#################################################
 ;### Testing if the corefns preconditions work ###
 ;#################################################
+
+;; testing for the precondition of distinct
+
+(expect "In function distinct, the first argument \"not a number\" must be a number but is a string."
+        (get-text-no-location
+          (run-and-catch-pretty-no-stacktrace 'intro.student
+                                              '(repeat "not a number" 6))))
+
+;~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 ;; testing for the precondition of repeat
 

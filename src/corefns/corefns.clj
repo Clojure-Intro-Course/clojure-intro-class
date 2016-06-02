@@ -387,6 +387,43 @@
    {:pre [(check-if-number? "repeat" argument1)]}
    (clojure.core/repeat argument1 argument2)))
 
+;;    (distinct)
+;;    (distinct coll)
+;; Returns a lazy sequence of the elements of coll with duplicates removed.
+;; Returns a stateful transducer when no collection is provided.
+(defn distinct [argument1]
+  {:pre [(check-if-seqable? "distinct" argument1)]}
+  (clojure.core/distinct argument1))
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
