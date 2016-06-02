@@ -27,7 +27,7 @@
     (cond
       (empty? col2) s
       (nil? (first col2)) (recur s (rest col1) (rest col2))
-      :else (recur (str s "(check-if-" (first col2) " \"" fname "\" " (first col1) ")\n        ") (rest col1) (rest col2)))))
+      :else (recur (str s "(check-if-" (first col2) "? \"" fname "\" " (first col1) ")\n        ") (rest col1) (rest col2)))))
 
 (println (checks "repeat" ["number?" "string?" "number?"]))
 
@@ -53,11 +53,24 @@
                           (= (count v) (count args)) v
                           (re-matches #".*s" (first args)) (conj (conj v "&") "args")
                           (recur (conj v (str "argument" (inc (count v)))))))
-        arg-str (apply str (interpose " " arg-vec))]
+        arg-str (apply str (interpose " " arg-vec))
+        checks (loop [ s ""
+                       col1 arg-vec
+                       col2 args]
+                (cond
+                  (empty? col2) s
+                  (re-matches "&" (first col1)) (recur s (rest col1) col2)
+                  (nil? (first col2)) (recur s (rest col1) (rest col2))
+                  :else (recur (str s "(check-if-" (first col2) "? \"" fname "\" " (first col1) ")\n        ") (rest col1) (rest col2))))]
+  (str "([" arg-str "]"
+       "\n{:pre [" checks "]}"
+       "\n" (if do-apply
+              (str "(apply clojure.core/" fname " [" arg-str "])")
+              (str "(clojure.core/" fname " " arg-str ")"))
+       ")")))
 
 
-
-;takes a fully qualified function name, and a vector of vectors of arguments
+;takes a function name, and a vector of vectors of arguments
 (defn re-defn [fname & arglists]
   (reduce
 
