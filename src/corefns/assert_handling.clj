@@ -141,6 +141,15 @@
 ;; allows for us to not say nth arg when there is only one arg
 (defn only-arg [arg] (if arg arg (when-not arg (add-to-seen {:only-arg true}) arg)))
 
+;; should pass the starting arg number: it's different for different functions
+(defn check-if-functions? [fname arguments start]
+  (loop [args arguments n start]
+    (if (empty? args)
+      true
+      (if (not (check-if-function? fname (first args) n))
+        false
+        (recur (rest args) (inc n))))))
+
 ;~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 ;(defn all-elems-are-map-or-vector? [coll]

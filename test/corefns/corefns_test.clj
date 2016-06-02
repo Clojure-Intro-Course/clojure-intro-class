@@ -329,12 +329,24 @@
 (expect false (any? even? [1 3 5 7 9 11]))
 (expect true (any? #(= :a %) [:a :b :c :d :e]))
 
+;; testing for comp
+(expect -4 ((comp inc #(* 5 %) dec #(* 7 %)) 0))
+
 ;; testing for odd? and even?
 ;(expect (odd? nil))
 
 ;#################################################
 ;### Testing if the corefns preconditions work ###
 ;#################################################
+
+;;testing for the precondition of comp
+(expect "In function comp, the first argument \"not a function\" must be a function but is a string."
+        (get-text-no-location
+          (run-and-catch-pretty-no-stacktrace 'intro.student
+                                              '(comp "not a function" #(* 5 %) dec #(* 7 %)))))
+
+
+;~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 ;; testing for the preconditions on assoc, it is a compuler exception
 (expect "In function assoc, the first argument \"this is a string\" must be a map or vector but is a string."

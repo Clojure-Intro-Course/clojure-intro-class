@@ -349,3 +349,24 @@
   {:pre [(check-if-number? "min" argument1)
          (check-if-numbers? "min" args 2)]}
   (apply clojure.core/min argument1 args))
+
+;;    (comp)
+;;    (comp f)
+;;    (comp f g)
+;;    (comp f g & fs)
+;; Takes a set of functions and returns a fn that is the composition
+;; of those fns.  The returned fn takes a variable number of args,
+;; applies the rightmost of fns to the args, the next
+;; fn (right-to-left) to the result, etc.
+(defn comp [& args]
+  {:pre [(check-if-functions? "comp" args 1)]}
+  (apply clojure.core/comp args))
+
+
+
+
+
+
+
+
+
