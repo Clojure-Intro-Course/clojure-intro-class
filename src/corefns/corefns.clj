@@ -363,8 +363,29 @@
   (apply clojure.core/comp args))
 
 
+;;    (repeatedly f)
+;;    (repeatedly n f)
+;; Takes a function of no args, presumably with side effects, and
+;; returns an infinite (or length n if supplied) lazy sequence of calls
+;; to it
+(defn repeatedly
+  ([argument1]
+   {:pre [(only-arg (check-if-function? "repeatedly" argument1))]}
+   (clojure.core/repeatedly argument1))
+  ([argument1 argument2]
+   {:pre [(check-if-number? "repeatedly" argument1)
+          (check-if-function? "repeatedly" argument2)]}
+   (clojure.core/repeatedly argument1 argument2)))
 
-
+;;    (repeat f)
+;;    (repeat n f)
+;; Returns a lazy (infinite!, or length n if supplied) sequence of xs.
+(defn repeat
+  ([argument1]
+   (clojure.core/repeat argument1))
+  ([argument1 argument2]
+   {:pre [(check-if-number? "repeat" argument1)]}
+   (clojure.core/repeat argument1 argument2)))
 
 
 

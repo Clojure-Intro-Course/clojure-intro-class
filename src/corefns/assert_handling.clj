@@ -141,7 +141,7 @@
 ;; allows for us to not say nth arg when there is only one arg
 (defn only-arg [arg] (if arg arg (when-not arg (add-to-seen {:only-arg true}) arg)))
 
-;; should pass the starting arg number: it's different for different functions
+;; should pass the starting arg number: it's different for different functions (not sure if true for this one)
 (defn check-if-functions? [fname arguments start]
   (loop [args arguments n start]
     (if (empty? args)

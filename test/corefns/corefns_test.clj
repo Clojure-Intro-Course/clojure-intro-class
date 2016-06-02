@@ -332,6 +332,10 @@
 ;; testing for comp
 (expect -4 ((comp inc #(* 5 %) dec #(* 7 %)) 0))
 
+;; testing for repeat
+(expect '("x" "x" "x" "x" "x") (take 5 (repeat "x")))
+(expect '("x" "x" "x" "x" "x") (repeat 5.23 "x"))
+
 ;; testing for odd? and even?
 ;(expect (odd? nil))
 
@@ -339,7 +343,37 @@
 ;### Testing if the corefns preconditions work ###
 ;#################################################
 
-;;testing for the precondition of comp
+;; testing for the precondition of repeat
+
+(expect "In function repeat, the first argument \"not a number\" must be a number but is a string."
+        (get-text-no-location
+          (run-and-catch-pretty-no-stacktrace 'intro.student
+                                              '(repeat "not a number" 6))))
+
+
+;~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+;; testing for the preconditions of repeatedly
+(expect "In function repeatedly, the argument \"not a function\" must be a function but is a string."
+        (get-text-no-location
+          (run-and-catch-pretty-no-stacktrace 'intro.student
+                                              '(repeatedly "not a function"))))
+
+;; testing for the preconditions of repeatedly
+(expect "In function repeatedly, the second argument \"not a function\" must be a function but is a string."
+        (get-text-no-location
+          (run-and-catch-pretty-no-stacktrace 'intro.student
+                                              '(repeatedly 20 "not a function"))))
+
+;; testing for the preconditions of repeatedly
+(expect "In function repeatedly, the first argument \"not a number\" must be a number but is a string."
+        (get-text-no-location
+          (run-and-catch-pretty-no-stacktrace 'intro.student
+                                              '(repeatedly "not a number" +))))
+
+;~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+;; testing for the precondition of comp
 (expect "In function comp, the first argument \"not a function\" must be a function but is a string."
         (get-text-no-location
           (run-and-catch-pretty-no-stacktrace 'intro.student
