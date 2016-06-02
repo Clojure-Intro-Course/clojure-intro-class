@@ -336,6 +336,10 @@
 (expect '("x" "x" "x" "x" "x") (take 5 (repeat "x")))
 (expect '("x" "x" "x" "x" "x") (repeat 5.23 "x"))
 
+;;testing for repeatedly
+(expect '("x" "x" "x" "x" "x") (take 5 (repeatedly (constantly "x"))))
+(expect '("x" "x" "x" "x" "x") (repeatedly 4.23 (constantly "x")))
+
 ;; testing for odd? and even?
 ;(expect (odd? nil))
 
