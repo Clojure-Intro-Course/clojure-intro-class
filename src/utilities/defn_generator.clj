@@ -76,16 +76,21 @@
 ;; takes a function name, and a vector of vectors of arguments
 ;; note: arguments DO NOT end in a question mark.
 (defn re-defn [fname & arglists]
-  (str "(defn " fname "\n" (reduce #(str %1 "\n" (re-defn-i %2)) "" arglists) ")"))
+  (str "(defn " (name fname) "\n" (reduce #(str %1 "\n" (re-defn-i %2)) "" arglists) ")"))
 
 ;; will map all of clojures names for args to our names
-(def arg-types {"col" "seqable", "n" "number",  "s" "string"});;"re" regex,
+;(def );;"re" regex,
 
-;; may have way too many quotes, and may need to map apply str wrapped in parens
-;; should output the pretty thing elena wants for her birthday(map #(map arg-types %)
+
+(defn- clj->ourtypes [col]
+  (let [arg-types {"coll" "seqable","c1" "seqable", "c2" "seqable","c3" "seqable","colls" "seqables",
+                   "n" "number",  "s" "string", "&" "&", "f" "function"}]
+    (vec (map (fn [c] (vec (map #(arg-types (name %)) c))) (into [] col)))))
+
+
 (defn pre-re-defn [f]
   (let [fmeta (meta f)]
-  (str "(re-defn " (:name fmeta) " " (apply str (interpose " " (:arglists fmeta))) ")")))
+  (str "(re-defn " (:ns fmeta) "/" (:name fmeta) " " (apply str (interpose " " (clj->ourtypes (:arglists fmeta)))) ")")))
 
 
 
