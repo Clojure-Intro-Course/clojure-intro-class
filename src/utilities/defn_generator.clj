@@ -1,4 +1,4 @@
-;(ns utilities.defn_generator)
+(ns utilities.defn_generator)
 
 ;(defn arg-vec-str [m]
 ;   (loop [s "[argument1"
@@ -46,13 +46,15 @@
 
 
 ;; the main part of the function, pumps an arg vector into all the boiler plate stuff
+(defn foo [bar] (inc bar))
+
 (defn- re-defn-i [fname & args]
   (let [do-apply (re-matches #".*s$" (get (dec (count args)))) ; do we use apply? this is where it's decided
         arg-vec (loop [v []]
                     (cond
                           (= (count v) (count args)) v
                           (re-matches #".*s$" (first args)) (conj (conj v "&") "args")
-                          (recur (conj v (str "argument" (inc (count v))))))) ; vector of the arguments, as goes after the name of function
+                          :else (recur (conj v (str "argument" (inc (count v))))))) ; vector of the arguments, as goes after the name of function
         arg-str (apply str (interpose " " arg-vec)) ; space separated arguments in string form, useful for printing.
         ;does all the check-if-.*\? stuff.
         checks (loop [ s ""
@@ -80,9 +82,10 @@
 (def arg-types {"col" "seqable", "n" "number",  "s" "string"});;"re" regex,
 
 ;; may have way too many quotes, and may need to map apply str wrapped in parens
-;; should output the pretty thing elena wants for her birthday
-(defn pre-re-defn [fname]
-  (str "(" re-defn fname (apply str (map #(map arg-types %) fmeta))))
+;; should output the pretty thing elena wants for her birthday(map #(map arg-types %)
+(defn pre-re-defn [f]
+  (let [fmeta (meta f)]
+  (str "(re-defn " (:name fmeta) " " (apply str (interpose " " (:arglists fmeta))) ")")))
 
 
 
