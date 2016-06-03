@@ -9,6 +9,7 @@
 ;; potentially we can have multiple dictionaries, depending on the level
 
 (def type-dictionary {:java.lang.String "a string"
+                      :java.lang.CharSequence "a string"
                       :java.lang.Number "a number"
                       :clojure.lang.Keyword "a keyword"
                       :java.lang.Boolean "a boolean"
