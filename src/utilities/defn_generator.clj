@@ -4,7 +4,8 @@
 ;; col -> col
 (defn clj->ourtypes [col]
   (let [arg-types {"coll" "seqable","c1" "seqable", "c2" "seqable","c3" "seqable","colls" "seqables",
-                   "n" "number",  "s" "string", "f" "function", "&" "&"}]
+                   "n" "number",  "s" "string", "f" "function", "&" "&", "start" "number", 
+                   "end" "number", "pred" "function", "step" "number"}]
     (vec (map (fn [c] (vec (map #(arg-types (name %)) c))) (into [] col)))))
 
 ;; outputs a string of generated data for redefining functions with preconditions
@@ -41,7 +42,6 @@
   (let [f (symbol fname)
         unqualified-name  (name f)
         qualified-name (str  fnamespace "/"  unqualified-name)
-	toprint (println (:ns (meta f)) "    " (:ns (meta fname)) "     " fname)
 	do-apply (if (not (empty? (first arg-types))) (re-matches #".*s$" (first (reverse arg-types))) nil)
         arg-vec  (make-arg-vec arg-types); vector of the arguments, as goes after the name of function
         arg-str (apply str (interpose " " arg-vec)) ; space separated arguments in string form, useful for printing.
