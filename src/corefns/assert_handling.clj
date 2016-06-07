@@ -102,6 +102,15 @@
       (if n (add-to-seen {:arg-num n}))
       false)))
 
+(defn check-if-var? [fname x & [n]]
+  (if (var? x) true
+    (do (add-to-seen {:check "a var"
+                      :class (class x)
+                      :value x
+                      :fname fname})
+      (if n (add-to-seen (:arg-num n)))
+      false)))
+
 (defn check-if-string-or-character? [fname x & [n]] ;for string-contains?
   (if (or (string? x) (char? x)) true
     (do (add-to-seen {:check "either a string or character"

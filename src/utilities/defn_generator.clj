@@ -16,36 +16,22 @@
 
 ;; string vector vector -> string
 (defn gen-checks [unqualified-name arg-vec arg-types]
-  (loop [ s ""
-          col1 arg-vec
-          col2 arg-types]
-        (cond
-          (empty? col2)            s
-          (= "&" (first col2))     (recur s (rest col1) (rest col2))  
-;          (= "&" (first col2))     (if (or (nil? (first (rest col2))) (= "args" (first (rest col2))))
-;				     s 
-;				     (str s "(check-if-" (first (rest col2)) "? \"" unqualified-name "\" args)\n           "))
-          (or (nil? (first col2)) (= "args" (first col1)))       (recur s (rest col1) (rest col2))
-          :else                    (recur (str s "(check-if-" (first col2) "? \"" unqualified-name "\" " (first col1) ")\n           ") (rest col1) (rest col2)))))
-
-;; vec -> vec
-;(defn make-arg-vec [args]
-;  (loop [to-vec []
-;         from-vec args
-;         cnt 1]
-;    (cond
-;      (empty? from-vec) to-vec
-;      (= "&" (first from-vec)) (conj (conj to-vec "&") "args")
-;      :else (recur (conj to-vec (str "argument" cnt)) (rest from-vec) (inc cnt))))
+  (let [skip ["&" "args" "nil"]]
+    (loop [ s ""
+            col1 arg-vec
+            col2 arg-types]
+          (cond
+            (empty? col2)            s
+            (or (nil? (first col2)) (nil? (first col1)) (some #(= % (first col1)) skip))   (recur s (rest col1) (rest col2))
+            :else                    (recur (str s "(check-if-" (first col2) "? \"" unqualified-name "\" " (first col1) ")\n           ") (rest col1) (rest col2))))))
 
 (defn make-arg-vec [args]
-   (let [arg-names {"seqable" "coll","seqables" "colls","number" "n","function" "f","string" "s",nil "arg","nil" "arg","&" "&","more" "args"}
+   (let [arg-names {"seqable" "coll","seqables" "colls","number" "n","function" "f","string" "s",nil "arg","nil" "arg","&" "&","more" "args", "args" "args"}
          s-cnt (fn [coll s] (count (filter #(re-matches (java.util.regex.Pattern/compile (str s "[0123456789]*")) %) coll)))]
      (loop [to-vec []
             from-vec (map arg-names args)]
        (cond
          (empty? from-vec) to-vec
-         ;(= "&" (first from-vec)) (recur (conj to-vec "&") (rest from-vec))
          :else (recur (conj to-vec (str (first from-vec) 
                                      (if 
                                        (and (= 0 (s-cnt to-vec (first from-vec))) (not (some #(= (first from-vec) %) (rest from-vec)))) 
@@ -74,7 +60,9 @@
 ;; takes a function name, and a vector of vectors of arguments
 ;; note: arguments DO NOT end in a question mark.
 (defn re-defn [fname & arglists]
-  (str "(defn " (:name (meta fname)) "\n  \"" (:doc (meta fname)) "\""
+   {:pre [(check-if-var? fname)
+          (check-if-seqables? arglists)]}
+   (str "(defn " (:name (meta fname)) "\n  \"" (:doc (meta fname)) "\""
        (reduce #(str %1 "\n" (single-re-defn (:name (meta fname)) (:ns (meta fname)) %2 (= 1 (count arglists)))) "" arglists) ")"))
 
 
