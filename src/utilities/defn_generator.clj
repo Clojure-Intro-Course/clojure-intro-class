@@ -1,4 +1,5 @@
-(ns utilities.defn_generator)
+(ns utilities.defn_generator
+   (:require [corefns.assert_handling :refer :all]))
 
 ;; translates a function's :arglists metadata so that it can be read by our asset_handling
 ;; col -> col
@@ -10,8 +11,9 @@
 
 ;; outputs a string of generated data for redefining functions with preconditions
 ;; function -> string
-(defn pre-re-defn [f]
-  (let [fmeta (meta f)]
+(defn pre-re-defn [fvar]
+  {:pre [(check-if-var? "pre-re-defn" fvar)]}
+  (let [fmeta (meta fvar)]
   (str "(re-defn #'" (:ns fmeta) "/" (:name fmeta) " " (apply str (interpose " " (clj->ourtypes (:arglists fmeta)))) ")")))
 
 ;; string vector vector -> string
@@ -23,8 +25,10 @@
           (cond
             (empty? col2)            s
             (or (nil? (first col2)) (nil? (first col1)) (some #(= % (first col1)) skip))   (recur s (rest col1) (rest col2))
-            :else                    (recur (str s "(check-if-" (first col2) "? \"" unqualified-name "\" " (first col1) ")\n           ") (rest col1) (rest col2))))))
+            :else                    (recur (str s "(check-if-" (first col2) "? \"" unqualified-name "\" " (first col1) 
+                                        (if (re-matches #".*s$" (first col2)) (str " " (- (count arg-vec) (count col2)))  "") ")\n           ") (rest col1) (rest col2))))))
 
+;; vector -> vector
 (defn make-arg-vec [args]
    (let [arg-names {"seqable" "coll","seqables" "colls","number" "n","function" "f","string" "s",nil "arg","nil" "arg","&" "&","more" "args", "args" "args"}
          s-cnt (fn [coll s] (count (filter #(re-matches (java.util.regex.Pattern/compile (str s "[0123456789]*")) %) coll)))]
@@ -59,11 +63,11 @@
 
 ;; takes a function name, and a vector of vectors of arguments
 ;; note: arguments DO NOT end in a question mark.
-(defn re-defn [fname & arglists]
-   {:pre [(check-if-var? fname)
-          (check-if-seqables? arglists)]}
-   (str "(defn " (:name (meta fname)) "\n  \"" (:doc (meta fname)) "\""
-       (reduce #(str %1 "\n" (single-re-defn (:name (meta fname)) (:ns (meta fname)) %2 (= 1 (count arglists)))) "" arglists) ")"))
+(defn re-defn [fvar & arglists]
+   {:pre [(check-if-var? "re-defn" fvar)
+          (check-if-seqables? "redefn" arglists 2)]}
+   (str "(defn " (:name (meta fvar)) "\n  \"" (:doc (meta fvar)) "\""
+       (reduce #(str %1 "\n" (single-re-defn (:name (meta fvar)) (:ns (meta fvar)) %2 (= 1 (count arglists)))) "" arglists) ")"))
 
 
 
