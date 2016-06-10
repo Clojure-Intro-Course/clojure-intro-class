@@ -11,25 +11,27 @@
                     "arg" "arg","arg1" "arg","args" "args","arg2" "arg","arg3" "arg","arg4" "arg"})
 
 
-(def type-data {:and {:check nil,:argument nil,:arg-vec "&"},
-                :arg {:check nil,:argument "arg",:arg-vec "arg"},
-                :coll {:check "seqable",:argument "coll",:arg-vec "coll"},
-                :n {:check "number",:argument "n",:arg-vec "n"},
-                :colls {:check "seqables",:argument "args",:arg-vec "args"},
-                :str {:check "string",:argument "str",:arg-vec "str"},
-                :strs {:check "strings",:argument "strs",:arg-vec "strs"},
-                :f {:check "function",:argument "f",:arg-vec "f"},
-                :fs {:check "functions",:argument "fs",:arg-vec "fs"}})
+(def type-data {:and {:check nil,:has-type nil,:argument nil,:arg-vec "&"},
+                :arg {:check nil,:has-type "arg",:argument "arg",:arg-vec "arg"},
+                :coll {:check "seqable",:has-type "seqable",:argument "coll",:arg-vec "coll"},
+                :n {:check "number",:has-type "number",:argument "n",:arg-vec "n"},
+                :colls {:check "seqables",:has-type "seqable",:argument "args",:arg-vec "args"},
+                :str {:check "string",:has-type "string",:argument "str",:arg-vec "str"},
+                :strs {:check "strings",:has-type "string",:argument "strs",:arg-vec "strs"},
+                :f {:check "function",:has-type "function",:argument "f",:arg-vec "f"},
+                :fs {:check "functions",:has-type "function",:argument "fs",:arg-vec "fs"}
+                :args {:check nil,:has-type "arg",:argument "args",:arg-vec "args"}})
 
-(def arg-type (merge (zipmap [:and] (repeat :and)),
-                     (zipmap [:coll :c] (repeat :coll)),
+(def arg-type (merge (zipmap [:and (keyword "&")] (repeat :and)),
+                     (zipmap [:coll :c :c1 :c2 :c3 :c4 :c5] (repeat :coll)),
                      (zipmap [:n :number :step :start :end] (repeat :n)),
                      (zipmap [:arg :argument :x :y] (repeat :arg)),
                      (zipmap [:f :function :pred] (repeat :f)),
                      (zipmap [:fs :functions :preds] (repeat :fs)),
-                     (zipmap [:colls] (repeat :colls)),
+                     (zipmap [:colls :cs] (repeat :colls)),
                      (zipmap [:string :str :s] (repeat :str)),
-                     (zipmap [:strs :strings :ss] (repeat :strs))))
+                     (zipmap [:strs :strings :ss] (repeat :strs))
+                     (zipmap [:args :arguments :xs :ys] (repeat :args))))
 
 ;(defn  s-cnt [coll s] (if (= "" s) 0 (count (filter #(re-matches (java.util.regex.Pattern/compile (str s "[0123456789]*")) %) coll))))
 ;(defn cnt-item [item coll] (count (filter #(= % item) coll)))
@@ -44,10 +46,7 @@
           (recur (rest coll-keys) (rest coll-vals) 
              (assoc out (first coll-keys) (assoc (first coll-vals) :cnt-str (if (= 1 (cnt-key (first coll-keys) (keys coll))) "" (cnt-key (first coll-keys) coll-keys)))))))))
     
-(defn clj->ourtypes [c-type] 
-  (if (= "&" c-type)
-    (:and arg-type)
-    (((keyword (replace #"[123456890]*$")) arg-type) type-data))) 
+(defn clj->ourtypes [c-type] (((keyword c-type) arg-type) type-data)) 
 
 ;; returns the index of the last logically false member of the array
 (defn last-false-index [coll]
@@ -59,30 +58,35 @@
 ;; appends (str last-arg "s") to the end of coll, 
 (defn assemble-args [coll last-arg]
    (let [sorted-args (reverse (sort-by count coll))]
-   (conj (vec (reverse (rest sorted-args))) (conj (conj (vec (first sorted-args)) "&") (str last-arg "s")))))
+   (conj (vec (reverse (rest sorted-args))) (conj (conj (vec (first sorted-args)) "&") (:check last-arg)))))
 
 ;;removes redundant information from a clojure docstring :arglists
 (defn chomp-arglists [arglists]
   (if (re-matches #".*s$" (name (first (reverse (first (reverse (sort-by count arglists)))))))
     (let [;moreprinter (println "got here")
           ;big-arglist (filter #(some "&" %) arglists)
+          ;doing-a-print (println (map (fn [x] (map #(str (name %)) x)) arglists))
           homo-args   (map (fn [coll] (into [] (comp
-                                                 #_ (map #(clojure.string/replace % #"[12345678990]*s?$" ""))
-                                                 #_ (filter #(not (= "&" %)))
-                                                 (map arg-type)
-                                                 (filter #(not (= "&" %)))
-                                                 #_ (map name)) coll)) arglists)
-          last-arg    (first (reverse (first (reverse (sort-by count homo-args)))))
-         ; printer (println "last-arg is: " last-arg homo-args)
+                                                 (filter identity)
+                                                 (map #(:has-type (clj->ourtypes %)))
+                                                 (map clj->ourtypes)
+                                                 (map str)
+                                                 (map name)) coll)) arglists)
+          last-arg    (clj->ourtypes (str (name (first (reverse (first (reverse (sort-by count arglists))))))))
+         ; prng (println (sort-by count homo-args))
+         ; printer (println "last-arg is: " last-arg)
           ]
           ;(println "homo-args is: " homo-args)
        (loop [rem-args homo-args
               diffs []]
          ;why is everything so true?!
+         ;(println rem-args)
          (cond 
            (empty? rem-args) (assemble-args (vec (filter #(<= (count %) (last-false-index diffs)) homo-args)) last-arg)
-           :else (recur (filter #(not (empty? %)) (map rest rem-args)) (into diffs (apply map = (conj rem-args [last-arg])))))))
+           :else (recur (drop-while empty? (map rest rem-args)) (into diffs (apply map = (conj  rem-args [(:has-type last-arg)])))))))
         arglists))
+
+
 
 ;; outputs a string of generated data for redefining functions with preconditions
 ;; function -> string
@@ -103,8 +107,7 @@
         qualified-name (str  fnamespace "/"  unqualified-name)
         arg-data (add-counts (clj->ourtypes arg-types))
 	do-apply (if (not (empty? (first arg-types))) (re-matches #".*s$" (first (reverse arg-types))) nil)
-        arg-vec  (map :arg-str arg-data)
-        arg-str (apply str (interpose " " arg-vec))
+        arg-str (apply str (interpose " " (map #(str (:arg-str %) (:cnt-str %)) arg-data)))
         checks (gen-checks fname arg-data)
 	]
         ;(println "arg-vec: " arg-vec)
