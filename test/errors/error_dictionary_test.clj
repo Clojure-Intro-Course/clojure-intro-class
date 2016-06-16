@@ -1,4 +1,5 @@
 (ns errors.error_dictionary_test
+  (:use [errors.prettify_exception :only [line-number-format]])
   (:require [expectations :refer :all]
             [errors.messageobj :refer :all]
             [errors.exceptions :refer :all]
@@ -6,6 +7,7 @@
             [utilities.file_IO :refer :all]
             [intro.core :refer :all]
             ))
+
 
 ;#########################################
 ;### Testing for Class Cast Exceptions ###
@@ -303,7 +305,7 @@
 ;; We use the same message as for identfier undefined, but have a hint that is
 ;; more specific to dynamic class loading
 (expect (more-> "Name clojure.string.split is undefined." get-text-no-location
-                 #"(.*)Found in (.*) on line (\d+) at character (\d+)\." get-all-text)
+                (re-pattern (str "(.*)Found in (.*)" (line-number-format "(\\d+)" "(\\d+)") "\\."))  get-all-text)
               (run-and-catch-pretty-no-stacktrace 'intro.core '(clojure.string.split "a b c" " ")))
 
 

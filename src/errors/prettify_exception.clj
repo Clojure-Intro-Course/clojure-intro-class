@@ -203,6 +203,16 @@
     (and (= (class e) clojure.lang.Compiler$CompilerException)
          (or (nil? cause) (= (class cause) java.lang.RuntimeException)))))
 
+;#########################################
+;############ Location format  ###########
+;#########################################
+
+(defn line-number-format
+  "Takes a line number and a character poistion and returns a string
+   of how they are reported in an error message"
+  [line ch]
+  (str " on, or before, line " line))
+
 (defn location-info
   "Takes the location hashmap (possibly empty) and returns a message info
   object to be merged with the rest of the message"
@@ -210,13 +220,13 @@
   (if (empty? location) ""
     (let [file (:file location)
           line (:line location)
-          ;character (:char location)
+          character (:char location)
           fn-name (:fn location)
           ;character-msg (if character (make-msg-info-hashes " at character " character :loc) nil)
-          character-msg nil ; Removed character info since it seems to confuse people
+          ;character-msg nil ; Removed character info since it seems to confuse people
           fn-msg (if fn-name (make-msg-info-hashes " in function " fn-name :loc) nil)]
-      (reduce into [(make-msg-info-hashes "\nFound in file " (clojure.string/replace file #".*\/" "") :loc " on, or before, line " line :loc)
-            character-msg
+      (reduce into [(make-msg-info-hashes "\nFound in file " (clojure.string/replace file #".*\/" "") :loc (line-number-format line character) :loc)
+            ;character-msg
             fn-msg
             (make-msg-info-hashes ".")]))))
 
