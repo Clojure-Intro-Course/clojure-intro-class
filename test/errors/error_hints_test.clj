@@ -13,9 +13,9 @@
         (:hints (run-and-catch-pretty-with-stacktrace 'intro.core '(clojure.string.splt "pattern" #"/"))))
 
 (expect #"(.*)Make sure you have the correct number of arguments(.*)"
-        (:hints (run-and-catch-pretty-with-stacktrace 'intro.core '(#(+ % 1) 2 3))))
+        (:hints (run-and-catch-pretty-with-stacktrace 'intro.student '(#(+ % 1) 2 3))))
 
 ;; Currently there are no hints for this, using it as a test for empty hints.
 (expect ""
-        (:hints (run-and-catch-pretty-with-stacktrace 'intro.core '(map 2 3))))
+        (:hints (run-and-catch-pretty-with-stacktrace 'intro.student '(map 2 3))))
 
