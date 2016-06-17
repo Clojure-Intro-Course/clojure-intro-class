@@ -356,7 +356,7 @@
 
 ;; testing for the precondition of distinct
 
-(expect "In function distinct, the first argument \"not a number\" must be a number but is a string."
+(expect "In function repeat, the first argument \"not a number\" must be a number but is a string."
         (get-text-no-location
           (run-and-catch-pretty-no-stacktrace 'intro.student
                                               '(repeat "not a number" 6))))
@@ -414,7 +414,7 @@
          (run-and-catch-pretty-no-stacktrace 'intro.student
                                              '(dissoc "this is a string" :key1 :key2))))
 
-(expect "In function dissoc, the first argument [\"this\" \"is\" \"a\" \"vector\"] must be a map but is a vector."
+(expect "In function dissoc, the argument [\"this\" \"is\" \"a\" \"vector\"] must be a map but is a vector."
         (get-text-no-location
          (run-and-catch-pretty-no-stacktrace 'intro.student
                                              '(dissoc ["this" "is" "a" "vector"]))))
@@ -437,7 +437,7 @@
 ;~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 ;; testing for the precondition of count
-(expect "In function count, the first argument :not-a-collection must be a sequence but is a keyword."
+(expect "In function count, the argument :not-a-collection must be a sequence but is a keyword."
         (get-text-no-location
          (run-and-catch-pretty-no-stacktrace 'intro.student
                                              '(count :not-a-collection))))
