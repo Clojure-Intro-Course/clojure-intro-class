@@ -15,7 +15,7 @@
                       :value x
                       :fname fname})
       (if n (add-to-seen {:arg-num n}))
-            false)))
+      false)))
     ;  (cond
     ;   (number? n) (add-to-seen {:arg-num n})
     ;   (string? n) (add-to-seen {:number-of-args (read-string n)}))
@@ -36,7 +36,7 @@
                       :value x
                       :fname fname})
       (if n (add-to-seen {:arg-num n}))
-            false)))
+      false)))
 
 ;i just added this, needs tests, used in assoc pre-conditions
 (defn check-if-map-or-vector? [fname x & [n]]

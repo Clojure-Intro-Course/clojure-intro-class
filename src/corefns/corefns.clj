@@ -24,7 +24,7 @@
 ;;Returns the first item in the collection
 ;;Calls seq on its argument. If coll is nil, returns nil.
 (defn first [argument1]
- {:pre [(only-arg (check-if-seqable? "first" argument1))]}
+  {:pre [(only-arg (check-if-seqable? "first" argument1))]}
   (clojure.core/first argument1))
 
 ;;(rest coll)
@@ -63,9 +63,9 @@
 ;; exhausted. Any remaining items in other colls are ignored. Function
 ;; f should accept number-of-colls arguments.
 (defn map [argument1 argument2 & args]
- {:pre [(check-if-function? "map" argument1)
-        (check-if-seqable? "map" argument2)
-        (check-if-seqables? "map" args 3)]}
+  {:pre [(check-if-function? "map" argument1)
+         (check-if-seqable? "map" argument2)
+         (check-if-seqables? "map" args 3)]}
   (apply clojure.core/map argument1 argument2 args))
 
 ;; (count coll)
@@ -171,8 +171,8 @@
 ;; contains val at index. Note - index must be <= (count vector).
 (defn assoc
   [mymap & key-values];check-if-seqable? is not restrictive enough
-   {:pre [(check-if-map-or-vector? "assoc" mymap 1)]}
-   (apply clojure.core/assoc (into [mymap] key-values)))
+  {:pre [(check-if-map-or-vector? "assoc" mymap 1)]}
+  (apply clojure.core/assoc (into [mymap] key-values)))
 
 ;; (dissoc map)(dissoc map key)(dissoc map key & ks)
 ;; dissoc[iate]. Returns a new map of the same (hashed/sorted) type,
@@ -197,16 +197,16 @@
 ;; (drop n coll)
 ;; Returns a lazy sequence of all but the first n items in coll.
 (defn drop [argument1 argument2]
-   {:pre [(check-if-number? "drop" argument1)
-          (check-if-seqable? "drop" argument2)]}
-   (clojure.core/drop argument1 argument2))
+  {:pre [(check-if-number? "drop" argument1)
+         (check-if-seqable? "drop" argument2)]}
+  (clojure.core/drop argument1 argument2))
 
 ;; (take n coll)
 ;; Returns a lazy sequence of the first n items in coll, or all items if there are fewer than n.
 (defn take [argument1 argument2]
-   {:pre [(check-if-number? "take" argument1)
-          (check-if-seqable? "take" argument2)]}
-   (clojure.core/take argument1 argument2))
+  {:pre [(check-if-number? "take" argument1)
+         (check-if-seqable? "take" argument2)]}
+  (clojure.core/take argument1 argument2))
 
 ;;(odd? n)
 ;;Returns true if n is odd, throws an exception if n is not an integer
@@ -236,8 +236,8 @@
 ;; Returns non-nil if nums are in monotonically non-decreasing order,
 ;; otherwise false.
 (defn <= [argument1 & args]
-   {:pre [(check-if-number? "<=" argument1)
-          (check-if-numbers? "<=" args 2)]}
+  {:pre [(check-if-number? "<=" argument1)
+         (check-if-numbers? "<=" args 2)]}
   (apply clojure.core/<= argument1 args))
 
 ;;    (> x)
