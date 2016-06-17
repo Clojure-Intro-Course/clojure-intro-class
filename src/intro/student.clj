@@ -112,6 +112,8 @@
 ;; 4clojure Problem 134 - exception in exceptions/4clojure-prob134-AssertionError.ser
     ; ERROR: in function filter first argument :a must be a function but is a keyword
     ; possible hint: keywords can't be used as functions in this context
+;; Elena, 6/17/16: keywords are functions and should be used as such. This shouldn't be an error.
+;; If we want to think of restrictions for beginners, we should be careful with how we set it up
 (defn prob134 [key map]
   (nil? (filter key map)))
 

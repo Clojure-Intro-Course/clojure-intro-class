@@ -84,23 +84,25 @@
 ;        (run-and-catch-pretty-with-stacktrace 'intro.student
 ;                                              '(prob57 5)))
 
+;; Elena, 6/17/16: this is actually not an error since a keyword is a function
 ;; testing for prob134
-(expect (more-of x
-                 java.lang.AssertionError (:exception-class x)
-                 #"In function filter, the first argument :a must be a function but is a keyword\.(.*)" (get-all-text (:msg-info-obj x))
-                 location-regex (get-all-text (:msg-info-obj x))
-                 (trace-has-all-pairs? {:fn "prob134" :ns "intro.student"}) (:filtered-stacktrace x))
-        (run-and-catch-pretty-with-stacktrace 'intro.student
-                                              '(prob134 :a {:a nil :b 2})))
+;(expect (more-of x
+;                 java.lang.AssertionError (:exception-class x)
+;                 #"In function filter, the first argument :a must be a function but is a keyword\.(.*)" (get-all-text (:msg-info-obj x))
+;                 location-regex (get-all-text (:msg-info-obj x))
+;                 (trace-has-all-pairs? {:fn "prob134" :ns "intro.student"}) (:filtered-stacktrace x))
+;        (run-and-catch-pretty-with-stacktrace 'intro.student
+;                                              '(prob134 :a {:a nil :b 2})))
 
+;; Elena, 6/17/16: this is actually not an error since a map is a function
 ;; testing for prob156
-(expect (more-of x
-                 java.lang.AssertionError (:exception-class x)
-                 #"In function map, the first argument \{:a 0\} must be a function but is a map\.(.*)" (get-all-text (:msg-info-obj x))
-                 location-regex (get-all-text (:msg-info-obj x))
-                 (trace-has-all-pairs? {:fn "prob156" :ns "intro.student"}) (:filtered-stacktrace x))
-        (run-and-catch-pretty-with-stacktrace 'intro.student
-                                              '(prob156 0 [:a :b :c])))
+;(expect (more-of x
+;                 java.lang.AssertionError (:exception-class x)
+;                 #"In function map, the first argument \{:a 0\} must be a function but is a map\.(.*)" (get-all-text (:msg-info-obj x))
+;                 location-regex (get-all-text (:msg-info-obj x))
+;                 (trace-has-all-pairs? {:fn "prob156" :ns "intro.student"}) (:filtered-stacktrace x))
+;        (run-and-catch-pretty-with-stacktrace 'intro.student
+;                                              '(prob156 0 [:a :b :c])))
 
 ;; testing for prob20
 (expect (more-of x
