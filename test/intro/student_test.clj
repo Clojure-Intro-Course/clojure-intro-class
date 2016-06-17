@@ -1,4 +1,5 @@
 (ns intro.student_test
+  (:use [errors.prettify_exception :only [line-number-format]])
   (:require [expectations :refer :all]
             [errors.messageobj :refer :all]
             [errors.exceptions :refer :all]
@@ -14,7 +15,10 @@
 ;        (run-and-catch-pretty-with-stacktrace 'intro.student
 ;                                              '(exercise2 "hello " "world")))
 
-(def location-regex #"(.*)\nFound in file student.clj on line (\d+)(.*)")
+(def location-regex (re-pattern (str "(.*)\\nFound in file student.clj" (line-number-format "(\\d+)" "(\\d+)") "(.*)")))
+
+;; showing the resulting regex:
+(expect #"(.*)\nFound in file student.clj on, or before, line (\d+)(.*)" location-regex)
 
 ;; testing for exercise3
 (expect (more-of x
