@@ -421,12 +421,12 @@
 
 
 ;~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
+;; Elena, 6/17/16: this is not an error since a keyword is a function
 ;; testing for the first precondition of map
-(expect "In function map, the first argument :not-a-function must be a function but is a keyword."
-        (get-text-no-location
-         (run-and-catch-pretty-no-stacktrace 'intro.student
-                                             '(doall (map :not-a-function [1 2 3])))))
+;(expect "In function map, the first argument :not-a-function must be a function but is a keyword."
+;       (get-text-no-location
+;        (run-and-catch-pretty-no-stacktrace 'intro.student
+;                                             '(doall (map :not-a-function [1 2 3])))))
 
 ;; testing for the second precondition of map
 (expect "In function map, the second argument :not-a-collection must be a sequence but is a keyword."
@@ -444,8 +444,10 @@
 
 ;~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+
+;; THIS IS ACTUALLY A TEST FOR ARITY, should be moved from here.
 ;; testing for the precondition of conj
-(expect "In function conj, the first argument :not-a-collection must be a sequence but is a keyword."
+(expect "You cannot pass one argument to a function conj, need at least two."
         (get-text-no-location
          (run-and-catch-pretty-no-stacktrace 'intro.student
                                              '(conj :not-a-collection))))
@@ -467,10 +469,10 @@
 ;~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 ;; testing for the first precondition of reduce
-(expect "In function reduce, the first argument :not-a-function must be a function but is a keyword."
-        (get-text-no-location
-         (run-and-catch-pretty-no-stacktrace 'intro.student
-                                             '(reduce :not-a-function [1 2 3]))))
+;(expect "In function reduce, the first argument :not-a-function must be a function but is a keyword."
+;        (get-text-no-location
+;         (run-and-catch-pretty-no-stacktrace 'intro.student
+;                                             '(reduce :not-a-function [1 2 3]))))
 
 ;; testing for the second precondition of reduce
 (expect "In function reduce, the second argument :not-a-collection must be a sequence but is a keyword."
