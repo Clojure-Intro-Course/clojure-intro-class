@@ -230,7 +230,7 @@
     n))
 
 ;;; process-asserts-obj: string or nil -> string
-(defn process-asserts-obj
+(defn process-asserts-obj ; where the global atom (seen-failed-asserts) is used
   "Returns a msg-info-obj generated for an assert failure based on the
 	global seen-failed-asserts hashmap, clears the hashmap"
   [n]

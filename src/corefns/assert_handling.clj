@@ -111,6 +111,24 @@
       (if n (add-to-seen (:arg-num n)))
       false)))
 
+(defn check-if-string-or-nil? [fname x & [n]]
+  (if (or (instance? CharSequence x) (nil? x)) true
+    (do (add-to-seen {:check "a string or nil"
+                      :class (class x)
+                      :value x
+                      :fname fname})
+      (if n (add-to-seen {:arg-num n}))
+      false)))
+
+(defn check-if-regex? [fname x & [n]]
+  (if (= (class x) java.util.regex.Pattern) true
+    (do (add-to-seen {:check "a regular expression"
+                      :class (class x)
+                      :value x
+                      :fname fname})
+      (if n (add-to-seen {:arg-num n}))
+      false)))
+
 (defn check-if-string-or-character? [fname x & [n]] ;for string-contains?
   (if (or (string? x) (char? x)) true
     (do (add-to-seen {:check "either a string or character"

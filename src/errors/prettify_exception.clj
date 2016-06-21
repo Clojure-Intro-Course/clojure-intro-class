@@ -254,7 +254,7 @@
         filtered-trace (filter-stacktrace stacktrace)
         comp-location (get-compile-error-location (get-exc-message ex))
         location (if (empty? comp-location) (get-location-info filtered-trace) comp-location)
-        entry (first-match e-class message)
+        entry (first-match e-class message) ; We use error dictionary here in first-match
         msg-info-obj (into (msg-from-matched-entry entry message) (location-info location))
         hint-message (hints-for-matched-entry (:key entry))]
     ;; create an exception object

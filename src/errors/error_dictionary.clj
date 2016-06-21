@@ -12,7 +12,7 @@
    {:key :assertion-error-with-argument
     :class AssertionError
     :match #"Assert failed: \((.*) argument(.*)\)"
-    :make-msg-info-obj (fn [matches] (process-asserts-obj (nth matches 2)))}
+    :make-msg-info-obj (fn [matches] (process-asserts-obj (nth matches 2)))} ; process-asserts-obj from dictionaries.clj
 
    {:key :assertion-error-without-argument
     :class AssertionError
