@@ -1,6 +1,5 @@
 (ns utilities.stacktrace_functions
   (:require [expectations :refer :all]
-            ;[corefns.corefns :refer :all]
             [corefns.collection_fns :refer :all]))
 
 ;; a helper function to test for either nil or false
@@ -27,7 +26,7 @@
   (partial helper-trace-elem-has-namespace? name-space))
 
 ;~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
+.
 (defn helper-trace-elem-has-pair? [k v trace-elem]
   (= v (k trace-elem)))
 

@@ -6,15 +6,6 @@
             [utilities.stacktrace_functions :refer :all]
             [intro.student :refer :all]))
 
-;; testing for exercise2
-;; we'll try to fix this one by fixing conj if we have time
-;(expect (more-of x
-;                 java.lang.ClassCastException (:exception-class x)
-;                 "Attempted to use a string, but a collection was expected." (get-all-text (:msg-info-obj x))
-;                 (trace-has-all-pairs? {:fn "exercise2" :ns "intro.student"}) (:stacktrace x))
-;        (run-and-catch-pretty-with-stacktrace 'intro.student
-;                                              '(exercise2 "hello " "world")))
-
 (def location-regex (re-pattern (str "(.*)\\nFound in file student.clj" (line-number-format "(\\d+)" "(\\d+)") "(.*)")))
 
 ;; showing the resulting regex:

@@ -1,7 +1,6 @@
 (ns errors.dictionaries_test
   (:require [errors.dictionaries :refer :all]
-            [expectations :refer :all]
-            [corefns.corefns :refer :all]))
+            [expectations :refer :all]))
 
 ;#########################################
 ;### Tests for supplementary functions ###
