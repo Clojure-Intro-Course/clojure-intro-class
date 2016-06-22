@@ -7,9 +7,11 @@
             [corefns.collection_fns :refer :all]
             [intro.core :refer :all]))
 
-;############################################
-;### Testing the functionality of corefns ###
-;############################################
+;#############################################
+;### Testing the functionality of corefns  ###
+;### These tests check that we didn't mess ###
+;### up core functionality by overwriting  ###
+;#############################################
 
 ;;testing for first
 (expect 1
@@ -96,10 +98,6 @@
         (count [1 \a "string" [1 2] {:foo :bar}]))
 (expect 6
         (count "string"))
-;;;; Elena: this seems to be missing the function definition,
-;;;; commenting out for now
-;(expect 7
-;        (add-two 5))
 
 ;; testing for conj
 (expect [1 2 3 4]
@@ -342,13 +340,15 @@
 
 ;; testing for distinct
 (expect '(1 2 3 4 5) (distinct [1 2 2 2 3 2 4 4 5 4]))
-;doesn't work for a weird reason?
-;(expect '("h" "e" "l" "o" "w" "r" "d") (distinct "helloworld"))
+(expect '(\h \e \l \o \w \r \d) (distinct "helloworld"))
 
 
 
 ;; testing for odd? and even?
-;(expect (odd? nil))
+(expect true (odd? 3))
+(expect false (even? 3))
+
+;;; Elena, 6/22/16: Tests below this line should be moved from here
 
 ;#################################################
 ;### Testing if the corefns preconditions work ###
