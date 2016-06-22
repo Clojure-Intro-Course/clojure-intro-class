@@ -3,7 +3,6 @@
             [expectations :refer :all]
             [errors.error_dictionary :refer :all]
             [errors.error_hints :refer :all])
-            ;[clojure.string :refer :all])
   (:use [errors.dictionaries]
 	      [errors.messageobj]
 	      [errors.errorgui]
