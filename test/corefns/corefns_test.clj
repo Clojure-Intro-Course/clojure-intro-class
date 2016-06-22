@@ -402,7 +402,7 @@
 
 ;~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-;; testing for the preconditions on assoc, it is a compuler exception
+;; testing for the preconditions on assoc, it is a compiler exception
 (expect "In function assoc, the first argument \"this is a string\" must be a map or vector but is a string."
         (get-text-no-location
          (run-and-catch-pretty-no-stacktrace 'intro.student

@@ -109,10 +109,9 @@
          (run-and-catch-pretty-no-stacktrace 'intro.student '(cons 1 2))))
 
 ;; testing for :illegal-argument-even-number-of-forms
-;; Elena: this is a compilation error in clojure 1.7, so we can't test it like this
-;; testing for :illegal-argument-even-number-of-forms-in-binding-vector
-;(expect #"Parameters for let must come in pairs, but one of them does not have a match; on line (.*) in the file intro.core"
-;         (run-and-catch-pretty-no-stacktrace 'intro.core '(let [x] (+ x 2))))
+(expect #"Parameters for let must come in pairs, but one of them does not have a match; (.*)"
+       (get-text-no-location (:msg-info-obj (try (load-file "exceptions/compilation_errors/let-no-matching-pair.clj")
+                       (catch Throwable e (prettify-exception e))))))
 
 ;; testing for invalid token error
 (expect #"You cannot use : in this position."
