@@ -26,7 +26,7 @@
   (partial helper-trace-elem-has-namespace? name-space))
 
 ;~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-.
+
 (defn helper-trace-elem-has-pair? [k v trace-elem]
   (= v (k trace-elem)))
 
