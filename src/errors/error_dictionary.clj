@@ -6,6 +6,15 @@
 
 (def error-dictionary
   [;########################
+   ;##### Spec Error #######
+   ;########################
+   {:key :exception-info
+    :class clojure.lang.ExceptionInfo
+    :match #"(.)" ; the data is in the data object, not in the message
+    :make-msg-info-obj (fn [matches] (make-msg-info-hashes "A placeholder"))}
+
+
+   ;########################
    ;### Assertion Errors ###
    ;########################
 
