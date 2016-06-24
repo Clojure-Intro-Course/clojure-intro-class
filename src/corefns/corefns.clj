@@ -2,7 +2,8 @@
   (:use [clojure.core.incubator])
   (:refer-clojure :exclude [map nth])
   (:require [corefns.assert_handling :refer :all]
-            [corefns.failed_asserts_info :refer :all]))
+            [corefns.failed_asserts_info :refer :all]
+            [clojure.spec :as s]))
 
 ;; Including the standard Clojure documentation to make sure that asserts
 ;; and cases are consistent with the standard Clojure.
@@ -266,19 +267,35 @@
 ;;    (+ x y & more)
 ;; Returns the sum of nums. (+) returns 0. Does not auto-promote longs, will
 ;; throw on overflow.
+;; (defn + [& args]
+;;   {:pre [(check-if-numbers? "+" args 1)]}
+;;   (apply clojure.core/+ args))
+
 (defn + [& args]
-  {:pre [(check-if-numbers? "+" args 1)]}
   (apply clojure.core/+ args))
+
+(s/fdef +
+      :args (s/* number?))
+
+(s/instrument #'+)
 
 ;;    (- x)
 ;;    (- x y)
 ;;    (- x y & more)
 ;; If no ys are supplied, returns the negation of x, else subtracts
 ;; the ys from x and returns the result.
+;; (defn - [argument1 & args]
+;;   {:pre [(check-if-number? "-" argument1)
+;;          (check-if-numbers? "-" args 2)]}
+;;   (apply clojure.core/- argument1 args))
+
 (defn - [argument1 & args]
-  {:pre [(check-if-number? "-" argument1)
-         (check-if-numbers? "-" args 2)]}
   (apply clojure.core/- argument1 args))
+
+(s/fdef -
+      :args (s/* number?))
+
+(s/instrument #'-)
 
 ;;    (*)
 ;;    (* x)
