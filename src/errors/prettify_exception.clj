@@ -26,10 +26,11 @@
   (let [problems ((:clojure.spec/problems data) [:args])
         pred-str (str (:pred problems))
         ;; remove the ? at the end to get the type:
-        pred-type (subs pred-str 0 (dec (count pred-str)))
-        value-type (get-type (.getName (class (:val problems))))]
-    (println value-type)
-    ((:make-msg-info-obj entry) (re-matches (:match entry) message))))
+        pred-type (str "a " (subs pred-str 0 (dec (count pred-str))))
+        value (:val problems)
+        value-type (get-type (.getName (class value)))]
+    (into ((:make-msg-info-obj entry) (re-matches (:match entry) message))
+           (make-msg-info-hashes ", the first argument " (str value) :arg  " must be " pred-type :type " but is " value-type :type "."))))
 
 (defn msg-from-matched-entry [entry message data]
   "Creates a message info object from an exception and its data, if exists"
