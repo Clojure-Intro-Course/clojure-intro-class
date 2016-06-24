@@ -11,8 +11,9 @@
    {:key :exception-info
     :class clojure.lang.ExceptionInfo
     ;; Need to extract the function name from "Call to #'spec-ex.spec-inte/+ did not conform to spec"
-    :match #"(.)" ; the data is in the data object, not in the message
-    :make-msg-info-obj (fn [matches] "")}
+    ;:match #"(.*)/(.*) did not conform to spec(.*)" ; the data is in the data object, not in the message
+    :match #"Call to \#'(.*)/(.*) did not conform to spec:\n(.*)\n(.*)\n"
+    :make-msg-info-obj (fn [matches] (make-msg-info-hashes "In function " (nth matches 2) :arg))}
 
 
    ;########################

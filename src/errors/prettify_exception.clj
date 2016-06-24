@@ -23,7 +23,13 @@
 (defn msg-info-obj-with-data
   "Creates a message info object from an exception that contains data"
   [entry message data]
-  (make-msg-info-hashes "Placeholder for data"))
+  (let [problems ((:clojure.spec/problems data) [:args])
+        pred-str (str (:pred problems))
+        ;; remove the ? at the end to get the type:
+        pred-type (subs pred-str 0 (dec (count pred-str)))
+        value-type (get-type (.getName (class (:val problems))))]
+    (println value-type)
+    ((:make-msg-info-obj entry) (re-matches (:match entry) message))))
 
 (defn msg-from-matched-entry [entry message data]
   "Creates a message info object from an exception and its data, if exists"
@@ -249,7 +255,7 @@
         comp-location (get-compile-error-location (get-exc-message ex))
         location (if (empty? comp-location) (get-location-info filtered-trace) comp-location)
         entry (first-match e-class message) ; We use error dictionary here in first-match
-        data (ex-data ex) ; nil if not an instance of IExceptionInfo
+        data (ex-data e) ; nil if not an instance of IExceptionInfo
         msg-info-obj (into (msg-from-matched-entry entry message data) (location-info location))
         hint-message (hints-for-matched-entry (:key entry))]
     ;; create an exception object
