@@ -28,9 +28,10 @@
         ;; remove the ? at the end to get the type:
         pred-type (str "a " (subs pred-str 0 (dec (count pred-str))))
         value (:val problems)
+        value-str (str value) ;; need it because keywords in message obj are interpreted as styles
         value-type (get-type (.getName (class value)))]
     (into ((:make-msg-info-obj entry) (re-matches (:match entry) message))
-           (make-msg-info-hashes ", the first argument " (str value) :arg  " must be " pred-type :type " but is " value-type :type "."))))
+           (make-msg-info-hashes ", the first argument " value-str :arg  " must be " pred-type :type " but is " value-type :type "."))))
 
 (defn msg-from-matched-entry [entry message data]
   "Creates a message info object from an exception and its data, if exists"
