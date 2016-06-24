@@ -8,9 +8,6 @@
 	      [errors.errorgui]
         [seesaw.core]))
 
-;;(def ignore-nses #"(clojure|java)\..*")
-;;(def ignore-nses #"(user|clojure|java)\..*")
-;; We should think of making this customizable: building blocks???
 
 (defn get-all-match-strings
   "Returns the list of all match strings and their corresponding exception types
@@ -23,24 +20,22 @@
 	(first (filter #(and (= (:class %) e-class) (re-matches (:match %) message))
 			error-dictionary)))
 
-(defn msg-from-matched-entry [entry message]
-  (if entry ((:make-msg-info-obj entry) (re-matches (:match entry) message))
-            (make-msg-info-hashes message)))
+(defn msg-info-obj-with-data
+  "Creates a message info object from an exception that contains data"
+  [entry message data]
+  (make-msg-info-hashes "Placeholder for data"))
+
+(defn msg-from-matched-entry [entry message data]
+  "Creates a message info object from an exception and its data, if exists"
+  (cond
+    (and data entry) (msg-info-obj-with-data entry message data)
+    entry ((:make-msg-info-obj entry) (re-matches (:match entry) message))
+    :else (make-msg-info-hashes message)))
 
 (defn hints-for-matched-entry
   "Returns all hints found for an exception key, as one string."
   [entry-key]
   (apply str (vals (filter #((first %) entry-key) hints))))
-
-
-;; Putting together a message (perhaps should be moved to errors.dictionaries?
-;(defn get-pretty-message [e-class message]
-;  (if-let [entry (first-match e-class message)]
-    ;; if there's a match for the exception and the message, replace the
-    ;; message according to the dictionary and make a msg-info-obj out of it
-;    ((:make-msg-info-obj entry) (re-matches (:match entry) message))
-    ;; else just make a msg-info-obj out the message itself
-;    (make-msg-info-hashes message)))
 
 ;; namespaces to ignore:
 
@@ -254,7 +249,8 @@
         comp-location (get-compile-error-location (get-exc-message ex))
         location (if (empty? comp-location) (get-location-info filtered-trace) comp-location)
         entry (first-match e-class message) ; We use error dictionary here in first-match
-        msg-info-obj (into (msg-from-matched-entry entry message) (location-info location))
+        data (ex-data ex) ; nil if not an instance of IExceptionInfo
+        msg-info-obj (into (msg-from-matched-entry entry message data) (location-info location))
         hint-message (hints-for-matched-entry (:key entry))]
     ;; create an exception object
     {:exception-class e-class
