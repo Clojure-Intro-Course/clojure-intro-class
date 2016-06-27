@@ -28,8 +28,11 @@
         ;; remove the ? at the end to get the type; add an article:
         pred-type (str "a " (subs pred-str 0 (dec (count pred-str))))
         value (:val problems)
-        value-str (str value) ;; need it because keywords in message obj are interpreted as styles
-        value-type (get-type (.getName (class value)))
+        ;; need to convert to strings because keywords in message obj are interpreted as styles;
+        ;; need to add quotation marks for string arguments
+        ;; TO-DO: make quotation marks printing recursive for string within other structures
+        value-str (if (string? value) (str "\"" value "\"") (str value))
+        value-type (get-type-with-nil value)
         arg-num-str (arg-str (inc (first (:in problems))))]
     (println problems)
     (into ((:make-msg-info-obj entry) (re-matches (:match entry) message))

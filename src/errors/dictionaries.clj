@@ -85,6 +85,12 @@
   [t]
   ((keyword t) type-dictionary (best-approximation t)))
 
+(defn get-type-with-nil
+  "Takes a value that can be nil and returns its type in a user-readable form"
+  [v]
+  (if (nil? v) "nil" (get-type (.getName (type v)))))
+
+
 ;; hashmap of internal function names and their user-friendly versions
 (def predefined-names {:_PLUS_ "+"  :_ "-" :_SLASH_ "/" })
 

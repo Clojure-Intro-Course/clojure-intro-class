@@ -41,7 +41,7 @@
 
 ;; testing for prob17############
 (expect (more-of x
-                 java.lang.AssertionError (:exception-class x)
+                 clojure.lang.ExceptionInfo (:exception-class x)
                  #"In function \+, the second argument must be a number but is nil\.(.*)" (get-all-text (:msg-info-obj x))
                  location-regex (get-all-text (:msg-info-obj x))
                  (trace-has-all-pairs? {:fn "prob17" :ns "intro.student"}) (:stacktrace x))
@@ -59,7 +59,7 @@
 
 ;; testing for prob64##########
 (expect (more-of x
-                 java.lang.AssertionError (:exception-class x)
+                 clojure.lang.ExceptionInfo (:exception-class x)
                  #"In function \+, the second argument must be a number but is nil\.(.*)" (get-all-text (:msg-info-obj x))
                  location-regex (get-all-text (:msg-info-obj x))
                  (trace-has-all-pairs? {:fn "prob64" :ns "intro.student"}) (:stacktrace x))
@@ -124,7 +124,7 @@
 
 ;; testing for prob24
 (expect (more-of x
-                 java.lang.AssertionError (:exception-class x)
+                 clojure.lang.ExceptionInfo (:exception-class x)
                  #"In function \+, the second argument \(2 3\) must be a number but is a sequence\.(.*)" (get-all-text (:msg-info-obj x))
                  location-regex (get-all-text (:msg-info-obj x))
                  (trace-has-all-pairs? {:fn "prob24" :ns "intro.student"}) (:filtered-stacktrace x))
@@ -170,7 +170,7 @@
 
 ;; testing for error-in-anonymous
 (expect (more-of x
-                 java.lang.AssertionError (:exception-class x)
+                 clojure.lang.ExceptionInfo (:exception-class x)
                  #"In function \+, the first argument \"hi\" must be a number but is a string\.(.*)" (get-all-text (:msg-info-obj x))
                  location-regex (get-all-text (:msg-info-obj x))
                  (trace-has-all-pairs? {:fn "error-in-anonymous" :anon-fn true :ns "intro.student"}) (:filtered-stacktrace x)
