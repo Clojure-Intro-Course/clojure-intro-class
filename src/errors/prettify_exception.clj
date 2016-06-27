@@ -25,11 +25,12 @@
   [entry message data]
   (let [problems ((:clojure.spec/problems data) [:args])
         pred-str (str (:pred problems))
-        ;; remove the ? at the end to get the type:
+        ;; remove the ? at the end to get the type; add an article:
         pred-type (str "a " (subs pred-str 0 (dec (count pred-str))))
         value (:val problems)
         value-str (str value) ;; need it because keywords in message obj are interpreted as styles
         value-type (get-type (.getName (class value)))]
+    (println problems)
     (into ((:make-msg-info-obj entry) (re-matches (:match entry) message))
            (make-msg-info-hashes ", the first argument " value-str :arg  " must be " pred-type :type " but is " value-type :type "."))))
 
