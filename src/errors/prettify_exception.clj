@@ -20,6 +20,21 @@
 	(first (filter #(and (= (:class %) e-class) (re-matches (:match %) message))
 			error-dictionary)))
 
+(defn single-val-str
+  [v]
+  "Takes a single value and returns its string, with the exception of returning
+   the word 'nil' for nil and enclosing strings into double quotes"
+  (cond
+    (nil? v) "nil"
+    (string? v) (str "\"" v "\"")
+    :else (str v)))
+
+;; THIS NEEDS TO PRESERVE THE COLLECTION TYPE!!!
+(defn val-str
+  [v]
+  "Takes a value and applies single-val-str recursively to it and its subcollections"
+  (if-not (coll? v) (single-val-str v) (map single-val-str v)))
+
 (defn msg-info-obj-with-data
   "Creates a message info object from an exception that contains data"
   [entry message data]
@@ -31,11 +46,13 @@
         ;; need to convert to strings because keywords in message obj are interpreted as styles;
         ;; need to add quotation marks for string arguments
         ;; TO-DO: make quotation marks printing recursive for string within other structures
-        value-str (if (string? value) (str "\"" value "\"") (str value))
+        ;; TO-DO: remove a second space next to nil
+        value-str (val-str value)
         value-type (get-type-with-nil value)
         arg-num-str (arg-str (inc (first (:in problems))))]
     (println problems)
     (into ((:make-msg-info-obj entry) (re-matches (:match entry) message))
+          ;; MAY NEED A SPECIAL MESSAGE for top-level nil
            (make-msg-info-hashes (str ", the " arg-num-str " ") value-str :arg  " must be " pred-type :type " but is " value-type :type "."))))
 
 
