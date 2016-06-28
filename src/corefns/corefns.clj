@@ -271,13 +271,16 @@
 ;;   {:pre [(check-if-numbers? "+" args 1)]}
 ;;   (apply clojure.core/+ args))
 
-(defn + [& args]
-  (apply clojure.core/+ args))
-
 (s/fdef +
       :args (s/* number?))
 
 (s/instrument #'+)
+
+
+(defn + [& args]
+  (apply clojure.core/+ args))
+
+
 
 ;;    (- x)
 ;;    (- x y)
@@ -289,13 +292,15 @@
 ;;          (check-if-numbers? "-" args 2)]}
 ;;   (apply clojure.core/- argument1 args))
 
-(defn - [argument1 & args]
-  (apply clojure.core/- argument1 args))
-
 (s/fdef -
       :args (s/* number?))
 
 (s/instrument #'-)
+
+(defn - [argument1 & args]
+  (apply clojure.core/- argument1 args))
+
+
 
 ;;    (*)
 ;;    (* x)

@@ -22,18 +22,27 @@
 
 (defn single-val-str
   [v]
-  "Takes a single value and returns its string, with the exception of returning
-   the word 'nil' for nil and enclosing strings into double quotes"
+  "Takes a single (non-collection) value and returns its string represntation.
+   Returns a string 'nil' for nil, encloses strings into double quotes,
+   performs a lookup for function names, returns 'anonymous function' for
+   anonymous functions"
+  ;(println (.getName (type v)))
   (cond
     (nil? v) "nil"
     (string? v) (str "\"" v "\"")
+    (= (get-type (.getName (type v))) "a function") (get-function-name (.getName (type v)))
     :else (str v)))
+
+(expect "nil" (single-val-str nil))
+(expect "\"hi\"" (single-val-str "hi"))
+(expect ":hi" (single-val-str :hi))
+;; testing for function names requires namespaces magic, so not doing it here right now
 
 ;; THIS NEEDS TO PRESERVE THE COLLECTION TYPE!!!
 (defn val-str
   [v]
   "Takes a value and applies single-val-str recursively to it and its subcollections"
-  (if-not (coll? v) (single-val-str v) (map single-val-str v)))
+  (if-not (coll? v) (single-val-str v) (map val-str v)))
 
 (defn msg-info-obj-with-data
   "Creates a message info object from an exception that contains data"
@@ -45,12 +54,11 @@
         value (:val problems)
         ;; need to convert to strings because keywords in message obj are interpreted as styles;
         ;; need to add quotation marks for string arguments
-        ;; TO-DO: make quotation marks printing recursive for string within other structures
         ;; TO-DO: remove a second space next to nil
         value-str (val-str value)
         value-type (get-type-with-nil value)
         arg-num-str (arg-str (inc (first (:in problems))))]
-    (println problems)
+    ;(println problems)
     (into ((:make-msg-info-obj entry) (re-matches (:match entry) message))
           ;; MAY NEED A SPECIAL MESSAGE for top-level nil
            (make-msg-info-hashes (str ", the " arg-num-str " ") value-str :arg  " must be " pred-type :type " but is " value-type :type "."))))
