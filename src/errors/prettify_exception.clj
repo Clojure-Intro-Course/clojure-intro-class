@@ -84,7 +84,6 @@
         value-str (val-str value)
         value-type (get-type-with-nil value)
         arg-num-str (arg-str (inc (first (:in problems))))]
-    ;(println problems)
     (into ((:make-msg-info-obj entry) (re-matches (:match entry) message))
           (if (nil? value)
             (make-msg-info-hashes (str ", the " arg-num-str) " must be " pred-type :type " but is " value-type :type ".")
@@ -107,7 +106,7 @@
 
 ;; regular expressions for namespaces to be ignored. Any namespace equal to
 ;; or contaning these regexps would be ignored
-(def ignored-namespaces ["clojure.main" "clojure.lang" "java" "clojure.tools" "user" "autoexpect.runner" "expectations" "clojure.core.protocols"])
+(def ignored-namespaces ["clojure.main" "clojure.lang" "java" "clojure.tools" "clojure.spec" "user" "autoexpect.runner" "expectations" "clojure.core.protocols"])
 
 (defn- replace-dots [strings]
   (map #(clojure.string/replace % #"\." "\\\\.") strings))
@@ -152,11 +151,11 @@
 (expect "clojure.main" (first (re-matches (re-pattern "clojure\\.main((\\.|/)?(.*))") "clojure.main")))
 
 ;; specify namespaces and function names or patterns
-(def ignore-functions {:clojure.core [#"load.*" "require" "alter-var-root"]})
+(def ignore-functions {:clojure.core [#"load.*" "require" "alter-var-root" "ex-info"]})
 
 ;; these functions are probably not needed for beginners, but might be needed at
 ;; more advanced levels
-(def ignore-utils-functions {:clojure.core ["print-sequential" "pr-on" "pr"]})
+(def ignore-utils-functions {:clojure.core ["print-sequential" "pr-on" "pr"] :intro.test [#"eval.*"]})
 
 (defn- ignore-function? [str-or-regex fname]
   (if (string? str-or-regex) (= str-or-regex fname)
