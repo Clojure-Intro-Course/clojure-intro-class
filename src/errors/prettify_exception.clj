@@ -20,17 +20,32 @@
 	(first (filter #(and (= (:class %) e-class) (re-matches (:match %) message))
 			error-dictionary)))
 
-(defn single-val-str
+(defn fn-name
+  "Takes a function object and returns a symbol that corresponds to the result of
+   the lookup of its name.
+   If no name is found, a symbol 'anonymous function' (non-conformant)
+   is returned.
+   Warning: 'anonymous function' symbol is non-conformant"
+  [f]
+  (symbol (get-function-name (.getName (type f)))))
+
+(defn is-function?
+  "uses our dictionary to see if a value should be printed as a function"
   [v]
+  (= (get-type (.getName (type v))) "a function"))
+
+
+(defn single-val-str
   "Takes a single (non-collection) value and returns its string represntation.
    Returns a string 'nil' for nil, encloses strings into double quotes,
    performs a lookup for function names, returns 'anonymous function' for
    anonymous functions"
+  [v]
   ;(println (.getName (type v)))
   (cond
     (nil? v) "nil"
     (string? v) (str "\"" v "\"")
-    (= (get-type (.getName (type v))) "a function") (get-function-name (.getName (type v)))
+    (is-function? v) (fn-name v)
     :else (str v)))
 
 (expect "nil" (single-val-str nil))
@@ -38,11 +53,24 @@
 (expect ":hi" (single-val-str :hi))
 ;; testing for function names requires namespaces magic, so not doing it here right now
 
-;; THIS NEEDS TO PRESERVE THE COLLECTION TYPE!!!
-(defn val-str
+(defn lookup-fns
+  "Recursively replace internal Clojure function names with user-readable ones
+   in the given value"
   [v]
-  "Takes a value and applies single-val-str recursively to it and its subcollections"
-  (if-not (coll? v) (single-val-str v) (map val-str v)))
+  (cond
+    (not (coll? v)) (if (is-function? v) (fn-name v) v)
+    (vector? v) (into [] (map lookup-fns v))
+    (seq? v) (into '() (reverse (map lookup-fns v)))
+    (set? v) (into #{} (map lookup-fns v))
+    (map? v) v ;; map has key/val pairs
+    :else v))
+
+(defn val-str
+  "If v is a not a collection, returns the result of apply single-val-str to it.
+   Otherwise returns the same collection, but with functions replaced by their
+   names, recursively throughout the collection."
+  [v]
+  (if-not (coll? v) (single-val-str v) (lookup-fns v)))
 
 (defn msg-info-obj-with-data
   "Creates a message info object from an exception that contains data"
@@ -52,8 +80,6 @@
         ;; remove the ? at the end to get the type; add an article:
         pred-type (str "a " (subs pred-str 0 (dec (count pred-str))))
         value (:val problems)
-        ;; need to convert to strings because keywords in message obj are interpreted as styles;
-        ;; need to add quotation marks for string arguments
         ;; TO-DO: remove a second space next to nil
         value-str (val-str value)
         value-type (get-type-with-nil value)
