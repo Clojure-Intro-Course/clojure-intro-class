@@ -82,7 +82,7 @@
          (run-and-catch-pretty-no-stacktrace 'intro.student '(+ {:a {6 "a" 7 true} :b 4 :c +}))))
 
 ;; Note: the order of elements in a hashmap is not guaranteed, so the actual elements amy be different
-(expect "In function +, the first argument {:a 6, :k \"a\", :b 4, :c +, :l 6...} must be a number but is a map."
+(expect "In function +, the first argument {:a 6, :k \"a\", :b 4, :c +, :l 6, :m 7} must be a number but is a map."
         (get-text-no-location
          (run-and-catch-pretty-no-stacktrace 'intro.student '(+ {:a 6 :k "a" :b 4 :c + :l 6 :m 7}))))
 

@@ -62,7 +62,7 @@
     (vector? v) (into [] (map lookup-fns v))
     (seq? v) (into '() (reverse (map lookup-fns v)))
     (set? v) (into #{} (map lookup-fns v))
-    (map? v) v ;; map has key/val pairs
+    (map? v) (reduce #(apply assoc %1 %2) {} (map lookup-fns v));; map has key/val pairs
     :else v))
 
 (defn val-str
