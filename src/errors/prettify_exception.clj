@@ -86,8 +86,9 @@
         arg-num-str (arg-str (inc (first (:in problems))))]
     ;(println problems)
     (into ((:make-msg-info-obj entry) (re-matches (:match entry) message))
-          ;; MAY NEED A SPECIAL MESSAGE for top-level nil
-           (make-msg-info-hashes (str ", the " arg-num-str " ") value-str :arg  " must be " pred-type :type " but is " value-type :type "."))))
+          (if (nil? value)
+            (make-msg-info-hashes (str ", the " arg-num-str) " must be " pred-type :type " but is " value-type :type ".")
+            (make-msg-info-hashes (str ", the " arg-num-str " ") value-str :arg  " must be " pred-type :type " but is " value-type :type ".")))))
 
 
 (defn msg-from-matched-entry [entry message data]
