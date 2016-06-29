@@ -19,9 +19,9 @@
 ;### Testing for check-if-anonymous-function ###
 ;###############################################
 
-(expect "anonymous function" (check-if-anonymous-function "fn"))
-(expect "anonymous function" (check-if-anonymous-function "fn_test"))
-(expect "anonymous function" (check-if-anonymous-function "fn_"))
+(expect "anonymous-function" (check-if-anonymous-function "fn"))
+(expect "anonymous-function" (check-if-anonymous-function "fn_test"))
+(expect "anonymous-function" (check-if-anonymous-function "fn_"))
 (expect "random_function" (check-if-anonymous-function "random_function"))
 
 ;######################################

@@ -30,9 +30,10 @@
   (symbol (get-function-name (.getName (type f)))))
 
 (defn is-function?
-  "uses our dictionary to see if a value should be printed as a function"
+  "Uses our dictionary to check if a value should be printed as a function"
   [v]
-  (= (get-type (.getName (type v))) "a function"))
+  ;; checking for nil first:
+  (and v (= (get-type (.getName (type v))) "a function")))
 
 
 (defn single-val-str
@@ -77,6 +78,7 @@
   [entry message data]
   (let [problems ((:clojure.spec/problems data) [:args])
         args (:clojure.spec/args data)
+        all-args-str (str (val-str args))
         pred-str (str (:pred problems))
         ;; remove the ? at the end to get the type; add an article:
         pred-type (str "a " (subs pred-str 0 (dec (count pred-str))))
@@ -84,9 +86,10 @@
         value-str (val-str value)
         value-type (get-type-with-nil value)
         arg-num-str (arg-str (inc (first (:in problems))))]
-    (println args)
+    (println all-args-str)
     (into ((:make-msg-info-obj entry) (re-matches (:match entry) message))
           (if (nil? value)
+            ;; here nil is an arg value, so the formatting is :arg, not :type
             (make-msg-info-hashes (str ", the " arg-num-str) " must be " pred-type :type " but is " value-type :arg ".")
             (make-msg-info-hashes (str ", the " arg-num-str " ") value-str :arg  " must be " pred-type :type " but is " value-type :type ".")))))
 

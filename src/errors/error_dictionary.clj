@@ -183,16 +183,17 @@
                          (let [fstr  (clojure.string/replace (get-function-name (nth matches 2)) #"--(\d+)$" "")
                                arity (lookup-arity  fstr)
                                ;; now the message doesn't make sense for anonymous functions, need a special case?
-                               funstr (if (= fstr "anonymous function")
-                                        "this "
+                               funstr (if (= fstr "anonymous-function")
+                                        "this anonymous function"
                                         (str "a function "))
+                               fnamestr (if (= fstr "anonymous-function") "" fstr)
                                ;;corrects plurality of argument(s)
                                arg-args (if  (= "1" (nth matches 1))
                                           " argument"
                                           " arguments")]
                            (make-msg-info-hashes "You cannot pass "
                                                  ;; fix plural/singular
-                                                 (number-word (nth matches 1)) arg-args " to " funstr fstr :arg
+                                                 (number-word (nth matches 1)) arg-args " to " funstr fnamestr :arg
                                                  (if arity (str ", need " arity) "")
                                                  ".")))}
 

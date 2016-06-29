@@ -246,11 +246,11 @@
 ;; testing for get-function-name
 (expect "*" (get-function-name "clojure.core$_STAR_"))
 (expect "even?" (get-function-name "clojure.core$even_QMARK_"))
-(expect "anonymous function" (get-function-name "intro.core$eval6393$fn__6394"))
+(expect "anonymous-function" (get-function-name "intro.core$eval6393$fn__6394"))
 (expect "-" (get-function-name "clojure.core$_"))
 (expect ">=" (get-function-name "corefns.corefns$_GT__EQ_"))
 (expect "swap!" (get-function-name "clojure.core$swap_BANG_"))
-(expect "anonymous function" (get-function-name "intro.core$eval6397$fn__6398"))
+(expect "anonymous-function" (get-function-name "intro.core$eval6397$fn__6398"))
 (expect "/" (get-function-name "clojure.core$_SLASH_"))
 
 ;; testing for get-macro-name

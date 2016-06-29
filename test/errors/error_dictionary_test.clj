@@ -65,7 +65,7 @@
         (get-text-no-location
          (run-and-catch-pretty-no-stacktrace 'intro.student '(+ '("a" "b")))))
 
-(expect "In function +, the first argument #{anonymous function} must be a number but is a set."
+(expect "In function +, the first argument #{anonymous-function} must be a number but is a set."
         (get-text-no-location
          (run-and-catch-pretty-no-stacktrace 'intro.student '(+ #{#(+ % 2)}))))
 
