@@ -76,7 +76,9 @@
 (defn msg-info-obj-with-data
   "Creates a message info object from an exception that contains data"
   [entry message data]
-  (let [problems ((:clojure.spec/problems data) [:args])
+  (let [entry-info ((:make-msg-info-obj entry) (re-matches (:match entry) message))
+        fname (:msg (second entry-info))
+        problems ((:clojure.spec/problems data) [:args])
         args (:clojure.spec/args data)
         all-args-str (str (val-str args))
         pred-str (str (:pred problems))
@@ -85,12 +87,13 @@
         value (:val problems)
         value-str (val-str value)
         value-type (get-type-with-nil value)
-        arg-num-str (arg-str (inc (first (:in problems))))]
-    (println all-args-str)
-    (into ((:make-msg-info-obj entry) (re-matches (:match entry) message))
+        arg-num-str (arg-str (inc (first (:in problems))))
+        call-str (str "(" fname " " (subs all-args-str 1))]
+    (println call-str)
+    (into entry-info
           (if (nil? value)
             ;; here nil is an arg value, so the formatting is :arg, not :type
-            (make-msg-info-hashes (str ", the " arg-num-str) " must be " pred-type :type " but is " value-type :arg ".")
+            (make-msg-info-hashes (str ", the " arg-num-str) " must be " pred-type :type " but is " value-type :arg ".");", in the function call " )
             (make-msg-info-hashes (str ", the " arg-num-str " ") value-str :arg  " must be " pred-type :type " but is " value-type :type ".")))))
 
 
