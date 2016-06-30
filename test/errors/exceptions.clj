@@ -100,7 +100,7 @@
         text (if text-no-newln text-no-newln
                (let [matches (re-matches #"(.*)\n(.*)\nFound(.*)" (get-all-text m))]
                  (str (nth matches 1) "\n" (nth matches 2))))]
-    (println text)
+    ;(println text)
     text
   ))
 
