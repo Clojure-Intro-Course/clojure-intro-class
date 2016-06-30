@@ -42,7 +42,6 @@
    performs a lookup for function names, returns 'anonymous function' for
    anonymous functions"
   [v]
-  ;(println (.getName (type v)))
   (cond
     (nil? v) "nil"
     (string? v) (str "\"" v "\"")
