@@ -64,7 +64,8 @@
         msg-filtered-trace (make-message-with-filtered-trace exc-obj)]
     (try
       (let ;; styles for formatting various portions of a message
-        [styles [[:arg :font "monospace" :bold true] [:loc :font "monospace" :bold true] [:reg] [:stack] [:err] [:type] [:causes]]
+        [styles [[:arg :font "monospace" :bold true] [:loc :font "monospace" :bold true]
+                 [:call :font "monospace" :bold true] [:reg] [:stack] [:err] [:type] [:causes]]
          ;; forming graphical elements of the swing panel
          errormsg (styled-text :wrap-lines? true :text (str (get-all-text msg-filtered-trace))
                                :styles styles)
