@@ -619,20 +619,20 @@
 ;~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 ;; testing if the precondition of + works
-(expect "In function +, the first argument :not-a-number must be a number but is a keyword."
+(expect "In function +, the first argument :not-a-number must be a number but is a keyword,\nin the function call (+ :not-a-number 5)"
         (get-text-no-location (run-and-catch-pretty-no-stacktrace 'intro.student
                                                           '(+ :not-a-number 5))))
-(expect "In function +, the fourth argument :not-a-number must be a number but is a keyword."
+(expect "In function +, the fourth argument :not-a-number must be a number but is a keyword,\nin the function call (+ 8 9 1 :not-a-number 5)"
         (get-text-no-location (run-and-catch-pretty-no-stacktrace 'intro.student
                                                           '(+ 8 9 1 :not-a-number 5))))
 
 ;~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 ;; testing if the precondition of - works
-(expect "In function -, the first argument :not-a-number must be a number but is a keyword."
+(expect "In function -, the first argument :not-a-number must be a number but is a keyword,\nin the function call (- :not-a-number 5)"
         (get-text-no-location (run-and-catch-pretty-no-stacktrace 'intro.student
                                                           '(- :not-a-number 5))))
-(expect "In function -, the fourth argument :not-a-number must be a number but is a keyword."
+(expect "In function -, the fourth argument :not-a-number must be a number but is a keyword,\nin the function call (- 20 9 1 :not-a-number 5)"
         (get-text-no-location (run-and-catch-pretty-no-stacktrace 'intro.student
                                                           '(- 20 9 1 :not-a-number 5))))
 
