@@ -1,6 +1,6 @@
 (ns corefns.corefns
   (:use [clojure.core.incubator])
-  (:refer-clojure :exclude [map nth])
+;;   (:refer-clojure :exclude [map nth])
   (:require [corefns.assert_handling :refer :all]
             [corefns.failed_asserts_info :refer :all]
             [clojure.spec :as s]))
@@ -15,16 +15,20 @@
 ;;; ABSOLUTELY NEED TO ADD COMMENTS and tests
 
 
+;; (empty? coll)
+;; Returns true if coll has no items.
+;; (defn empty? [argument1]
+;;   {:pre [(only-arg (check-if-seqable? "empty?" argument1))]}
+;;   (clojure.core/empty? argument1))
+
 (s/fdef empty?
   :args (s/cat :check-seqable seqable?))
 
 (s/instrument #'empty?)
 
-;; (empty? coll)
-;; Returns true if coll has no items.
 (defn empty? [argument1]
-  {:pre [(only-arg (check-if-seqable? "empty?" argument1))]}
   (clojure.core/empty? argument1))
+
 
 ;;(first coll)
 ;;Returns the first item in the collection
@@ -59,10 +63,7 @@
   (clojure.core/seq argument1))
 
 
-(s/fdef map
-      :args (s/cat :check-function ifn? :check-seqable (s/+ seqable?)))
 
-(s/instrument #'map)
 
 ;; As of clojure 1.7 allows (map f)
 ;; (map f coll)
@@ -74,10 +75,18 @@
 ;; of second items in each coll, until any one of the colls is
 ;; exhausted. Any remaining items in other colls are ignored. Function
 ;; f should accept number-of-colls arguments.
+;; (defn map [argument1 argument2 & args]
+;;   {:pre [(check-if-function? "map" argument1)
+;;          (check-if-seqable? "map" argument2)
+;;          (check-if-seqables? "map" args 3)]}
+;;   (apply clojure.core/map argument1 argument2 args))
+
+(s/fdef map
+      :args (s/cat :check-function ifn? :check-seqable (s/+ seqable?)))
+
+(s/instrument #'map)
+
 (defn map [argument1 argument2 & args]
-  {:pre [(check-if-function? "map" argument1)
-         (check-if-seqable? "map" argument2)
-         (check-if-seqables? "map" args 3)]}
   (apply clojure.core/map argument1 argument2 args))
 
 ;; (count coll)
@@ -283,7 +292,8 @@
 ;;   (apply clojure.core/+ args))
 
 (s/fdef +
-      :args (s/* number?))
+;;       :args (s/* number?))
+  :args (s/cat :check-number (s/* number?)))
 
 (s/instrument #'+)
 
@@ -304,7 +314,8 @@
 ;;   (apply clojure.core/- argument1 args))
 
 (s/fdef -
-      :args (s/* number?))
+;;       :args (s/* number?))
+  :args (s/cat :check-number (s/+ number?)))
 
 (s/instrument #'-)
 
