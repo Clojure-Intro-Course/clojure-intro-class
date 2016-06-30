@@ -49,40 +49,40 @@
 
 ;; testing for pretty-print-value for functions within sequences and for vectors
 
-(expect "In function +, the first argument [1 2] must be a number but is a vector."
+(expect "In function +, the argument [1 2] must be a number but is a vector."
         (get-text-no-location
          (run-and-catch-pretty-no-stacktrace 'intro.student '(+ [1 2]))))
 
-(expect "In function +, the first argument [+] must be a number but is a vector."
+(expect "In function +, the argument [+] must be a number but is a vector."
         (get-text-no-location
          (run-and-catch-pretty-no-stacktrace 'intro.student '(+ [+]))))
 
-(expect "In function +, the first argument [map] must be a number but is a vector."
+(expect "In function +, the argument [map] must be a number but is a vector."
         (get-text-no-location
          (run-and-catch-pretty-no-stacktrace 'intro.student '(+ [map]))))
 
-(expect "In function +, the first argument (\"a\" \"b\") must be a number but is a list."
+(expect "In function +, the argument (\"a\" \"b\") must be a number but is a list."
         (get-text-no-location
          (run-and-catch-pretty-no-stacktrace 'intro.student '(+ '("a" "b")))))
 
-(expect "In function +, the first argument #{anonymous-function} must be a number but is a set."
+(expect "In function +, the argument #{anonymous-function} must be a number but is a set."
         (get-text-no-location
          (run-and-catch-pretty-no-stacktrace 'intro.student '(+ #{#(+ % 2)}))))
 
-(expect "In function +, the first argument #{+} must be a number but is a set."
+(expect "In function +, the argument #{+} must be a number but is a set."
         (get-text-no-location
          (run-and-catch-pretty-no-stacktrace 'intro.student '(+ #{+}))))
 
-(expect "In function +, the first argument {:a +} must be a number but is a map."
+(expect "In function +, the argument {:a +} must be a number but is a map."
         (get-text-no-location
          (run-and-catch-pretty-no-stacktrace 'intro.student '(+ {:a +}))))
 
-(expect "In function +, the first argument {:a {6 \"a\", 7 true}, :b 4, :c +} must be a number but is a map."
+(expect "In function +, the argument {:a {6 \"a\", 7 true}, :b 4, :c +} must be a number but is a map."
         (get-text-no-location
          (run-and-catch-pretty-no-stacktrace 'intro.student '(+ {:a {6 "a" 7 true} :b 4 :c +}))))
 
 ;; Note: the order of elements in a hashmap is not guaranteed, so the actual elements amy be different
-(expect "In function +, the first argument {:a 6, :k \"a\", :b 4, :c +, :l 6, :m 7} must be a number but is a map."
+(expect "In function +, the argument {:a 6, :k \"a\", :b 4, :c +, :l 6, :m 7} must be a number but is a map."
         (get-text-no-location
          (run-and-catch-pretty-no-stacktrace 'intro.student '(+ {:a 6 :k "a" :b 4 :c + :l 6 :m 7}))))
 
