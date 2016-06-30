@@ -15,6 +15,11 @@
 ;;; ABSOLUTELY NEED TO ADD COMMENTS and tests
 
 
+(s/fdef empty?
+  :args (s/cat :check-seqable seqable?))
+
+(s/instrument #'empty?)
+
 ;; (empty? coll)
 ;; Returns true if coll has no items.
 (defn empty? [argument1]
@@ -52,6 +57,12 @@
 (defn seq [argument1]
   {:pre [(only-arg (check-if-seqable? "seq" argument1))]}
   (clojure.core/seq argument1))
+
+
+(s/fdef map
+      :args (s/cat :check-function ifn? :check-seqable (s/+ seqable?)))
+
+(s/instrument #'map)
 
 ;; As of clojure 1.7 allows (map f)
 ;; (map f coll)
