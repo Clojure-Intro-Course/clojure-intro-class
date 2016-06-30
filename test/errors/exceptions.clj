@@ -96,7 +96,12 @@
   [e] (if (instance? Throwable e) (.getMessage e) e))
 
 (defn get-text-no-location [m]
-  (nth (re-matches #"(.*)\nFound(.*)" (get-all-text m)) 1))
+  (let [text-no-newln (nth (re-matches #"(.*)\nFound(.*)" (get-all-text m)) 1)
+        text (if text-no-newln text-no-newln
+               (let [matches (re-matches #"(.*)\n(.*)\nFound(.*)" (get-all-text m))]
+                 (str (nth matches 1) "\n" (nth matches 2))))]
+    text
+  ))
 
 
 ; 1.2 tests

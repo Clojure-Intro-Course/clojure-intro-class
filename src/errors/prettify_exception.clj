@@ -89,12 +89,12 @@
         value-type (get-type-with-nil value)
         arg-num-str (arg-str (inc (first (:in problems))))
         call-str (str "(" fname " " (subs all-args-str 1))]
-    (println call-str)
+    ;(println call-str)
     (into entry-info
           (if (nil? value)
             ;; here nil is an arg value, so the formatting is :arg, not :type
-            (make-msg-info-hashes (str ", the " arg-num-str) " must be " pred-type :type " but is " value-type :arg ",\nin the function call " call-str :call)
-            (make-msg-info-hashes (str ", the " arg-num-str " ") value-str :arg  " must be " pred-type :type " but is " value-type :type ",\nin the function call " call-str :call)))))
+            (make-msg-info-hashes (str ", the " arg-num-str) " must be " pred-type :type " but is " value-type :arg ",\n" "in the function call " call-str :call)
+            (make-msg-info-hashes (str ", the " arg-num-str " ") value-str :arg  " must be " pred-type :type " but is " value-type :type ",\n" "in the function call " call-str :call)))))
 
 
 (defn msg-from-matched-entry [entry message data]
