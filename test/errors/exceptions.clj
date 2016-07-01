@@ -278,8 +278,8 @@
 
 (defn compare-traces-of-saved-exceptions
   "Takes an unlimited number of filenames, and then calls make-and-print-comparisons on the saved exceptions to print the trace-comparisons."
-  [& filename]
-  (make-and-print-comparisons (map import-from-file (str "exceptions/" filename)) filename))
+  [& filenames]
+  (make-and-print-comparisons (map #(import-from-file (str "exceptions/" %)) filenames) filenames))
 
 (defn print-n-elements-of-stacktrace
   "Takes a number n and a stacktrace (filtered or unfiltered), and then prints that many elements of the stacktrace"
