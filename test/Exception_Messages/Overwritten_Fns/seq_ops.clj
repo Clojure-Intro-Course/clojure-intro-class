@@ -29,3 +29,7 @@
 (expect "In function cons, the second argument 2 must be a sequence but is a number."
         (get-text-no-location
          (run-and-catch-pretty-no-stacktrace 'intro.student '(cons 1 2))))
+
+(expect #"You cannot use / in this position."
+       (get-text-no-location (:msg-info-obj (try (load-file "exceptions/compilation_errors/invalid_token_error1.clj")
+                       (catch Throwable e (prettify-exception e))))))

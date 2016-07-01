@@ -29,6 +29,11 @@
         (get-text-no-location
          (run-and-catch-pretty-no-stacktrace 'intro.student '(into {} [[1 2] [3]]))))
 
+;; testing for invalid token error
+(expect #"You cannot use : in this position."
+       (get-text-no-location (:msg-info-obj (try (load-file "exceptions/compilation_errors/invalid_token_error2.clj")
+                       (catch Throwable e (prettify-exception e))))))
+
 (expect "Vectors added to a map must consist of two elements: a key and a value."
         (get-text-no-location
          (run-and-catch-pretty-no-stacktrace 'intro.student '(merge {:a 1 :b 2} [1 2 3] [1 2] [1 5]))))
@@ -40,4 +45,9 @@
 ;; testing for :illegal-argument-even-number-of-forms
 (expect #"Parameters for let must come in pairs, but one of them does not have a match; (.*)"
        (get-text-no-location (:msg-info-obj (try (load-file "exceptions/compilation_errors/let-no-matching-pair.clj")
+                       (catch Throwable e (prettify-exception e))))))
+
+;; testing for # must be followed by a symbol error
+(expect #"# must be followed by a symbol."
+       (get-text-no-location (:msg-info-obj (try (load-file "exceptions/compilation_errors/#_must_be_followed_by_symbol.clj")
                        (catch Throwable e (prettify-exception e))))))

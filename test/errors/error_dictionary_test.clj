@@ -117,8 +117,6 @@
        (get-text-no-location (:msg-info-obj (try (load-file "exceptions/compilation_errors/let-no-matching-pair.clj")
                        (catch Throwable e (prettify-exception e))))))
 
-;;sorted to here..................................
-
 ;; testing for invalid token error
 (expect #"You cannot use : in this position."
        (get-text-no-location (:msg-info-obj (try (load-file "exceptions/compilation_errors/invalid_token_error2.clj")
@@ -132,6 +130,8 @@
 (expect #"# must be followed by a symbol."
        (get-text-no-location (:msg-info-obj (try (load-file "exceptions/compilation_errors/#_must_be_followed_by_symbol.clj")
                        (catch Throwable e (prettify-exception e))))))
+
+;;sorted to here..................................
 
 ;; testing for invalid number exception
 (expect #"Invalid number: 1.2.2."
