@@ -106,7 +106,6 @@
         (get-text-no-location
          (run-and-catch-pretty-no-stacktrace 'intro.student '(conj {:a 1 :b 2} [1 2 3 4]))))
 
-;;sorted to here..................................
 
 ;; testing for :illegal-argument-cannot-convert-type
 (expect "In function cons, the second argument 2 must be a sequence but is a number."
@@ -117,6 +116,8 @@
 (expect #"Parameters for let must come in pairs, but one of them does not have a match; (.*)"
        (get-text-no-location (:msg-info-obj (try (load-file "exceptions/compilation_errors/let-no-matching-pair.clj")
                        (catch Throwable e (prettify-exception e))))))
+
+;;sorted to here..................................
 
 ;; testing for invalid token error
 (expect #"You cannot use : in this position."

@@ -36,3 +36,8 @@
 (expect "Vectors added to a map must consist of two elements: a key and a value."
         (get-text-no-location
          (run-and-catch-pretty-no-stacktrace 'intro.student '(conj {:a 1 :b 2} [1 2 3 4]))))
+
+;; testing for :illegal-argument-even-number-of-forms
+(expect #"Parameters for let must come in pairs, but one of them does not have a match; (.*)"
+       (get-text-no-location (:msg-info-obj (try (load-file "exceptions/compilation_errors/let-no-matching-pair.clj")
+                       (catch Throwable e (prettify-exception e))))))
