@@ -96,7 +96,12 @@
   [e] (if (instance? Throwable e) (.getMessage e) e))
 
 (defn get-text-no-location [m]
-  (nth (re-matches #"(.*)\nFound(.*)" (get-all-text m)) 1))
+  (let [text-no-newln (nth (re-matches #"(.*)\nFound(.*)" (get-all-text m)) 1)
+        text (if text-no-newln text-no-newln
+               (let [matches (re-matches #"(.*)\n(.*)\nFound(.*)" (get-all-text m))]
+                 (str (nth matches 1) "\n" (nth matches 2))))]
+    text
+  ))
 
 
 ; 1.2 tests
@@ -272,8 +277,8 @@
 
 (defn compare-traces-of-saved-exceptions
   "Takes an unlimited number of filenames, and then calls make-and-print-comparisons on the saved exceptions to print the trace-comparisons."
-  [& filename]
-  (make-and-print-comparisons (map import-from-file (str "exceptions/" filename)) filename))
+  [& filenames]
+  (make-and-print-comparisons (map #(import-from-file (str "exceptions/" %)) filenames) filenames))
 
 (defn print-n-elements-of-stacktrace
   "Takes a number n and a stacktrace (filtered or unfiltered), and then prints that many elements of the stacktrace"
@@ -292,7 +297,7 @@
 
 (expect true (apply compare-traces-of-saved-exceptions saved-exceptions))
 
-(expect true (compare-traces-of-quoted-code 'intro.core
+(expect true (compare-traces-of-quoted-code 'intro.student
                                             '(+ 2 "string")
                                             '(cons 1 2)
                                             '(inc "apple")
@@ -309,7 +314,7 @@
 ;                                                                    'intro.student
 ;                                                                    '(error-in-anonymous)))))
 
-(expect true (compare-traces-of-quoted-code 'intro.core
+(expect true (compare-traces-of-quoted-code 'intro.student
                                             '(cons 16 79)))
 
 (expect true (compare-traces-of-saved-exceptions "4clojure-prob156-AssertionError.ser"))
