@@ -66,3 +66,7 @@
 (expect "In function even?, the argument [(0 1 2 3...) (0 1 2 3...)] must be an integer number but is a vector."
         (get-text-no-location
          (run-and-catch-pretty-no-stacktrace 'intro.student '(even? [(range) (range)]))))
+
+(expect "In function dec, the argument :r must be a number but is a keyword."
+        (get-text-no-location
+         (run-and-catch-pretty-no-stacktrace 'intro.student '(dec :r))))

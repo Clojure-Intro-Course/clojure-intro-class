@@ -81,3 +81,7 @@
 ;; testing for :illegal-argument-exactly-2-forms
 (expect #"The function when-let requires exactly 2 forms in binding vector. Line (.*) in the file intro.core"
         (get-all-text (run-and-catch-pretty-no-stacktrace 'intro.core '(when-let [num1 1 num2 2] "hello"))))
+
+(expect "In function dissoc, the argument :s must be a map but is a keyword."
+        (get-text-no-location
+         (run-and-catch-pretty-no-stacktrace 'intro.student '(dissoc :s))))

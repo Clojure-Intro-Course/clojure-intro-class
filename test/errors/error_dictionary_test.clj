@@ -203,8 +203,6 @@
         (get-text-no-location
          (run-and-catch-pretty-no-stacktrace 'intro.student '(even? [(range) (range)]))))
 
-;;sorted to here..................................
-
 ;; testing for empty?, first, rest, next, seq, count, dissoc, and dec
 
 (expect "In function empty?, the argument :s must be a sequence but is a keyword,\nin the function call (empty? :s)"
@@ -238,6 +236,8 @@
 (expect "In function dec, the argument :r must be a number but is a keyword."
         (get-text-no-location
          (run-and-catch-pretty-no-stacktrace 'intro.student '(dec :r))))
+
+;;sorted to here..................................
 
 ;############################################
 ;### Testing for Illegal State Exceptions ###
