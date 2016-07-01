@@ -42,7 +42,6 @@
    performs a lookup for function names, returns 'anonymous function' for
    anonymous functions"
   [v]
-  ;(println (.getName (type v)))
   (cond
     (nil? v) "nil"
     (string? v) (str "\"" v "\"")
@@ -78,18 +77,18 @@
   [entry message data]
   (let [entry-info ((:make-msg-info-obj entry) (re-matches (:match entry) message))
         fname (:msg (second entry-info))
-        problems ((:clojure.spec/problems data) [:args])
+        problems (second (first (:clojure.spec/problems data))) ; getting the val matched to the first key
         args (:clojure.spec/args data)
         all-args-str (str (val-str args))
         pred-str (str (:pred problems))
         ;; remove the ? at the end to get the type; add an article:
-        pred-type (str "a " (subs pred-str 0 (dec (count pred-str))))
+        pred-type (if (= pred-str "seqable?") "a sequence" (str "a " (subs pred-str 0 (dec (count pred-str)))))
         value (:val problems)
         value-str (val-str value)
         value-type (get-type-with-nil value)
-        arg-num-str (arg-str (inc (first (:in problems))))
+        arg-num-str (if (= (count args) 1) "argument" (arg-str (inc (first (:in problems)))))
         call-str (str "(" fname " " (subs all-args-str 1))]
-    ;(println call-str)
+    ;(println problems)
     (into entry-info
           (if (nil? value)
             ;; here nil is an arg value, so the formatting is :arg, not :type

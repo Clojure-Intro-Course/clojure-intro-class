@@ -428,7 +428,7 @@
 ;                                             '(doall (map :not-a-function [1 2 3])))))
 
 ;; testing for the second precondition of map
-(expect "In function map, the second argument :not-a-collection must be a sequence but is a keyword."
+(expect "In function map, the second argument :not-a-collection must be a sequence but is a keyword,\nin the function call (map + :not-a-collection)"
         (get-text-no-location
          (run-and-catch-pretty-no-stacktrace 'intro.student
                                              '(doall (map + :not-a-collection)))))
