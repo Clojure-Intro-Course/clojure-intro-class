@@ -96,6 +96,8 @@
         (get-text-no-location
          (run-and-catch-pretty-no-stacktrace 'intro.student '(into {} [[1 2] [3]]))))
 
+;;sorted to here..................................
+
 (expect "Vectors added to a map must consist of two elements: a key and a value."
         (get-text-no-location
          (run-and-catch-pretty-no-stacktrace 'intro.student '(merge {:a 1 :b 2} [1 2 3] [1 2] [1 5]))))
