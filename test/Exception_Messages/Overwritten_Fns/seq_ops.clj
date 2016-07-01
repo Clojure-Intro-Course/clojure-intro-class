@@ -33,3 +33,15 @@
 (expect #"You cannot use / in this position."
        (get-text-no-location (:msg-info-obj (try (load-file "exceptions/compilation_errors/invalid_token_error1.clj")
                        (catch Throwable e (prettify-exception e))))))
+
+;; testing for wrong number of args to a keyword
+(expect #"A keyword: :a can only take one or two arguments."
+       (get-text-no-location (:msg-info-obj (try (load-file "exceptions/compilation_errors/keyword_wrong_number_of_args.clj")
+                       (catch Throwable e (prettify-exception e))))))
+
+;; testing for greater than 20 arguments
+(expect #"A function may not take more than more than 20 parameters."
+       (get-text-no-location (:msg-info-obj (try (load-file "exceptions/compilation_errors/greater_than_20_parameters.clj")
+                       (catch Throwable e (prettify-exception e))))))
+
+

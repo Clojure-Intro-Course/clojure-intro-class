@@ -43,3 +43,14 @@
 (expect "In function +, the first argument {:a 6, :k \"a\", :b 4, :c +, :l 6, :m 7} must be a number but is a map,\nin the function call (+ {:a 6, :k \"a\", :b 4, :c +, :l 6, :m 7})"
         (get-text-no-location
          (run-and-catch-pretty-no-stacktrace 'intro.student '(+ {:a 6 :k "a" :b 4 :c + :l 6 :m 7}))))
+
+;; testing for invalid number exception
+(expect #"Invalid number: 1.2.2."
+       (get-text-no-location (:msg-info-obj (try (load-file "exceptions/compilation_errors/invalid_number.clj")
+                       (catch Throwable e (prettify-exception e))))))
+
+;; testing for :illegal-argument-type-not-supported
+(expect "Function contains? does not allow a sequence as an argument."
+        (get-text-no-location
+         (run-and-catch-pretty-no-stacktrace 'intro.student '(contains? (seq [1 3 6]) 2))))
+

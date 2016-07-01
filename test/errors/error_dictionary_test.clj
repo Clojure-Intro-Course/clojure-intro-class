@@ -131,8 +131,6 @@
        (get-text-no-location (:msg-info-obj (try (load-file "exceptions/compilation_errors/#_must_be_followed_by_symbol.clj")
                        (catch Throwable e (prettify-exception e))))))
 
-;;sorted to here..................................
-
 ;; testing for invalid number exception
 (expect #"Invalid number: 1.2.2."
        (get-text-no-location (:msg-info-obj (try (load-file "exceptions/compilation_errors/invalid_number.clj")
@@ -182,6 +180,8 @@
 (expect #"Parameters for defn must be a vector, but \+ was found instead\.(.*)"
         (get-all-text
         (run-and-catch-pretty-no-stacktrace 'intro.student '(defn my-function + x y))))
+
+;;sorted to here..................................
 
 ;; testing for :illegal-argument-exactly-2-forms
 (expect #"The function when-let requires exactly 2 forms in binding vector. Line (.*) in the file intro.core"

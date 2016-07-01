@@ -47,7 +47,33 @@
        (get-text-no-location (:msg-info-obj (try (load-file "exceptions/compilation_errors/let-no-matching-pair.clj")
                        (catch Throwable e (prettify-exception e))))))
 
+(expect #"When declaring a let, you need to pass it a vector of arguments.(.*)"
+       (get-text-no-location (:msg-info-obj (try (load-file "exceptions/compilation_errors/let-odd-number-bindings.clj")
+                       (catch Throwable e (prettify-exception e))))))
+
 ;; testing for # must be followed by a symbol error
 (expect #"# must be followed by a symbol."
        (get-text-no-location (:msg-info-obj (try (load-file "exceptions/compilation_errors/#_must_be_followed_by_symbol.clj")
                        (catch Throwable e (prettify-exception e))))))
+
+;; testing for wrong number of args to a keyword
+(expect #"A keyword: :a can only take one or two arguments."
+       (get-text-no-location (:msg-info-obj (try (load-file "exceptions/compilation_errors/keyword_wrong_number_of_args.clj")
+                       (catch Throwable e (prettify-exception e))))))
+
+;; testing for :illegal-argument-parameters-must-be-in-vector
+(expect #"Parameters for defn must be a vector, but my-argument was found instead\.(.*)"
+        (get-all-text
+        (run-and-catch-pretty-no-stacktrace 'intro.student '(defn my-function my-argument))))
+
+(expect #"Parameters for defn must be a vector, but 5 was found instead\.(.*)"
+        (get-all-text
+        (run-and-catch-pretty-no-stacktrace 'intro.student '(defn my-function 5))))
+
+(expect #"Parameters for defn must be a vector, but \+ was found instead\.(.*)"
+        (get-all-text
+        (run-and-catch-pretty-no-stacktrace 'intro.student '(defn my-function (+ x y)))))
+
+(expect #"Parameters for defn must be a vector, but \+ was found instead\.(.*)"
+        (get-all-text
+        (run-and-catch-pretty-no-stacktrace 'intro.student '(defn my-function + x y))))
