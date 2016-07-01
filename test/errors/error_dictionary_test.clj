@@ -181,7 +181,6 @@
         (get-all-text
         (run-and-catch-pretty-no-stacktrace 'intro.student '(defn my-function + x y))))
 
-;;sorted to here..................................
 
 ;; testing for :illegal-argument-exactly-2-forms
 (expect #"The function when-let requires exactly 2 forms in binding vector. Line (.*) in the file intro.core"
@@ -203,6 +202,8 @@
 (expect "In function even?, the argument [(0 1 2 3...) (0 1 2 3...)] must be an integer number but is a vector."
         (get-text-no-location
          (run-and-catch-pretty-no-stacktrace 'intro.student '(even? [(range) (range)]))))
+
+;;sorted to here..................................
 
 ;; testing for empty?, first, rest, next, seq, count, dissoc, and dec
 

@@ -77,3 +77,7 @@
 (expect #"Parameters for defn must be a vector, but \+ was found instead\.(.*)"
         (get-all-text
         (run-and-catch-pretty-no-stacktrace 'intro.student '(defn my-function + x y))))
+
+;; testing for :illegal-argument-exactly-2-forms
+(expect #"The function when-let requires exactly 2 forms in binding vector. Line (.*) in the file intro.core"
+        (get-all-text (run-and-catch-pretty-no-stacktrace 'intro.core '(when-let [num1 1 num2 2] "hello"))))

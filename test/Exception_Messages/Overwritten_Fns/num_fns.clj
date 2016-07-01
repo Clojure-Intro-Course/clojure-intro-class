@@ -54,3 +54,15 @@
         (get-text-no-location
          (run-and-catch-pretty-no-stacktrace 'intro.student '(contains? (seq [1 3 6]) 2))))
 
+;; testing for odd? and even?
+(expect "In function even?, the argument must be an integer number but is nil."
+        (get-text-no-location
+         (run-and-catch-pretty-no-stacktrace 'intro.student '(even? nil))))
+
+(expect "In function odd?, the argument must be an integer number but is nil."
+        (get-text-no-location
+         (run-and-catch-pretty-no-stacktrace 'intro.student '(odd? nil))))
+
+(expect "In function even?, the argument [(0 1 2 3...) (0 1 2 3...)] must be an integer number but is a vector."
+        (get-text-no-location
+         (run-and-catch-pretty-no-stacktrace 'intro.student '(even? [(range) (range)]))))

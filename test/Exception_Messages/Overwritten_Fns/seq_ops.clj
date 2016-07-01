@@ -44,4 +44,6 @@
        (get-text-no-location (:msg-info-obj (try (load-file "exceptions/compilation_errors/greater_than_20_parameters.clj")
                        (catch Throwable e (prettify-exception e))))))
 
-
+(expect "Cannot call nil as a function."
+        (get-text-no-location
+         (run-and-catch-pretty-no-stacktrace 'intro.student '(nil 5))))
