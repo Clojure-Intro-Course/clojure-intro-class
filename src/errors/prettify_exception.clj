@@ -94,6 +94,7 @@
   [pred-str]
   (cond (= pred-str "seqable?") "a sequence"
         (= pred-str "ifn?") "a function"
+        (= pred-str "map?") "a hashmap"
         :else (str "a " (subs pred-str 0 (dec (count pred-str))))))
 
 (defn- messages-types
