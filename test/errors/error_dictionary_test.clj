@@ -317,8 +317,6 @@
                 (re-pattern (str "(.*)Found in (.*)" (line-number-format "(\\d+)" "(\\d+)") "\\."))  get-all-text)
               (run-and-catch-pretty-no-stacktrace 'intro.core '(clojure.string.split "a b c" " ")))
 
-;;sorted to here..................................
-
 
 ;##################################
 ;### Testing for Java Exceptions###
@@ -392,5 +390,7 @@
 (expect "An opened \" does not have a matching closing one."
        (get-text-no-location (:msg-info-obj (try (load-file "exceptions/compilation_errors/non_closing_string.clj")
                        (catch Throwable e (prettify-exception e))))))
+
+;;sorted to here..................................
 
 ;; :compiler-exception-must-recur-to-function-or-loop
