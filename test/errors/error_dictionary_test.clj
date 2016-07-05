@@ -150,7 +150,7 @@
        (get-text-no-location (:msg-info-obj (try (load-file "exceptions/compilation_errors/greater_than_20_parameters.clj")
                        (catch Throwable e (prettify-exception e))))))
 
-(expect #"A function may not take more than more than 20 parameters."
+(expect #"A function may not take more than 20 parameters."
        (get-text-no-location (:msg-info-obj (try (load-file "exceptions/compilation_errors/greater_than_20_parameters2.clj")
                        (catch Throwable e (prettify-exception e))))))
 
