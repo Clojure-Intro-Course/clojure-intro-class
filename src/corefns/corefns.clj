@@ -247,10 +247,13 @@
 ;;    (< x y & more)
 ;; Returns non-nil if nums are in monotonically increasing order,
 ;; otherwise false.
+;; (defn < [argument1 & args]
+;;    {:pre [(check-if-number? "<" argument1)
+;;           (check-if-numbers? "<" args 2)]}
+;;    (apply clojure.core/< argument1 args))
 (defn < [argument1 & args]
-   {:pre [(check-if-number? "<" argument1)
-          (check-if-numbers? "<" args 2)]}
    (apply clojure.core/< argument1 args))
+
 
 ;;    (<= x)
 ;;    (<= x y)
@@ -403,9 +406,9 @@
 ;; of those fns.  The returned fn takes a variable number of args,
 ;; applies the rightmost of fns to the args, the next
 ;; fn (right-to-left) to the result, etc.
-(defn comp [& args]
-  {:pre [(check-if-functions? "comp" args 1)]}
-  (apply clojure.core/comp args))
+;; (defn comp [& args]
+;;   {:pre [(check-if-functions? "comp" args 1)]}
+;;   (apply clojure.core/comp args))
 
 
 ;;    (repeatedly f)
@@ -413,32 +416,34 @@
 ;; Takes a function of no args, presumably with side effects, and
 ;; returns an infinite (or length n if supplied) lazy sequence of calls
 ;; to it
-(defn repeatedly
-  ([argument1]
-   {:pre [(only-arg (check-if-function? "repeatedly" argument1))]}
-   (clojure.core/repeatedly argument1))
-  ([argument1 argument2]
-   {:pre [(check-if-number? "repeatedly" argument1)
-          (check-if-function? "repeatedly" argument2)]}
-   (clojure.core/repeatedly argument1 argument2)))
+;; (defn repeatedly
+;;   ([argument1]
+;;    {:pre [(only-arg (check-if-function? "repeatedly" argument1))]}
+;;    (clojure.core/repeatedly argument1))
+;;   ([argument1 argument2]
+;;    {:pre [(check-if-number? "repeatedly" argument1)
+;;           (check-if-function? "repeatedly" argument2)]}
+;;    (clojure.core/repeatedly argument1 argument2)))
 
 ;;    (repeat f)
 ;;    (repeat n f)
 ;; Returns a lazy (infinite!, or length n if supplied) sequence of xs.
-(defn repeat
-  ([argument1]
-   (clojure.core/repeat argument1))
-  ([argument1 argument2]
-   {:pre [(check-if-number? "repeat" argument1)]}
-   (clojure.core/repeat argument1 argument2)))
+;; (defn repeat
+;;   ([argument1](defn distinct [argument1]
+;;   {:pre [(check-if-seqable? "distinct" argument1)]}
+;;   (clojure.core/distinct argument1))
+;;    (clojure.core/repeat argument1))
+;;   ([argument1 argument2]
+;;    {:pre [(check-if-number? "repeat" argument1)]}
+;;    (clojure.core/repeat argument1 argument2)))
 
 ;;    (distinct)
 ;;    (distinct coll)
 ;; Returns a lazy sequence of the elements of coll with duplicates removed.
 ;; Returns a stateful transducer when no collection is provided.
-(defn distinct [argument1]
-  {:pre [(check-if-seqable? "distinct" argument1)]}
-  (clojure.core/distinct argument1))
+;; (defn distinct [argument1]
+;;   {:pre [(check-if-seqable? "distinct" argument1)]}
+;;   (clojure.core/distinct argument1))
 
 
 
