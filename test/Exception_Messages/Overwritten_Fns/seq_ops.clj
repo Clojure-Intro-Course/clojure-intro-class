@@ -76,3 +76,11 @@
 (expect "An index in a sequence is out of bounds. The index is: 10."
         (get-text-no-location
           (run-and-catch-pretty-no-stacktrace 'intro.core '(throw (new IndexOutOfBoundsException "10")))))
+
+;; testing for :null-pointer-non-existing-object-provided
+(expect "An attempt to access a non-existing object: some message (NullPointerException)."
+        (get-text-no-location (run-and-catch-pretty-no-stacktrace 'intro.core '(throw (new NullPointerException "some message")))))
+
+;; testing for :null-pointer-non-existing-object-not-provided
+(expect "An attempt to access a non-existing object (NullPointerException)."
+        (get-text-no-location (run-and-catch-pretty-no-stacktrace 'intro.core '(int nil))))

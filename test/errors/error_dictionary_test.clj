@@ -284,7 +284,6 @@
         ;; note: let is needed in the test since the error must happen only at run time
         (get-text-no-location (run-and-catch-pretty-no-stacktrace 'intro.core '(let [a :b b :b] {a 1 b 2}))))
 
-;;sorted to here..................................
 
 ;##########################################
 ;### Testing for Null Pointer Exceptions###
@@ -297,6 +296,8 @@
 ;; testing for :null-pointer-non-existing-object-not-provided
 (expect "An attempt to access a non-existing object (NullPointerException)."
         (get-text-no-location (run-and-catch-pretty-no-stacktrace 'intro.core '(int nil))))
+
+;;sorted to here..................................
 
 ;###################################################
 ;### Testing for Unsupported Operation Exceptions###
