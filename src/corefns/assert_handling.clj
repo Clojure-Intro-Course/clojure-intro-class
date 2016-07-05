@@ -1,5 +1,5 @@
 (ns corefns.assert_handling
-  (:use [clojure.core.incubator])
+;;   (:use [clojure.core.incubator])
   (:require [corefns.failed_asserts_info :refer :all]))
 
 ;; Functions to check pre-conditions and record the offenders for

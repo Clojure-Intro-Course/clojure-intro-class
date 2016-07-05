@@ -63,12 +63,12 @@
   :args (s/cat :check-function ifn? :check-seqable (s/+ seqable?)))
 (s/instrument #'mapcat)
 
-; NO -> TODO: FIXME
-;; (s/fdef assoc
-;;   :args (s/cat :check-map-or-vector (s/or :check-map map? :check-vector vector?)
-;;                :dummy ::s/any
-;;                :dummies (s/+ ::s/any)))
-;; (s/instrument #'assoc)
+; NO
+(s/fdef assoc
+  :args (s/cat :check-map-or-vector (s/or :check-map (s/nilable map?) :check-vector (s/nilable vector?))
+               :dummy ::s/any
+               :dummies (s/+ ::s/any)))
+(s/instrument #'assoc)
 
 ; NO
 (s/fdef dissoc
