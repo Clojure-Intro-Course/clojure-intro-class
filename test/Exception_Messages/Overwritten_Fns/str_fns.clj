@@ -12,3 +12,9 @@
         (get-text-no-location
          (run-and-catch-pretty-no-stacktrace 'intro.core
           '(int "banana"))))
+
+;; We use the same message as for identfier undefined, but have a hint that is
+;; more specific to dynamic class loading
+(expect (more-> "Name clojure.string.split is undefined." get-text-no-location
+                (re-pattern (str "(.*)Found in (.*)" (line-number-format "(\\d+)" "(\\d+)") "\\."))  get-all-text)
+              (run-and-catch-pretty-no-stacktrace 'intro.core '(clojure.string.split "a b c" " ")))

@@ -306,7 +306,6 @@
 (expect "Function nth does not allow a map as an argument."
         (get-text-no-location (run-and-catch-pretty-no-stacktrace 'intro.core '(nth {:a 10 :z 4} 20))))
 
-;;sorted to here..................................
 
 ;###########################################
 ;### Testing for ClassNotFoundException ####
@@ -318,6 +317,7 @@
                 (re-pattern (str "(.*)Found in (.*)" (line-number-format "(\\d+)" "(\\d+)") "\\."))  get-all-text)
               (run-and-catch-pretty-no-stacktrace 'intro.core '(clojure.string.split "a b c" " ")))
 
+;;sorted to here..................................
 
 
 ;##################################
