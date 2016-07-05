@@ -72,7 +72,7 @@
 
 ; NO
 (s/fdef dissoc
-  :args (s/cat :check-map map? :dummies (s/* ::s/any)))
+  :args (s/cat :check-map (s/nilable map?) :dummies (s/* ::s/any)))
 (s/instrument #'dissoc)
 
 ; NO

@@ -101,7 +101,7 @@
 
 
 ;;probably depricated since spec, but below is slightly buggy code to automate the re defining of functions
-;;This should be deleted after I am certain it is no longer useful. 
+;;This should be deleted after I am certain it is no longer useful.
 ;
 ;;;adds argument counts to the hashmap being passed around, this is a helper function
 ;;;for the old way of redefining functions
