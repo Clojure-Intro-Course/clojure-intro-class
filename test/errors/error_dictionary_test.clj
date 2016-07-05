@@ -261,7 +261,6 @@
         (get-text-no-location
          (run-and-catch-pretty-no-stacktrace 'intro.core '(nth [0 1 2 3 4 5] 10))))
 
-;;sorted to here..................................
 
 ;###################################
 ;### Testing for Arity Exceptions###
@@ -285,6 +284,7 @@
         ;; note: let is needed in the test since the error must happen only at run time
         (get-text-no-location (run-and-catch-pretty-no-stacktrace 'intro.core '(let [a :b b :b] {a 1 b 2}))))
 
+;;sorted to here..................................
 
 ;##########################################
 ;### Testing for Null Pointer Exceptions###
