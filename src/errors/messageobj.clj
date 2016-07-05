@@ -48,7 +48,8 @@
 
 (defn get-all-text [msg-obj]
    "concatenate all text from a message object into a string"
-   (reduce #(str %1 (:msg %2)) "" msg-obj))
+  ;(println (str "MESSAGE in get-all-text" msg-obj))
+  (reduce #(str %1 (:msg %2)) "" msg-obj))
 
 (defn make-mock-preobj [matches]
   "creates a test msg-info-obj. Used for testing so that things don't break"

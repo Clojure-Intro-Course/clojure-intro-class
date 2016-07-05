@@ -1,5 +1,6 @@
 (ns corefns.corefns
-  (:use [clojure.core.incubator])
+  (:use [clojure.core.incubator]
+        [corefns.specs])
 ;;   (:refer-clojure :exclude [map nth])
   (:require [corefns.assert_handling :refer :all]
             [corefns.failed_asserts_info :refer :all]
@@ -21,13 +22,13 @@
 ;;   {:pre [(only-arg (check-if-seqable? "empty?" argument1))]}
 ;;   (clojure.core/empty? argument1))
 
-(s/fdef empty?
-  :args (s/cat :check-seqable seqable?))
+;; (s/fdef empty?
+;;   :args (s/cat :check-seqable seqable?))
 
-(s/instrument #'empty?)
+;; (s/instrument #'empty?)
 
-(defn empty? [argument1]
-  (clojure.core/empty? argument1))
+;; (defn empty? [argument1]
+;;   (clojure.core/empty? argument1))
 
 
 ;;(first coll)
@@ -81,13 +82,13 @@
 ;;          (check-if-seqables? "map" args 3)]}
 ;;   (apply clojure.core/map argument1 argument2 args))
 
-(s/fdef map
-      :args (s/cat :check-function ifn? :check-seqable (s/+ seqable?)))
+;; (s/fdef map
+;;       :args (s/cat :check-function ifn? :check-seqable (s/+ seqable?)))
 
-(s/instrument #'map)
+;; (s/instrument #'map)
 
-(defn map [argument1 argument2 & args]
-  (apply clojure.core/map argument1 argument2 args))
+;; (defn map [argument1 argument2 & args]
+;;   (apply clojure.core/map argument1 argument2 args))
 
 ;; (count coll)
 ;; Returns the number of items in the collection. (count nil) returns
@@ -101,18 +102,18 @@
 ;; conj[oin]. Returns a new collection with the xs
 ;;'added'. (conj nil item) returns (item). The 'addition' may
 ;; happen at different 'places' depending on the concrete type.
-(defn conj [argument1 argument2 & args]
-  {:pre [(check-if-seqable? "conj" argument1)]}
-  (apply clojure.core/conj argument1 argument2 args))
+;; (defn conj [argument1 argument2 & args]
+;;   {:pre [(check-if-seqable? "conj" argument1)]}
+;;   (apply clojure.core/conj argument1 argument2 args))
 
 ;; (into to from)
 ;; Returns a new coll consisting of to-coll with all of the items of
 ;; from-coll conjoined.
-(defn into
-  ([argument1 argument2]
-   {:pre [(check-if-seqable? "into" argument1)
-          (check-if-seqable? "into" argument2)]}
-   (clojure.core/into argument1 argument2)))
+;; (defn into
+;;   ([argument1 argument2]
+;;    {:pre [(check-if-seqable? "into" argument1)
+;;           (check-if-seqable? "into" argument2)]}
+;;    (clojure.core/into argument1 argument2)))
 ;; commented out the transducer case for now Elena June 1st 2016
   ;([argument1 argument2 argument3]
   ; {:pre [(check-if-seqable? "into" argument1)
@@ -123,9 +124,9 @@
 ;; (cons x seq)
 ;; Returns a new seq where x is the first element and seq is
 ;;  the rest.
-(defn cons [argument1 argument2]
-  {:pre [(check-if-seqable? "cons" argument2)]}
-  (clojure.core/cons argument1 argument2))
+;; (defn cons [argument1 argument2]
+;;   {:pre [(check-if-seqable? "cons" argument2)]}
+;;   (clojure.core/cons argument1 argument2))
 
 ;; (reduce f coll)
 ;; (reduce f val coll)
@@ -138,15 +139,15 @@
 ;; result of applying f to val and the first item in coll, then
 ;; applying f to that result and the 2nd item, etc. If coll contains no
 ;; items, returns val and f is not called.
-(defn reduce
-  ([argument1 argument2]
-   {:pre [(check-if-function? "reduce" argument1)
-          (check-if-seqable? "reduce" argument2)]}
-   (clojure.core/reduce argument1 argument2))
-  ([argument1 argument2 argument3]
-   {:pre [(check-if-function? "reduce" argument1)
-          (check-if-seqable? "reduce" argument3)]}
-   (clojure.core/reduce argument1 argument2 argument3)))
+;; (defn reduce
+;;   ([argument1 argument2]
+;;    {:pre [(check-if-function? "reduce" argument1)
+;;           (check-if-seqable? "reduce" argument2)]}
+;;    (clojure.core/reduce argument1 argument2))
+;;   ([argument1 argument2 argument3]
+;;    {:pre [(check-if-function? "reduce" argument1)
+;;           (check-if-seqable? "reduce" argument3)]}
+;;    (clojure.core/reduce argument1 argument2 argument3)))
 
 ;; (nth coll index)
 ;; (nth coll index not-found)
@@ -168,22 +169,22 @@
 ;; (filter pred coll)
 ;; Returns a lazy sequence of the items in coll for which
 ;; (pred item) returns true. pred must be free of side-effects.
-(defn filter
- ; ([argument1]
-  ; {:pre [(check-if-function? "filter" argument1)]}
-   ;(clojure.core/filter argument1))
-  ([argument1 argument2]
-   {:pre [(check-if-function? "filter" argument1)
-         (check-if-seqable? "filter" argument2)]}
-  (clojure.core/filter argument1 argument2)))
+;; (defn filter
+;;  ; ([argument1]
+;;   ; {:pre [(check-if-function? "filter" argument1)]}
+;;    ;(clojure.core/filter argument1))
+;;   ([argument1 argument2]
+;;    {:pre [(check-if-function? "filter" argument1)
+;;          (check-if-seqable? "filter" argument2)]}
+;;   (clojure.core/filter argument1 argument2)))
 
 ;; (mapcat f & colls)
 ;; Returns the result of applying concat to the result of applying map
 ;; to f and colls. Thus function f should return a collection.
-(defn mapcat [argument1 & args]
-  {:pre [(check-if-function? "mapcat" argument1)
-         (check-if-seqables? "mapcat" args 2)]}
-  (apply clojure.core/mapcat argument1 args))
+;; (defn mapcat [argument1 & args]
+;;   {:pre [(check-if-function? "mapcat" argument1)
+;;          (check-if-seqables? "mapcat" args 2)]}
+;;   (apply clojure.core/mapcat argument1 args))
 
 ;; (assoc map key val)(assoc map key val & kvs)
 ;; assoc[iate]. When applied to a map, returns a new map of the
@@ -198,13 +199,13 @@
 ;; (dissoc map)(dissoc map key)(dissoc map key & ks)
 ;; dissoc[iate]. Returns a new map of the same (hashed/sorted) type,
 ;; that does not contain a mapping for key(s).
-(defn dissoc
-  ([mymap];check-if-seqable? is not restrictive enough
-   {:pre [(only-arg (check-if-map? "dissoc" mymap 1))]}
-   (clojure.core/dissoc mymap))
-  ([mymap & keys]
-   {:pre [(check-if-map? "dissoc" mymap 1)]}
-   (apply clojure.core/dissoc (into [mymap] keys))))
+;; (defn dissoc
+;;   ([mymap];check-if-seqable? is not restrictive enough
+;;    {:pre [(only-arg (check-if-map? "dissoc" mymap 1))]}
+;;    (clojure.core/dissoc mymap))
+;;   ([mymap & keys]
+;;    {:pre [(check-if-map? "dissoc" mymap 1)]}
+;;    (apply clojure.core/dissoc (into [mymap] keys))))
 
 ;; (concat)
 ;; (concat x)
@@ -231,9 +232,9 @@
 
 ;;(odd? n)
 ;;Returns true if n is odd, throws an exception if n is not an integer
-(defn odd? [n]
-  {:pre [(only-arg (check-if-integer? "odd?" n 1))]}
-  (clojure.core/odd? n))
+;; (defn odd? [n]
+;;   {:pre [(only-arg (check-if-integer? "odd?" n 1))]}
+;;   (clojure.core/odd? n))
 
 ;;(even? n)
 ;;Returns true if n is even, throws an exception if n is not an integer
@@ -246,10 +247,13 @@
 ;;    (< x y & more)
 ;; Returns non-nil if nums are in monotonically increasing order,
 ;; otherwise false.
+;; (defn < [argument1 & args]
+;;    {:pre [(check-if-number? "<" argument1)
+;;           (check-if-numbers? "<" args 2)]}
+;;    (apply clojure.core/< argument1 args))
 (defn < [argument1 & args]
-   {:pre [(check-if-number? "<" argument1)
-          (check-if-numbers? "<" args 2)]}
    (apply clojure.core/< argument1 args))
+
 
 ;;    (<= x)
 ;;    (<= x y)
@@ -402,9 +406,9 @@
 ;; of those fns.  The returned fn takes a variable number of args,
 ;; applies the rightmost of fns to the args, the next
 ;; fn (right-to-left) to the result, etc.
-(defn comp [& args]
-  {:pre [(check-if-functions? "comp" args 1)]}
-  (apply clojure.core/comp args))
+;; (defn comp [& args]
+;;   {:pre [(check-if-functions? "comp" args 1)]}
+;;   (apply clojure.core/comp args))
 
 
 ;;    (repeatedly f)
@@ -412,32 +416,34 @@
 ;; Takes a function of no args, presumably with side effects, and
 ;; returns an infinite (or length n if supplied) lazy sequence of calls
 ;; to it
-(defn repeatedly
-  ([argument1]
-   {:pre [(only-arg (check-if-function? "repeatedly" argument1))]}
-   (clojure.core/repeatedly argument1))
-  ([argument1 argument2]
-   {:pre [(check-if-number? "repeatedly" argument1)
-          (check-if-function? "repeatedly" argument2)]}
-   (clojure.core/repeatedly argument1 argument2)))
+;; (defn repeatedly
+;;   ([argument1]
+;;    {:pre [(only-arg (check-if-function? "repeatedly" argument1))]}
+;;    (clojure.core/repeatedly argument1))
+;;   ([argument1 argument2]
+;;    {:pre [(check-if-number? "repeatedly" argument1)
+;;           (check-if-function? "repeatedly" argument2)]}
+;;    (clojure.core/repeatedly argument1 argument2)))
 
 ;;    (repeat f)
 ;;    (repeat n f)
 ;; Returns a lazy (infinite!, or length n if supplied) sequence of xs.
-(defn repeat
-  ([argument1]
-   (clojure.core/repeat argument1))
-  ([argument1 argument2]
-   {:pre [(check-if-number? "repeat" argument1)]}
-   (clojure.core/repeat argument1 argument2)))
+;; (defn repeat
+;;   ([argument1](defn distinct [argument1]
+;;   {:pre [(check-if-seqable? "distinct" argument1)]}
+;;   (clojure.core/distinct argument1))
+;;    (clojure.core/repeat argument1))
+;;   ([argument1 argument2]
+;;    {:pre [(check-if-number? "repeat" argument1)]}
+;;    (clojure.core/repeat argument1 argument2)))
 
 ;;    (distinct)
 ;;    (distinct coll)
 ;; Returns a lazy sequence of the elements of coll with duplicates removed.
 ;; Returns a stateful transducer when no collection is provided.
-(defn distinct [argument1]
-  {:pre [(check-if-seqable? "distinct" argument1)]}
-  (clojure.core/distinct argument1))
+;; (defn distinct [argument1]
+;;   {:pre [(check-if-seqable? "distinct" argument1)]}
+;;   (clojure.core/distinct argument1))
 
 
 

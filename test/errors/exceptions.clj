@@ -76,8 +76,10 @@
    exceptions it may throw. Returns the prettified exception without a stacktrace. If a quoted
   namespace is given, it runs the code in that namespace."
   ([code]
+   ;(println  (str "MSG: " (count (:msg-info-obj (prettify-exception (run-and-catch-raw code))))))
    (:msg-info-obj (prettify-exception (run-and-catch-raw code))))
   ([name-space code]
+   ;(println  (str "MSG: " (count (:msg-info-obj (prettify-exception (run-and-catch-raw name-space code)))))
    (:msg-info-obj (prettify-exception (run-and-catch-raw name-space code)))))
 
 ;; when giving a namespace, pass in a quoted namespace
@@ -96,13 +98,13 @@
   [e] (if (instance? Throwable e) (.getMessage e) e))
 
 (defn get-text-no-location [m]
+  ;(println (str "MESSAGE" (get-all-text m)))
   (let [text-no-newln (nth (re-matches #"(.*)\nFound(.*)" (get-all-text m)) 1)
-        text (if text-no-newln text-no-newln
+        text (if text-no-newln
+               text-no-newln
                (let [matches (re-matches #"(.*)\n(.*)\nFound(.*)" (get-all-text m))]
                  (str (nth matches 1) "\n" (nth matches 2))))]
-    ;(println text)
-    text
-  ))
+    text))
 
 
 ; 1.2 tests
@@ -298,7 +300,7 @@
 
 (expect true (apply compare-traces-of-saved-exceptions saved-exceptions))
 
-(expect true (compare-traces-of-quoted-code 'intro.core
+(expect true (compare-traces-of-quoted-code 'intro.student
                                             '(+ 2 "string")
                                             '(cons 1 2)
                                             '(inc "apple")
@@ -315,7 +317,7 @@
 ;                                                                    'intro.student
 ;                                                                    '(error-in-anonymous)))))
 
-(expect true (compare-traces-of-quoted-code 'intro.core
+(expect true (compare-traces-of-quoted-code 'intro.student
                                             '(cons 16 79)))
 
 (expect true (compare-traces-of-saved-exceptions "4clojure-prob156-AssertionError.ser"))

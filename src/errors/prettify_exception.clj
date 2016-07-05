@@ -72,6 +72,41 @@
   [v]
   (if-not (coll? v) (single-val-str v) (lookup-fns v)))
 
+(defn- message-arity
+  "Gives the arity part of the message when there is an arity error detected by spec"
+  ;; currently doesn't use the reason, for consistency with the wording of non-spec arity errors
+  ;; the reasons may be "Insufficient input" and "Extra input" (as strings)
+  [reason args fname]
+  (let [arg-args (if (= 1 (count args)) " argument" " arguments")
+        arity (lookup-arity fname)]
+  (make-msg-info-hashes "You cannot pass " (number-word (str (count args))) arg-args " to a function "
+                        fname :arg (if arity (str ", need " arity) ""))))
+
+(defn- function-call-string
+  "Gives the function call part of the message for spec error messages"
+  [args fname]
+  (let [all-args-str (str (val-str args))
+        call-str (str "(" fname " " (subs all-args-str 1))]
+   (make-msg-info-hashes ",\n" "in the function call " call-str :call)))
+
+(defn- type-from-failed-pred
+  "Returns a type name from the name of a failed predicate"
+  [pred-str]
+  (cond (= pred-str "seqable?") "a sequence"
+        (= pred-str "ifn?") "a function"
+        :else (str "a " (subs pred-str 0 (dec (count pred-str))))))
+
+(defn- messages-types
+  "Gives the part of the message for spec conditions failure"
+  [pred-str value arg-num n]
+  (let [pred-type (type-from-failed-pred pred-str)
+        value-str (val-str value)
+        value-type (get-type-with-nil value)
+        arg-num-str (if arg-num (if (= n 1) "argument" (arg-str (inc (first arg-num)))) "")]
+   (if (nil? value)
+       (make-msg-info-hashes (str ", the " arg-num-str) " must be " pred-type :type " but is " value-type :arg)
+       (make-msg-info-hashes (str ", the " arg-num-str " ") value-str :arg  " must be " pred-type :type " but is " value-type :type))))
+
 (defn msg-info-obj-with-data
   "Creates a message info object from an exception that contains data"
   [entry message data]
@@ -79,22 +114,13 @@
         fname (:msg (second entry-info))
         problems (second (first (:clojure.spec/problems data))) ; getting the val matched to the first key
         args (:clojure.spec/args data)
-        all-args-str (str (val-str args))
+        reason (:reason problems)
         pred-str (str (:pred problems))
-        ;; remove the ? at the end to get the type; add an article:
-        pred-type (if (= pred-str "seqable?") "a sequence" (str "a " (subs pred-str 0 (dec (count pred-str)))))
         value (:val problems)
-        value-str (val-str value)
-        value-type (get-type-with-nil value)
-        arg-num-str (if (= (count args) 1) "argument" (arg-str (inc (first (:in problems)))))
-        call-str (str "(" fname " " (subs all-args-str 1))]
-    ;(println problems)
-    (into entry-info
-          (if (nil? value)
-            ;; here nil is an arg value, so the formatting is :arg, not :type
-            (make-msg-info-hashes (str ", the " arg-num-str) " must be " pred-type :type " but is " value-type :arg ",\n" "in the function call " call-str :call)
-            (make-msg-info-hashes (str ", the " arg-num-str " ") value-str :arg  " must be " pred-type :type " but is " value-type :type ",\n" "in the function call " call-str :call)))))
-
+        arg-num (:in problems)]
+    (if reason
+      (into (message-arity reason args fname) (function-call-string args fname))
+      (into entry-info (into (messages-types pred-str value arg-num (count args)) (function-call-string args fname))))))
 
 (defn msg-from-matched-entry [entry message data]
   "Creates a message info object from an exception and its data, if exists"
@@ -375,12 +401,3 @@
         ]
     (do (.setStackTrace java-Throwable stack-trace-element-array)
         java-Throwable)))
-
-;;; Elena's note: we are not using get-pretty-message anymore
-;;; in prettify-exception, so we need to retire it, but it seems
-;;; to be used in some tests.....
-;(defn prettify-exception-no-stacktrace [e]
-;  (let [e-class (class e)
-;        m (.getMessage e)
-;        message (if m m "")] ; converting an empty message from nil to ""
-;    (get-pretty-message e-class message)))

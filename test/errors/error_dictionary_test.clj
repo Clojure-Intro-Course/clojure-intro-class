@@ -15,7 +15,7 @@
 ;; testing for :class-cast-exception-cannot-cast-to-map-entry
 (expect "Attempted to create a map using a keyword, but a sequence of vectors of length 2 or a sequence of maps is needed."
         (get-text-no-location
-         (run-and-catch-pretty-no-stacktrace 'intro.core
+         (run-and-catch-pretty-no-stacktrace 'intro.student
           '(into {} [#{:x :m} #{:q :b}]))))
 
 ;; testing for :class-cast-exception
@@ -146,7 +146,7 @@
                        (catch Throwable e (prettify-exception e))))))
 
 ;; testing for greater than 20 arguments
-(expect #"A function may not take more than more than 20 parameters."
+(expect #"A function may not take more than 20 parameters."
        (get-text-no-location (:msg-info-obj (try (load-file "exceptions/compilation_errors/greater_than_20_parameters.clj")
                        (catch Throwable e (prettify-exception e))))))
 
