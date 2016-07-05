@@ -89,3 +89,8 @@
 (expect "% must be either on its own or followed by a number or &."
        (get-text-no-location (:msg-info-obj (try (load-file "exceptions/compilation_errors/percent_followed_by_letter.clj")
                        (catch Throwable e (prettify-exception e))))))
+
+;; testing for :index-out-of-bounds-index-not-provided
+(expect "An index in a sequence is out of bounds or invalid."
+        (get-text-no-location
+         (run-and-catch-pretty-no-stacktrace 'intro.core '(nth [0 1 2 3 4 5] 10))))

@@ -246,7 +246,6 @@
        (get-text-no-location (:msg-info-obj (try (load-file "exceptions/compilation_errors/percent_followed_by_letter.clj")
                        (catch Throwable e (prettify-exception e))))))
 
-;;sorted to here..................................
 
 ;##################################################
 ;### Testing for Index Out of Bounds Exceptions ###
@@ -261,6 +260,8 @@
 (expect "An index in a sequence is out of bounds or invalid."
         (get-text-no-location
          (run-and-catch-pretty-no-stacktrace 'intro.core '(nth [0 1 2 3 4 5] 10))))
+
+;;sorted to here..................................
 
 ;###################################
 ;### Testing for Arity Exceptions###

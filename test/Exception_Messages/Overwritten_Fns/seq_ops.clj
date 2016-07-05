@@ -71,3 +71,8 @@
 (expect "In function count, the argument :a must be a sequence but is a keyword."
         (get-text-no-location
          (run-and-catch-pretty-no-stacktrace 'intro.student '(count :a))))
+
+;; testing for :index-out-of-bounds-index-provided
+(expect "An index in a sequence is out of bounds. The index is: 10."
+        (get-text-no-location
+          (run-and-catch-pretty-no-stacktrace 'intro.core '(throw (new IndexOutOfBoundsException "10")))))
