@@ -306,7 +306,6 @@
 (expect "Function nth does not allow a map as an argument."
         (get-text-no-location (run-and-catch-pretty-no-stacktrace 'intro.core '(nth {:a 10 :z 4} 20))))
 
-;;sorted to here..................................
 
 ;###########################################
 ;### Testing for ClassNotFoundException ####
@@ -317,7 +316,6 @@
 (expect (more-> "Name clojure.string.split is undefined." get-text-no-location
                 (re-pattern (str "(.*)Found in (.*)" (line-number-format "(\\d+)" "(\\d+)") "\\."))  get-all-text)
               (run-and-catch-pretty-no-stacktrace 'intro.core '(clojure.string.split "a b c" " ")))
-
 
 
 ;##################################
@@ -392,5 +390,7 @@
 (expect "An opened \" does not have a matching closing one."
        (get-text-no-location (:msg-info-obj (try (load-file "exceptions/compilation_errors/non_closing_string.clj")
                        (catch Throwable e (prettify-exception e))))))
+
+;;sorted to here..................................
 
 ;; :compiler-exception-must-recur-to-function-or-loop

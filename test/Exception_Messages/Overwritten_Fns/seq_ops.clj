@@ -84,3 +84,34 @@
 ;; testing for :null-pointer-non-existing-object-not-provided
 (expect "An attempt to access a non-existing object (NullPointerException)."
         (get-text-no-location (run-and-catch-pretty-no-stacktrace 'intro.core '(int nil))))
+
+(expect #"The arguments following the map or vector in assoc must come in pairs, but one of them does not have a match."
+        (get-text-no-location (run-and-catch-pretty-no-stacktrace 'intro.core '(assoc {:a 3 :b 5} :key1 "val1" :key2))))
+
+;; the internal representation of zero? is zero?--inliner--4238 (in this particular test), i.e. it has
+;; an inliner part
+(expect "You cannot pass zero arguments to a function zero?."
+        (get-text-no-location (run-and-catch-pretty-no-stacktrace 'intro.core '(zero?))))
+
+(expect "Recur can only occur as a tail call: no operations can be done after its return."  ; this is giving NO_SOURCE_PATH
+        (get-text-no-location (run-and-catch-pretty-no-stacktrace 'intro.core '(defn inc-nums [x] ((recur (inc x)) (loop [x x]))))))
+
+(expect #"def must be followed by a name." ; this is giving NO_SOURCE_PATH
+        (get-text-no-location  (run-and-catch-pretty-no-stacktrace 'intro.core '(def 4 (+ 2 2)))))
+
+(expect (str "End of file, starting at line 3.\nProbably a non-closing parenthesis or bracket.\nFound in file eof.clj" (line-number-format 4 1) ".")
+        (get-all-text (:msg-info-obj (prettify-exception (import-from-file "exceptions/end_of_file.ser")))))
+
+(expect #"Name splt does not exist in the namespace clojure\.string\.\nFound(.+)"
+        (get-all-text (run-and-catch-pretty-no-stacktrace 'intro.core '(clojure.string/splt "pattern" #"/"))))
+
+(expect #"The namespace clojure does not exist or is not accessible in your program\.\n(.+)"
+        (get-all-text (run-and-catch-pretty-no-stacktrace 'intro.core '(clojure/string/splt "pattern" #"/"))))
+
+(expect "There is an unmatched delimiter )."
+       (get-text-no-location (:msg-info-obj (try (load-file "exceptions/compilation_errors/unmatched_delim_re.clj")
+                       (catch Throwable e (prettify-exception e))))))
+
+(expect "An opened \" does not have a matching closing one."
+       (get-text-no-location (:msg-info-obj (try (load-file "exceptions/compilation_errors/non_closing_string.clj")
+                       (catch Throwable e (prettify-exception e))))))

@@ -117,3 +117,31 @@
 (expect "Function nth does not allow a map as an argument."
         (get-text-no-location (run-and-catch-pretty-no-stacktrace 'intro.core '(nth {:a 10 :z 4} 20))))
 
+;;;; Elena: we might want to revisit this one
+(expect #"Parameters for loop must come in pairs, but one of them does not have a match; on line (\d+) in the file intro\.core"
+        (get-text-no-location (run-and-catch-pretty-no-stacktrace 'intro.core '(defn s [s] (loop [s])))))
+
+(expect "This recur is supposed to take zero arguments, but you are passing one." ;  this is giving NO_SOURCE_PATH
+        (get-text-no-location (run-and-catch-pretty-no-stacktrace 'intro.core '(recur (inc 1)))))
+
+(expect "This recur is supposed to take one argument, but you are passing two." ;
+        (get-text-no-location (run-and-catch-pretty-no-stacktrace 'intro.core '(loop [x 1] (recur (inc x) (dec x))))))
+
+(expect "Parameters for cond must come in pairs, but one of them does not have a match." ; this is giving NO_SOURCE_PATH
+        (get-text-no-location
+         (run-and-catch-pretty-no-stacktrace 'intro.core '(defn my-num [x] (cond (= 1 x))))))
+
+(expect #"loop is a macro, cannot be passed to a function." ; this is giving NO_SOURCE_PATH
+        (get-text-no-location  (run-and-catch-pretty-no-stacktrace 'intro.core '(defn my-happy [x] loop [x x]))))
+
+(expect #"Name banana is undefined." ; this is giving NO_SOURCE_PATH
+        (get-text-no-location  (run-and-catch-pretty-no-stacktrace 'intro.core '(banana 5 6))))
+
+(expect (str "There is an unmatched delimiter ).\nFound in file unmatched_delimiter.clj" (line-number-format 3 20) ".")
+        (get-all-text  (:msg-info-obj (prettify-exception (import-from-file "exceptions/unmatched_delimiter.ser")))))
+
+(expect "Too many arguments to def." ; this is giving NO_SOURCE_PATH
+        (get-text-no-location  (run-and-catch-pretty-no-stacktrace 'intro.core '(def my-var 5 6))))
+
+(expect "Too few arguments to def." ; this is giving NO_SOURCE_PATH
+        (get-text-no-location  (run-and-catch-pretty-no-stacktrace 'intro.core '(def))))
