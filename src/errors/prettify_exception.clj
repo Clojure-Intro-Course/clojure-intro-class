@@ -89,10 +89,17 @@
         call-str (str "(" fname " " (subs all-args-str 1))]
    (make-msg-info-hashes ",\n" "in the function call " call-str :call)))
 
+(defn- type-from-failed-pred
+  "Returns a type name from the name of a failed predicate"
+  [pred-str]
+  (cond (= pred-str "seqable?") "a sequence"
+        (= pred-str "ifn?") "a function"
+        :else (str "a " (subs pred-str 0 (dec (count pred-str))))))
+
 (defn- messages-types
   "Gives the part of the message for spec conditions failure"
   [pred-str value arg-num n]
-  (let [pred-type (if (= pred-str "seqable?") "a sequence" (str "a " (subs pred-str 0 (dec (count pred-str)))))
+  (let [pred-type (type-from-failed-pred pred-str)
         value-str (val-str value)
         value-type (get-type-with-nil value)
         arg-num-str (if arg-num (if (= n 1) "argument" (arg-str (inc (first arg-num)))) "")]
@@ -109,8 +116,6 @@
         args (:clojure.spec/args data)
         reason (:reason problems)
         pred-str (str (:pred problems))
-        ;; remove the ? at the end to get the type; add an article:
-        ;; pred-type (if (= pred-str "seqable?") "a sequence" (str "a " (subs pred-str 0 (dec (count pred-str)))))
         value (:val problems)
         arg-num (:in problems)]
     (if reason
