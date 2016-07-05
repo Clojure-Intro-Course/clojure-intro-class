@@ -85,3 +85,7 @@
 (expect "In function dissoc, the argument :s must be a map but is a keyword."
         (get-text-no-location
          (run-and-catch-pretty-no-stacktrace 'intro.student '(dissoc :s))))
+
+(expect "% must be either on its own or followed by a number or &."
+       (get-text-no-location (:msg-info-obj (try (load-file "exceptions/compilation_errors/percent_followed_by_letter.clj")
+                       (catch Throwable e (prettify-exception e))))))

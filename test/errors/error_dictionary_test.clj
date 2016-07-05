@@ -237,7 +237,6 @@
         (get-text-no-location
          (run-and-catch-pretty-no-stacktrace 'intro.student '(dec :r))))
 
-;;sorted to here..................................
 
 ;############################################
 ;### Testing for Illegal State Exceptions ###
@@ -246,6 +245,8 @@
 (expect "% must be either on its own or followed by a number or &."
        (get-text-no-location (:msg-info-obj (try (load-file "exceptions/compilation_errors/percent_followed_by_letter.clj")
                        (catch Throwable e (prettify-exception e))))))
+
+;;sorted to here..................................
 
 ;##################################################
 ;### Testing for Index Out of Bounds Exceptions ###
