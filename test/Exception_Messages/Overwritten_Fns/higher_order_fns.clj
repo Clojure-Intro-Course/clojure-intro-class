@@ -113,3 +113,7 @@
         ;; note: let is needed in the test since the error must happen only at run time
         (get-text-no-location (run-and-catch-pretty-no-stacktrace 'intro.core '(let [a :b b :b] {a 1 b 2}))))
 
+;; testing for :unsupported-operation-wrong-type-of-argument
+(expect "Function nth does not allow a map as an argument."
+        (get-text-no-location (run-and-catch-pretty-no-stacktrace 'intro.core '(nth {:a 10 :z 4} 20))))
+

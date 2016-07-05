@@ -297,7 +297,6 @@
 (expect "An attempt to access a non-existing object (NullPointerException)."
         (get-text-no-location (run-and-catch-pretty-no-stacktrace 'intro.core '(int nil))))
 
-;;sorted to here..................................
 
 ;###################################################
 ;### Testing for Unsupported Operation Exceptions###
@@ -306,6 +305,8 @@
 ;; testing for :unsupported-operation-wrong-type-of-argument
 (expect "Function nth does not allow a map as an argument."
         (get-text-no-location (run-and-catch-pretty-no-stacktrace 'intro.core '(nth {:a 10 :z 4} 20))))
+
+;;sorted to here..................................
 
 ;###########################################
 ;### Testing for ClassNotFoundException ####
