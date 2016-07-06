@@ -26,7 +26,7 @@
          (run-and-catch-pretty-no-stacktrace 'intro.student '(conj {:a 1 :b 2} [1 2 3 4]))))
 
 ;; testing for :illegal-argument-cannot-convert-type
-(expect "In function cons, the second argument 2 must be a sequence but is a number."
+(expect "In function cons, the second argument 2 must be a sequence but is a number,\nin the function call (cons 1 2)"
         (get-text-no-location
          (run-and-catch-pretty-no-stacktrace 'intro.student '(cons 1 2))))
 
