@@ -398,7 +398,7 @@
          (check-if-numbers? "min" args 2)]}
   (apply clojure.core/min argument1 args))
 
-;;    (comp)
+;;    (comp) --> This is an identity function
 ;;    (comp f)
 ;;    (comp f g)
 ;;    (comp f g & fs)
