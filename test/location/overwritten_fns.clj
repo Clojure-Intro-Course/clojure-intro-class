@@ -1,4 +1,4 @@
-(ns location.overwritten_fns.clj
+(ns location.overwritten_fns
   (:use [errors.prettify_exception :only [line-number-format]])
   (:require [expectations :refer :all]
             [errors.messageobj :refer :all]

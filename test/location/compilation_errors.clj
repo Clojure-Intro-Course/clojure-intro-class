@@ -1,4 +1,4 @@
-(ns location.compilation_errors.clj
+(ns location.compilation_errors
   (:use [errors.prettify_exception :only [line-number-format]])
   (:require [expectations :refer :all]
             [errors.messageobj :refer :all]

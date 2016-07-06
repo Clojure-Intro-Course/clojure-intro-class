@@ -1,4 +1,4 @@
-(ns exception_msgs.overwritten_fns.seq_ops.clj
+(ns exception_msgs.overwritten_fns.seq_ops
   (:use [errors.prettify_exception :only [line-number-format]])
   (:require [expectations :refer :all]
             [errors.messageobj :refer :all]
