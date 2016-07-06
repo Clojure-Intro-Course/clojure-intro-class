@@ -44,8 +44,12 @@
 (s/instrument #'cons)
 
 ; NO
+; This doesn't differenciate two and three arity cases
+;; (s/fdef reduce
+;;         :args (s/cat :check-funtion ifn? :dummy (s/? ::s/any) :check-seqable seqable?))
 (s/fdef reduce
-        :args (s/cat :check-funtion ifn? :dummy (s/? ::s/any) :check-seqable seqable?))
+        :args (s/or :two-args (s/cat :check-funtion ifn? :check-seqable seqable?)
+                    :three-args (s/cat :check-funtion ifn? :dummy ::s/any :check-seqable seqable?)))
 (s/instrument #'reduce)
 
 ; O - TODO: doesn't work unless the spec is after the overwritten function

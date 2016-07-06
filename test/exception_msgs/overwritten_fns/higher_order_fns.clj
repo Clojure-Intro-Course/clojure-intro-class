@@ -1,4 +1,4 @@
-(ns errors.error_dictionary_test
+(ns exception_msgs.overwritten_fns.higher_order_fns
   (:use [errors.prettify_exception :only [line-number-format]])
   (:require [expectations :refer :all]
             [errors.messageobj :refer :all]
