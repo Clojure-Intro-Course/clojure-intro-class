@@ -65,7 +65,7 @@
 
 ; NO
 (s/fdef assoc
-  :args (s/cat :check-map-or-vector (s/or :check-map (s/nilable map?) :check-vector (s/nilable vector?))
+  :args (s/cat :check-map-or-vector (s/or :check-map (s/nilable map?) :check-vector vector?)
                :dummy ::s/any
                :dummies (s/+ ::s/any)))
 (s/instrument #'assoc)

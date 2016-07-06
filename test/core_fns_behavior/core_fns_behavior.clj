@@ -1,4 +1,4 @@
- (ns core_fns_behavior.core_fns_behavior
+(ns core_fns_behavior.core_fns_behavior
   (:require [expectations :refer :all]
             [corefns.corefns :refer :all]
             [errors.messageobj :refer :all]
