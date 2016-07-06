@@ -1,7 +1,6 @@
 (ns core_fns_behavior.core_fns_behavior
   (:require [expectations :refer :all]
             [corefns.corefns :refer :all]
-            [errors.messageobj :refer :all]
             [errors.exceptions :refer :all]
             [corefns.collection_fns :refer :all]
             [intro.core :refer :all]))

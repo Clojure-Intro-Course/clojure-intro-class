@@ -85,8 +85,8 @@
 (defn- function-call-string
   "Gives the function call part of the message for spec error messages"
   [args fname]
-  (let [all-args-str (str (val-str args))
-        call-str (str "(" fname " " (subs all-args-str 1))]
+  (let [all-args-str (if args (str (val-str args)) "")
+        call-str (str "(" fname " " (if args (subs all-args-str 1) ")"))]
    (make-msg-info-hashes ",\n" "in the function call " call-str :call)))
 
 (defn- type-from-failed-pred
@@ -97,10 +97,16 @@
         (= pred-str "map?") "a hashmap"
         :else (str "a " (subs pred-str 0 (dec (count pred-str))))))
 
+(defn- or-str
+  "Takes a vector of predicates, returns a string of their names separated by 'or'"
+  [pred-strs]
+  (apply str (interpose " or " (map type-from-failed-pred pred-strs))))
+
 (defn- messages-types
   "Gives the part of the message for spec conditions failure"
-  [pred-str value arg-num n]
-  (let [pred-type (type-from-failed-pred pred-str)
+  [problems value arg-num n]
+  (let [pred-str (if (map? problems) (str (:pred problems)) (map #(str (:pred %)) problems)) ;; it's a map when it's a single predcate
+        pred-type (if (map? problems) (type-from-failed-pred pred-str) (or-str pred-str))
         value-str (val-str value)
         value-type (get-type-with-nil value)
         arg-num-str (if arg-num (if (= n 1) "argument" (arg-str (inc (first arg-num)))) "")]
@@ -108,20 +114,33 @@
        (make-msg-info-hashes (str ", the " arg-num-str) " must be " pred-type :type " but is " value-type :arg)
        (make-msg-info-hashes (str ", the " arg-num-str " ") value-str :arg  " must be " pred-type :type " but is " value-type :type))))
 
+(defn- get-predicates
+  "If there is only one non-nil predicate in data, the hash map for that predicate
+   is returned. If there are several non-nil predicates, a vector of their hash maps is
+   returned."
+  [data]
+  (let [predicates (vals (:clojure.spec/problems data))]
+    (if (= 1 (count predicates))
+        (first predicates)
+        (let [non-nils (filter #(not= "nil?" (str (:pred %))) predicates)]
+             (if (= (count non-nils) 1) (first non-nils) non-nils)))))
+
+
 (defn msg-info-obj-with-data
   "Creates a message info object from an exception that contains data"
   [entry message data]
   (let [entry-info ((:make-msg-info-obj entry) (re-matches (:match entry) message))
         fname (:msg (second entry-info))
-        problems (second (first (:clojure.spec/problems data))) ; getting the val matched to the first key
+        problems (get-predicates data) ; returns a predicate hashmap or a vector of pred hashmaps
+        problem (if (map? problems) problems (first problems)) ; to make it easy to extract fields
         args (:clojure.spec/args data)
-        reason (:reason problems)
-        pred-str (str (:pred problems))
-        value (:val problems)
-        arg-num (:in problems)]
+        reason (:reason problem)
+        value (:val problem)
+        arg-num (:in problem)]
+    (println "Data:" data)
     (if reason
       (into (message-arity reason args fname) (function-call-string args fname))
-      (into entry-info (into (messages-types pred-str value arg-num (count args)) (function-call-string args fname))))))
+      (into entry-info (into (messages-types problems value arg-num (count args)) (function-call-string args fname))))))
 
 (defn msg-from-matched-entry [entry message data]
   "Creates a message info object from an exception and its data, if exists"
