@@ -94,7 +94,7 @@
 (defn- or-str
   "Takes a vector of predicates, returns a string of their names separated by 'or'"
   [pred-strs]
-  (apply str (interpose " or " (map type-from-failed-pred pred-strs))))
+  (apply str (interpose " or " (distinct (map type-from-failed-pred pred-strs)))))
 
 (defn- messages-types
   "Gives the part of the message for spec conditions failure"
@@ -131,7 +131,7 @@
         reason (:reason problem)
         value (:val problem)
         arg-num (:in problem)]
-    ;(println "Data:" data)
+    (println "Data:" data)
     (if reason
       (into (message-arity reason args fname) (function-call-string args fname))
       (into entry-info (into (messages-types problems value arg-num (count args)) (function-call-string args fname))))))
