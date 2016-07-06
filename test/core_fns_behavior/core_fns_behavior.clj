@@ -540,7 +540,7 @@
                                              '(mapcat reverse :not-a-collection [8 9 10]))))
 
 ;; testing for the second precondition of mapcat with multiple collections
-(expect "In function mapcat, the third argument :not-a-collection must be a sequence but is a keyword."
+(expect "In function mapcat, the third argument :not-a-collection must be a sequence but is a keyword,\nin the function call (mapcat reverse [1 2 3] :not-a-collection)"
         (get-text-no-location
          (run-and-catch-pretty-no-stacktrace 'intro.student
                                              '(mapcat reverse [1 2 3] :not-a-collection))))
@@ -568,7 +568,7 @@
                                              '(< :not-a-number 31))))
 
 ;; testing if the precondition of < works on second arg
-(expect "In function <, the second argument :not-a-number must be a number but is a keyword."
+(expect "In function <, the second argument :not-a-number must be a number but is a keyword,\nin the function call (< 4 :not-a-number)"
         (get-text-no-location
          (run-and-catch-pretty-no-stacktrace 'intro.student
                                              '(< 4 :not-a-number))))
