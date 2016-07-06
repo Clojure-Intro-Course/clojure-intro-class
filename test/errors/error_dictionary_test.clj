@@ -195,7 +195,7 @@
         (get-text-no-location
          (run-and-catch-pretty-no-stacktrace 'intro.student '(even? nil))))
 
-(expect "In function odd?, the argument must be an integer number but is nil."
+(expect "In function odd?, the argument must be an integer but is nil,\nin the function call (odd? nil)"
         (get-text-no-location
          (run-and-catch-pretty-no-stacktrace 'intro.student '(odd? nil))))
 
@@ -229,7 +229,7 @@
         (get-text-no-location
          (run-and-catch-pretty-no-stacktrace 'intro.student '(count :a))))
 
-(expect "In function dissoc, the argument :s must be a map but is a keyword."
+(expect "In function dissoc, the argument :s must be a hashmap but is a keyword,\nin the function call (dissoc :s)"
         (get-text-no-location
          (run-and-catch-pretty-no-stacktrace 'intro.student '(dissoc :s))))
 

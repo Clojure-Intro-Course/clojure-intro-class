@@ -15,7 +15,7 @@
 
 
 ;; Note: the order of elements in a hashmap is not guaranteed, so the actual elements amy be different
-(expect "In function +, the first argument {:a 6, :k \"a\", :b 4, :c +, :l 6, :m 7} must be a number but is a map,\nin the function call (+ {:a 6, :k \"a\", :b 4, :c +, :l 6, :m 7})"
+(expect "In function +, the argument {:a 6, :k \"a\", :b 4, :c +, :l 6, :m 7} must be a number but is a map,\nin the function call (+ {:a 6, :k \"a\", :b 4, :c +, :l 6, :m 7})"
         (get-text-no-location
          (run-and-catch-pretty-no-stacktrace 'intro.student '(+ {:a 6 :k "a" :b 4 :c + :l 6 :m 7}))))
 
@@ -82,7 +82,7 @@
 (expect #"The function when-let requires exactly 2 forms in binding vector. Line (.*) in the file intro.core"
         (get-all-text (run-and-catch-pretty-no-stacktrace 'intro.core '(when-let [num1 1 num2 2] "hello"))))
 
-(expect "In function dissoc, the argument :s must be a map but is a keyword."
+(expect "In function dissoc, the argument :s must be a hashmap but is a keyword,\nin the function call (dissoc :s)"
         (get-text-no-location
          (run-and-catch-pretty-no-stacktrace 'intro.student '(dissoc :s))))
 
