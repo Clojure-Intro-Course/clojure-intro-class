@@ -98,6 +98,7 @@
         :else (str "a " (subs pred-str 0 (dec (count pred-str))))))
 
 (defn- or-str
+  "Takes a vector of predicates, returns a string of their names separated by 'or'"
   [pred-strs]
   (apply str (interpose " or " (map type-from-failed-pred pred-strs))))
 
@@ -131,12 +132,12 @@
   (let [entry-info ((:make-msg-info-obj entry) (re-matches (:match entry) message))
         fname (:msg (second entry-info))
         problems (get-predicates data) ; returns a predicate hashmap or a vector of pred hashmaps
+        problem (if (map? problems) problems (first problems)) ; to make it easy to extract fields
         args (:clojure.spec/args data)
-        reason (:reason problems)
-        ;pred-str (str (:pred problems))
-        value (if (map? problems) (:val problems) (:val (first problems)))
-        arg-num (if (map? problems) (:in problems) (:in (first problems)))]
-    (println "Problems" problems)
+        reason (:reason problem)
+        value (:val problem)
+        arg-num (:in problem)]
+    ;(println "Problems" problems)
     (if reason
       (into (message-arity reason args fname) (function-call-string args fname))
       (into entry-info (into (messages-types problems value arg-num (count args)) (function-call-string args fname))))))
