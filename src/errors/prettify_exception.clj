@@ -85,8 +85,8 @@
 (defn- function-call-string
   "Gives the function call part of the message for spec error messages"
   [args fname]
-  (let [all-args-str (str (val-str args))
-        call-str (str "(" fname " " (subs all-args-str 1))]
+  (let [all-args-str (if args (str (val-str args)) "")
+        call-str (str "(" fname " " (if args (subs all-args-str 1) ")"))]
    (make-msg-info-hashes ",\n" "in the function call " call-str :call)))
 
 (defn- type-from-failed-pred
@@ -137,7 +137,7 @@
         reason (:reason problem)
         value (:val problem)
         arg-num (:in problem)]
-    ;(println "Problems" problems)
+    (println "Data:" data)
     (if reason
       (into (message-arity reason args fname) (function-call-string args fname))
       (into entry-info (into (messages-types problems value arg-num (count args)) (function-call-string args fname))))))
