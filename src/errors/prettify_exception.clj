@@ -9,14 +9,8 @@
         [seesaw.core]))
 
 
-(defn get-all-match-strings
-  "Returns the list of all match strings and their corresponding exception types
-   in error dictionary"
-  []
-  (map #(vector (:match %) (:class %)) error-dictionary))
-
-
-(defn first-match [e-class message]
+(defn first-match
+  [e-class message]
 	(first (filter #(and (= (:class %) e-class) (re-matches (:match %) message))
 			error-dictionary)))
 
@@ -137,7 +131,7 @@
         reason (:reason problem)
         value (:val problem)
         arg-num (:in problem)]
-    (println "Data:" data)
+    ;(println "Data:" data)
     (if reason
       (into (message-arity reason args fname) (function-call-string args fname))
       (into entry-info (into (messages-types problems value arg-num (count args)) (function-call-string args fname))))))
