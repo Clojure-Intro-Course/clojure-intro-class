@@ -384,7 +384,7 @@
                                               '(repeatedly 20 "not a function"))))
 
 ;; testing for the preconditions of repeatedly
-(expect "In function repeatedly, the first argument \"not a number\" must be a number but is a string."
+(expect "In function repeatedly, the first argument \"not a number\" must be a function but is a string,\nin the function call (repeatedly \"not a number\" +)"
         (get-text-no-location
           (run-and-catch-pretty-no-stacktrace 'intro.student
                                               '(repeatedly "not a number" +))))
@@ -392,7 +392,7 @@
 ;~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 ;; testing for the precondition of comp
-(expect "In function comp, the first argument \"not a function\" must be a function but is a string."
+(expect "In function comp, the first argument \"not a function\" must be a function but is a string,\nin the function call (comp \"not a function\" anonymous-function dec anonymous-function)"
         (get-text-no-location
           (run-and-catch-pretty-no-stacktrace 'intro.student
                                               '(comp "not a function" #(* 5 %) dec #(* 7 %)))))
@@ -401,7 +401,7 @@
 ;~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 ;; testing for the preconditions on assoc, it is a compiler exception
-(expect "In function assoc, the first argument \"this is a string\" must be a map or vector but is a string."
+(expect "In function assoc, the first argument \"this is a string\" must be a hashmap or a vector but is a string,\nin the function call (assoc \"this is a string\" :key1 \"val1\" :key2 \"val2\")"
         (get-text-no-location
          (run-and-catch-pretty-no-stacktrace 'intro.student
                                              '(assoc "this is a string" :key1 "val1" :key2 "val2"))))
