@@ -563,7 +563,7 @@
 ;~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 ;; testing if the precondition of < works on first arg
-(expect "In function <, the first argument :not-a-number must be a number but is a keyword."
+(expect "In function <, the first argument :not-a-number must be a number but is a keyword,\nin the function call (< :not-a-number 31)"
         (get-text-no-location
          (run-and-catch-pretty-no-stacktrace 'intro.student
                                              '(< :not-a-number 31))))
