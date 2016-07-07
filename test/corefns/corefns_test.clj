@@ -446,7 +446,7 @@
 
 ;; THIS IS ACTUALLY A TEST FOR ARITY, should be moved from here.
 ;; testing for the precondition of conj
-(expect "You cannot pass one argument to a function conj, need at least two."
+(expect "In function conj, the argument :not-a-collection must be a sequence but is a keyword,\nin the function call (conj :not-a-collection)"
         (get-text-no-location
          (run-and-catch-pretty-no-stacktrace 'intro.student
                                              '(conj :not-a-collection))))
@@ -454,13 +454,13 @@
 ;~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 ;; testing for the first precondition of into
-(expect "In function into, the first argument :not-a-collection must be a sequence but is a keyword."
+(expect "In function into, the first argument :not-a-collection must be a sequence but is a keyword,\nin the function call (into :not-a-collection [1 2 3])"
         (get-text-no-location
          (run-and-catch-pretty-no-stacktrace 'intro.student
                                              '(into :not-a-collection [1 2 3]))))
 
 ;; testing for the second precondition of into
-(expect "In function into, the second argument :not-a-collection must be a sequence but is a keyword."
+(expect "In function into, the second argument :not-a-collection must be a sequence but is a keyword,\nin the function call (into #{} :not-a-collection)"
         (get-text-no-location
          (run-and-catch-pretty-no-stacktrace 'intro.student
                                              '(into #{} :not-a-collection))))
@@ -480,7 +480,7 @@
                                              '(reduce + :not-a-collection))))
 
 ;; testing for the third precondition of reduce
-(expect "In function reduce, the third argument :not-a-collection must be a sequence but is a keyword."
+(expect "In function reduce, the third argument :not-a-collection must be a sequence or a sequence but is a keyword,\nin the function call (reduce + 2 :not-a-collection)"
         (get-text-no-location
          (run-and-catch-pretty-no-stacktrace 'intro.student
                                              '(reduce + 2 :not-a-collection))))
@@ -520,7 +520,7 @@
 ;                                             '(filter :not-a-function [1 2 3]))))
 
 ;; testing for the second precondition of filter
-(expect "In function filter, the second argument :not-a-collection must be a sequence but is a keyword."
+(expect "In function filter, the second argument :not-a-collection must be a sequence but is a keyword,\nin the function call (filter anonymous-function :not-a-collection)"
         (get-text-no-location
          (run-and-catch-pretty-no-stacktrace 'intro.student
                                              '(filter odd? :not-a-collection))))
