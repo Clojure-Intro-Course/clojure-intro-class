@@ -401,7 +401,7 @@
 ;~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 ;; testing for the preconditions on assoc, it is a compiler exception
-(expect "In function assoc, the first argument \"this is a string\" must be a map or vector but is a string."
+(expect "In function assoc, the first argument \"this is a string\" must be a hashmap or a vector but is a string,\nin the function call (assoc \"this is a string\" :key1 \"val1\" :key2 \"val2\")"
         (get-text-no-location
          (run-and-catch-pretty-no-stacktrace 'intro.student
                                              '(assoc "this is a string" :key1 "val1" :key2 "val2"))))
