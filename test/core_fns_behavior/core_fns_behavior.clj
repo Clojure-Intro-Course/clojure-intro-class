@@ -354,7 +354,7 @@
 
 ;; testing for the precondition of distinct
 
-(expect "In function repeat, the first argument \"not a number\" must be a number but is a string."
+(expect "You cannot pass two arguments to a function repeat,\nin the function call (repeat \"not a number\" 6)"
         (get-text-no-location
           (run-and-catch-pretty-no-stacktrace 'intro.student
                                               '(repeat "not a number" 6))))
@@ -363,7 +363,7 @@
 
 ;; testing for the precondition of repeat
 
-(expect "In function repeat, the first argument \"not a number\" must be a number but is a string."
+(expect "You cannot pass two arguments to a function repeat,\nin the function call (repeat \"not a number\" 6)"
         (get-text-no-location
           (run-and-catch-pretty-no-stacktrace 'intro.student
                                               '(repeat "not a number" 6))))
