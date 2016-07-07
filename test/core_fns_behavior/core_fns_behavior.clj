@@ -445,7 +445,7 @@
 
 ;; THIS IS ACTUALLY A TEST FOR ARITY, should be moved from here.
 ;; testing for the precondition of conj
-(expect "You cannot pass one argument to a function conj, need at least two."
+(expect "In function conj, the argument :not-a-collection must be a sequence but is a keyword,\nin the function call (conj :not-a-collection)"
         (get-text-no-location
          (run-and-catch-pretty-no-stacktrace 'intro.student
                                              '(conj :not-a-collection))))
@@ -453,13 +453,13 @@
 ;~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 ;; testing for the first precondition of into
-(expect "In function into, the first argument :not-a-collection must be a sequence but is a keyword."
+(expect "In function into, the first argument :not-a-collection must be a sequence but is a keyword,\nin the function call (into :not-a-collection [1 2 3])"
         (get-text-no-location
          (run-and-catch-pretty-no-stacktrace 'intro.student
                                              '(into :not-a-collection [1 2 3]))))
 
 ;; testing for the second precondition of into
-(expect "In function into, the second argument :not-a-collection must be a sequence but is a keyword."
+(expect "In function into, the second argument :not-a-collection must be a sequence but is a keyword,\nin the function call (into #{} :not-a-collection)"
         (get-text-no-location
          (run-and-catch-pretty-no-stacktrace 'intro.student
                                              '(into #{} :not-a-collection))))
@@ -473,7 +473,7 @@
 ;                                             '(reduce :not-a-function [1 2 3]))))
 
 ;; testing for the second precondition of reduce
-(expect "In function reduce, the second argument :not-a-collection must be a sequence but is a keyword."
+(expect "Don't know how to create a sequence from a keyword."
         (get-text-no-location
          (run-and-catch-pretty-no-stacktrace 'intro.student
                                              '(reduce + :not-a-collection))))
@@ -562,7 +562,7 @@
 ;~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 ;; testing if the precondition of < works on first arg
-(expect "In function <, the first argument :not-a-number must be a number but is a keyword."
+(expect "In function <, the first argument :not-a-number must be a number but is a keyword,\nin the function call (< :not-a-number 31)"
         (get-text-no-location
          (run-and-catch-pretty-no-stacktrace 'intro.student
                                              '(< :not-a-number 31))))
