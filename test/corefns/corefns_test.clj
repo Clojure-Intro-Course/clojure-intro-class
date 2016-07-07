@@ -393,7 +393,7 @@
 ;~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 ;; testing for the precondition of comp
-(expect "In function comp, the first argument \"not a function\" must be a function but is a string."
+(expect "In function comp, the first argument \"not a function\" must be a function but is a string,\nin the function call (comp \"not a function\" anonymous-function dec anonymous-function)"
         (get-text-no-location
           (run-and-catch-pretty-no-stacktrace 'intro.student
                                               '(comp "not a function" #(* 5 %) dec #(* 7 %)))))
