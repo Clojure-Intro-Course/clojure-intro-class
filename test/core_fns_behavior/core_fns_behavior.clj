@@ -479,7 +479,7 @@
                                              '(reduce + :not-a-collection))))
 
 ;; testing for the third precondition of reduce
-(expect "In function reduce, the third argument :not-a-collection must be a sequence but is a keyword."
+(expect "Don't know how to create a sequence from a keyword."
         (get-text-no-location
          (run-and-catch-pretty-no-stacktrace 'intro.student
                                              '(reduce + 2 :not-a-collection))))
@@ -519,7 +519,7 @@
 ;                                             '(filter :not-a-function [1 2 3]))))
 
 ;; testing for the second precondition of filter
-(expect "In function filter, the second argument :not-a-collection must be a sequence but is a keyword."
+(expect "In function filter, the second argument :not-a-collection must be a sequence but is a keyword,\nin the function call (filter anonymous-function :not-a-collection)"
         (get-text-no-location
          (run-and-catch-pretty-no-stacktrace 'intro.student
                                              '(filter odd? :not-a-collection))))
@@ -534,7 +534,7 @@
 ;                                             '(mapcat :not-a-function [1 2 3] [8 9 10]))))
 
 ;; testing for the second precondition of mapcat
-(expect "In function mapcat, the second argument :not-a-collection must be a sequence but is a keyword."
+(expect "In function mapcat, the second argument :not-a-collection must be a sequence but is a keyword,\nin the function call (mapcat reverse :not-a-collection [8 9 10])"
         (get-text-no-location
          (run-and-catch-pretty-no-stacktrace 'intro.student
                                              '(mapcat reverse :not-a-collection [8 9 10]))))
