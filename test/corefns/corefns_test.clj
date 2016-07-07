@@ -569,7 +569,7 @@
                                              '(< :not-a-number 31))))
 
 ;; testing if the precondition of < works on second arg
-(expect "In function <, the second argument :not-a-number must be a number but is a keyword."
+(expect "In function <, the second argument :not-a-number must be a number but is a keyword,\nin the function call (< 4 :not-a-number)"
         (get-text-no-location
          (run-and-catch-pretty-no-stacktrace 'intro.student
                                              '(< 4 :not-a-number))))
