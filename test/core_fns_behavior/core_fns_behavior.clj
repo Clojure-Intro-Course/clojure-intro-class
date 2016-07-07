@@ -407,12 +407,12 @@
                                              '(assoc "this is a string" :key1 "val1" :key2 "val2"))))
 
 ;; testing for the preconditions on dissoc
-(expect "In function dissoc, the first argument \"this is a string\" must be a map but is a string."
+(expect "In function dissoc, the first argument \"this is a string\" must be a hashmap but is a string,\nin the function call (dissoc \"this is a string\" :key1 :key2)"
         (get-text-no-location
          (run-and-catch-pretty-no-stacktrace 'intro.student
                                              '(dissoc "this is a string" :key1 :key2))))
 
-(expect "In function dissoc, the argument [\"this\" \"is\" \"a\" \"vector\"] must be a map but is a vector."
+(expect "In function dissoc, the argument [\"this\" \"is\" \"a\" \"vector\"] must be a hashmap but is a vector,\nin the function call (dissoc [\"this\" \"is\" \"a\" \"vector\"])"
         (get-text-no-location
          (run-and-catch-pretty-no-stacktrace 'intro.student
                                              '(dissoc ["this" "is" "a" "vector"]))))
