@@ -372,7 +372,7 @@
 ;~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 ;; testing for the preconditions of repeatedly
-(expect "In function repeatedly, the argument \"not a function\" must be a function but is a string."
+(expect "In function repeatedly, the argument \"not a function\" must be a function but is a string,\nin the function call (repeatedly \"not a function\")"
         (get-text-no-location
           (run-and-catch-pretty-no-stacktrace 'intro.student
                                               '(repeatedly "not a function"))))

@@ -57,7 +57,7 @@
         (get-text-no-location
          (run-and-catch-pretty-no-stacktrace 'intro.student '(+ [+]))))
 
-(expect "In function +, the argument [map] must be a number but is a vector,\nin the function call (+ [map])"
+(expect "In function +, the argument [anonymous-function] must be a number but is a vector,\nin the function call (+ [anonymous-function])"
         (get-text-no-location
          (run-and-catch-pretty-no-stacktrace 'intro.student '(+ [map]))))
 
@@ -108,7 +108,7 @@
 
 
 ;; testing for :illegal-argument-cannot-convert-type
-(expect "In function cons, the second argument 2 must be a sequence but is a number."
+(expect "In function cons, the second argument 2 must be a sequence but is a number,\nin the function call (cons 1 2)"
         (get-text-no-location
          (run-and-catch-pretty-no-stacktrace 'intro.student '(cons 1 2))))
 
@@ -195,7 +195,7 @@
         (get-text-no-location
          (run-and-catch-pretty-no-stacktrace 'intro.student '(even? nil))))
 
-(expect "In function odd?, the argument must be an integer but is nil,\nin the function call (odd? nil)"
+(expect "In function odd?, the argument must be a integer but is nil,\nin the function call (odd? nil)"
         (get-text-no-location
          (run-and-catch-pretty-no-stacktrace 'intro.student '(odd? nil))))
 
