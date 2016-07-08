@@ -502,6 +502,12 @@
           (run-and-catch-pretty-no-stacktrace 'intro.student
                                               '(reduce + ))))
 
+;; testing for the arguments more than three
+(expect "You cannot pass four arguments to a function reduce, need two or three,\nin the function call (reduce + 0 [1 2 3] 4)"
+        (get-text-no-location
+          (run-and-catch-pretty-no-stacktrace 'intro.student
+                                              '(reduce + 0 [1 2 3] 4))))
+
 ;~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 ;; testing for the first precondition of nth, with two args
