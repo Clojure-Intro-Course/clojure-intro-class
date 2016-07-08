@@ -145,8 +145,8 @@
         arity? (if reason true (arity-error? problems))
         value (:val problem)
         arg-num (:in problem)]
-    (println "Data:" data)
-    (println "Problems" problems)
+    ;(println "Data:" data)
+    ;(println "Problems" problems)
     (if arity?
       (into (message-arity reason args fname) (function-call-string args fname))
       (into entry-info (into (messages-types problems value arg-num (count args)) (function-call-string args fname))))))
