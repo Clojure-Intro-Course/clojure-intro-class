@@ -21,6 +21,7 @@
 
 (expect nil
   (first '()))
+
 ;;testing for rest
 (expect [2 3 4 5]
   (rest [1 2 3 4 5]))
@@ -45,9 +46,11 @@
 
 (expect nil
   (next '()))
+
 ;;testing for seq
 (expect true
   (every? seq ["1" [1] '(1) {:1 1} #{1}]))
+
 ;;testing for assoc
 (expect [:a "cat" :b 2 :c "dog" :d 4 :e 5 "cats"]
         (assoc [:a 1 :b 2 :c 3 :d 4 :e 5] 5 "dog" 1 "cat" 10 "cats"))
@@ -413,6 +416,11 @@
          (run-and-catch-pretty-no-stacktrace 'intro.student
                                              '(assoc "this is a string" :key1 "val1" :key2 "val2"))))
 
+;; testing for correct pair syntax given to assoc
+(expect "The arguments following the map or vector in assoc must come in pairs, but one of them does not have a match."
+        (get-text-no-location
+          (run-and-catch-pretty-no-stacktrace 'intro.student
+                                              '(assoc [1 2 3] 0 5 2))))
 ;; testing for the preconditions on dissoc
 (expect "In function dissoc, the first argument \"this is a string\" must be a hashmap but is a string,\nin the function call (dissoc \"this is a string\" :key1 :key2)"
         (get-text-no-location
