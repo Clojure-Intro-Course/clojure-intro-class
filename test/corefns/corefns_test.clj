@@ -391,7 +391,7 @@
                                               '(repeatedly 20 "not a function"))))
 
 ;; testing for the preconditions of repeatedly
-(expect "In function repeatedly, the first argument \"not a number\" must be a function but is a string,\nin the function call (repeatedly \"not a number\" +)"
+(expect "In function repeatedly, the first argument \"not a number\" must be a number but is a string,\nin the function call (repeatedly \"not a number\" +)"
         (get-text-no-location
           (run-and-catch-pretty-no-stacktrace 'intro.student
                                               '(repeatedly "not a number" +))))
@@ -414,7 +414,7 @@
                                              '(assoc "this is a string" :key1 "val1" :key2 "val2"))))
 
 ;; testing for the preconditions on dissoc
-(expect "In function dissoc, the first argument \"this is a string\" must be a map but is a string."
+(expect "In function dissoc, the first argument \"this is a string\" must be a hashmap but is a string,\nin the function call (dissoc \"this is a string\" :key1 :key2)"
         (get-text-no-location
          (run-and-catch-pretty-no-stacktrace 'intro.student
                                              '(dissoc "this is a string" :key1 :key2))))
