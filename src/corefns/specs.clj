@@ -53,11 +53,26 @@
 ;;                      :three (s/cat :dummy ::s/any :dummy ::s/any :dummy ::s/any))
 ;;                (s/or :three-args (s/cat :check-function ifn? :dummy ::s/any :check-seqable seqable?)
 ;;                      :two-args (s/cat :check-function ifn? :check-seqable seqable?))))
+;; (s/fdef reduce
+;;         :args (s/or
+;;                 :three (s/cat :check-function ifn? :dummy ::s/any :check-seqable seqable?)
+;;                 :two (s/cat :check-function ifn? :check-seqable seqable?)))
+;; (s/instrument #'reduce)
+
+(defn length-two
+  "returns true if a coll has two elements"
+  [coll]
+  (= (count coll) 2))
+(defn length-three
+  "returns true if a coll has three elements"
+  [coll]
+  (= (count coll) 3))
+
 (s/fdef reduce
-        :args (s/or
-                :three (s/cat :check-function ifn? :dummy ::s/any :check-seqable seqable?)
-                :two (s/cat :check-function ifn? :check-seqable seqable?)))
-(s/instrument #'reduce)
+        :args (s/or :two-case (s/and #(length-two %)
+                                     (s/cat :check-function ifn? :check-seqable seqable?))
+                    :three-case (s/and #(length-three %)
+                                       (s/cat :check-function ifn? :dummy ::s/any :check-seqable seqable?))))
 
 ; O - TODO: doesn't work unless the spec is after the overwritten function
 ;; (s/fdef nth
