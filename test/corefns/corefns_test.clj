@@ -61,6 +61,9 @@
 (expect {:a 5 :v 12}
         (assoc nil :a 5 :v 12))
 
+(expect {:b "cat", :a "dog"}
+        (assoc nil :a "dog" :b "cat"))
+
 ;;testing for dissoc
 (expect {:b 2, :d 4, :f 6}
         (dissoc {:a 1 :b 2 :c 3 :d 4 :e 5 :f 6 :g 7} :a :c :e :g))
