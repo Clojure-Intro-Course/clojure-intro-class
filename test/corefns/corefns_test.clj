@@ -480,13 +480,13 @@
 ;                                             '(reduce :not-a-function [1 2 3]))))
 
 ;; testing for the second precondition of reduce
-(expect "You cannot pass two arguments to a function reduce, need two or three,\nin the function call (reduce + :not-a-collection)"
+(expect "In function reduce, the second argument :not-a-collection must be a sequence but is a keyword,\nin the function call (reduce + :not-a-collection)"
         (get-text-no-location
          (run-and-catch-pretty-no-stacktrace 'intro.student
                                              '(reduce + :not-a-collection))))
 
 ;; testing for the third precondition of reduce
-(expect "In function reduce, the third argument :not-a-collection must be a sequence but is a keyword."
+(expect "In function reduce, the third argument :not-a-collection must be a sequence but is a keyword,\nin the function call (reduce + 2 :not-a-collection)"
         (get-text-no-location
          (run-and-catch-pretty-no-stacktrace 'intro.student
                                              '(reduce + 2 :not-a-collection))))
