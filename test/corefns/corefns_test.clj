@@ -446,7 +446,7 @@
 
 ;; THIS IS ACTUALLY A TEST FOR ARITY, should be moved from here.
 ;; testing for the precondition of conj
-(expect "In function conj, the argument :not-a-collection must be a sequence but is a keyword,\nin the function call (conj :not-a-collection)"
+(expect "You cannot pass one argument to a function conj, need at least two."
         (get-text-no-location
          (run-and-catch-pretty-no-stacktrace 'intro.student
                                              '(conj :not-a-collection))))
@@ -480,7 +480,7 @@
                                              '(reduce + :not-a-collection))))
 
 ;; testing for the third precondition of reduce
-(expect "In function reduce, the third argument :not-a-collection must be a sequence or a sequence but is a keyword,\nin the function call (reduce + 2 :not-a-collection)"
+(expect "In function reduce, the third argument :not-a-collection must be a sequence but is a keyword."
         (get-text-no-location
          (run-and-catch-pretty-no-stacktrace 'intro.student
                                              '(reduce + 2 :not-a-collection))))
