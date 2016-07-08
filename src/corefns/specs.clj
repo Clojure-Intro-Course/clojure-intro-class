@@ -74,6 +74,8 @@
                     :three-case (s/and #(length-three %)
                                        (s/cat :check-function ifn? :dummy ::s/any :check-seqable seqable?))))
 
+(s/instrument #'reduce)
+
 ; O - TODO: doesn't work unless the spec is after the overwritten function
 ;; (s/fdef nth
 ;;   :args (s/cat :check-seqable seqable? :check-number number? :dummy (s/? ::s/any)))
