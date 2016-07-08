@@ -1,6 +1,7 @@
 (ns utilities.stacktrace_functions_test
   (:require [expectations :refer :all]
             [errors.prettify_exception :refer :all]
+            [errors.stacktraces :refer :all]
             [utilities.stacktrace_functions :refer :all]))
 
 ;###################
