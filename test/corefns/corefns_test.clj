@@ -419,7 +419,7 @@
          (run-and-catch-pretty-no-stacktrace 'intro.student
                                              '(dissoc "this is a string" :key1 :key2))))
 
-(expect "In function dissoc, the argument [\"this\" \"is\" \"a\" \"vector\"] must be a map but is a vector."
+(expect "In function dissoc, the argument [\"this\" \"is\" \"a\" \"vector\"] must be a hashmap but is a vector,\nin the function call (dissoc [\"this\" \"is\" \"a\" \"vector\"])"
         (get-text-no-location
          (run-and-catch-pretty-no-stacktrace 'intro.student
                                              '(dissoc ["this" "is" "a" "vector"]))))
@@ -490,11 +490,17 @@
         (get-text-no-location
          (run-and-catch-pretty-no-stacktrace 'intro.student
                                              '(reduce + 2 :not-a-collection))))
-;; testing for the zero arguments
+
+;; testing for the arguments less than two
 (expect "You cannot pass zero arguments to a function reduce, need two or three,\nin the function call (reduce )"
         (get-text-no-location
           (run-and-catch-pretty-no-stacktrace 'intro.student
                                               '(reduce))))
+
+(expect "You cannot pass one argument to a function reduce, need two or three,\nin the function call (reduce +)"
+        (get-text-no-location
+          (run-and-catch-pretty-no-stacktrace 'intro.student
+                                              '(reduce + ))))
 
 ;~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
