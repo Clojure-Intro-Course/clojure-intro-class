@@ -13,41 +13,43 @@
 ;;     1. When the function has different numbers of :inline-arities like #{2 3}     |
 ;;     2. When the function has only :inline without :inline-arities                 |
 ;;                                                                                   |
+;; * s/cat gives a key(name) to each element in a sequence and returns a hashmap     |
+;;                                                                                   |
 ;; * 'NO' means the function doesn't need to be overwritten                          |
 ;;   'O' means the function should be overwritten                                    |
 ;; ==================================================================================|
 
 
-; NO
+; ##### NO #####
 (s/fdef empty?
   :args (s/cat :check-seqable seqable?))
 (s/instrument #'empty?)
 
-; NO
+; ##### NO #####
 (s/fdef map
       :args (s/cat :check-function ifn? :check-seqable (s/+ seqable?)))
 (s/instrument #'map)
 
-; NO
+; ##### NO #####
 (s/fdef conj
   :args (s/cat :check-seqable seqable? :dummy (s/+ ::s/any)))
 (s/instrument #'conj)
 
-; NO
+; ##### NO #####
 (s/fdef into
       :args (s/cat :check-seqable seqable? :check-seqable seqable?))
 (s/instrument #'into)
 
-; NO
+; ##### NO #####
 (s/fdef cons
       :args (s/cat :dummy ::s/any :check-seqable seqable?))
 (s/instrument #'cons)
 
-; NO
-; This doesn't differenciate two and three arity cases
+; ##### NO #####
+; This doesn't differenciate two and three arity cases - issue #116
 ;; (s/fdef reduce
 ;;         :args (s/cat :check-funtion ifn? :dummy (s/? ::s/any) :check-seqable seqable?))
-; Doesn't work
+; Doesn't work - s/cat returns a hashmap
 ;; (s/fdef reduce
 ;;   :args (s/and (s/or :two (s/cat :dummy ::s/any :dummy ::s/any)
 ;;                      :three (s/cat :dummy ::s/any :dummy ::s/any :dummy ::s/any))
@@ -77,66 +79,65 @@
                                      (s/cat :check-function ifn? :dummy ::s/any :check-seqable seqable?))))
 (s/instrument #'reduce)
 
-(s/instrument #'reduce)
+; ##### O ##### - TODO: doesn't work unless the spec is after the overwritten function
 
-; O - TODO: doesn't work unless the spec is after the overwritten function
 ;; (s/fdef nth
 ;;   :args (s/cat :check-seqable seqable? :check-number number? :dummy (s/? ::s/any)))
 ;; (s/instrument #'nth)
 
-; NO
+; ##### NO #####
 (s/fdef filter
   :args (s/cat :check-function ifn? :check-seqable seqable?))
 (s/instrument #'filter)
 
-; NO
+; ##### NO #####
 (s/fdef mapcat
   :args (s/cat :check-function ifn? :check-seqable (s/+ seqable?)))
 (s/instrument #'mapcat)
 
-; NO
+; ##### NO #####
 (s/fdef assoc
   :args (s/cat :check-map-or-vector (s/or :check-map (s/nilable map?) :check-vector vector?)
                :dummy ::s/any
                :dummies (s/+ ::s/any)))
 (s/instrument #'assoc)
 
-; NO
+; ##### NO #####
 (s/fdef dissoc
   :args (s/cat :check-map (s/nilable map?) :dummies (s/* ::s/any)))
 (s/instrument #'dissoc)
 
-; NO
+; ##### NO #####
 (s/fdef odd?
   :args (s/cat :check-integer integer?))
 (s/instrument #'odd?)
 
-; O
+; ##### O #####
 (s/fdef <
   :args (s/cat :check-number (s/+ number?)))
 (s/instrument #'<)
 
-; O - TODO: doesn't work. the same behavior as nth
+; ##### O ##### - TODO: doesn't work. the same behavior as nth
 ;; (s/fdef quot
 ;;   :args (s/cat :check-number number? :check-number number?))
 ;; (s/instrument #'quot)
 
-; NO
+; ##### NO #####
 (s/fdef comp
   :args (s/cat :check-function (s/* ifn?)))
 (s/instrument #'comp)
 
-; NO
+; ##### NO #####
 (s/fdef repeatedly
   :args (s/cat :check-number (s/? number?) :check-function ifn?))
 (s/instrument #'repeatedly)
 
-; NO
+; ##### NO #####
 (s/fdef repeat
   :args (s/cat :check-number (s/? number?) :dummy ::s/any))
 (s/instrument #'repeat)
 
-; NO
+; ##### NO #####
 (s/fdef distinct
   :args (s/cat :check-seqable seqable?))
 (s/instrument #'distinct)
