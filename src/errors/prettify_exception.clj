@@ -1,6 +1,7 @@
 (ns errors.prettify_exception
   (:require [clj-stacktrace.core :as stacktrace]
             [expectations :refer :all]
+            [clojure.string :as str]
             [errors.error_dictionary :refer :all]
             [errors.error_hints :refer :all])
   (:use [errors.dictionaries]
@@ -95,7 +96,8 @@
 (defn- or-str
   "Takes a vector of predicates, returns a string of their names separated by 'or'"
   [pred-strs]
-  (apply str (interpose " or " (distinct (map type-from-failed-pred pred-strs)))))
+  (apply str (interpose " or " (filter #(not (str/starts-with? % "a length")) ;; to weed out the args-length mismatches
+                                       (distinct (map type-from-failed-pred pred-strs))))))
 
 (defn- messages-types
   "Gives the part of the message for spec conditions failure"
@@ -120,6 +122,16 @@
         (let [non-nils (filter #(not= "nil?" (str (:pred %))) predicates)]
              (if (= (count non-nils) 1) (first non-nils) non-nils)))))
 
+(defn- arity-error?
+  "Returns true if all predicates have arity errors and false otherwise.
+   Assumes that spec predicates for non-matching number of arguments start with 'length'"
+  [problems]
+  (every? #(str/starts-with? (str (:pred %)) "length") problems))
+
+(defn- first-non-length
+  "Returns the first non-length predicate"
+  [problems]
+  (first (filter #(not (str/starts-with? (str (:pred %)) "length")) problems)))
 
 (defn msg-info-obj-with-data
   "Creates a message info object from an exception that contains data"
@@ -127,13 +139,15 @@
   (let [entry-info ((:make-msg-info-obj entry) (re-matches (:match entry) message))
         fname (:msg (second entry-info))
         problems (get-predicates data) ; returns a predicate hashmap or a vector of pred hashmaps
-        problem (if (map? problems) problems (first problems)) ; to make it easy to extract fields
+        problem (if (map? problems) problems (first-non-length problems)) ; to make it easy to extract fields
         args (:clojure.spec/args data)
         reason (:reason problem)
+        arity? (if reason true (arity-error? problems))
         value (:val problem)
         arg-num (:in problem)]
     (println "Data:" data)
-    (if reason
+    (println "Problems" problems)
+    (if arity?
       (into (message-arity reason args fname) (function-call-string args fname))
       (into entry-info (into (messages-types problems value arg-num (count args)) (function-call-string args fname))))))
 
