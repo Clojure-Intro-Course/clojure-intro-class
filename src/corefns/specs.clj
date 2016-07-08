@@ -47,11 +47,16 @@
 ; This doesn't differenciate two and three arity cases
 ;; (s/fdef reduce
 ;;         :args (s/cat :check-funtion ifn? :dummy (s/? ::s/any) :check-seqable seqable?))
+; Doesn't work
+;; (s/fdef reduce
+;;   :args (s/and (s/or :two (s/cat :dummy ::s/any :dummy ::s/any)
+;;                      :three (s/cat :dummy ::s/any :dummy ::s/any :dummy ::s/any))
+;;                (s/or :three-args (s/cat :check-function ifn? :dummy ::s/any :check-seqable seqable?)
+;;                      :two-args (s/cat :check-function ifn? :check-seqable seqable?))))
 (s/fdef reduce
-  :args (s/and (s/or :two (s/cat :dummy ::s/any :dummy ::s/any)
-                     :three (s/cat :dummy ::s/any :dummy ::s/any :dummy ::s/any))
-               (s/or :three-args (s/cat :check-function ifn? :dummy ::s/any :check-seqable seqable?)
-                     :two-args (s/cat :check-function ifn? :check-seqable seqable?))))
+        :args (s/or
+                :three (s/cat :check-function ifn? :dummy ::s/any :check-seqable seqable?)
+                :two (s/cat :check-function ifn? :check-seqable seqable?)))
 (s/instrument #'reduce)
 
 ; O - TODO: doesn't work unless the spec is after the overwritten function

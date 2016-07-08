@@ -379,13 +379,13 @@
                                               '(repeatedly "not a function"))))
 
 ;; testing for the preconditions of repeatedly
-(expect "In function repeatedly, the second argument \"not a function\" must be a function but is a string."
+(expect "In function repeatedly, the second argument \"not a function\" must be a function but is a string,\nin the function call (repeatedly 20 \"not a function\")"
         (get-text-no-location
           (run-and-catch-pretty-no-stacktrace 'intro.student
                                               '(repeatedly 20 "not a function"))))
 
 ;; testing for the preconditions of repeatedly
-(expect "In function repeatedly, the first argument \"not a number\" must be a number but is a string."
+(expect "In function repeatedly, the first argument \"not a number\" must be a function but is a string,\nin the function call (repeatedly \"not a number\" +)"
         (get-text-no-location
           (run-and-catch-pretty-no-stacktrace 'intro.student
                                               '(repeatedly "not a number" +))))
@@ -393,7 +393,7 @@
 ;~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 ;; testing for the precondition of comp
-(expect "In function comp, the first argument \"not a function\" must be a function but is a string."
+(expect "In function comp, the first argument \"not a function\" must be a function but is a string,\nin the function call (comp \"not a function\" anonymous-function dec anonymous-function)"
         (get-text-no-location
           (run-and-catch-pretty-no-stacktrace 'intro.student
                                               '(comp "not a function" #(* 5 %) dec #(* 7 %)))))
@@ -446,7 +446,7 @@
 
 ;; THIS IS ACTUALLY A TEST FOR ARITY, should be moved from here.
 ;; testing for the precondition of conj
-(expect "You cannot pass one argument to a function conj, need at least two."
+(expect "In function conj, the argument :not-a-collection must be a sequence but is a keyword,\nin the function call (conj :not-a-collection)"
         (get-text-no-location
          (run-and-catch-pretty-no-stacktrace 'intro.student
                                              '(conj :not-a-collection))))
@@ -454,13 +454,13 @@
 ;~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 ;; testing for the first precondition of into
-(expect "In function into, the first argument :not-a-collection must be a sequence but is a keyword."
+(expect "In function into, the first argument :not-a-collection must be a sequence but is a keyword,\nin the function call (into :not-a-collection [1 2 3])"
         (get-text-no-location
          (run-and-catch-pretty-no-stacktrace 'intro.student
                                              '(into :not-a-collection [1 2 3]))))
 
 ;; testing for the second precondition of into
-(expect "In function into, the second argument :not-a-collection must be a sequence but is a keyword."
+(expect "In function into, the second argument :not-a-collection must be a sequence but is a keyword,\nin the function call (into #{} :not-a-collection)"
         (get-text-no-location
          (run-and-catch-pretty-no-stacktrace 'intro.student
                                              '(into #{} :not-a-collection))))
@@ -474,13 +474,13 @@
 ;                                             '(reduce :not-a-function [1 2 3]))))
 
 ;; testing for the second precondition of reduce
-(expect "In function reduce, the second argument :not-a-collection must be a sequence but is a keyword."
+(expect "You cannot pass two arguments to a function reduce, need two or three,\nin the function call (reduce + :not-a-collection)"
         (get-text-no-location
          (run-and-catch-pretty-no-stacktrace 'intro.student
                                              '(reduce + :not-a-collection))))
 
 ;; testing for the third precondition of reduce
-(expect "In function reduce, the third argument :not-a-collection must be a sequence but is a keyword."
+(expect "In function reduce, the third argument :not-a-collection must be a sequence or a sequence but is a keyword,\nin the function call (reduce + 2 :not-a-collection)"
         (get-text-no-location
          (run-and-catch-pretty-no-stacktrace 'intro.student
                                              '(reduce + 2 :not-a-collection))))
@@ -520,7 +520,7 @@
 ;                                             '(filter :not-a-function [1 2 3]))))
 
 ;; testing for the second precondition of filter
-(expect "In function filter, the second argument :not-a-collection must be a sequence but is a keyword."
+(expect "In function filter, the second argument :not-a-collection must be a sequence but is a keyword,\nin the function call (filter anonymous-function :not-a-collection)"
         (get-text-no-location
          (run-and-catch-pretty-no-stacktrace 'intro.student
                                              '(filter odd? :not-a-collection))))
@@ -535,13 +535,13 @@
 ;                                             '(mapcat :not-a-function [1 2 3] [8 9 10]))))
 
 ;; testing for the second precondition of mapcat
-(expect "In function mapcat, the second argument :not-a-collection must be a sequence but is a keyword."
+(expect "In function mapcat, the second argument :not-a-collection must be a sequence but is a keyword,\nin the function call (mapcat reverse :not-a-collection [8 9 10])"
         (get-text-no-location
          (run-and-catch-pretty-no-stacktrace 'intro.student
                                              '(mapcat reverse :not-a-collection [8 9 10]))))
 
 ;; testing for the second precondition of mapcat with multiple collections
-(expect "In function mapcat, the third argument :not-a-collection must be a sequence but is a keyword."
+(expect "In function mapcat, the third argument :not-a-collection must be a sequence but is a keyword,\nin the function call (mapcat reverse [1 2 3] :not-a-collection)"
         (get-text-no-location
          (run-and-catch-pretty-no-stacktrace 'intro.student
                                              '(mapcat reverse [1 2 3] :not-a-collection))))
@@ -563,13 +563,13 @@
 ;~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 ;; testing if the precondition of < works on first arg
-(expect "In function <, the first argument :not-a-number must be a number but is a keyword."
+(expect "In function <, the first argument :not-a-number must be a number but is a keyword,\nin the function call (< :not-a-number 31)"
         (get-text-no-location
          (run-and-catch-pretty-no-stacktrace 'intro.student
                                              '(< :not-a-number 31))))
 
 ;; testing if the precondition of < works on second arg
-(expect "In function <, the second argument :not-a-number must be a number but is a keyword."
+(expect "In function <, the second argument :not-a-number must be a number but is a keyword,\nin the function call (< 4 :not-a-number)"
         (get-text-no-location
          (run-and-catch-pretty-no-stacktrace 'intro.student
                                              '(< 4 :not-a-number))))
