@@ -57,7 +57,7 @@
         (get-text-no-location
          (run-and-catch-pretty-no-stacktrace 'intro.student '(+ [+]))))
 
-(expect "In function +, the argument [anonymous-function] must be a number but is a vector,\nin the function call (+ [anonymous-function])"
+(expect "In function +, the argument [map] must be a number but is a vector,\nin the function call (+ [map])"
         (get-text-no-location
          (run-and-catch-pretty-no-stacktrace 'intro.student '(+ [map]))))
 
