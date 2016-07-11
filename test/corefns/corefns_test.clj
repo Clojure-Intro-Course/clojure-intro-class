@@ -453,15 +453,21 @@
 ;; Elena, 6/17/16: this is not an error since a keyword is a function
 ;; testing for the first precondition of map
 ;(expect "In function map, the first argument :not-a-function must be a function but is a keyword."
-;       (get-text-no-location
-;        (run-and-catch-pretty-no-stacktrace 'intro.student
-;                                             '(doall (map :not-a-function [1 2 3])))))
+ ;      (get-text-no-location
+ ;       (run-and-catch-pretty-no-stacktrace 'intro.student
+ ;                                            '(doall (map :not-a-function [1 2 3])))))
 
 ;; testing for the second precondition of map
 (expect "In function map, the second argument :not-a-collection must be a sequence but is a keyword,\nin the function call (map + :not-a-collection)"
         (get-text-no-location
          (run-and-catch-pretty-no-stacktrace 'intro.student
                                              '(doall (map + :not-a-collection)))))
+
+;; testing zero arguments after the function given to map
+(expect "In function map, the argument (+) must be a length-greater1 but is a sequence,\nin the function call (map +)"
+        (get-text-no-location
+          (run-and-catch-pretty-no-stacktrace 'intro.student
+                                              '(map + ))))
 
 ;~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
