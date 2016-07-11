@@ -124,7 +124,11 @@
 
 
 ;; List of functions that have specs and aren't overwritten:
-
+; ##### NO #####
+(s/fdef filter
+  :args (s/and ::length-two
+               (s/cat :check-function ifn? :check-seqable seqable?)))
+(s/instrument #'filter)
 
 ; ##### NO #####
 ;; (s/fdef mapcat
@@ -144,7 +148,7 @@
 ;; (s/instrument #'assoc)
 (s/fdef assoc
   :args (s/and ::length-greater-two
-               (s/cat :check-map-or-vector (s/or :check-map map? :check-vector vector?)
+               (s/cat :check-map-or-vector (s/or :check-map (s/nilable map?) :check-vector vector?)
                       :dummy ::s/any
                       :dummies (s/+ ::s/any))))
 (s/instrument #'assoc)
@@ -159,8 +163,6 @@
                (s/cat :check-map (s/nilable map?) :dummies (s/* ::s/any))))
 (s/instrument #'dissoc)
 
-
-
 ; ##### NO #####
 ;; (s/fdef odd?
 ;;   :args (s/cat :check-integer integer?))
@@ -170,16 +172,11 @@
                (s/cat :check-integer integer?)))
 (s/instrument #'odd?)
 
-
 ; ##### NO #####
 (s/fdef even?
-  :args (s/cat :check-integer integer?))
+  :args (s/and ::length-one
+               (s/cat :check-integer integer?)))
 (s/instrument #'even?)
-
-; ##### NO #####
-(s/fdef filter
-  :args (s/cat :check-function ifn? :check-seqable seqable?))
-(s/instrument #'filter)
 
 ; ##### O #####
 ;; (s/fdef <
@@ -199,7 +196,6 @@
 ;;           ::length-two
 ;;           (s/cat :check-number number? :check-number number?)))
 ;; (s/instrument #'quot)
-
 
 ; ##### NO #####
 (s/fdef comp
