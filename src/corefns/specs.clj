@@ -19,6 +19,10 @@
 ;;   'O' means the function should be overwritten                                    |
 ;; ==================================================================================|
 
+
+;; #######################################
+;; #     helper functions/predicates     #
+;; #######################################
 (defn length1?
   "returns true if a coll has one elements"
   [coll]
@@ -31,35 +35,75 @@
   "returns true if a coll has three elements"
   [coll]
   (= (count coll) 3))
+(defn length-greater0?
+  "returns true if a coll has at least one elements"
+  [coll]
+  (> (count coll) 0))
+(defn length-greater1?
+  "returns true if a coll has at least two elements"
+  [coll]
+  (> (count coll) 1))
+(defn length-greater2?
+  "returns true if a coll has at least three elements"
+  [coll]
+  (> (count coll) 2))
 
 (s/def ::length-one length1?)
 (s/def ::length-two length2?)
 (s/def ::length-three length3?)
+(s/def ::length-greater-zero length-greater0?)
+(s/def ::length-greater-one length-greater1?)
+(s/def ::length-greater-two length-greater2?)
 
+
+;; #######################################
+;; #          specs                      #
+;; #######################################
 
 ; ##### NO #####
+;; (s/fdef empty?
+;;   :args (s/cat :check-seqable seqable?))
+;; (s/instrument #'empty?)
 (s/fdef empty?
-  :args (s/cat :check-seqable seqable?))
+  :args (s/and ::length-one
+               (s/cat :check-seqable seqable?)))
 (s/instrument #'empty?)
 
 ; ##### NO #####
+;; (s/fdef map
+;;       :args (s/cat :check-function ifn? :check-seqable (s/+ seqable?)))
+;; (s/instrument #'map)
 (s/fdef map
-      :args (s/cat :check-function ifn? :check-seqable (s/+ seqable?)))
+  :args (s/and ::length-greater-one
+               (s/cat :check-function ifn? :check-seqable (s/+ seqable?))))
 (s/instrument #'map)
 
+
 ; ##### NO #####
+;; (s/fdef conj
+;;   :args (s/cat :check-seqable seqable? :dummy (s/+ ::s/any)))
+;; (s/instrument #'conj)
 (s/fdef conj
-  :args (s/cat :check-seqable seqable? :dummy (s/+ ::s/any)))
+  :args (s/and ::length-greater-one
+               (s/cat :check-seqable seqable? :dummy (s/+ ::s/any))))
 (s/instrument #'conj)
 
 ; ##### NO #####
+;; (s/fdef into
+;;       :args (s/cat :check-seqable seqable? :check-seqable seqable?))
+;; (s/instrument #'into)
 (s/fdef into
-      :args (s/cat :check-seqable seqable? :check-seqable seqable?))
+  :args (s/and ::length-two
+               (s/cat :check-seqable seqable? :check-seqable seqable?)))
 (s/instrument #'into)
 
 ; ##### NO #####
+;; (s/fdef cons
+;;       :args (s/cat :dummy ::s/any :check-seqable seqable?))
+;; (s/instrument #'cons)
 (s/fdef cons
-      :args (s/cat :dummy ::s/any :check-seqable seqable?))
+  :args (s/and ::length-two
+               (s/cat :dummy ::s/any :check-seqable seqable?)))
 (s/instrument #'cons)
 
 ; ##### NO #####
@@ -89,45 +133,86 @@
 ;; (s/fdef nth
 ;;   :args (s/cat :check-seqable seqable? :check-number number? :dummy (s/? ::s/any)))
 ;; (s/instrument #'nth)
+;; (s/fdef nth
+;;   :args (s/or :two-case (s/and ::length-two
+;;                                (s/cat :check-seqable seqable? :check-number number?))
+;;               :three-case (s/and ::length-three
+;;                                  (s/cat :check-seqable seqable? :check-number number? :dummy ::s/any))))
+;; (s/instrument #'nth)
 
 ; ##### NO #####
+;; (s/fdef filter
+;;   :args (s/cat :check-function ifn? :check-seqable seqable?))
+;; (s/instrument #'filter)
 (s/fdef filter
-  :args (s/cat :check-function ifn? :check-seqable seqable?))
+  :args (s/and ::length-two
+               (s/cat :check-function ifn? :check-seqable seqable?)))
 (s/instrument #'filter)
 
 ; ##### NO #####
+;; (s/fdef mapcat
+;;   :args (s/cat :check-function ifn? :check-seqable (s/+ seqable?)))
+;; (s/instrument #'mapcat)
 (s/fdef mapcat
-  :args (s/cat :check-function ifn? :check-seqable (s/+ seqable?)))
+  :args (s/and ::length-greater-one
+               (s/cat :check-function ifn? :check-seqable (s/+ seqable?))))
 (s/instrument #'mapcat)
 
 ; ##### NO #####
 ; We need s/nilable here because map? and vector? return false for nil
+;; (s/fdef assoc
+;;   :args (s/cat :check-map-or-vector (s/or :check-map (s/nilable map?) :check-vector vector?)
+;;                :dummy ::s/any
+;;                :dummies (s/+ ::s/any)))
+;; (s/instrument #'assoc)
 (s/fdef assoc
-  :args (s/cat :check-map-or-vector (s/or :check-map (s/nilable map?) :check-vector vector?)
-               :dummy ::s/any
-               :dummies (s/+ ::s/any)))
+  :args (s/and
+          ::length-greater-two
+          (s/cat :check-map-or-vector (s/or :check-map map? :check-vector vector?)
+                 :dummy ::s/any
+                 :dummies (s/+ ::s/any))))
 (s/instrument #'assoc)
 
 ; ##### NO #####
 ; We need s/nilable here because map? returns false for nil
+;; (s/fdef dissoc
+;;   :args (s/cat :check-map (s/nilable map?) :dummies (s/* ::s/any)))
+;; (s/instrument #'dissoc)
 (s/fdef dissoc
-  :args (s/cat :check-map (s/nilable map?) :dummies (s/* ::s/any)))
+  :args (s/and
+          ::length-greater-zero
+          (s/cat :check-map (s/nilable map?) :dummies (s/* ::s/any))))
 (s/instrument #'dissoc)
 
 ; ##### NO #####
+;; (s/fdef odd?
+;;   :args (s/cat :check-integer integer?))
+;; (s/instrument #'odd?)
 (s/fdef odd?
-  :args (s/cat :check-integer integer?))
+  :args (s/and ::length-one
+               (s/cat :check-integer integer?)))
 (s/instrument #'odd?)
 
 ; ##### O #####
+;; (s/fdef <
+;;   :args (s/cat :check-number (s/+ number?)))
+;; (s/instrument #'<)
 (s/fdef <
-  :args (s/cat :check-number (s/+ number?)))
+  :args (s/and
+          ::length-greater-zero
+          (s/cat :check-number (s/+ number?))))
 (s/instrument #'<)
 
 ; ##### O ##### - TODO: doesn't work. the same behavior as nth
 ;; (s/fdef quot
 ;;   :args (s/cat :check-number number? :check-number number?))
 ;; (s/instrument #'quot)
+;; (s/fdef quot
+;;   :args (s/and
+;;           ::length-two
+;;           (s/cat :check-number number? :check-number number?)))
+;; (s/instrument #'quot)
+
 
 ; ##### NO #####
 (s/fdef comp
@@ -154,6 +239,10 @@
 (s/instrument #'repeat)
 
 ; ##### NO #####
+;; (s/fdef distinct
+;;   :args (s/cat :check-seqable seqable?))
+;; (s/instrument #'distinct)
 (s/fdef distinct
-  :args (s/cat :check-seqable seqable?))
+  :args (s/and ::length-one
+               (s/cat :check-seqable seqable?)))
 (s/instrument #'distinct)
