@@ -85,10 +85,8 @@
 ;;   :args (s/cat :check-seqable seqable? :check-number number? :dummy (s/? ::s/any)))
 ;; (s/instrument #'nth)
 
-; ##### NO #####
-(s/fdef filter
-  :args (s/cat :check-function ifn? :check-seqable seqable?))
-(s/instrument #'filter)
+;; List of functions that have specs and aren't overwritten:
+
 
 ; ##### NO #####
 (s/fdef mapcat
@@ -107,10 +105,23 @@
   :args (s/cat :check-map (s/nilable map?) :dummies (s/* ::s/any)))
 (s/instrument #'dissoc)
 
+
+
 ; ##### NO #####
 (s/fdef odd?
   :args (s/cat :check-integer integer?))
 (s/instrument #'odd?)
+
+
+; ##### NO #####
+(s/fdef even?
+  :args (s/cat :check-integer integer?))
+(s/instrument #'even?)
+
+; ##### NO #####
+(s/fdef filter
+  :args (s/cat :check-function ifn? :check-seqable seqable?))
+(s/instrument #'filter)
 
 ; ##### O #####
 (s/fdef <
@@ -141,3 +152,4 @@
 (s/fdef distinct
   :args (s/cat :check-seqable seqable?))
 (s/instrument #'distinct)
+
