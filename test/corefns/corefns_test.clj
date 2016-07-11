@@ -37,6 +37,7 @@
 
 (expect '()
   (rest '(1)))
+
 ;;testing for next
 (expect [2 3 4 5]
   (next [1 2 3 4 5]))
@@ -353,11 +354,19 @@
 (expect '(1 2 3 4 5) (distinct [1 2 2 2 3 2 4 4 5 4]))
 (expect '(\h \e \l \o \w \r \d) (distinct "helloworld"))
 
-
-
 ;; testing for odd? and even?
 (expect true (odd? 3))
 (expect false (even? 3))
+
+;; testing for empty?
+(expect true
+        (empty? '()))
+(expect true
+        (empty? nil))
+(expect false
+        (empty? '(1 2)))
+
+
 
 ;;; Elena, 6/22/16: Tests below this line should be moved from here
 
@@ -434,6 +443,10 @@
         (get-text-no-location
          (run-and-catch-pretty-no-stacktrace 'intro.student
                                              '(dissoc ["this" "is" "a" "vector"]))))
+(expect "You cannot pass zero arguments to a function dissoc, need at least one,\nin the function call (dissoc )"
+        (get-text-no-location
+          (run-and-catch-pretty-no-stacktrace 'intro.student
+                                              '(dissoc ))))
 
 
 ;~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
