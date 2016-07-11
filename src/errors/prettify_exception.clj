@@ -147,11 +147,11 @@
         problem (if (map? problems) problems (first-non-length problems)) ; to make it easy to extract fields
         args (:clojure.spec/args data)
         reason (:reason problem)
-        arity? (if reason true (arity-error? problems))
+        arity? (if reason true (arity-error? (if (map? problems) [problems] problems)))
         value (:val problem)
         arg-num (:in problem)]
     ;(println "Data:" data)
-    ;(println "Problems" problems)
+    ;(println "Problem" problem)
     (if arity?
       (into (message-arity reason args fname) (function-call-string args fname))
       (into entry-info (into (messages-types problems value arg-num (count args)) (function-call-string args fname))))))
