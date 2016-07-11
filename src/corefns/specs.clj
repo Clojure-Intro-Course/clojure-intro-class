@@ -23,30 +23,12 @@
 ;; #######################################
 ;; #     helper functions/predicates     #
 ;; #######################################
-(defn length1?
-  "returns true if a coll has one elements"
-  [coll]
-  (= (count coll) 1))
-(defn length2?
-  "returns true if a coll has two elements"
-  [coll]
-  (= (count coll) 2))
-(defn length3?
-  "returns true if a coll has three elements"
-  [coll]
-  (= (count coll) 3))
-(defn length-greater0?
-  "returns true if a coll has at least one elements"
-  [coll]
-  (> (count coll) 0))
-(defn length-greater1?
-  "returns true if a coll has at least two elements"
-  [coll]
-  (> (count coll) 1))
-(defn length-greater2?
-  "returns true if a coll has at least three elements"
-  [coll]
-  (> (count coll) 2))
+(defn length1? [coll] (= (count coll) 1))
+(defn length2? [coll] (= (count coll) 2))
+(defn length3? [coll] (= (count coll) 3))
+(defn length-greater0? [coll] (> (count coll) 0))
+(defn length-greater1? [coll] (> (count coll) 1))
+(defn length-greater2? [coll] (> (count coll) 2))
 
 (s/def ::length-one length1?)
 (s/def ::length-two length2?)
@@ -123,9 +105,9 @@
 
 (s/fdef reduce
         :args (s/or :two-case (s/and ::length-two
-                                   (s/cat :check-function ifn? :check-seqable seqable?))
+                                     (s/cat :check-function ifn? :check-seqable seqable?))
                     :three-case (s/and ::length-three
-                                     (s/cat :check-function ifn? :dummy ::s/any :check-seqable seqable?))))
+                                       (s/cat :check-function ifn? :dummy ::s/any :check-seqable seqable?))))
 (s/instrument #'reduce)
 
 ; ##### O ##### - TODO: doesn't work unless the spec is after the overwritten function
@@ -166,11 +148,10 @@
 ;;                :dummies (s/+ ::s/any)))
 ;; (s/instrument #'assoc)
 (s/fdef assoc
-  :args (s/and
-          ::length-greater-two
-          (s/cat :check-map-or-vector (s/or :check-map map? :check-vector vector?)
-                 :dummy ::s/any
-                 :dummies (s/+ ::s/any))))
+  :args (s/and ::length-greater-two
+               (s/cat :check-map-or-vector (s/or :check-map map? :check-vector vector?)
+                      :dummy ::s/any
+                      :dummies (s/+ ::s/any))))
 (s/instrument #'assoc)
 
 ; ##### NO #####
@@ -179,9 +160,8 @@
 ;;   :args (s/cat :check-map (s/nilable map?) :dummies (s/* ::s/any)))
 ;; (s/instrument #'dissoc)
 (s/fdef dissoc
-  :args (s/and
-          ::length-greater-zero
-          (s/cat :check-map (s/nilable map?) :dummies (s/* ::s/any))))
+  :args (s/and ::length-greater-zero
+               (s/cat :check-map (s/nilable map?) :dummies (s/* ::s/any))))
 (s/instrument #'dissoc)
 
 ; ##### NO #####
@@ -198,9 +178,8 @@
 ;;   :args (s/cat :check-number (s/+ number?)))
 ;; (s/instrument #'<)
 (s/fdef <
-  :args (s/and
-          ::length-greater-zero
-          (s/cat :check-number (s/+ number?))))
+  :args (s/and ::length-greater-zero
+               (s/cat :check-number (s/+ number?))))
 (s/instrument #'<)
 
 ; ##### O ##### - TODO: doesn't work. the same behavior as nth
@@ -223,19 +202,19 @@
 ;; (s/fdef repeatedly
 ;;   :args (s/cat :check-number (s/? number?) :check-function ifn?))
 (s/fdef repeatedly
-        :args (s/or :one-case (s/and ::length-one
-                                     (s/cat :check-function ifn?))
-                    :two-case (s/and ::length-two
-                                     (s/cat :check-number number? :check-function ifn?))))
+  :args (s/or :one-case (s/and ::length-one
+                               (s/cat :check-function ifn?))
+              :two-case (s/and ::length-two
+                               (s/cat :check-number number? :check-function ifn?))))
 (s/instrument #'repeatedly)
 
 ; ##### NO #####
 ;; (s/fdef repeat
 ;;   :args (s/cat :check-number (s/? number?) :dummy ::s/any))
 (s/fdef repeat
-        :args (s/or :one-case ::length-one
-                    :two-case (s/and ::length-two
-                                     (s/cat :check-number number? :dummy ::s/any))))
+  :args (s/or :one-case ::length-one
+              :two-case (s/and ::length-two
+                               (s/cat :check-number number? :dummy ::s/any))))
 (s/instrument #'repeat)
 
 ; ##### NO #####
