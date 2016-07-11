@@ -21,6 +21,7 @@
 
 (expect nil
   (first '()))
+
 ;;testing for rest
 (expect [2 3 4 5]
   (rest [1 2 3 4 5]))
@@ -45,9 +46,11 @@
 
 (expect nil
   (next '()))
+
 ;;testing for seq
 (expect true
   (every? seq ["1" [1] '(1) {:1 1} #{1}]))
+
 ;;testing for assoc
 (expect [:a "cat" :b 2 :c "dog" :d 4 :e 5 "cats"]
         (assoc [:a 1 :b 2 :c 3 :d 4 :e 5] 5 "dog" 1 "cat" 10 "cats"))
@@ -57,6 +60,9 @@
         (assoc [1 2 3] 0 10 2 20))
 (expect {:a 5 :v 12}
         (assoc nil :a 5 :v 12))
+
+(expect {:b "cat", :a "dog"}
+        (assoc nil :a "dog" :b "cat"))
 
 ;;testing for dissoc
 (expect {:b 2, :d 4, :f 6}
@@ -147,6 +153,12 @@
          (take 1000 (iterate inc 3))))
 (expect [1 2 3 :a :b :c [4 5] 6]
         (reduce into [[1 2 3] [:a :b :c] '([4 5] 6)]))
+
+(expect 0
+        (reduce + nil))
+
+(expect 0
+        (reduce + 0 nil))
 
 ;; testing for nth
 (expect "a"
@@ -385,7 +397,7 @@
                                               '(repeatedly 20 "not a function"))))
 
 ;; testing for the preconditions of repeatedly
-(expect "In function repeatedly, the first argument \"not a number\" must be a function but is a string,\nin the function call (repeatedly \"not a number\" +)"
+(expect "In function repeatedly, the first argument \"not a number\" must be a number but is a string,\nin the function call (repeatedly \"not a number\" +)"
         (get-text-no-location
           (run-and-catch-pretty-no-stacktrace 'intro.student
                                               '(repeatedly "not a number" +))))
@@ -402,18 +414,23 @@
 ;~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 ;; testing for the preconditions on assoc, it is a compiler exception
-(expect "In function assoc, the first argument \"this is a string\" must be a map or vector but is a string."
+(expect "In function assoc, the first argument \"this is a string\" must be a hashmap or a vector but is a string,\nin the function call (assoc \"this is a string\" :key1 \"val1\" :key2 \"val2\")"
         (get-text-no-location
          (run-and-catch-pretty-no-stacktrace 'intro.student
                                              '(assoc "this is a string" :key1 "val1" :key2 "val2"))))
 
+;; testing for correct pair syntax given to assoc
+(expect "The arguments following the map or vector in assoc must come in pairs, but one of them does not have a match."
+        (get-text-no-location
+          (run-and-catch-pretty-no-stacktrace 'intro.student
+                                              '(assoc [1 2 3] 0 5 2))))
 ;; testing for the preconditions on dissoc
-(expect "In function dissoc, the first argument \"this is a string\" must be a map but is a string."
+(expect "In function dissoc, the first argument \"this is a string\" must be a hashmap but is a string,\nin the function call (dissoc \"this is a string\" :key1 :key2)"
         (get-text-no-location
          (run-and-catch-pretty-no-stacktrace 'intro.student
                                              '(dissoc "this is a string" :key1 :key2))))
 
-(expect "In function dissoc, the argument [\"this\" \"is\" \"a\" \"vector\"] must be a map but is a vector."
+(expect "In function dissoc, the argument [\"this\" \"is\" \"a\" \"vector\"] must be a hashmap but is a vector,\nin the function call (dissoc [\"this\" \"is\" \"a\" \"vector\"])"
         (get-text-no-location
          (run-and-catch-pretty-no-stacktrace 'intro.student
                                              '(dissoc ["this" "is" "a" "vector"]))))
@@ -474,16 +491,39 @@
 ;                                             '(reduce :not-a-function [1 2 3]))))
 
 ;; testing for the second precondition of reduce
-(expect "You cannot pass two arguments to a function reduce, need two or three,\nin the function call (reduce + :not-a-collection)"
+(expect "In function reduce, the second argument :not-a-collection must be a sequence but is a keyword,\nin the function call (reduce + :not-a-collection)"
         (get-text-no-location
          (run-and-catch-pretty-no-stacktrace 'intro.student
                                              '(reduce + :not-a-collection))))
 
 ;; testing for the third precondition of reduce
-(expect "In function reduce, the third argument :not-a-collection must be a sequence but is a keyword."
+(expect "In function reduce, the third argument :not-a-collection must be a sequence but is a keyword,\nin the function call (reduce + 2 :not-a-collection)"
         (get-text-no-location
          (run-and-catch-pretty-no-stacktrace 'intro.student
                                              '(reduce + 2 :not-a-collection))))
+
+;; testing for the arguments less than two in reduce
+(expect "You cannot pass zero arguments to a function reduce, need two or three,\nin the function call (reduce )"
+        (get-text-no-location
+          (run-and-catch-pretty-no-stacktrace 'intro.student
+                                              '(reduce))))
+
+(expect "You cannot pass one argument to a function reduce, need two or three,\nin the function call (reduce +)"
+        (get-text-no-location
+          (run-and-catch-pretty-no-stacktrace 'intro.student
+                                              '(reduce + ))))
+
+;; testing for the arguments more than three in reduce
+(expect "You cannot pass four arguments to a function reduce, need two or three,\nin the function call (reduce + 0 [1 2 3] 4)"
+        (get-text-no-location
+          (run-and-catch-pretty-no-stacktrace 'intro.student
+                                              '(reduce + 0 [1 2 3] 4))))
+
+;; testing for function as first argument of reduce
+(expect "In function reduce, the first argument 1 must be a function but is a number,\nin the function call (reduce 1 2)"
+        (get-text-no-location
+          (run-and-catch-pretty-no-stacktrace 'intro.student
+                                             '(reduce 1 2))))
 
 ;~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 

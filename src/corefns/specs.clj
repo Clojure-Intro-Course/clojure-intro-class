@@ -19,6 +19,23 @@
 ;;   'O' means the function should be overwritten                                    |
 ;; ==================================================================================|
 
+(defn length1?
+  "returns true if a coll has one elements"
+  [coll]
+  (= (count coll) 1))
+(defn length2?
+  "returns true if a coll has two elements"
+  [coll]
+  (= (count coll) 2))
+(defn length3?
+  "returns true if a coll has three elements"
+  [coll]
+  (= (count coll) 3))
+
+(s/def ::length-one length1?)
+(s/def ::length-two length2?)
+(s/def ::length-three length3?)
+
 
 ; ##### NO #####
 (s/fdef empty?
@@ -60,18 +77,6 @@
 ;;                 :three (s/cat :check-function ifn? :dummy ::s/any :check-seqable seqable?)
 ;;                 :two (s/cat :check-function ifn? :check-seqable seqable?)))
 
-(defn length2?
-  "returns true if a coll has two elements"
-  [coll]
-  (= (count coll) 2))
-(defn length3?
-  "returns true if a coll has three elements"
-  [coll]
-  (= (count coll) 3))
-
-(s/def ::length-two length2?)
-(s/def ::length-three length3?)
-
 (s/fdef reduce
         :args (s/or :two-case (s/and ::length-two
                                    (s/cat :check-function ifn? :check-seqable seqable?))
@@ -94,6 +99,7 @@
 (s/instrument #'mapcat)
 
 ; ##### NO #####
+; We need s/nilable here because map? and vector? return false for nil
 (s/fdef assoc
   :args (s/cat :check-map-or-vector (s/or :check-map (s/nilable map?) :check-vector vector?)
                :dummy ::s/any
@@ -101,6 +107,7 @@
 (s/instrument #'assoc)
 
 ; ##### NO #####
+; We need s/nilable here because map? returns false for nil
 (s/fdef dissoc
   :args (s/cat :check-map (s/nilable map?) :dummies (s/* ::s/any)))
 (s/instrument #'dissoc)
@@ -139,13 +146,22 @@
 (s/instrument #'comp)
 
 ; ##### NO #####
+;; (s/fdef repeatedly
+;;   :args (s/cat :check-number (s/? number?) :check-function ifn?))
 (s/fdef repeatedly
-  :args (s/cat :check-number (s/? number?) :check-function ifn?))
+        :args (s/or :one-case (s/and ::length-one
+                                     (s/cat :check-function ifn?))
+                    :two-case (s/and ::length-two
+                                     (s/cat :check-number number? :check-function ifn?))))
 (s/instrument #'repeatedly)
 
 ; ##### NO #####
+;; (s/fdef repeat
+;;   :args (s/cat :check-number (s/? number?) :dummy ::s/any))
 (s/fdef repeat
-  :args (s/cat :check-number (s/? number?) :dummy ::s/any))
+        :args (s/or :one-case ::length-one
+                    :two-case (s/and ::length-two
+                                     (s/cat :check-number number? :dummy ::s/any))))
 (s/instrument #'repeat)
 
 ; ##### NO #####
