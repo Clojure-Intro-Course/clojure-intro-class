@@ -384,7 +384,7 @@
                                               '(repeatedly 20 "not a function"))))
 
 ;; testing for the preconditions of repeatedly
-(expect "In function repeatedly, the first argument \"not a number\" must be a number but is a string."
+(expect "In function repeatedly, the first argument \"not a number\" must be a number but is a string,\nin the function call (repeatedly \"not a number\" +)"
         (get-text-no-location
           (run-and-catch-pretty-no-stacktrace 'intro.student
                                               '(repeatedly "not a number" +))))
