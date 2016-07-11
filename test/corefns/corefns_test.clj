@@ -480,6 +480,11 @@
         (get-text-no-location
          (run-and-catch-pretty-no-stacktrace 'intro.student
                                              '(conj :not-a-collection))))
+(expect "Vectors added to a map must consist of two elements: a key and a value."
+        (get-text-no-location
+          (run-and-catch-pretty-no-stacktrace 'intro.student
+                                              '(conj {1 2} [3 5] [7]))))
+
 
 ;~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -822,7 +827,7 @@
                                               '(empty? ))))
 
 ;; testing for more than one argument given to empty?
-(expect "You cannot pass two arguments to a function empty?, need one,\nin the function call (empty? () ())"
+(expect "You cannot pass two arguments to a function empty?, need one,\nin the function call (empty? '() ())"
         (get-text-no-location
           (run-and-catch-pretty-no-stacktrace 'intro.student
                                               '(empty? '() ()))))
