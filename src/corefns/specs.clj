@@ -2,22 +2,27 @@
   (:require [clojure.spec :as s]))
 
 ;;                        Spec for clojure.spec  by Tony
-;; ==================================================================================|
-;; * For every function with inlining, we can't use spec without overwriting it.     |
-;;                                                                                   |
-;; * put spec before a funtion -> specify conditions for the core function           |
-;;   vs                                                                              |
-;;   put spec after a function -> specify conditions for the overwritten function    |
-;;                                                                                   |
-;; * There are two cases that we need to put spec after we overwrite a function      |
-;;     1. When the function has different numbers of :inline-arities like #{2 3}     |
-;;     2. When the function has only :inline without :inline-arities                 |
-;;                                                                                   |
-;; * s/cat gives a key(name) to each element in a sequence and returns a hashmap     |
-;;                                                                                   |
-;; * 'NO' means the function doesn't need to be overwritten                          |
-;;   'O' means the function should be overwritten                                    |
-;; ==================================================================================|
+;; =======================================================================================|
+;; * For every function with inlining, we can't use spec without overwriting it.          |
+;;                                                                                        |
+;; * put spec before a funtion -> specify conditions for the core function                |
+;;   vs                                                                                   |
+;;   put spec after a function -> specify conditions for the overwritten function         |
+;;                                                                                        |
+;; * There are two cases that we need to put spec after we overwrite a function           |
+;;     1. When the function has different numbers of :inline-arities like #{2 3}          |
+;;     2. When the function has only :inline without :inline-arities                      |
+;;                                                                                        |
+;; * s/cat gives a key(name) to each element in a sequence and returns a hashmap          |
+;;                                                                                        |
+;; * To get the function name, we first need to attach the spec to the core function      |
+;;   and then overwrite them (overwriting first doesn't work)                             |
+;;     1. Overwritten map    : #object[corefns.corefns$map ... ]                          |
+;;     2. Not overwritten map: #object[clojure.spec.test$spec_checking_fn$fn__12959 ... ] |
+;;                                                                                        |
+;; * 'NO' means the function doesn't need to be overwritten                               |
+;;   'O' means the function should be overwritten                                         |
+;; =======================================================================================|
 
 
 ;; #######################################

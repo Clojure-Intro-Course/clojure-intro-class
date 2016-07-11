@@ -17,13 +17,11 @@
 (expect {:pred 'seqable?, :val 3, :via [], :in [0]} (hashmap-gen '(empty? 3)))
 
 ; The value of key :pred is a lazy sequence
-(expect (more-> 'cat first
-                :check-seqable second
-                'seqable? last)
-        (:pred (hashmap-gen '(empty? [] []))))
-
-;; (expect {:reason "Extra input", :pred (lazy-seq (list 'cat :check-seqable 'seqable?)), :val ([]), :via [], :in [1]}
-;;         (hashmap-gen '(empty? [] [])))
+;; (expect (more-> 'cat first
+;;                 :check-seqable second
+;;                 'seqable? last)
+;;         (:pred (hashmap-gen '(empty? [] []))))
+(expect {:pred 'length1?, :val ([] []), :via [], :in [0]} (hashmap-gen '(empty? [] [])))
 
 ;; (empty? [] [])
 ;; (empty?)
