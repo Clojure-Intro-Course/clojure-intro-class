@@ -234,3 +234,5 @@
                (s/cat :check-seqable seqable?)))
 (s/instrument #'distinct)
 
+(def corefns-map
+  {map "map", filter "filter"})
