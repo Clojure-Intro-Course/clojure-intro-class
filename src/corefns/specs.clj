@@ -231,4 +231,8 @@
 (s/instrument #'distinct)
 
 (def corefns-map
-  {(str map) "map", (str filter) "filter"})
+  {(str map) "map", (str filter) "filter", (str reduce) "reduce", (str empty?) "empty?",
+   (str conj) "conj", (str into) "into", (str cons) "cons", (str mapcat) "mapcat",
+   (str assoc) "assoc", (str dissoc) "dissoc", (str odd?) "odd?", (str even?) "even?",
+   (str <) "<", (str comp) "comp", (str repeatedly) "repeatedly", (str repeat) "repeat",
+   (str distinct) "distinct"})
