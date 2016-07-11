@@ -231,4 +231,4 @@
 (s/instrument #'distinct)
 
 (def corefns-map
-  {map "map", filter "filter"})
+  {(str map) "map", (str filter) "filter"})

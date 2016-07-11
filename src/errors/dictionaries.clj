@@ -1,6 +1,7 @@
 (ns errors.dictionaries
   (:use [corefns.corefns]
         [errors.messageobj]
+        [corefns.specs :only [corefns-map]]
         [corefns.failed_asserts_info]
         ))
 (require '[clojure.string :as cs])
@@ -95,9 +96,10 @@
 (def predefined-names {:_PLUS_ "+"  :_ "-" :_SLASH_ "/" })
 
 ;;; lookup-funct-name: predefined function name -> string
-(defn lookup-funct-name [fname]
+(defn lookup-funct-name
   "looks up pre-defined function names, such as _PLUS_. If not found,
 	returns the original"
+  [fname]
   (let [lookup ((keyword fname) predefined-names)]
     (if lookup lookup (-> fname
                           (clojure.string/replace #"_QMARK_" "?")
@@ -108,27 +110,36 @@
                           (clojure.string/replace #"_STAR_" "*")))))
 
 ;;; check-if-anonymous-function: string -> string
-(defn check-if-anonymous-function [fname]
+(defn check-if-anonymous-function
+  "Takes a string as function name and returns a string \"anonymous function\"
+   if it is an anonymous function, its name otherwise"
+  [fname]
   (if (or (= fname "fn") (re-matches #"fn_(.*)" fname) (re-matches #"fn-(.*)" fname))
       "anonymous-function" fname))
 
 ;;; get-match-name: string -> string
-(defn get-match-name [fname]
+(defn get-match-name
   "extract a function name from a qualified name"
-  (let [m (nth (re-matches #"(.*)\$(.*)" fname) 2)
+  [fname]
+  (let [check-spec (corefns-map fname)
+        m (if check-spec check-spec (nth (re-matches #"(.*)\$(.*)" fname) 2))
         matched (if m m (nth (re-matches #"(.*)/(.*)" fname) 2))]
     (if matched
       (check-if-anonymous-function (lookup-funct-name matched))
       fname)))
 
 ;;; remove-inliner: string -> string
-(defn- remove-inliner [fname]
+(defn- remove-inliner
   "If fname ends with inliner this will return everything before it"
+  [fname]
   (let [match (nth (re-matches #"(.*)--inliner(.*)" fname) 1)]
     (if match match fname)))
 
 ;;; get-function-name: string -> string
-(defn get-function-name [fname]
+(defn get-function-name
+  [fname]
+  "Returns a human-readable unqualified name of the function,
+   or \"anonymous function\" if no name is found."
   (remove-inliner (get-match-name fname)))
 
 ;;; get-macro-name: string -> string

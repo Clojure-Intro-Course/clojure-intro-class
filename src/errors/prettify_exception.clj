@@ -21,9 +21,14 @@
    the lookup of its name.
    If no name is found, a symbol 'anonymous function' (non-conformant)
    is returned.
+   Handles spec-checking functions differently since they are looked up in corefns-map
+   by full name.
    Warning: 'anonymous function' symbol is non-conformant"
   [f]
-  (symbol (get-function-name (.getName (type f)))))
+  (let [f-str (str f)]
+    (if (re-matches #"clojure\.spec\$spec_checking_fn(.*)" f-str)
+        (symbol (get-function-name f-str))
+        (symbol (get-function-name (.getName (type f)))))))
 
 (defn is-function?
   "Uses our dictionary to check if a value should be printed as a function"
@@ -146,7 +151,7 @@
         value (:val problem)
         arg-num (:in problem)]
     ;(println "Data:" data)
-    (println "Problems" problems)
+    ;(println "Problems" problems)
     (if arity?
       (into (message-arity reason args fname) (function-call-string args fname))
       (into entry-info (into (messages-types problems value arg-num (count args)) (function-call-string args fname))))))
