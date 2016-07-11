@@ -32,8 +32,8 @@
 
 ;; testing for prob16
 (expect (more-of x
-                 clojure.lang.ArityException (:exception-class x)
-                 #"You cannot pass three arguments to a function cons, need two\.(.*)" (get-all-text (:msg-info-obj x))
+                 clojure.lang.ExceptionInfo (:exception-class x)
+                 #"You cannot pass three arguments to a function cons, need two\,\nin the function call \(cons \"Hello, \" \"Dave\" \"!\"\)" (get-all-text (:msg-info-obj x))
                  location-regex (get-all-text (:msg-info-obj x))
                  (trace-has-all-pairs? {:fn "prob16" :ns "intro.student"}) (:stacktrace x))
         (run-and-catch-pretty-with-stacktrace 'intro.student
@@ -50,7 +50,7 @@
 
 ;; testing for prob18#########
 (expect (more-of x
-                 java.lang.AssertionError (:exception-class x)
+                 clojure.lang.ExceptionInfo (:exception-class x)
                  #"In function <, the first argument must be a number but is nil\.(.*)" (get-all-text (:msg-info-obj x))
                  location-regex (get-all-text (:msg-info-obj x))
                  (trace-has-all-pairs? {:fn "prob18" :ns "intro.student"}) (:stacktrace x))
