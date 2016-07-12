@@ -416,6 +416,12 @@
           (run-and-catch-pretty-no-stacktrace 'intro.student
                                               '(repeatedly "not a number" +))))
 
+;; testing for more than two arguments in repeatedly
+(expect "You cannot pass three arguments to a function repeatedly,\nin the function call (repeatedly 5 6 anonymous-function)"
+        (get-text-no-location
+          (run-and-catch-pretty-no-stacktrace 'intro.student
+                                              '(repeatedly 5 6 anonymous-function))))
+
 ;~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 ;; testing for the precondition of comp
