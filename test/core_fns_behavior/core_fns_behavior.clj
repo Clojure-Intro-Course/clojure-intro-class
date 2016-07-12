@@ -354,7 +354,7 @@
 
 ;; testing for the precondition of distinct
 
-(expect "You cannot pass two arguments to a function repeat,\nin the function call (repeat \"not a number\" 6)"
+(expect "In function repeat, the first argument \"not a number\" must be a number but is a string,\nin the function call (repeat \"not a number\" 6)"
         (get-text-no-location
           (run-and-catch-pretty-no-stacktrace 'intro.student
                                               '(repeat "not a number" 6))))
@@ -392,7 +392,7 @@
 ;~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 ;; testing for the precondition of comp
-(expect "In function comp, the first argument \"not a function\" must be a function but is a string."
+(expect "In function comp, the first argument \"not a function\" must be a function but is a string,\nin the function call (comp \"not a function\" anonymous-function dec anonymous-function)"
         (get-text-no-location
           (run-and-catch-pretty-no-stacktrace 'intro.student
                                               '(comp "not a function" #(* 5 %) dec #(* 7 %)))))
