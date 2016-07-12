@@ -376,7 +376,7 @@
 
 ;; testing for the precondition of distinct
 
-(expect "In function repeat, the first argument \"not a number\" must be a number but is a string."
+(expect "In function repeat, the first argument \"not a number\" must be a number but is a string,\nin the function call (repeat \"not a number\" 6)"
         (get-text-no-location
           (run-and-catch-pretty-no-stacktrace 'intro.student
                                               '(repeat "not a number" 6))))
@@ -384,8 +384,7 @@
 ;~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 ;; testing for the precondition of repeat
-
-(expect "In function repeat, the first argument \"not a number\" must be a number but is a string."
+(expect "In function repeat, the first argument \"not a number\" must be a number but is a string,\nin the function call (repeat \"not a number\" 6)"
         (get-text-no-location
           (run-and-catch-pretty-no-stacktrace 'intro.student
                                               '(repeat "not a number" 6))))
@@ -399,7 +398,7 @@
 ;~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 ;; testing for the preconditions of repeatedly
-(expect "In function repeatedly, the argument \"not a function\" must be a function but is a string."
+(expect "In function repeatedly, the argument \"not a function\" must be a function but is a string,\nin the function call (repeatedly \"not a function\")"
         (get-text-no-location
           (run-and-catch-pretty-no-stacktrace 'intro.student
                                               '(repeatedly "not a function"))))
