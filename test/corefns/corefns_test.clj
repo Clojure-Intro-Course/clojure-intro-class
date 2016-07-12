@@ -390,6 +390,11 @@
           (run-and-catch-pretty-no-stacktrace 'intro.student
                                               '(repeat "not a number" 6))))
 
+(expect "You cannot pass three arguments to a function repeat,\nin the function call (repeat 3 \"x\" 10)"
+        (get-text-no-location
+          (run-and-catch-pretty-no-stacktrace 'intro.student
+                                              '(repeat 3 "x" 10))))
+
 
 ;~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -690,6 +695,10 @@
 (expect "In function +, the fourth argument :not-a-number must be a number but is a keyword,\nin the function call (+ 8 9 1 :not-a-number 5)"
         (get-text-no-location (run-and-catch-pretty-no-stacktrace 'intro.student
                                                           '(+ 8 9 1 :not-a-number 5))))
+
+(expect "In function +, the argument [map [reduce]] must be a number but is a vector,\nin the function call (+ [map [reduce]])"
+        (get-text-no-location (run-and-catch-pretty-no-stacktrace 'intro.student
+                                                                  '(+ [map [reduce ]]))))
 
 ;~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
