@@ -94,3 +94,31 @@
 (expect {:pred 'seqable?, :val 2, :via [], :in [2]}
         (hashmap-gen '(reduce + 2 2) [:args :three-case :check-seqable]))
 
+
+;; ########## tests for assoc ##########
+(expect {:key1 "value", :key2 "another value"} (assoc {} :key1 "value" :key2 "another value"))
+(expect [1 nil] (assoc [1 2] 1 nil))
+(expect {nil nil} (assoc {} nil nil))
+(expect {:pred 'length-greater2?, :val '([1 2]), :via [:corefns.specs/length-greater-two], :in []}
+        (hashmap-gen '(assoc [1 2])))
+(expect {:pred 'length-greater2?, :val '({} :random), :via [:corefns.specs/length-greater-two], :in []}
+        (hashmap-gen '(assoc {} :random)))
+(expect {:pred 'nil?, :val '(), :via [], :in [0]}
+        (hashmap-gen '(assoc '() nil nil) [:args :check-map-or-vector :check-map :clojure.spec/nil]))
+(expect {:pred 'map?, :val '(), :via [], :in [0]}
+        (hashmap-gen '(assoc '() nil nil) [:args :check-map-or-vector :check-map :clojure.spec/pred]))
+(expect {:pred 'vector?, :val '(), :via [], :in [0]}
+        (hashmap-gen '(assoc '() nil nil) [:args :check-map-or-vector :check-vector]))
+
+
+;; ########## tests for dissoc ##########
+;; (dissoc)
+;; (dissoc [0])
+;; (dissoc {:a 0})
+;; (dissoc nil :a)
+;; (dissoc {:a 1 :b 2 :c 3})
+;; (dissoc {:a 1 :b 2 :c 3} :b)
+;; (println (dissoc {:a 1 :b 2 :c 3} :a :b))
+;; (println (dissoc {:a 1 :b 2 :c 3} :b :a :c :f))
+;; (dissoc [:a 1 :b 2 :c 3] :b)
+;; (dissoc '(:a 1 :b 2 :c 3) :b)

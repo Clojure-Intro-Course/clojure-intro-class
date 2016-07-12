@@ -92,12 +92,33 @@
 ;; outputs a string of generated data for redefining functions with preconditions
 ;; function -> string
 (defn pre-re-defn [fvar]
-  (println "pre-re-defn ing: " (:name (meta fvar)))
+;;   (println "pre-re-defn ing: " (:name (meta fvar)))
   (let [fmeta (meta fvar)]
     (str "(re-defn #'" (:ns fmeta) "/" (:name fmeta) " "
       (apply str (vec (interpose " " (map vec (chomp-if-necessary (map #(map name %) (:arglists fmeta))))))) ")")))
 
 
+(defn println-recur [all-vars]
+  (when
+    (not (empty? all-vars))
+    (try
+      (println (pre-re-defn (first all-vars)))
+      (catch java.lang.ClassCastException e
+        (println-recur (rest all-vars))))
+    (println-recur (rest all-vars))))
+;; (println-recur (vals (ns-publics 'clojure.core)))
+
+(defn println-recur-criminals [all-vars]
+  (when
+    (not (empty? all-vars))
+    (try
+      (pre-re-defn (first all-vars))
+      (catch java.lang.ClassCastException e
+        (do
+          (println (first all-vars))
+          (println-recur-criminals (rest all-vars)))))
+    (println-recur-criminals (rest all-vars))))
+;; (println-recur-criminals (vals (ns-publics 'clojure.core)))
 
 
 ;;probably depricated since spec, but below is slightly buggy code to automate the re defining of functions
