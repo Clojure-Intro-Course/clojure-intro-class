@@ -174,8 +174,10 @@
 ;(expect #"The error happens when a function's argument is not of the type for which the function is defined."
 ;	(:hints (prettify-exception (run-and-catch-raw '(+ 2 "string")))))
 
-(expect #"Make sure you have the correct number of arguments"
-         (:hints (prettify-exception (run-and-catch-raw '(assoc {1 2} 3)))))
+;; Elena commented out testing for hints since we currently don't have hints
+
+;(expect #"Make sure you have the correct number of arguments"
+;         (:hints (prettify-exception (run-and-catch-raw '(assoc {1 2} 3)))))
 
 (expect :assertion-error-with-argument (:key (first-match AssertionError "Assert failed: (check-if-sequable? \"filter\" argument2)")))
 
