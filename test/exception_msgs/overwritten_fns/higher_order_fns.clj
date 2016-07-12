@@ -99,7 +99,7 @@
 (expect "You cannot pass three arguments to a function even?, need one."
         (get-text-no-location (run-and-catch-pretty-no-stacktrace 'intro.core '(even? 3 6 1))))
 
-(expect "You cannot pass zero arguments to a function even?, need one."
+(expect "You cannot pass zero arguments to a function even?, need one,\nin the function call (even? )"
         (get-text-no-location (run-and-catch-pretty-no-stacktrace 'intro.core '(even?))))
 
 (expect "You cannot pass one argument to this anonymous function."
