@@ -96,7 +96,7 @@
          (run-and-catch-pretty-no-stacktrace 'intro.core '(nth [0 1 2 3 4 5] 10))))
 
 ;; testing for :arity-exception-wrong-number-of-arguments
-(expect "You cannot pass three arguments to a function even?, need one."
+(expect "You cannot pass three arguments to a function even?, need one,\nin the function call (even? 3 6 1)"
         (get-text-no-location (run-and-catch-pretty-no-stacktrace 'intro.core '(even? 3 6 1))))
 
 (expect "You cannot pass zero arguments to a function even?, need one,\nin the function call (even? )"

@@ -445,7 +445,7 @@
 
 ;; THIS IS ACTUALLY A TEST FOR ARITY, should be moved from here.
 ;; testing for the precondition of conj
-(expect "You cannot pass one argument to a function conj, need at least two."
+(expect "You cannot pass one argument to a function conj, need at least two,\nin the function call (conj :not-a-collection)"
         (get-text-no-location
          (run-and-catch-pretty-no-stacktrace 'intro.student
                                              '(conj :not-a-collection))))
