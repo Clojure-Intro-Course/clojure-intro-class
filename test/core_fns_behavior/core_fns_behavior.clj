@@ -363,7 +363,7 @@
 
 ;; testing for the precondition of repeat
 
-(expect "You cannot pass two arguments to a function repeat,\nin the function call (repeat \"not a number\" 6)"
+(expect "In function repeat, the first argument \"not a number\" must be a number but is a string,\nin the function call (repeat \"not a number\" 6)"
         (get-text-no-location
           (run-and-catch-pretty-no-stacktrace 'intro.student
                                               '(repeat "not a number" 6))))
@@ -473,13 +473,13 @@
 ;                                             '(reduce :not-a-function [1 2 3]))))
 
 ;; testing for the second precondition of reduce
-(expect "Don't know how to create a sequence from a keyword."
+(expect "In function reduce, the second argument :not-a-collection must be a sequence but is a keyword,\nin the function call (reduce + :not-a-collection)"
         (get-text-no-location
          (run-and-catch-pretty-no-stacktrace 'intro.student
                                              '(reduce + :not-a-collection))))
 
 ;; testing for the third precondition of reduce
-(expect "Don't know how to create a sequence from a keyword."
+(expect "In function reduce, the third argument :not-a-collection must be a sequence but is a keyword,\nin the function call (reduce + 2 :not-a-collection)"
         (get-text-no-location
          (run-and-catch-pretty-no-stacktrace 'intro.student
                                              '(reduce + 2 :not-a-collection))))
@@ -519,7 +519,7 @@
 ;                                             '(filter :not-a-function [1 2 3]))))
 
 ;; testing for the second precondition of filter
-(expect "In function filter, the second argument :not-a-collection must be a sequence but is a keyword,\nin the function call (filter anonymous-function :not-a-collection)"
+(expect "In function filter, the second argument :not-a-collection must be a sequence but is a keyword,\nin the function call (filter odd? :not-a-collection)"
         (get-text-no-location
          (run-and-catch-pretty-no-stacktrace 'intro.student
                                              '(filter odd? :not-a-collection))))

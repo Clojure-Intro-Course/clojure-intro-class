@@ -420,7 +420,7 @@
 (expect "You cannot pass three arguments to a function repeatedly,\nin the function call (repeatedly 5 6 anonymous-function)"
         (get-text-no-location
           (run-and-catch-pretty-no-stacktrace 'intro.student
-                                              '(repeatedly 5 6 anonymous-function))))
+                                              '(repeatedly 5 6 #(+ % 2)))))
 
 ;~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -475,7 +475,7 @@
                                              '(doall (map + :not-a-collection)))))
 
 ;; testing zero arguments after the function given to map
-(expect "In function map, the argument (+) must be a length-greater1 but is a sequence,\nin the function call (map +)"
+(expect "You cannot pass one argument to a function map, need at least two,\nin the function call (map +)"
         (get-text-no-location
           (run-and-catch-pretty-no-stacktrace 'intro.student
                                               '(map + ))))
@@ -596,7 +596,7 @@
 ;                                             '(filter :not-a-function [1 2 3]))))
 
 ;; testing for the second precondition of filter
-(expect "In function filter, the second argument :not-a-collection must be a sequence but is a keyword,\nin the function call (filter anonymous-function :not-a-collection)"
+(expect "In function filter, the second argument :not-a-collection must be a sequence but is a keyword,\nin the function call (filter odd? :not-a-collection)"
         (get-text-no-location
          (run-and-catch-pretty-no-stacktrace 'intro.student
                                              '(filter odd? :not-a-collection))))
