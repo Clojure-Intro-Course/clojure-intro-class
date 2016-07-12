@@ -103,10 +103,10 @@
     (not (empty? all-vars))
     (try
       (println (pre-re-defn (first all-vars)))
-      (catch java.lang.ClassCastException e
-        (println-recur (rest all-vars))))
+      (catch java.lang.ClassCastException e))
+;;         (println-recur (rest all-vars))))
     (println-recur (rest all-vars))))
-;; (println-recur (vals (ns-publics 'clojure.core)))
+(println-recur (vals (ns-publics 'clojure.core)))
 
 (defn println-recur-criminals [all-vars]
   (when
@@ -114,9 +114,7 @@
     (try
       (pre-re-defn (first all-vars))
       (catch java.lang.ClassCastException e
-        (do
-          (println (first all-vars))
-          (println-recur-criminals (rest all-vars)))))
+          (println (first all-vars))))
     (println-recur-criminals (rest all-vars))))
 ;; (println-recur-criminals (vals (ns-publics 'clojure.core)))
 
