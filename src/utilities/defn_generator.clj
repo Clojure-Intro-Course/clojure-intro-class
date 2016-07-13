@@ -16,15 +16,28 @@
                 :args  {:check nil,                   :has-type "arg",      :argument "args", :arg-vec ["&" "args"]}})
 
 ;;mapping of rich hickey's argument names in doc-strings to a more consistent naming scheme
+;; (def arg-type (merge
+;;                      (zipmap [:coll :c :c1 :c2 :c3 :c4 :c5] (repeat :coll)),
+;;                      (zipmap [:n :number :step :start :end :size] (repeat :n)),
+;;                      (zipmap [:arg :val :argument :x :y] (repeat :arg)),
+;;                      (zipmap [:f :function :pred] (repeat :f)),
+;;                      (zipmap [:fs :functions :preds] (repeat :fs)),
+;;                      (zipmap [:colls :cs] (repeat :colls)),
+;;                      (zipmap [:string :str :s] (repeat :str)),
+;;                      (zipmap [:strs :strings :ss] (repeat :strs)),
+;;                      (zipmap [:more :args :vals :arguments :xs :ys] (repeat :args))))
 (def arg-type (merge
+                     (zipmap [:seq] (repeat :seq)), ; added
+                     (zipmap [:map] (repeat :map-or-vector)), ;added
                      (zipmap [:coll :c :c1 :c2 :c3 :c4 :c5] (repeat :coll)),
+                     (zipmap [:maps] (repeat :maps-or-vectors)), ;added
                      (zipmap [:n :number :step :start :end :size] (repeat :n)),
-                     (zipmap [:arg :val :argument :x :y] (repeat :arg)),
+                     (zipmap [:arg :key :val :argument :x :y] (repeat :arg)), ; key is added
                      (zipmap [:f :function :pred] (repeat :f)),
                      (zipmap [:fs :functions :preds] (repeat :fs)),
                      (zipmap [:colls :cs] (repeat :colls)),
                      (zipmap [:string :str :s] (repeat :str)),
-                     (zipmap [:strs :strings :ss] (repeat :strs))
+                     (zipmap [:strs :strings :ss] (repeat :strs)),
                      (zipmap [:more :args :vals :arguments :xs :ys] (repeat :args))))
 
 ;; returns the index of the last logically false member of the array
@@ -104,9 +117,8 @@
     (try
       (println (pre-re-defn (first all-vars)))
       (catch java.lang.ClassCastException e))
-;;         (println-recur (rest all-vars))))
     (println-recur (rest all-vars))))
-(println-recur (vals (ns-publics 'clojure.core)))
+;; (println-recur (vals (ns-publics 'clojure.core)))
 
 (defn println-recur-criminals [all-vars]
   (when
