@@ -26,7 +26,7 @@
    Warning: 'anonymous function' symbol is non-conformant"
   [f]
   (let [f-str (str f)]
-    (if (re-matches #"clojure\.spec\$spec_checking_fn(.*)" f-str)
+    (if (re-matches #"clojure\.spec\.test\$spec_checking_fn(.*)" f-str)
         (symbol (get-function-name f-str))
         (symbol (get-function-name (.getName (type f)))))))
 
