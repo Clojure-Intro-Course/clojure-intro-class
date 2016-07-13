@@ -4,7 +4,8 @@
 ;;   (:refer-clojure :exclude [map nth])
   (:require [corefns.assert_handling :refer :all]
             [corefns.failed_asserts_info :refer :all]
-            [clojure.spec :as s]))
+            [clojure.spec :as s]
+            [clojure.spec.test :as stest]))
 
 ;; Including the standard Clojure documentation to make sure that asserts
 ;; and cases are consistent with the standard Clojure.
@@ -295,11 +296,11 @@
 ;;   {:pre [(check-if-numbers? "+" args 1)]}
 ;;   (apply clojure.core/+ args))
 
-(s/fdef +
+(s/fdef clojure.core/+
 ;;       :args (s/* number?))
   :args (s/cat :check-number (s/* number?)))
 
-(s/instrument #'+)
+(stest/instrument 'clojure.core/+)
 
 
 (defn + [& args]
@@ -317,11 +318,11 @@
 ;;          (check-if-numbers? "-" args 2)]}
 ;;   (apply clojure.core/- argument1 args))
 
-(s/fdef -
+(s/fdef clojure.core/-
 ;;       :args (s/* number?))
   :args (s/cat :check-number (s/+ number?)))
 
-(s/instrument #'-)
+(stest/instrument 'clojure.core/-)
 
 (defn - [argument1 & args]
   (apply clojure.core/- argument1 args))

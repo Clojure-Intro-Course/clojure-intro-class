@@ -21,4 +21,3 @@
       (if (= (first args) "s")
         (display-error (standard e))
         (display-error (prettify-exception e))))))
-

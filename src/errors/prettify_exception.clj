@@ -26,7 +26,7 @@
    Warning: 'anonymous function' symbol is non-conformant"
   [f]
   (let [f-str (str f)]
-    (if (re-matches #"clojure\.spec\$spec_checking_fn(.*)" f-str)
+    (if (re-matches #"clojure\.spec\.test\$spec_checking_fn(.*)" f-str)
         (symbol (get-function-name f-str))
         (symbol (get-function-name (.getName (type f)))))))
 
@@ -121,7 +121,7 @@
    is returned. If there are several non-nil predicates, a vector of their hash maps is
    returned."
   [data]
-  (let [predicates (vals (:clojure.spec/problems data))]
+  (let [predicates (:clojure.spec/problems data)]
     (if (= 1 (count predicates))
         (first predicates)
         (let [non-nils (filter #(not= "nil?" (str (:pred %))) predicates)]
