@@ -120,3 +120,5 @@
 (expect "An opened \" does not have a matching closing one."
        (get-text-no-location (:msg-info-obj (try (load-file "exceptions/compilation_errors/non_closing_string.clj")
                        (catch Throwable e (prettify-exception e))))))
+
+

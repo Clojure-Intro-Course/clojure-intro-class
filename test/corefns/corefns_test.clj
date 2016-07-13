@@ -17,6 +17,8 @@
 (expect {:b "cat", :a "dog"}
         (assoc nil :a "dog" :b "cat"))
 
+
+
 ;; testing for reduce
 
 (expect 0
@@ -70,6 +72,10 @@
         (get-text-no-location
           (run-and-catch-pretty-no-stacktrace 'intro.student
                                               '(map + ))))
+(expect "Key must be integer"
+        (get-text-no-location
+          (run-and-catch-pretty-no-stacktrace 'intro.student
+                                              '(assoc [] :a 2))))
 ;~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 
