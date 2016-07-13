@@ -44,6 +44,10 @@
        (get-text-no-location (:msg-info-obj (try (load-file "exceptions/compilation_errors/greater_than_20_parameters.clj")
                        (catch Throwable e (prettify-exception e))))))
 
+(expect #"A function may not take more than 20 parameters."
+       (get-text-no-location (:msg-info-obj (try (load-file "exceptions/compilation_errors/greater_than_20_parameters2.clj")
+                       (catch Throwable e (prettify-exception e))))))
+
 (expect "Cannot call nil as a function."
         (get-text-no-location
          (run-and-catch-pretty-no-stacktrace 'intro.student '(nil 5))))
@@ -90,6 +94,7 @@
 
 ;; the internal representation of zero? is zero?--inliner--4238 (in this particular test), i.e. it has
 ;; an inliner part
+
 (expect "You cannot pass zero arguments to a function zero?."
         (get-text-no-location (run-and-catch-pretty-no-stacktrace 'intro.core '(zero?))))
 

@@ -61,6 +61,10 @@
        (get-text-no-location (:msg-info-obj (try (load-file "exceptions/compilation_errors/keyword_wrong_number_of_args.clj")
                        (catch Throwable e (prettify-exception e))))))
 
+(expect #"A keyword: :a can only take one or two arguments."
+       (get-text-no-location (:msg-info-obj (try (load-file "exceptions/compilation_errors/keyword_wrong_number_of_args2.clj")
+                       (catch Throwable e (prettify-exception e))))))
+
 ;; testing for :illegal-argument-parameters-must-be-in-vector
 (expect #"Parameters for defn must be a vector, but my-argument was found instead\.(.*)"
         (get-all-text

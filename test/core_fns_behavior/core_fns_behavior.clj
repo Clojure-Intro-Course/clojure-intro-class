@@ -12,42 +12,44 @@
 ;#############################################
 
 ;;testing for first
+
 (expect 1
   (first [1 2 3 4 5]))
-
 (expect 1
   (first '(1 2 3 4 5)))
-
 (expect nil
   (first '()))
+
 ;;testing for rest
+
 (expect [2 3 4 5]
   (rest [1 2 3 4 5]))
-
 (expect '(2 3 4 5)
   (rest '(1 2 3 4 5)))
-
 (expect '()
   (rest nil))
-
 (expect '()
   (rest '()))
-
 (expect '()
   (rest '(1)))
+
 ;;testing for next
+
 (expect [2 3 4 5]
   (next [1 2 3 4 5]))
-
 (expect '(2 3 4 5)
   (next '(1 2 3 4 5)))
-
 (expect nil
   (next '()))
+
+
 ;;testing for seq
+
 (expect true
   (every? seq ["1" [1] '(1) {:1 1} #{1}]))
+
 ;;testing for assoc
+
 (expect [:a "cat" :b 2 :c "dog" :d 4 :e 5 "cats"]
         (assoc [:a 1 :b 2 :c 3 :d 4 :e 5] 5 "dog" 1 "cat" 10 "cats"))
 (expect {:a "dog" :b 2 :c "cats" :d 4 :e "cat"}
@@ -56,8 +58,11 @@
         (assoc [1 2 3] 0 10 2 20))
 (expect {:a 5 :v 12}
         (assoc nil :a 5 :v 12))
+(expect {:b "cat", :a "dog"}
+        (assoc nil :a "dog" :b "cat"))
 
 ;;testing for dissoc
+
 (expect {:b 2, :d 4, :f 6}
         (dissoc {:a 1 :b 2 :c 3 :d 4 :e 5 :f 6 :g 7} :a :c :e :g))
 (expect {:a 1 :b 2 :c 3}
@@ -66,6 +71,7 @@
         (dissoc nil :a))
 
 ;; testing for map
+
 (expect '(2 3 4 5 6)
         (map inc [1 2 3 4 5]))
 (expect '(5 7 9)
@@ -84,6 +90,7 @@
         (map #(vector (first %) (* 2 (second %))) {:a 1 :b 2 :c 3}))
 
 ;; testing for count
+
 (expect 0
         (count nil))
 (expect 0
@@ -98,6 +105,7 @@
         (count "string"))
 
 ;; testing for conj
+
 (expect [1 2 3 4]
         (conj [1 2 3] 4))
 (expect '(4 1 2 3)
@@ -112,6 +120,7 @@
         (conj {1 2} {3 4}))
 
 ;; testing for into
+
 (expect {1 2, 3 4}
         (into {} [[1 2] [3 4]]))
 (expect [[1 2] [3 4]]
@@ -120,6 +129,7 @@
         (into (sorted-map) {:b 2 :c 3 :a 1}))
 
 ;; testing for reduce
+
 (expect 15
         (reduce + [1 2 3 4 5]))
 (expect 6
@@ -146,8 +156,13 @@
          (take 1000 (iterate inc 3))))
 (expect [1 2 3 :a :b :c [4 5] 6]
         (reduce into [[1 2 3] [:a :b :c] '([4 5] 6)]))
+(expect 0
+        (reduce + nil))
+(expect 0
+        (reduce + 0 nil))
 
 ;; testing for nth
+
 (expect "a"
         (nth ["a" "b" "c" "d"] 0))
 (expect "b"
@@ -158,6 +173,7 @@
         (nth [0 1 2] 77 1337))
 
 ;; testing for filter
+
 (expect '(0 2 4 6 8)
         (filter even? (range 10)))
 (expect '("a" "b" "n" "f" "q")
@@ -172,6 +188,7 @@
                 {:a 1 :b 2 :c 101 :d 102 :e -1}))
 
 ;; testing for mapcat
+
 (expect '(0 1 2 3 4 5 6 7 8 9)
         (mapcat reverse [[3 2 1 0] [6 5 4] [9 8 7]]))
 (expect '("aa" "bb" "cc" "dd" "ee" "ff")
@@ -179,6 +196,7 @@
                 ["aa1bb" "cc2dd" "ee3ff"]))
 
 ;; testing for concat
+
 (expect '(1 2 3 4)
         (concat [1 2] [3 4]))
 (expect [1 2 3 4]
@@ -191,88 +209,104 @@
         (concat "abc" "def"))
 
 ;; testing for <
+
 (expect true (< 1 2))
 (expect false (< 2 1))
 (expect true (< 1.5 2))
 (expect true (< 2 3 4 5 6))
 
 ;; testing for <=
+
 (expect true (<= 8 8))
 (expect false (<= 9 1))
 (expect true (<= 10 100))
 (expect true (<= 0 0 2 4 4 9 11))
 
 ;; testing for >
+
 (expect false (> 1 2))
 (expect true (> 2 1))
 (expect false (> 1.5 2))
 (expect true (> 9 8 5 3 1))
 
 ;; testing for >=
+
 (expect true (>= 9 8))
 (expect false (>= 2 5))
 (expect true (>= 100 100))
 (expect true (>= 10 10 5 4 4 4 4 4 4 2))
 
 ;; testing for +
+
 (expect 0 (+))
 (expect 9 (+ 9))
 (expect -10 (+ -10))
 (expect 82 (+ 39 41 2))
 
 ;; testing for -
+
 (expect Exception (-))
 (expect -10 (- 10))
 (expect 10 (- -10))
 (expect 30 (- 39 5 4))
 
 ;; testing for *
+
 (expect 1 (*))
 (expect 10 (* 10))
 (expect -10 (* -10))
 (expect 60 (* 3 5 4))
 
 ;; testing for /
+
 (expect Exception (/))
 (expect 1/10 (/ 10))
 (expect 4 (/ 12 3))
 (expect 2 (/ 24 3 4))
 
 ;; testing for quot
+
 (expect 3 (quot 10 3))
 (expect -1.0 (quot -5.9 3))
 
 ;; testing for rem
+
 (expect 1 (rem 10 9))
 (expect 0 (rem 2 2))
 
 ;; testing for mod
+
 (expect 0 (mod 10 5))
 (expect 4 (mod 10 6))
 
 ;; testing for inc
+
 (expect 2 (inc 1))
 (expect 2.0 (inc 1.0))
 (expect 3/2 (inc 1/2))
 
 ;; testing for dec
+
 (expect 1 (dec 2))
 (expect 1.0 (dec 2.0))
 (expect 1/2 (dec 3/2))
 
 ;; testing for max
+
 (expect Exception (max))
 (expect 10 (max 10))
 (expect 10 (max 10 5))
 (expect 30 (max 0 30 15))
 
 ;; testing for min
+
 (expect Exception (min))
 (expect 10 (min 10))
 (expect 5 (min 10 5))
 (expect 0 (min 30 0 15))
 
 ;; testing for add-first
+
 (expect '(0 1 2)
         (add-first '(1 2) 0))
 (expect [0 1 2]
@@ -287,6 +321,7 @@
         (add-first {:b 2 :c 3} [:a 1]))
 
 ;; testing for add-last
+
 (expect '(1 2 0)
         (add-last '(1 2) 0))
 (expect [1 2 0]
@@ -301,6 +336,7 @@
         (add-last {:b 2 :c 3} [:a 1]))
 
 ;; testing for contains-value?
+
 (expect true (contains-value? '(7 8 9) 9))
 (expect false (contains-value? '(7 8 9) 2))
 (expect true (contains-value? [7 8 9] 9))
@@ -312,6 +348,7 @@
 (expect false (contains-value? {:d 4 :e 5} :e))
 
 ;; testing for contains-key?
+
 (expect false (contains-key? [7 8 9] 9)) ;with vectors, contains-key? works with indices
 (expect true (contains-key? [7 8 9] 2))
 (expect true (contains-key? #{7 8 9} 9)) ;with sets, contains-key? works just as contains-value?
@@ -321,30 +358,45 @@
 (expect false (contains-key? {:d 4 :e 5} 5))
 
 ;; testing for any?
+
 (expect true (any? odd? [1 2 3 4 5]))
 (expect false (any? even? [1 3 5 7 9 11]))
 (expect true (any? #(= :a %) [:a :b :c :d :e]))
 
 ;; testing for comp
+
 (expect -4 ((comp inc #(* 5 %) dec #(* 7 %)) 0))
 
 ;; testing for repeat
+
 (expect '("x" "x" "x" "x" "x") (take 5 (repeat "x")))
 (expect '("x" "x" "x" "x" "x") (repeat 5.23 "x"))
 
 ;; testing for repeatedly
+
 (expect '("x" "x" "x" "x" "x") (take 5 (repeatedly (constantly "x"))))
 (expect '("x" "x" "x" "x" "x") (repeatedly 4.23 (constantly "x")))
 
 ;; testing for distinct
+
 (expect '(1 2 3 4 5) (distinct [1 2 2 2 3 2 4 4 5 4]))
 (expect '(\h \e \l \o \w \r \d) (distinct "helloworld"))
 
 
-
 ;; testing for odd? and even?
+
 (expect true (odd? 3))
 (expect false (even? 3))
+
+;; testing for empty?
+
+(expect true
+        (empty? '()))
+(expect true
+        (empty? nil))
+(expect false
+        (empty? '(1 2)))
+
 
 ;;; Elena, 6/22/16: Tests below this line should be moved from here
 
