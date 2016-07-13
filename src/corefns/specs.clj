@@ -1,5 +1,8 @@
+;; (ns corefns.specs
+;;   (:require [clojure.spec :as s]))
 (ns corefns.specs
-  (:require [clojure.spec :as s]))
+  (require [clojure.spec :as s]
+           [clojure.spec.test :as stest]))
 
 ;;                        Spec for clojure.spec  by Tony
 ;; =======================================================================================|
@@ -48,50 +51,71 @@
 ;; #######################################
 
 ; ##### NO #####
+; For alpha version 7
 ;; (s/fdef empty?
 ;;   :args (s/cat :check-seqable seqable?))
 ;; (s/instrument #'empty?)
-(s/fdef empty?
+;; (s/fdef empty?
+;;   :args (s/and ::length-one
+;;                (s/cat :check-seqable seqable?)))
+;; (s/instrument #'empty?)
+(s/fdef clojure.core/empty?
   :args (s/and ::length-one
                (s/cat :check-seqable seqable?)))
-(s/instrument #'empty?)
+(stest/instrument 'clojure.core/empty?)
 
 ; ##### NO #####
 ;; (s/fdef map
 ;;       :args (s/cat :check-function ifn? :check-seqable (s/+ seqable?)))
 ;; (s/instrument #'map)
-(s/fdef map
+;; (s/fdef map
+;;   :args (s/and ::length-greater-one
+;;                (s/cat :check-function ifn? :check-seqable (s/+ seqable?))))
+;; (s/instrument #'map)
+(s/fdef clojure.core/map
   :args (s/and ::length-greater-one
                (s/cat :check-function ifn? :check-seqable (s/+ seqable?))))
-(s/instrument #'map)
+(stest/instrument 'clojure.core/map)
 
 
 ; ##### NO #####
 ;; (s/fdef conj
 ;;   :args (s/cat :check-seqable seqable? :dummy (s/+ ::s/any)))
 ;; (s/instrument #'conj)
-(s/fdef conj
+;; (s/fdef conj
+;;   :args (s/and ::length-greater-one
+;;                (s/cat :check-seqable seqable? :dummy (s/+ ::s/any))))
+;; (s/instrument #'conj)
+(s/fdef clojure.core/conj
   :args (s/and ::length-greater-one
-               (s/cat :check-seqable seqable? :dummy (s/+ ::s/any))))
-(s/instrument #'conj)
+               (s/cat :check-seqable seqable? :dummy (s/+ any?))))
+(stest/instrument 'clojure.core/conj)
 
 ; ##### NO #####
 ;; (s/fdef into
 ;;       :args (s/cat :check-seqable seqable? :check-seqable seqable?))
 ;; (s/instrument #'into)
-(s/fdef into
+;; (s/fdef into
+;;   :args (s/and ::length-two
+;;                (s/cat :check-seqable seqable? :check-seqable seqable?)))
+;; (s/instrument #'into)
+(s/fdef clojure.core/into
   :args (s/and ::length-two
                (s/cat :check-seqable seqable? :check-seqable seqable?)))
-(s/instrument #'into)
+(stest/instrument 'clojure.core/into)
 
 ; ##### NO #####
 ;; (s/fdef cons
 ;;       :args (s/cat :dummy ::s/any :check-seqable seqable?))
 ;; (s/instrument #'cons)
-(s/fdef cons
+;; (s/fdef cons
+;;   :args (s/and ::length-two
+;;                (s/cat :dummy ::s/any :check-seqable seqable?)))
+;; (s/instrument #'cons)
+(s/fdef clojure.core/cons
   :args (s/and ::length-two
-               (s/cat :dummy ::s/any :check-seqable seqable?)))
-(s/instrument #'cons)
+               (s/cat :dummy any? :check-seqable seqable?)))
+(stest/instrument 'clojure.core/cons)
 
 ; ##### NO #####
 ; This doesn't differenciate two and three arity cases - issue #116
@@ -108,12 +132,18 @@
 ;;                 :three (s/cat :check-function ifn? :dummy ::s/any :check-seqable seqable?)
 ;;                 :two (s/cat :check-function ifn? :check-seqable seqable?)))
 
-(s/fdef reduce
+;; (s/fdef reduce
+;;         :args (s/or :two-case (s/and ::length-two
+;;                                      (s/cat :check-function ifn? :check-seqable seqable?))
+;;                     :three-case (s/and ::length-three
+;;                                        (s/cat :check-function ifn? :dummy ::s/any :check-seqable seqable?))))
+;; (s/instrument #'reduce)
+(s/fdef clojure.core/reduce
         :args (s/or :two-case (s/and ::length-two
                                      (s/cat :check-function ifn? :check-seqable seqable?))
                     :three-case (s/and ::length-three
-                                       (s/cat :check-function ifn? :dummy ::s/any :check-seqable seqable?))))
-(s/instrument #'reduce)
+                                       (s/cat :check-function ifn? :dummy any? :check-seqable seqable?))))
+(stest/instrument 'clojure.core/reduce)
 
 ; ##### O ##### - TODO: doesn't work unless the spec is after the overwritten function
 
@@ -130,19 +160,28 @@
 
 ;; List of functions that have specs and aren't overwritten:
 ; ##### NO #####
-(s/fdef filter
+;; (s/fdef filter
+;;   :args (s/and ::length-two
+;;                (s/cat :check-function ifn? :check-seqable seqable?)))
+;; (s/instrument #'filter)
+(s/fdef clojure.core/filter
   :args (s/and ::length-two
                (s/cat :check-function ifn? :check-seqable seqable?)))
-(s/instrument #'filter)
+(stest/instrument 'clojure.core/filter)
+
 
 ; ##### NO #####
 ;; (s/fdef mapcat
 ;;   :args (s/cat :check-function ifn? :check-seqable (s/+ seqable?)))
 ;; (s/instrument #'mapcat)
-(s/fdef mapcat
+;; (s/fdef mapcat
+;;   :args (s/and ::length-greater-one
+;;                (s/cat :check-function ifn? :check-seqable (s/+ seqable?))))
+;; (s/instrument #'mapcat)
+(s/fdef clojure.core/mapcat
   :args (s/and ::length-greater-one
                (s/cat :check-function ifn? :check-seqable (s/+ seqable?))))
-(s/instrument #'mapcat)
+(stest/instrument 'clojure.core/mapcat)
 
 ; ##### NO #####
 ; We need s/nilable here because map? and vector? return false for nil
@@ -151,46 +190,68 @@
 ;;                :dummy ::s/any
 ;;                :dummies (s/+ ::s/any)))
 ;; (s/instrument #'assoc)
-(s/fdef assoc
+;; (s/fdef assoc
+;;   :args (s/and ::length-greater-two
+;;                (s/cat :check-map-or-vector (s/or :check-map (s/nilable map?) :check-vector vector?)
+;;                       :dummy ::s/any
+;;                       :dummies (s/+ ::s/any))))
+;; (s/instrument #'assoc)
+(s/fdef clojure.core/assoc
   :args (s/and ::length-greater-two
                (s/cat :check-map-or-vector (s/or :check-map (s/nilable map?) :check-vector vector?)
-                      :dummy ::s/any
-                      :dummies (s/+ ::s/any))))
-(s/instrument #'assoc)
+                      :dummy any?
+                      :dummies (s/+ any?))))
+(stest/instrument 'clojure.core/assoc)
 
 ; ##### NO #####
 ; We need s/nilable here because map? returns false for nil
 ;; (s/fdef dissoc
 ;;   :args (s/cat :check-map (s/nilable map?) :dummies (s/* ::s/any)))
 ;; (s/instrument #'dissoc)
-(s/fdef dissoc
+;; (s/fdef dissoc
+;;   :args (s/and ::length-greater-zero
+;;                (s/cat :check-map (s/nilable map?) :dummies (s/* ::s/any))))
+;; (s/instrument #'dissoc)
+(s/fdef clojure.core/dissoc
   :args (s/and ::length-greater-zero
-               (s/cat :check-map (s/nilable map?) :dummies (s/* ::s/any))))
-(s/instrument #'dissoc)
+               (s/cat :check-map (s/nilable map?) :dummies (s/* any?))))
+(stest/instrument 'clojure.core/dissoc)
 
 ; ##### NO #####
 ;; (s/fdef odd?
 ;;   :args (s/cat :check-integer integer?))
 ;; (s/instrument #'odd?)
-(s/fdef odd?
+;; (s/fdef odd?
+;;   :args (s/and ::length-one
+;;                (s/cat :check-integer integer?)))
+;; (s/instrument #'odd?)
+(s/fdef clojure.core/odd?
   :args (s/and ::length-one
                (s/cat :check-integer integer?)))
-(s/instrument #'odd?)
+(stest/instrument 'clojure.core/odd?)
 
 ; ##### NO #####
-(s/fdef even?
+;; (s/fdef even?
+;;   :args (s/and ::length-one
+;;                (s/cat :check-integer integer?)))
+;; (s/instrument #'even?)
+(s/fdef clojure.core/even?
   :args (s/and ::length-one
                (s/cat :check-integer integer?)))
-(s/instrument #'even?)
+(stest/instrument 'clojure.core/even?)
 
 ; ##### O #####
 ;; (s/fdef <
 ;;   :args (s/cat :check-number (s/+ number?)))
 ;; (s/instrument #'<)
-(s/fdef <
+;; (s/fdef <
+;;   :args (s/and ::length-greater-zero
+;;                (s/cat :check-number (s/+ number?))))
+;; (s/instrument #'<)
+(s/fdef clojure.core/<
   :args (s/and ::length-greater-zero
                (s/cat :check-number (s/+ number?))))
-(s/instrument #'<)
+(stest/instrument 'clojure.core/<)
 
 ; ##### O ##### - TODO: doesn't work. the same behavior as nth
 ;; (s/fdef quot
@@ -203,37 +264,55 @@
 ;; (s/instrument #'quot)
 
 ; ##### NO #####
-(s/fdef comp
+;; (s/fdef comp
+;;   :args (s/cat :check-function (s/* ifn?)))
+;; (s/instrument #'comp)
+(s/fdef clojure.core/comp
   :args (s/cat :check-function (s/* ifn?)))
-(s/instrument #'comp)
+(stest/instrument 'clojure.core/comp)
 
 ; ##### NO #####
 ;; (s/fdef repeatedly
 ;;   :args (s/cat :check-number (s/? number?) :check-function ifn?))
-(s/fdef repeatedly
+;; (s/fdef repeatedly
+;;   :args (s/or :one-case (s/and ::length-one
+;;                                (s/cat :check-function ifn?))
+;;               :two-case (s/and ::length-two
+;;                                (s/cat :check-number number? :check-function ifn?))))
+;; (s/instrument #'repeatedly)
+(s/fdef clojure.core/repeatedly
   :args (s/or :one-case (s/and ::length-one
                                (s/cat :check-function ifn?))
               :two-case (s/and ::length-two
                                (s/cat :check-number number? :check-function ifn?))))
-(s/instrument #'repeatedly)
+(stest/instrument 'clojure.core/repeatedly)
 
 ; ##### NO #####
 ;; (s/fdef repeat
 ;;   :args (s/cat :check-number (s/? number?) :dummy ::s/any))
-(s/fdef repeat
+;; (s/fdef repeat
+;;   :args (s/or :one-case ::length-one
+;;               :two-case (s/and ::length-two
+;;                                (s/cat :check-number number? :dummy ::s/any))))
+;; (s/instrument #'repeat)
+(s/fdef clojure.core/repeat
   :args (s/or :one-case ::length-one
               :two-case (s/and ::length-two
-                               (s/cat :check-number number? :dummy ::s/any))))
-(s/instrument #'repeat)
+                               (s/cat :check-number number? :dummy any?))))
+(stest/instrument 'clojure.core/repeat)
 
 ; ##### NO #####
 ;; (s/fdef distinct
 ;;   :args (s/cat :check-seqable seqable?))
 ;; (s/instrument #'distinct)
-(s/fdef distinct
+;; (s/fdef distinct
+;;   :args (s/and ::length-one
+;;                (s/cat :check-seqable seqable?)))
+;; (s/instrument #'distinct)
+(s/fdef clojure.core/distinct
   :args (s/and ::length-one
                (s/cat :check-seqable seqable?)))
-(s/instrument #'distinct)
+(stest/instrument 'clojure.core/distinct)
 
 (def corefns-map
   {(str map) "map", (str filter) "filter", (str reduce) "reduce", (str empty?) "empty?",
