@@ -245,7 +245,6 @@
 
 ;; testing for -
 
-(expect Exception (-))
 (expect -10 (- 10))
 (expect 10 (- -10))
 (expect 30 (- 39 5 4))
@@ -259,7 +258,6 @@
 
 ;; testing for /
 
-(expect Exception (/))
 (expect 1/10 (/ 10))
 (expect 4 (/ 12 3))
 (expect 2 (/ 24 3 4))
@@ -293,14 +291,12 @@
 
 ;; testing for max
 
-(expect Exception (max))
 (expect 10 (max 10))
 (expect 10 (max 10 5))
 (expect 30 (max 0 30 15))
 
 ;; testing for min
 
-(expect Exception (min))
 (expect 10 (min 10))
 (expect 5 (min 10 5))
 (expect 0 (min 30 0 15))

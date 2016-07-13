@@ -92,3 +92,10 @@
 (expect "In function dec, the argument :r must be a number but is a keyword."
         (get-text-no-location
          (run-and-catch-pretty-no-stacktrace 'intro.student '(dec :r))))
+
+;moved from core_fns_behavior
+
+(expect Exception (-))
+(expect Exception (/))
+(expect Exception (max))
+(expect Exception (min))
