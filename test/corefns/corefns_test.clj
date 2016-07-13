@@ -478,7 +478,6 @@
         (get-text-no-location
           (run-and-catch-pretty-no-stacktrace 'intro.student
                                               '(map + ))))
-
 ;~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 ;; testing for the precondition of count
