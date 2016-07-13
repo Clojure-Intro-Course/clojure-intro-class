@@ -121,7 +121,7 @@
    is returned. If there are several non-nil predicates, a vector of their hash maps is
    returned."
   [data]
-  (let [predicates (vals (:clojure.spec/problems data))]
+  (let [predicates (:clojure.spec/problems data)]
     (if (= 1 (count predicates))
         (first predicates)
         (let [non-nils (filter #(not= "nil?" (str (:pred %))) predicates)]
