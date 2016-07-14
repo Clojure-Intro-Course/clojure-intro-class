@@ -1,7 +1,7 @@
 (ns errors.dictionaries
   (:use [corefns.corefns]
         [errors.messageobj]
-        [corefns.specs :only [corefns-map]]
+        [corefns.specs :only [specs-map]]
         [corefns.failed_asserts_info]
         ))
 (require '[clojure.string :as cs])
@@ -121,7 +121,7 @@
 (defn get-match-name
   "extract a function name from a qualified name"
   [fname]
-  (let [check-spec (corefns-map fname)
+  (let [check-spec ((merge corefns-map specs-map) fname)
         m (if check-spec check-spec (nth (re-matches #"(.*)\$(.*)" fname) 2))
         matched (if m m (nth (re-matches #"(.*)/(.*)" fname) 2))]
     (if matched

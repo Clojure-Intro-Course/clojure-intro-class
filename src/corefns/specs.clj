@@ -314,7 +314,7 @@
                (s/cat :check-seqable seqable?)))
 (stest/instrument 'clojure.core/distinct)
 
-(def corefns-map
+(def specs-map
   {(str map) "map", (str filter) "filter", (str reduce) "reduce", (str empty?) "empty?",
    (str conj) "conj", (str into) "into", (str cons) "cons", (str mapcat) "mapcat",
    (str assoc) "assoc", (str dissoc) "dissoc", (str odd?) "odd?", (str even?) "even?",

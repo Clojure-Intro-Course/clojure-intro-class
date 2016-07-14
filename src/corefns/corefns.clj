@@ -156,15 +156,28 @@
 ;; bounds, nth throws an exception unless not-found is supplied. nth
 ;; also works for strings, Java arrays, regex Matchers and Lists, and,
 ;; in O(n) time, for sequences.
+;; (defn nth ;; there may be an optional 3rd arg
+;;   ([argument1 argument2]
+;;    {:pre [(check-if-seqable? "nth" argument1)
+;;           (check-if-number? "nth" argument2)]}
+;;    (clojure.core/nth argument1 argument2))
+;;   ([argument1 argument2 argument3]
+;;    {:pre [(check-if-seqable? "nth" argument1)
+;;           (check-if-number? "nth" argument2)]}
+;;    (clojure.core/nth argument1 argument2 argument3)))
+
 (defn nth ;; there may be an optional 3rd arg
   ([argument1 argument2]
-   {:pre [(check-if-seqable? "nth" argument1)
-          (check-if-number? "nth" argument2)]}
    (clojure.core/nth argument1 argument2))
   ([argument1 argument2 argument3]
-   {:pre [(check-if-seqable? "nth" argument1)
-          (check-if-number? "nth" argument2)]}
    (clojure.core/nth argument1 argument2 argument3)))
+
+(s/fdef corefns.corefns/nth
+  :args (s/or :two-case (s/and ::corefns.specs/length-two
+                               (s/cat :check-seqable seqable? :check-number number?))
+              :three-case (s/and ::corefns.specs/length-three
+                                 (s/cat :check-seqable seqable? :check-number number? :dummy any?))))
+(stest/instrument 'corefns.corefns/nth)
 
 ;; As of clojure 1.7 allows (filter f)
 ;; (filter pred coll)
@@ -446,9 +459,7 @@
 ;;   {:pre [(check-if-seqable? "distinct" argument1)]}
 ;;   (clojure.core/distinct argument1))
 
-
-
-
+(def corefns-map {(str nth) "nth"})
 
 
 

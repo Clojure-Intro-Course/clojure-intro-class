@@ -12,7 +12,7 @@
   "takes a quoted function and an optional path to the acutal error call,
   and returns an auto-generated spec hash-map when an error happens.
   It gets the first hashmap in the resulting vector without the n-th argument.
-  Use init-hash-gen function to see how a hashmap looks like"
+  Use init-hash-gen function to see how an initial hashmap looks like"
   ([f]
    (try (eval f)
      (catch clojure.lang.ExceptionInfo e
@@ -23,7 +23,8 @@
        (nth (:clojure.spec/problems (.getData e)) n-th)))))
 
 (defn init-hashmap-gen
-  "takes a quoted function call and returns the error data as a hashmap"
+  "takes a quoted function call and returns the error data as a hashmap
+  when an error happens"
   [f]
   (try (eval f)
     (catch clojure.lang.ExceptionInfo e
@@ -31,7 +32,7 @@
 
 ; 0 failures 0 errors
 ; An example error data:
-;[{:path [:args], :pred length1?, :val ([] []), :via [:spec-alpha.specs/length-one], :in []}]
+;{:clojure.spec/problems [{:path [:args], :pred length1?, :val ([] []), :via [:spec-alpha.specs/length-one], :in []}], ...}
 
 ;; ########## tests for empty? ##########
 (expect false (empty? [1 2]))
@@ -125,4 +126,11 @@
 ;; ########## tests for repeat ###########
 (expect '("x" "x" "x" "x" "x") (take 5 (repeat "x")))
 (expect '("x" "x" "x" "x" "x") (repeat 5 "x"))
-
+(expect {:path [:args :one-case], :pred 'length1?, :val '("" 5), :via [:corefns.specs/length-one], :in []}
+        (hashmap-gen '(repeat "" 5)))
+(expect {:path [:args :two-case :check-number], :pred 'number?, :val "", :via [], :in [0]}
+        (hashmap-gen '(repeat "" 5) 1))
+(expect {:path [:args :one-case], :pred 'length1?, :val '(5 :some :any 100.0), :via [:corefns.specs/length-one], :in []}
+        (hashmap-gen '(repeat 5 :some :any 100.0)))
+(expect {:path [:args :two-case], :pred 'length2?, :val '(5 :some :any 100.0), :via [:corefns.specs/length-two], :in []}
+        (hashmap-gen '(repeat 5 :some :any 100.0) 1))
