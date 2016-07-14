@@ -96,6 +96,10 @@
 (expect {:path [:args :three-case :check-seqable], :pred 'seqable?, :val 2, :via [], :in [2]}
         (hashmap-gen '(reduce + 2 2) 1))
 
+;; ########## tests for nth ############
+(expect "lazy" (nth ["lazy" "person" "you"] 0))
+(expect "working" (nth ["lazy" "person" "you"] 4 "working"))
+
 
 ;; ########## tests for assoc ##########
 (expect {:key1 "value", :key2 "another value"} (assoc {} :key1 "value" :key2 "another value"))
