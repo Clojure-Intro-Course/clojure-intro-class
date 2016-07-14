@@ -2,7 +2,7 @@
   (:require [expectations :refer :all]
             [corefns.corefns :refer :all]
             [errors.prettify_exception :refer :all]
-            [errors.exceptions :refer :all]
+            [errors.testing_tools :refer :all]
             [errors.error_hints :refer :all]))
 
 

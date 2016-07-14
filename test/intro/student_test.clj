@@ -2,7 +2,7 @@
   (:use [errors.prettify_exception :only [line-number-format]])
   (:require [expectations :refer :all]
             [errors.messageobj :refer :all]
-            [errors.exceptions :refer :all]
+            [errors.testing_tools :refer :all]
             [utilities.stacktrace_functions :refer :all]
             [intro.student :refer :all]))
 

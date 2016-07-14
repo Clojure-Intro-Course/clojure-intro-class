@@ -1,7 +1,7 @@
 (ns core_fns_behavior.core_fns_behavior
   (:require [expectations :refer :all]
             [corefns.corefns :refer :all]
-            [errors.exceptions :refer :all]
+            [errors.testing_tools :refer :all]
             [corefns.collection_fns :refer :all]
             [intro.core :refer :all]))
 
@@ -589,25 +589,28 @@
 ;~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 ;; testing for the first precondition of nth, with two args
-(expect "In function nth, the first argument :not-a-collection must be a sequence but is a keyword."
+(expect "In function nth, the first argument :not-a-collection must be a sequence but is a keyword,\nin the function call (nth :not-a-collection 10)"
+
         (get-text-no-location
          (run-and-catch-pretty-no-stacktrace 'intro.student
                                              '(nth :not-a-collection 10))))
 
 ;; testing for the second precondition of nth, with two args
-(expect "In function nth, the second argument :not-a-number must be a number but is a keyword."
+(expect "In function nth, the second argument :not-a-number must be a number but is a keyword,\nin the function call (nth [0 1 2 3 4] :not-a-number)"
+
         (get-text-no-location
          (run-and-catch-pretty-no-stacktrace 'intro.student
                                              '(nth [0 1 2 3 4] :not-a-number))))
 
 ;; testing for the second precondition of nth, with three args
-(expect "In function nth, the first argument :not-a-collection must be a sequence but is a keyword."
+(expect "In function nth, the first argument :not-a-collection must be a sequence but is a keyword,\nin the function call (nth :not-a-collection 8 \"nothing found\")"
+
         (get-text-no-location
          (run-and-catch-pretty-no-stacktrace 'intro.student
                                              '(nth :not-a-collection 8 "nothing found"))))
 
 ;; testing for the second precondition of nth, with three args
-(expect "In function nth, the second argument :not-a-number must be a number but is a keyword."
+(expect "In function nth, the second argument :not-a-number must be a number but is a keyword,\nin the function call (nth [0 1 2 3 4] :not-a-number \"\")"
         (get-text-no-location
          (run-and-catch-pretty-no-stacktrace 'intro.student
                                              '(nth [0 1 2 3 4] :not-a-number ""))))

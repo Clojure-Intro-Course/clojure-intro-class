@@ -1,7 +1,7 @@
 (ns errors.prettify_exception_test
   (:require [expectations :refer :all]
 	          [errors.messageobj :refer :all]
-	          [errors.exceptions :refer :all]
+	          [errors.testing_tools :refer :all]
 	          [errors.errorgui :refer :all]
 	          [clj-stacktrace.core :as stacktrace]
             [errors.dictionaries :refer :all]

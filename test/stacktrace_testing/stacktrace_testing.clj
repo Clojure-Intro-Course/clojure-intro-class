@@ -1,11 +1,20 @@
-(ns stacktrace_testing.compilation_errors
+(ns stacktrace_testing.stacktrace_testing
   (:use [errors.prettify_exception :only [line-number-format]])
   (:require [expectations :refer :all]
             [errors.messageobj :refer :all]
-            [errors.exceptions :refer :all]
+            [clj-stacktrace.core :as stacktrace]
+            [utilities.stacktrace_functions :refer :all]
+            [errors.testing_tools :refer :all]
             [errors.prettify_exception :refer :all]
+            [corefns.collection_fns :refer :all]
+            [errors.testing_tools :refer :all]
             [utilities.file_IO :refer :all]
-            ))
+            )
+  (:import [java.io.FileInputStream]
+           [java.io.ObjectInputStream]
+           [java.io.FileOutputStream]
+           [java.io.ObjectOutputStream]
+           [java.util.ArrayList]))
 
 
 
