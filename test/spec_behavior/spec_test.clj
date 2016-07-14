@@ -1,5 +1,4 @@
 (ns spec_behavior.spec_test
-  (:use [corefns.specs])
   (:require [expectations :refer :all]
             [corefns.corefns :refer :all]))
 
@@ -16,11 +15,11 @@
   ([f]
    (try (eval f)
      (catch clojure.lang.ExceptionInfo e
-       (nth (:clojure.spec/problems (.getData e)) 0))))
+       (clojure.core/nth (:clojure.spec/problems (.getData e)) 0))))
   ([f n-th]
    (try (eval f)
      (catch clojure.lang.ExceptionInfo e
-       (nth (:clojure.spec/problems (.getData e)) n-th)))))
+       (clojure.core/nth (:clojure.spec/problems (.getData e)) n-th)))))
 
 (defn init-hashmap-gen
   "takes a quoted function call and returns the error data as a hashmap
@@ -53,7 +52,6 @@
         (hashmap-gen '(empty? true)))
 
 
-
 ;; ########## tests for map ##########
 (expect [2 3 4] (map inc [1 2 3]))
 (expect {:path [:args], :pred 'length-greater1?, :val '(10), :via [:corefns.specs/length-greater-one], :in []}
@@ -64,7 +62,6 @@
         (hashmap-gen '(map empty? [1 2 3] [2 3 4] [3 4 5] 3)))
 
 
-
 ;; ########## tests for conj ##########
 (expect [1 2 3 3 [2]] (conj [1 2] 3 3 [2]))
 (expect {:path [:args], :pred 'length-greater1?, :val '([1]), :via [:corefns.specs/length-greater-one], :in []}
@@ -73,7 +70,6 @@
         (hashmap-gen '(conj 1 3)))
 (expect {:path [:args :check-seqable], :pred 'seqable?, :val true, :via [], :in [0]}
         (hashmap-gen '(conj true 3)))
-
 
 
 ;; ########## tests for reduce ##########
@@ -96,9 +92,28 @@
 (expect {:path [:args :three-case :check-seqable], :pred 'seqable?, :val 2, :via [], :in [2]}
         (hashmap-gen '(reduce + 2 2) 1))
 
+
 ;; ########## tests for nth ############
+; using a helper function and late eval doesn't work for some reason.
+; need to use try-catch directly
 (expect "lazy" (nth ["lazy" "person" "you"] 0))
 (expect "working" (nth ["lazy" "person" "you"] 4 "working"))
+(expect {:path [:args :two-case :check-seqable] :pred 'seqable?, :val 1, :via [], :in [0]}
+        (try (nth 1 "")
+          (catch clojure.lang.ExceptionInfo e
+            (clojure.core/nth (:clojure.spec/problems (.getData e)) 0))))
+(expect {:path [:args :three-case] :pred 'length3?, :val '(1 ""), :via [:corefns.specs/length-three], :in []}
+        (try (nth 1 "")
+          (catch clojure.lang.ExceptionInfo e
+            (clojure.core/nth (:clojure.spec/problems (.getData e)) 1))))
+(expect {:path [:args :two-case] :pred 'length2?, :val '([1 2 3] [1] "Boo"), :via [:corefns.specs/length-two], :in []}
+        (try (nth [1 2 3] [1] "Boo")
+          (catch clojure.lang.ExceptionInfo e
+            (clojure.core/nth (:clojure.spec/problems (.getData e)) 0))))
+(expect {:path [:args :three-case :check-number] :pred 'number?, :val [1], :via [], :in [1]}
+        (try (nth [1 2 3] [1] "Boo")
+          (catch clojure.lang.ExceptionInfo e
+            (clojure.core/nth (:clojure.spec/problems (.getData e)) 1))))
 
 
 ;; ########## tests for assoc ##########
@@ -125,6 +140,21 @@
         (hashmap-gen '(dissoc [0])))
 (expect {:path [:args :check-map :clojure.spec/pred], :pred 'map?, :val [0], :via [], :in [0]}
         (hashmap-gen '(dissoc [0]) 1))
+
+
+;; ########## tests for quot   ###########
+; using a helper function and late eval doesn't work for some reason.
+; need to use try-catch directly
+(expect 3 (quot 12 4))
+(expect 3 (quot 9 3))
+(expect {:path [:args :check-number], :pred 'number?, :val false, :via [], :in [0]}
+        (try (quot false 10)
+          (catch clojure.lang.ExceptionInfo e
+            (clojure.core/nth (:clojure.spec/problems (.getData e)) 0))))
+(expect {:path [:args], :pred 'length2?, :val '(30 "" true), :via [::corefns.specs/length-two], :in []}
+        (try (quot 30 "" true)
+          (catch clojure.lang.ExceptionInfo e
+            (clojure.core/nth (:clojure.spec/problems (.getData e)) 0))))
 
 
 ;; ########## tests for repeat ###########
