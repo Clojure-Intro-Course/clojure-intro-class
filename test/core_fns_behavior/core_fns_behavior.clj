@@ -172,6 +172,9 @@
 (expect 1337
         (nth [0 1 2] 77 1337))
 
+(expect nil
+        (nth nil 0))
+
 ;; testing for filter
 
 (expect '(0 2 4 6 8)
