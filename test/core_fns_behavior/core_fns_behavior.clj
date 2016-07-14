@@ -415,6 +415,10 @@
         (get-text-no-location
           (run-and-catch-pretty-no-stacktrace 'intro.student
                                               '(repeat "not a number" 6))))
+(expect "You cannot pass three arguments to a function repeat,\nin the function call (repeat 3 \"x\" 10)"
+        (get-text-no-location
+          (run-and-catch-pretty-no-stacktrace 'intro.student
+                                              '(repeat 3 "x" 10))))
 
 
 ;~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -436,6 +440,12 @@
         (get-text-no-location
           (run-and-catch-pretty-no-stacktrace 'intro.student
                                               '(repeatedly "not a number" +))))
+
+;; testing for more than two arguments in repeatedly
+(expect "You cannot pass three arguments to a function repeatedly,\nin the function call (repeatedly 5 6 anonymous-function)"
+        (get-text-no-location
+          (run-and-catch-pretty-no-stacktrace 'intro.student
+                                              '(repeatedly 5 6 #(+ % 2)))))
 
 ;~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -466,6 +476,12 @@
                                              '(dissoc ["this" "is" "a" "vector"]))))
 
 
+(expect "You cannot pass zero arguments to a function dissoc, need at least one,\nin the function call (dissoc )"
+        (get-text-no-location
+          (run-and-catch-pretty-no-stacktrace 'intro.student
+                                              '(dissoc ))))
+
+
 ;~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 ;; Elena, 6/17/16: this is not an error since a keyword is a function
 ;; testing for the first precondition of map
@@ -479,6 +495,21 @@
         (get-text-no-location
          (run-and-catch-pretty-no-stacktrace 'intro.student
                                              '(doall (map + :not-a-collection)))))
+
+;; testing zero arguments after the function given to map
+(expect "You cannot pass one argument to a function map, need at least two,\nin the function call (map +)"
+        (get-text-no-location
+          (run-and-catch-pretty-no-stacktrace 'intro.student
+                                              '(map + ))))
+(expect "Key must be integer"
+        (get-text-no-location
+          (run-and-catch-pretty-no-stacktrace 'intro.student
+                                              '(assoc [] :a 2))))
+
+(expect "Vectors added to a map must consist of two elements: a key and a value."
+        (get-text-no-location
+          (run-and-catch-pretty-no-stacktrace 'intro.student
+                                              '(conj {1 2} [3 5] [7]))))
 
 ;~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -532,6 +563,29 @@
          (run-and-catch-pretty-no-stacktrace 'intro.student
                                              '(reduce + 2 :not-a-collection))))
 
+;; testing for the arguments less than two in reduce
+(expect "You cannot pass zero arguments to a function reduce, need two or three,\nin the function call (reduce )"
+        (get-text-no-location
+          (run-and-catch-pretty-no-stacktrace 'intro.student
+                                              '(reduce))))
+
+(expect "You cannot pass one argument to a function reduce, need two or three,\nin the function call (reduce +)"
+        (get-text-no-location
+          (run-and-catch-pretty-no-stacktrace 'intro.student
+                                              '(reduce + ))))
+
+;; testing for the arguments more than three in reduce
+(expect "You cannot pass four arguments to a function reduce, need two or three,\nin the function call (reduce + 0 [1 2 3] 4)"
+        (get-text-no-location
+          (run-and-catch-pretty-no-stacktrace 'intro.student
+                                              '(reduce + 0 [1 2 3] 4))))
+
+;; testing for function as first argument of reduce
+(expect "In function reduce, the first argument 1 must be a function but is a number,\nin the function call (reduce 1 2)"
+        (get-text-no-location
+          (run-and-catch-pretty-no-stacktrace 'intro.student
+                                             '(reduce 1 2))))
+
 ;~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 ;; testing for the first precondition of nth, with two args
@@ -576,7 +630,19 @@
 
 ;; Elena 6/17/16 keyword is a function
 ;; testing for the first precondition of mapcat
-;(expect "In function mapcat, the first argument :not-a-function must be a function but is a keyword."
+;(ex;~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+;; testing for zero arguments given to empty?
+(expect "You cannot pass zero arguments to a function empty?, need one,\nin the function call (empty? )"
+        (get-text-no-location
+          (run-and-catch-pretty-no-stacktrace 'intro.student
+                                              '(empty? ))))
+
+;; testing for more than one argument given to empty?
+(expect "You cannot pass two arguments to a function empty?, need one,\nin the function call (empty? () ())"
+        (get-text-no-location
+          (run-and-catch-pretty-no-stacktrace 'intro.student
+                                              '(empty? () ()))))pect "In function mapcat, the first argument :not-a-function must be a function but is a keyword."
 ;        (get-text-no-location
 ;         (run-and-catch-pretty-no-stacktrace 'intro.student
 ;                                             '(mapcat :not-a-function [1 2 3] [8 9 10]))))
@@ -807,3 +873,17 @@
         (get-text-no-location
          (run-and-catch-pretty-no-stacktrace 'intro.student
                                              '(any? odd? :not-a-collection))))
+
+;~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+;; testing for zero arguments given to empty?
+(expect "You cannot pass zero arguments to a function empty?, need one,\nin the function call (empty? )"
+        (get-text-no-location
+          (run-and-catch-pretty-no-stacktrace 'intro.student
+                                              '(empty? ))))
+
+;; testing for more than one argument given to empty?
+(expect "You cannot pass two arguments to a function empty?, need one,\nin the function call (empty? () ())"
+        (get-text-no-location
+          (run-and-catch-pretty-no-stacktrace 'intro.student
+                                              '(empty? () ()))))
