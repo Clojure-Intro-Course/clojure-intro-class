@@ -121,3 +121,8 @@
 (expect {:path [:args :check-map :clojure.spec/pred], :pred 'map?, :val [0], :via [], :in [0]}
         (hashmap-gen '(dissoc [0]) 1))
 
+
+;; ########## tests for repeat ###########
+(expect '("x" "x" "x" "x" "x") (take 5 (repeat "x")))
+(expect '("x" "x" "x" "x" "x") (repeat 5 "x"))
+

@@ -642,7 +642,8 @@
 (expect "You cannot pass two arguments to a function empty?, need one,\nin the function call (empty? () ())"
         (get-text-no-location
           (run-and-catch-pretty-no-stacktrace 'intro.student
-                                              '(empty? () ()))))pect "In function mapcat, the first argument :not-a-function must be a function but is a keyword."
+                                              '(empty? () ()))))
+; (expect "In function mapcat, the first argument :not-a-function must be a function but is a keyword."
 ;        (get-text-no-location
 ;         (run-and-catch-pretty-no-stacktrace 'intro.student
 ;                                             '(mapcat :not-a-function [1 2 3] [8 9 10]))))
