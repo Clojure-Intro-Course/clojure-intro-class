@@ -779,10 +779,10 @@
 ;~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 ;; testing if the precondition of quot works
-(expect "In function quot, the first argument :not-a-number must be a number but is a keyword."
+(expect "In function quot, the first argument :not-a-number must be a number but is a keyword,\nin the function call (quot :not-a-number 5)"
         (get-text-no-location (run-and-catch-pretty-no-stacktrace 'intro.student
                                                           '(quot :not-a-number 5))))
-(expect "In function quot, the second argument :not-a-number must be a number but is a keyword."
+(expect "In function quot, the second argument :not-a-number must be a number but is a keyword,\nin the function call (quot 12 :not-a-number)"
         (get-text-no-location (run-and-catch-pretty-no-stacktrace 'intro.student
                                                           '(quot 12 :not-a-number))))
 
