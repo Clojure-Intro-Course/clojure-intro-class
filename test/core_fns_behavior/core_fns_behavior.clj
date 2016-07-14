@@ -572,11 +572,6 @@
           (run-and-catch-pretty-no-stacktrace 'intro.student
                                               '(reduce))))
 
-(expect "You cannot pass one argument to a function reduce, need two or three,\nin the function call (reduce +)"
-        (get-text-no-location
-          (run-and-catch-pretty-no-stacktrace 'intro.student
-                                              '(reduce + ))))
-
 ;; testing for the arguments more than three in reduce
 (expect "You cannot pass four arguments to a function reduce, need two or three,\nin the function call (reduce + 0 [1 2 3] 4)"
         (get-text-no-location
@@ -638,17 +633,6 @@
 ;; testing for the first precondition of mapcat
 ;(ex;~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-;; testing for zero arguments given to empty?
-(expect "You cannot pass zero arguments to a function empty?, need one,\nin the function call (empty? )"
-        (get-text-no-location
-          (run-and-catch-pretty-no-stacktrace 'intro.student
-                                              '(empty? ))))
-
-;; testing for more than one argument given to empty?
-(expect "You cannot pass two arguments to a function empty?, need one,\nin the function call (empty? () ())"
-        (get-text-no-location
-          (run-and-catch-pretty-no-stacktrace 'intro.student
-                                              '(empty? () ()))))
 ; (expect "In function mapcat, the first argument :not-a-function must be a function but is a keyword."
 ;        (get-text-no-location
 ;         (run-and-catch-pretty-no-stacktrace 'intro.student
