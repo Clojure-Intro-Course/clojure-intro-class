@@ -308,17 +308,8 @@
 ;; (defn + [& args]
 ;;   {:pre [(check-if-numbers? "+" args 1)]}
 ;;   (apply clojure.core/+ args))
-
-(s/fdef clojure.core/+
-;;       :args (s/* number?))
-  :args (s/cat :check-number (s/* number?)))
-
-(stest/instrument 'clojure.core/+)
-
-
 (defn + [& args]
   (apply clojure.core/+ args))
-
 
 
 ;;    (- x)
@@ -330,16 +321,8 @@
 ;;   {:pre [(check-if-number? "-" argument1)
 ;;          (check-if-numbers? "-" args 2)]}
 ;;   (apply clojure.core/- argument1 args))
-
-(s/fdef clojure.core/-
-;;       :args (s/* number?))
-  :args (s/cat :check-number (s/+ number?)))
-
-(stest/instrument 'clojure.core/-)
-
 (defn - [argument1 & args]
   (apply clojure.core/- argument1 args))
-
 
 
 ;;    (*)
@@ -363,10 +346,19 @@
 
 ;;    (quot num div)
 ;; quot[ient] of dividing numerator by denominator.
+;; (defn quot [argument1 argument2]
+;;   {:pre [(check-if-number? "quot" argument1)
+;;          (check-if-number? "quot" argument2)]}
+;;   (clojure.core/quot argument1 argument2))
+;;    (quot num div)
+;; quot[ient] of dividing numerator by denominator.
 (defn quot [argument1 argument2]
-  {:pre [(check-if-number? "quot" argument1)
-         (check-if-number? "quot" argument2)]}
   (clojure.core/quot argument1 argument2))
+
+(s/fdef corefns.corefns/quot
+  :args (s/and ::corefns.specs/length-two
+               (s/cat :check-number number? :check-number number?)))
+(stest/instrument 'corefns.corefns/quot)
 
 ;;    (rem num div)
 ;; remainder of dividing numerator by denominator.
@@ -459,34 +451,6 @@
 ;;   {:pre [(check-if-seqable? "distinct" argument1)]}
 ;;   (clojure.core/distinct argument1))
 
-(def corefns-map {(str nth) "nth"})
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+;; This hashmap is used to get function names because 'speced' functions are stored differently
+(def corefns-map {(str nth) "nth", (str quot) "quot"})
 
