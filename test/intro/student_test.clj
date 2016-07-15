@@ -97,7 +97,7 @@
 
 ;; testing for prob20
 (expect (more-of x
-                 java.lang.AssertionError (:exception-class x)
+                 clojure.lang.ExceptionInfo (:exception-class x)
                  #"In function nth, the first argument 3 must be a sequence but is a number\.(.*)" (get-all-text (:msg-info-obj x))
                  location-regex (get-all-text (:msg-info-obj x))
                  (trace-has-all-pairs? {:fn "prob20" :ns "intro.student"}) (:filtered-stacktrace x))
