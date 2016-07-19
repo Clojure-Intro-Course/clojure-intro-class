@@ -51,7 +51,7 @@
 ;; testing for prob18#########
 (expect (more-of x
                  clojure.lang.ExceptionInfo (:exception-class x)
-                 #"In function <, the first argument must be a number but is nil\.(.*)" (get-all-text (:msg-info-obj x))
+                 #"In function <, the first argument must be a number but is nil,\nin the function call \(< nil 5\)\n(.*)" (get-all-text (:msg-info-obj x))
                  location-regex (get-all-text (:msg-info-obj x))
                  (trace-has-all-pairs? {:fn "prob18" :ns "intro.student"}) (:stacktrace x))
         (run-and-catch-pretty-with-stacktrace 'intro.student
@@ -98,7 +98,7 @@
 ;; testing for prob20
 (expect (more-of x
                  clojure.lang.ExceptionInfo (:exception-class x)
-                 #"In function nth, the first argument 3 must be a sequence but is a number\.(.*)" (get-all-text (:msg-info-obj x))
+                 #"In function nth, the first argument 3 must be a sequence but is a number,\nin the function call \(nth 3 \[:a :b :c :d\]\)\n(.*)" (get-all-text (:msg-info-obj x))
                  location-regex (get-all-text (:msg-info-obj x))
                  (trace-has-all-pairs? {:fn "prob20" :ns "intro.student"}) (:filtered-stacktrace x))
         (run-and-catch-pretty-with-stacktrace 'intro.student
@@ -116,7 +116,7 @@
 ;; testing for add-five
 (expect (more-of x
                  clojure.lang.ExceptionInfo (:exception-class x)
-                 #"In function cons, the second argument 5 must be a sequence but is a number\.(.*)" (get-all-text (:msg-info-obj x))
+                 #"In function cons, the second argument 5 must be a sequence but is a number,\nin the function call \(cons 5 5\)\n(.*)" (get-all-text (:msg-info-obj x))
                  location-regex (get-all-text (:msg-info-obj x))
                  (trace-has-all-pairs? {:fn "add-five" :ns "intro.student"}) (:filtered-stacktrace x))
         (run-and-catch-pretty-with-stacktrace 'intro.student

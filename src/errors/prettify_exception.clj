@@ -96,6 +96,7 @@
   (cond (= pred-str "seqable?") "a sequence"
         (= pred-str "ifn?") "a function"
         (= pred-str "map?") "a hashmap"
+        (= pred-str "integer?") "an integer number"
         :else (str "a " (subs pred-str 0 (dec (count pred-str))))))
 
 (defn- or-str
@@ -263,15 +264,16 @@
         ;; overlap.
         e-class (if (= (class e) clojure.lang.LispReader$ReaderException) RuntimeException (class e))
         message (get-exc-message e) ; converting an empty message from nil to ""
+        entry (first-match e-class message) ; We use error dictionary here in first-match
+        data (ex-data e) ; nil if not an instance of IExceptionInfo
         exc (stacktrace/parse-exception e)
         stacktrace (:trace-elems exc)
         filtered-trace (filter-stacktrace stacktrace)
         comp-location (get-compile-error-location (get-exc-message ex))
         location (if (empty? comp-location) (get-location-info filtered-trace) comp-location)
-        entry (first-match e-class message) ; We use error dictionary here in first-match
-        data (ex-data e) ; nil if not an instance of IExceptionInfo
         msg-info-obj (into (msg-from-matched-entry entry message data) (location-info location))
         hint-message (hints-for-matched-entry (:key entry))]
+    ;(println ex)
     ;; create an exception object
     {:exception-class e-class
      :compiler? compiler?

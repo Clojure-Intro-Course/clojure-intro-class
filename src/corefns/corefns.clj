@@ -252,9 +252,9 @@
 
 ;;(even? n)
 ;;Returns true if n is even, throws an exception if n is not an integer
-(defn even? [n]
-  {:pre [(only-arg (check-if-integer? "even?" n 1))]}
-  (clojure.core/even? n))
+;; (defn even? [n]
+;;   {:pre [(only-arg (check-if-integer? "even?" n 1))]}
+;;   (clojure.core/even? n))
 
 ;;    (< x)
 ;;    (< x y)
