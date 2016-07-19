@@ -7,6 +7,7 @@
             [intro.student :refer :all]))
 
 (def location-regex (re-pattern (str "(.*)\\nFound in file student.clj" (line-number-format "(\\d+)" "(\\d+)") "(.*)")))
+(def location-regex-core (re-pattern (str "(.*)\\nFound in file core.clj" (line-number-format "(\\d+)" "(\\d+)") "(.*)")))
 
 ;; showing the resulting regex:
 (expect #"(.*)\nFound in file student.clj on, or before, line (\d+)(.*)" location-regex)
@@ -43,7 +44,7 @@
 (expect (more-of x
                  clojure.lang.ExceptionInfo (:exception-class x)
                  #"In function \+, the second argument must be a number but is nil,\nin the function call \(\+ 5 nil\)\n(.*)" (get-all-text (:msg-info-obj x))
-                 location-regex (get-all-text (:msg-info-obj x))
+                 location-regex-core (get-all-text (:msg-info-obj x))
                  (trace-has-all-pairs? {:fn "prob17" :ns "intro.student"}) (:stacktrace x))
         (run-and-catch-pretty-with-stacktrace 'intro.student
                                               '(prob17 '(1 2 3))))
@@ -52,7 +53,7 @@
 (expect (more-of x
                  clojure.lang.ExceptionInfo (:exception-class x)
                  #"In function <, the first argument must be a number but is nil,\nin the function call \(< nil 5\)\n(.*)" (get-all-text (:msg-info-obj x))
-                 location-regex (get-all-text (:msg-info-obj x))
+                 location-regex-core (get-all-text (:msg-info-obj x))
                  (trace-has-all-pairs? {:fn "prob18" :ns "intro.student"}) (:stacktrace x))
         (run-and-catch-pretty-with-stacktrace 'intro.student
                                               '(prob18 '(3 4 5 6 7))))
@@ -61,7 +62,7 @@
 (expect (more-of x
                  clojure.lang.ExceptionInfo (:exception-class x)
                  #"In function \+, the second argument must be a number but is nil,\nin the function call \(\+ 15 nil\)\n(.*)" (get-all-text (:msg-info-obj x))
-                 location-regex (get-all-text (:msg-info-obj x))
+                 location-regex-core (get-all-text (:msg-info-obj x))
                  (trace-has-all-pairs? {:fn "prob64" :ns "intro.student"}) (:stacktrace x))
         (run-and-catch-pretty-with-stacktrace 'intro.student
                                               '(prob64 [1 2 3 4 5])))
@@ -126,7 +127,7 @@
 (expect (more-of x
                  clojure.lang.ExceptionInfo (:exception-class x)
                  #"In function \+, the second argument \(2 3\) must be a number but is a sequence,\nin the function call \(\+ 1 \(2 3\)\)\n(.*)" (get-all-text (:msg-info-obj x))
-                 location-regex (get-all-text (:msg-info-obj x))
+                 location-regex-core (get-all-text (:msg-info-obj x))
                  (trace-has-all-pairs? {:fn "prob24" :ns "intro.student"}) (:filtered-stacktrace x))
         (run-and-catch-pretty-with-stacktrace 'intro.student
                                               '(prob24 [1 2 3])))
@@ -173,7 +174,7 @@
                  clojure.lang.ExceptionInfo (:exception-class x)
                  #"In function \+, the first argument \"hi\" must be a number but is a string,\nin the function call \(\+ \"hi\" 2\)\n(.*)" (get-all-text (:msg-info-obj x))
                  ;;#"In function \+, the first argument \"hi\" must be a number but is a string,\nin the function call(.*)\n(.*)" (get-all-text (:msg-info-obj x))
-                 location-regex (get-all-text (:msg-info-obj x))
+                 location-regex-core (get-all-text (:msg-info-obj x))
                  (trace-has-all-pairs? {:fn "error-in-anonymous" :anon-fn true :ns "intro.student"}) (:filtered-stacktrace x)
                  (trace-has-all-pairs? {:fn "error-in-anonymous" :anon-fn false :ns "intro.student"}) (:filtered-stacktrace x))
         (run-and-catch-pretty-with-stacktrace 'intro.student

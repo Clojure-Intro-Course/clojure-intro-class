@@ -245,6 +245,12 @@
             fn-msg
             (make-msg-info-hashes ".")]))))
 
+(defn location-from-data
+  "Takes exception data from a spec condition failure,
+   returns the location hashmap"
+  [data]
+  (select-keys (:clojure.spec.test/caller data) [:file :line]))
+
 (defn get-exc-message
   "returns the message in an exception or an empty string if the message is nil"
   [e]
@@ -265,15 +271,18 @@
         e-class (if (= (class e) clojure.lang.LispReader$ReaderException) RuntimeException (class e))
         message (get-exc-message e) ; converting an empty message from nil to ""
         entry (first-match e-class message) ; We use error dictionary here in first-match
-        data (ex-data e) ; nil if not an instance of IExceptionInfo
+        data (ex-data e)
         exc (stacktrace/parse-exception e)
         stacktrace (:trace-elems exc)
         filtered-trace (filter-stacktrace stacktrace)
-        comp-location (get-compile-error-location (get-exc-message ex))
+        spec-location (when data (location-from-data data))
+        comp-location (if (empty? spec-location) (get-compile-error-location (get-exc-message ex)) spec-location)
         location (if (empty? comp-location) (get-location-info filtered-trace) comp-location)
         msg-info-obj (into (msg-from-matched-entry entry message data) (location-info location))
         hint-message (hints-for-matched-entry (:key entry))]
-    ;(println ex)
+;;     (println ex)
+;;     (println spec-location)
+;;     (println location)
     ;; create an exception object
     {:exception-class e-class
      :compiler? compiler?
