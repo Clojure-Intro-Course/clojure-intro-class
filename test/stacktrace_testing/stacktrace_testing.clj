@@ -1,5 +1,4 @@
 (ns stacktrace_testing.stacktrace_testing
-  (:use [errors.prettify_exception :only [line-number-format]])
   (:require [expectations :refer :all]
             [errors.messageobj :refer :all]
             [clj-stacktrace.core :as stacktrace]

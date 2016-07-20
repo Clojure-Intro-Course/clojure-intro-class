@@ -1,9 +1,8 @@
 (ns exception_msgs.overwritten_fns.seq_ops
-  (:use [errors.prettify_exception :only [line-number-format]])
+  (:use [errors.prettify_exception :only [line-number-format prettify-exception]])
   (:require [expectations :refer :all]
             [errors.messageobj :refer :all]
             [errors.testing_tools :refer :all]
-            [errors.prettify_exception :refer :all]
             [utilities.file_IO :refer :all]
             ))
 
