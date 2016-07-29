@@ -1,6 +1,9 @@
 (ns corefns.failed_asserts_info)
 
-;; a global hashmap of recorded types/messages
+
+;;; a global hashmap of recorded types/messages
+
+
 (def seen-failed-asserts (atom {}))
 
 (defn add-to-seen

@@ -2,6 +2,10 @@
   (require [clojure.spec :as s]
            [clojure.spec.test :as stest]))
 
+
+;;; Spec definitions and instruments for corefns functions
+
+
 ;;                        Spec for clojure.spec  by Tony
 ;; =======================================================================================|
 ;; * For every function with inlining, we can't use spec without overwriting it.          |

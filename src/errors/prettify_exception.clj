@@ -11,6 +11,10 @@
         [seesaw.core]))
 
 
+;; Main error processing file. Standard errors are processed by `standard` function, and
+;; modified errors are processed by `prettify-exception` function.
+
+
 (defn first-match
   [e-class message]
 	(first (filter #(and (= (:class %) e-class) (re-matches (:match %) message))

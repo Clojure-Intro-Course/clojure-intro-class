@@ -6,8 +6,10 @@
         ))
 (require '[clojure.string :as cs])
 
-;; A dictionary of known types and their user-friendly representations
-;; potentially we can have multiple dictionaries, depending on the level
+
+;;; A dictionary of known types and their user-friendly representations.
+;;; Potentially, we can have multiple dictionaries depending on the level.
+
 
 (def type-dictionary {:java.lang.String "a string"
                       :java.lang.CharSequence "a string"

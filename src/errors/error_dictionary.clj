@@ -4,6 +4,11 @@
         [corefns.failed_asserts_info]
         [errors.dictionaries]))
 
+
+;; A vector of error dictionaries from the most specific one to the most general one.
+;; Order matters because the vector is searched from top to bottom.
+
+
 (def error-dictionary
   [;########################
    ;##### Spec Error #######

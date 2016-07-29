@@ -7,6 +7,10 @@
             [clojure.spec :as s]
             [clojure.spec.test :as stest]))
 
+
+;;; Overwritten clojure.core functions to get meaningful error data
+
+
 ;; Including the standard Clojure documentation to make sure that asserts
 ;; and cases are consistent with the standard Clojure.
 
@@ -14,7 +18,7 @@
 ;; Maps and the like: key, val, keys, vals - careful with pre-conds for key!
 ;; odd?, even?, etc - check for numbers!
 
-;;; ABSOLUTELY NEED TO ADD COMMENTS and tests
+;; TODO: ABSOLUTELY NEED TO ADD COMMENTS and tests
 
 
 ;; (empty? coll)

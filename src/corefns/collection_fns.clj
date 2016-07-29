@@ -2,7 +2,9 @@
   (:require [corefns.assert_handling :refer :all]
             [corefns.failed_asserts_info :refer :all]))
 
-;;;;; Functions for type-independent sequence handling ;;;;;;
+
+;;; Beginner-friendly functions for type-independent sequence handling.
+
 
 (defn add-first [argument1 argument2]
   {:pre [(check-if-seqable? "add-first" argument1)]}

@@ -1,9 +1,13 @@
 (ns corefns.assert_handling
+;; seqable? is in core since Clojure veresion 1.9
 ;;   (:use [clojure.core.incubator])
   (:require [corefns.failed_asserts_info :refer :all]))
 
-;; Functions to check pre-conditions and record the offenders for
-;; error processing
+
+;;; Functions to check pre-conditions and record the offenders for
+;;; error processing.
+
+
 (defn check-if-seqable?
   "returns true if x is seqable and false otherwise, sets data
   in seen-failed-asserts. If the second argument is present, it's added
