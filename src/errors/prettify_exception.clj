@@ -250,11 +250,15 @@
             (make-msg-info-hashes ".")]))))
 
 (defn location-from-data
-  "Takes exception data from a spec condition failure,
-   returns the location hashmap if the caller file is not core.clj"
+  "Take exception data from a spec condition failure,
+   return the location hashmap if not the caller is core.clj and
+   the val-scope is clojure.core/apply"
   [data]
-  (let [location-map (select-keys (:clojure.spec.test/caller data) [:file :line])]
-    (when (not= (:file location-map) "core.clj") location-map)))
+  (let [caller-map (:clojure.spec.test/caller data)]
+    (when-not
+      (and (= (:file caller-map) "core.clj")
+           (= (:var-scope caller-map) (symbol "clojure.core/apply")))
+      (select-keys caller-map [:file :line]))))
 
 (defn get-exc-message
   "returns the message in an exception or an empty string if the message is nil"
