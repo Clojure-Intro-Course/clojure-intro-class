@@ -18,45 +18,84 @@
 ;; Maps and the like: key, val, keys, vals - careful with pre-conds for key!
 ;; odd?, even?, etc - check for numbers!
 
-;; TODO: ABSOLUTELY NEED TO ADD COMMENTS and tests
 
+
+;; ######### Spec error generator ##########
+(defn ex-info-process
+  "Takes a function name, a sequence of arguments, and a spec predicate.
+  Throws ExceptionInfo if the argument sequence doesn't satisfy the spec"
+  [f-name args pred]
+  (try (s/assert pred args)
+    (catch clojure.lang.ExceptionInfo e
+      (throw
+        (ex-info "Spec assertion failed"
+                 (conj (ex-data e) [:f-name f-name] [:args args]))))))
+
+
+
+;; ######### Predicate definitions #########
+
+;; Basic building blocks
+(s/def ::check-num number?)
+(s/def ::check-int integer?)
+(s/def ::check-seq seqable?)
+(s/def ::check-fn ifn?)
+(s/def ::check-coll coll?)
+
+;; Spec predicates
+(s/def ::check-one-int
+  (s/cat ::arg ::check-int))
+(s/def ::check-one-coll
+  (s/cat ::arg ::check-coll))
+(s/def ::check-cons
+  (s/cat ::first-arg any? ::second-arg ::check-seq))
+(s/def ::check-fn-coll
+  (s/cat ::first-arg ::check-fn ::second-arg ::check-coll))
+(s/def ::check-fn-colls
+  (s/cat ::first-arg ::check-fn ::second-args (s/+ ::check-coll)))
+(s/def ::check-fn-any-coll
+  (s/cat ::first-arg ::check-fn ::second-arg any? ::third-arg ::check-coll))
+(s/def ::check-plus
+  (s/cat ::arg-list (s/* ::check-num)))
+
+
+
+;; ######### Overwritten core functions ###########
 
 ;; (empty? coll)
 ;; Returns true if coll has no items.
 ;; (defn empty? [argument1]
 ;;   {:pre [(only-arg (check-if-seqable? "empty?" argument1))]}
 ;;   (clojure.core/empty? argument1))
-
-;; (s/fdef empty?
-;;   :args (s/cat :check-seqable seqable?))
-
-;; (s/instrument #'empty?)
-
-;; (defn empty? [argument1]
-;;   (clojure.core/empty? argument1))
-
+(defn empty? [coll]
+  (do
+    (ex-info-process "empty?" [coll] ::check-one-coll)
+    (clojure.core/empty? coll)))
 
 ;;(first coll)
 ;;Returns the first item in the collection
 ;;Calls seq on its argument. If coll is nil, returns nil.
-(defn first [argument1]
-  {:pre [(only-arg (check-if-seqable? "first" argument1))]}
-  (clojure.core/first argument1))
+(defn first [coll]
+  (do
+    (ex-info-process "first" [coll] ::check-one-coll)
+    (clojure.core/first coll)))
 
 ;;(rest coll)
 ;;Returns a possibly empty seq of the items after the first.
 ;; Calls seq on its argument.
-(defn rest [argument1]
-  {:pre [(only-arg (check-if-seqable? "rest" argument1))]}
-  (clojure.core/rest argument1))
+(defn rest [coll]
+  (do
+    (ex-info-process "rest" [coll] ::check-one-coll)
+    (clojure.core/rest coll)))
 
 ;;(next coll)
 ;:Returns a seq of the items after the first.
 ;;Calls seq on its argument.
 ;;If there are no more items, returns nil.
-(defn next [argument1]
-  {:pre [(only-arg (check-if-seqable? "next" argument1))]}
-  (clojure.core/next argument1))
+(defn next [coll]
+  (do
+    (ex-info-process "next" [coll] ::check-one-coll)
+    (clojure.core/next coll)))
 
 ;;(seq coll)
 ;;Returns a seq on the collection. If the collection is empty, returns nil.
@@ -64,12 +103,10 @@
 ;;(of reference types) and any objects that implement Iterable. Note that seqs
 ;;cache values, thus seq should not be used on any Iterable whose iterator
 ;;repeatedly returns the same mutable object.
-(defn seq [argument1]
-  {:pre [(only-arg (check-if-seqable? "seq" argument1))]}
-  (clojure.core/seq argument1))
-
-
-
+(defn seq [coll]
+  (do
+    (ex-info-process "seq" [coll] ::check-one-coll)
+    (clojure.core/seq coll)))
 
 ;; As of clojure 1.7 allows (map f)
 ;; (map f coll)
@@ -81,26 +118,18 @@
 ;; of second items in each coll, until any one of the colls is
 ;; exhausted. Any remaining items in other colls are ignored. Function
 ;; f should accept number-of-colls arguments.
-;; (defn map [argument1 argument2 & args]
-;;   {:pre [(check-if-function? "map" argument1)
-;;          (check-if-seqable? "map" argument2)
-;;          (check-if-seqables? "map" args 3)]}
-;;   (apply clojure.core/map argument1 argument2 args))
-
-;; (s/fdef map
-;;       :args (s/cat :check-function ifn? :check-seqable (s/+ seqable?)))
-
-;; (s/instrument #'map)
-
-;; (defn map [argument1 argument2 & args]
-;;   (apply clojure.core/map argument1 argument2 args))
+(defn map [f coll & colls]
+  (do
+    (ex-info-process "map" [f coll & colls] ::check-fn-colls)
+    (apply clojure.core/map f coll colls)))
 
 ;; (count coll)
 ;; Returns the number of items in the collection. (count nil) returns
 ;; 0. Also works on strings, arrays, and Java Collections and Maps
-(defn count [argument1]
-  {:pre [(only-arg (check-if-seqable? "count" argument1))]}
-  (clojure.core/count argument1))
+(defn count [coll]
+  (do
+    (ex-info-process "count" [coll] ::check-one-coll)
+    (clojure.core/count coll)))
 
 ;; (conj coll x)
 ;; (conj coll x & xs)
@@ -144,15 +173,15 @@
 ;; result of applying f to val and the first item in coll, then
 ;; applying f to that result and the 2nd item, etc. If coll contains no
 ;; items, returns val and f is not called.
-;; (defn reduce
-;;   ([argument1 argument2]
-;;    {:pre [(check-if-function? "reduce" argument1)
-;;           (check-if-seqable? "reduce" argument2)]}
-;;    (clojure.core/reduce argument1 argument2))
-;;   ([argument1 argument2 argument3]
-;;    {:pre [(check-if-function? "reduce" argument1)
-;;           (check-if-seqable? "reduce" argument3)]}
-;;    (clojure.core/reduce argument1 argument2 argument3)))
+(defn reduce
+  ([f coll]
+   (do
+     (ex-info-process "reduce" [f coll] ::check-fn-coll)
+     (clojure.core/reduce f coll)))
+  ([f val coll]
+   (do
+     (ex-info-process "reduce" [f val coll] ::check-fn-any-coll)
+     (clojure.core/reduce f val coll))))
 
 ;; (nth coll index)
 ;; (nth coll index not-found)
@@ -253,6 +282,10 @@
 ;; (defn odd? [n]
 ;;   {:pre [(only-arg (check-if-integer? "odd?" n 1))]}
 ;;   (clojure.core/odd? n))
+(defn odd? [x]
+  (do
+    (ex-info-process "odd?" [x] ::check-one-int)
+    (clojure.core/odd? x)))
 
 ;;(even? n)
 ;;Returns true if n is even, throws an exception if n is not an integer
@@ -454,6 +487,10 @@
 ;; (defn distinct [argument1]
 ;;   {:pre [(check-if-seqable? "distinct" argument1)]}
 ;;   (clojure.core/distinct argument1))
+
+
+;; Turn on all the assert checks
+(s/check-asserts true)
 
 ;; This hashmap is used to get function names because 'speced' functions are stored differently
 (def corefns-map {(str nth) "nth", (str quot) "quot"})
