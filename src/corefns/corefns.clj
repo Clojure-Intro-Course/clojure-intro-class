@@ -55,6 +55,14 @@
   (s/cat ::first-arg ::check-fn ::second-args (s/+ ::check-coll)))
 (s/def ::check-fn-any-coll
   (s/cat ::first-arg ::check-fn ::second-arg any? ::third-arg ::check-coll))
+(s/def ::check-coll-int
+  (s/cat ::first-arg ::check-coll ::second-arg ::check-int))
+(s/def ::check-coll-int-any
+  (s/cat ::first-arg ::check-coll ::second-arg ::check-int ::third-arg any?))
+(s/def ::check-coll-coll
+  (s/cat ::first-arg ::check-coll ::second-arg ::check-coll))
+(s/def ::check-coll-anys
+  (s/cat ::first-arg ::check-coll ::second-args (s/+ any?)))
 (s/def ::check-plus
   (s/cat ::arg-list (s/* ::check-num)))
 
@@ -139,15 +147,18 @@
 ;; (defn conj [argument1 argument2 & args]
 ;;   {:pre [(check-if-seqable? "conj" argument1)]}
 ;;   (apply clojure.core/conj argument1 argument2 args))
+(defn conj [coll x & xs]
+  (do
+    (ex-info-process "conj" [coll x xs] ::check-coll-anys)
+    (apply clojure.core/conj coll x xs)))
 
 ;; (into to from)
 ;; Returns a new coll consisting of to-coll with all of the items of
 ;; from-coll conjoined.
-;; (defn into
-;;   ([argument1 argument2]
-;;    {:pre [(check-if-seqable? "into" argument1)
-;;           (check-if-seqable? "into" argument2)]}
-;;    (clojure.core/into argument1 argument2)))
+(defn into [to from]
+  (do
+    (ex-info-process "into" [to from] ::check-coll-coll)
+    (clojure.core/into to from)))
 ;; commented out the transducer case for now Elena June 1st 2016
   ;([argument1 argument2 argument3]
   ; {:pre [(check-if-seqable? "into" argument1)
@@ -161,6 +172,7 @@
 ;; (defn cons [argument1 argument2]
 ;;   {:pre [(check-if-seqable? "cons" argument2)]}
 ;;   (clojure.core/cons argument1 argument2))
+
 
 ;; (reduce f coll)
 ;; (reduce f val coll)
@@ -198,19 +210,16 @@
 ;;    {:pre [(check-if-seqable? "nth" argument1)
 ;;           (check-if-number? "nth" argument2)]}
 ;;    (clojure.core/nth argument1 argument2 argument3)))
+(defn nth
+  ([coll index]
+   (do
+     (ex-info-process "nth" [coll index] ::check-coll-int)
+     (clojure.core/nth coll index)))
+  ([coll index not-found]
+   (do
+     (ex-info-process "nth" [coll index not-found] ::check-coll-int-any)
+     (clojure.core/nth coll index not-found))))
 
-(defn nth ;; there may be an optional 3rd arg
-  ([argument1 argument2]
-   (clojure.core/nth argument1 argument2))
-  ([argument1 argument2 argument3]
-   (clojure.core/nth argument1 argument2 argument3)))
-
-(s/fdef corefns.corefns/nth
-  :args (s/or :two-case (s/and ::corefns.specs/length-two
-                               (s/cat :check-seqable seqable? :check-number number?))
-              :three-case (s/and ::corefns.specs/length-three
-                                 (s/cat :check-seqable seqable? :check-number number? :dummy any?))))
-(stest/instrument 'corefns.corefns/nth)
 
 ;; As of clojure 1.7 allows (filter f)
 ;; (filter pred coll)
