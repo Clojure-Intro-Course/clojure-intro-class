@@ -40,30 +40,30 @@
 (s/def ::check-int integer?)
 (s/def ::check-seq seqable?)
 (s/def ::check-fn ifn?)
-(s/def ::check-coll coll?)
+;; (s/def ::check-coll coll?)
 
 ;; Spec predicates
 (s/def ::check-one-int
   (s/cat ::arg ::check-int))
-(s/def ::check-one-coll
-  (s/cat ::arg ::check-coll))
-(s/def ::check-cons
+(s/def ::check-one-seq
+  (s/cat ::arg ::check-seq))
+(s/def ::check-any-seq
   (s/cat ::first-arg any? ::second-arg ::check-seq))
-(s/def ::check-fn-coll
-  (s/cat ::first-arg ::check-fn ::second-arg ::check-coll))
-(s/def ::check-fn-colls
-  (s/cat ::first-arg ::check-fn ::second-args (s/+ ::check-coll)))
-(s/def ::check-fn-any-coll
-  (s/cat ::first-arg ::check-fn ::second-arg any? ::third-arg ::check-coll))
-(s/def ::check-coll-int
-  (s/cat ::first-arg ::check-coll ::second-arg ::check-int))
-(s/def ::check-coll-int-any
-  (s/cat ::first-arg ::check-coll ::second-arg ::check-int ::third-arg any?))
-(s/def ::check-coll-coll
-  (s/cat ::first-arg ::check-coll ::second-arg ::check-coll))
-(s/def ::check-coll-anys
-  (s/cat ::first-arg ::check-coll ::second-args (s/+ any?)))
-(s/def ::check-plus
+(s/def ::check-fn-seq
+  (s/cat ::first-arg ::check-fn ::second-arg ::check-seq))
+(s/def ::check-fn-seqs
+  (s/cat ::first-arg ::check-fn ::second-args (s/+ ::check-seq)))
+(s/def ::check-fn-any-seq
+  (s/cat ::first-arg ::check-fn ::second-arg any? ::third-arg ::check-seq))
+(s/def ::check-seq-int
+  (s/cat ::first-arg ::check-seq ::second-arg ::check-int))
+(s/def ::check-seq-int-any
+  (s/cat ::first-arg ::check-seq ::second-arg ::check-int ::third-arg any?))
+(s/def ::check-seq-seq
+  (s/cat ::first-arg ::check-seq ::second-arg ::check-seq))
+(s/def ::check-seq-anys
+  (s/cat ::first-arg ::check-seq ::second-args (s/+ any?)))
+(s/def ::check-nums
   (s/cat ::arg-list (s/* ::check-num)))
 
 
@@ -77,7 +77,7 @@
 ;;   (clojure.core/empty? argument1))
 (defn empty? [coll]
   (do
-    (ex-info-process "empty?" [coll] ::check-one-coll)
+    (ex-info-process "empty?" [coll] ::check-one-seq)
     (clojure.core/empty? coll)))
 
 ;;(first coll)
@@ -85,7 +85,7 @@
 ;;Calls seq on its argument. If coll is nil, returns nil.
 (defn first [coll]
   (do
-    (ex-info-process "first" [coll] ::check-one-coll)
+    (ex-info-process "first" [coll] ::check-one-seq)
     (clojure.core/first coll)))
 
 ;;(rest coll)
@@ -93,7 +93,7 @@
 ;; Calls seq on its argument.
 (defn rest [coll]
   (do
-    (ex-info-process "rest" [coll] ::check-one-coll)
+    (ex-info-process "rest" [coll] ::check-one-seq)
     (clojure.core/rest coll)))
 
 ;;(next coll)
@@ -102,7 +102,7 @@
 ;;If there are no more items, returns nil.
 (defn next [coll]
   (do
-    (ex-info-process "next" [coll] ::check-one-coll)
+    (ex-info-process "next" [coll] ::check-one-seq)
     (clojure.core/next coll)))
 
 ;;(seq coll)
@@ -113,7 +113,7 @@
 ;;repeatedly returns the same mutable object.
 (defn seq [coll]
   (do
-    (ex-info-process "seq" [coll] ::check-one-coll)
+    (ex-info-process "seq" [coll] ::check-one-seq)
     (clojure.core/seq coll)))
 
 ;; As of clojure 1.7 allows (map f)
@@ -128,7 +128,7 @@
 ;; f should accept number-of-colls arguments.
 (defn map [f coll & colls]
   (do
-    (ex-info-process "map" [f coll & colls] ::check-fn-colls)
+    (ex-info-process "map" [f coll & colls] ::check-fn-seqs)
     (apply clojure.core/map f coll colls)))
 
 ;; (count coll)
@@ -136,7 +136,7 @@
 ;; 0. Also works on strings, arrays, and Java Collections and Maps
 (defn count [coll]
   (do
-    (ex-info-process "count" [coll] ::check-one-coll)
+    (ex-info-process "count" [coll] ::check-one-seq)
     (clojure.core/count coll)))
 
 ;; (conj coll x)
@@ -149,7 +149,7 @@
 ;;   (apply clojure.core/conj argument1 argument2 args))
 (defn conj [coll x & xs]
   (do
-    (ex-info-process "conj" [coll x xs] ::check-coll-anys)
+    (ex-info-process "conj" [coll x xs] ::check-seq-anys)
     (apply clojure.core/conj coll x xs)))
 
 ;; (into to from)
@@ -157,7 +157,7 @@
 ;; from-coll conjoined.
 (defn into [to from]
   (do
-    (ex-info-process "into" [to from] ::check-coll-coll)
+    (ex-info-process "into" [to from] ::check-seq-seq)
     (clojure.core/into to from)))
 ;; commented out the transducer case for now Elena June 1st 2016
   ;([argument1 argument2 argument3]
@@ -188,11 +188,11 @@
 (defn reduce
   ([f coll]
    (do
-     (ex-info-process "reduce" [f coll] ::check-fn-coll)
+     (ex-info-process "reduce" [f coll] ::check-fn-seq)
      (clojure.core/reduce f coll)))
   ([f val coll]
    (do
-     (ex-info-process "reduce" [f val coll] ::check-fn-any-coll)
+     (ex-info-process "reduce" [f val coll] ::check-fn-any-seq)
      (clojure.core/reduce f val coll))))
 
 ;; (nth coll index)
@@ -213,11 +213,11 @@
 (defn nth
   ([coll index]
    (do
-     (ex-info-process "nth" [coll index] ::check-coll-int)
+     (ex-info-process "nth" [coll index] ::check-seq-int)
      (clojure.core/nth coll index)))
   ([coll index not-found]
    (do
-     (ex-info-process "nth" [coll index not-found] ::check-coll-int-any)
+     (ex-info-process "nth" [coll index not-found] ::check-seq-int-any)
      (clojure.core/nth coll index not-found))))
 
 
