@@ -1,4 +1,5 @@
 (ns corefns.corefns
+  ;; (:use ) function call is unnecessary once the processing is done
   (:use ;[clojure.core.incubator]
         [corefns.specs])
 ;;   (:refer-clojure :exclude [map nth])
@@ -13,6 +14,9 @@
 ;; TODO:
 ;; 1. Testing for the correct behavior (use test/spec_behavior folder)
 ;; 2. Functions to be overwritten:
+;;        mapcat, assoc, disco, concat, drop, take,
+;;        <, <=, >=, *, /, quit, rem, mod, inc, dec,
+;;        max, min, comp, repeatedly, repeat, distinct
 ;; 3. Once the overwriting is done, src/corefns/specs.clj and test/spec_behavior/spec_test can be deleted
 
 
@@ -519,5 +523,7 @@
 (s/check-asserts true)
 
 ;; This hashmap is used to get function names because 'speced' functions are stored differently
+;; * Once the new processisng is set, this is no longer used because
+;;   function names are embedded inside the ExceptionInfo object
 (def corefns-map {(str nth) "nth", (str quot) "quot"})
 
