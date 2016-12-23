@@ -10,6 +10,11 @@
 
 ;;; Overwritten clojure.core functions to get meaningful error data
 
+;; TODO:
+;; 1. Testing for the correct behavior (use test/spec_behavior folder)
+;; 2. Functions to be overwritten:
+;; 3. Once the overwriting is done, src/corefns/specs.clj and test/spec_behavior/spec_test can be deleted
+
 
 ;; Including the standard Clojure documentation to make sure that asserts
 ;; and cases are consistent with the standard Clojure.
@@ -65,6 +70,8 @@
   (s/cat ::first-arg ::check-seq ::second-args (s/+ any?)))
 (s/def ::check-nums
   (s/cat ::arg-list (s/* ::check-num)))
+(s/def ::check-num-nums
+  (s/cat ::arg-list (s/+ ::check-num)))
 
 
 
@@ -72,9 +79,6 @@
 
 ;; (empty? coll)
 ;; Returns true if coll has no items.
-;; (defn empty? [argument1]
-;;   {:pre [(only-arg (check-if-seqable? "empty?" argument1))]}
-;;   (clojure.core/empty? argument1))
 (defn empty? [coll]
   (do
     (ex-info-process "empty?" [coll] ::check-one-seq)
@@ -128,7 +132,7 @@
 ;; f should accept number-of-colls arguments.
 (defn map [f coll & colls]
   (do
-    (ex-info-process "map" [f coll & colls] ::check-fn-seqs)
+    (ex-info-process "map" [f coll colls] ::check-fn-seqs)
     (apply clojure.core/map f coll colls)))
 
 ;; (count coll)
@@ -172,6 +176,10 @@
 ;; (defn cons [argument1 argument2]
 ;;   {:pre [(check-if-seqable? "cons" argument2)]}
 ;;   (clojure.core/cons argument1 argument2))
+(defn cons [x seq]
+  (do
+    (ex-info-process "cons" [x seq] ::check-any-seq)
+    (clojure.core/cons x seq)))
 
 
 ;; (reduce f coll)
@@ -233,6 +241,11 @@
 ;;    {:pre [(check-if-function? "filter" argument1)
 ;;          (check-if-seqable? "filter" argument2)]}
 ;;   (clojure.core/filter argument1 argument2)))
+(defn filter [pred coll]
+  (do
+   (ex-info-process "filter" [pred coll] ::check-fn-seq)
+   (clojure.core/filter pred coll)))
+
 
 ;; (mapcat f & colls)
 ;; Returns the result of applying concat to the result of applying map
@@ -355,7 +368,9 @@
 ;;   {:pre [(check-if-numbers? "+" args 1)]}
 ;;   (apply clojure.core/+ args))
 (defn + [& args]
-  (apply clojure.core/+ args))
+  (do
+    (ex-info-process "+" [args] ::check-nums)
+    (apply clojure.core/+ args)))
 
 
 ;;    (- x)
@@ -368,7 +383,9 @@
 ;;          (check-if-numbers? "-" args 2)]}
 ;;   (apply clojure.core/- argument1 args))
 (defn - [argument1 & args]
-  (apply clojure.core/- argument1 args))
+  (do
+    (ex-info-process "-" [argument1 args] ::check-num-nums)
+    (apply clojure.core/- argument1 args)))
 
 
 ;;    (*)
